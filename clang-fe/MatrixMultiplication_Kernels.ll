@@ -1,0 +1,633 @@
+; ModuleID = '../kernel-src/MatrixMultiplication_Kernels.cl'
+target datalayout = "e-p:64:64:64-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v64:64:64-v128:128:128-a0:0:64-s0:64:64-f80:128:128-n8:16:32:64-S128"
+target triple = "x86_64-pc-linux-gnu"
+
+; Function Attrs: nounwind uwtable
+define void @mmmKernel(<4 x float>* nocapture readonly %matrixA, <4 x float>* nocapture readonly %matrixB, <4 x float>* nocapture %matrixC, i32 %widthA, i32 %widthB) #0 {
+  %1 = tail call i64 @get_global_id(i32 0) #3
+  %2 = trunc i64 %1 to i32
+  %3 = tail call i64 @get_global_id(i32 1) #3
+  %4 = trunc i64 %3 to i32
+  %5 = lshr i32 %widthB, 2
+  %6 = icmp eq i32 %widthA, 0
+  %.pre = shl i32 %4, 2
+  br i1 %6, label %._crit_edge12, label %.lr.ph
+
+._crit_edge12:                                    ; preds = %0
+  %.pre13 = or i32 %.pre, 1
+  %.pre15 = or i32 %.pre, 2
+  %.pre17 = or i32 %.pre, 3
+  br label %._crit_edge
+
+.lr.ph:                                           ; preds = %0
+  %7 = lshr i32 %widthA, 2
+  %8 = mul i32 %.pre, %7
+  %9 = or i32 %.pre, 1
+  %10 = mul i32 %9, %7
+  %11 = or i32 %.pre, 2
+  %12 = mul i32 %11, %7
+  %13 = or i32 %.pre, 3
+  %14 = mul i32 %13, %7
+  br label %15
+
+; <label>:15                                      ; preds = %.lr.ph, %15
+  %indvars.iv = phi i64 [ 0, %.lr.ph ], [ %indvars.iv.next, %15 ]
+  %sum0.05 = phi <4 x float> [ zeroinitializer, %.lr.ph ], [ %107, %15 ]
+  %sum1.04 = phi <4 x float> [ zeroinitializer, %.lr.ph ], [ %139, %15 ]
+  %sum2.03 = phi <4 x float> [ zeroinitializer, %.lr.ph ], [ %171, %15 ]
+  %sum3.02 = phi <4 x float> [ zeroinitializer, %.lr.ph ], [ %203, %15 ]
+  %16 = trunc i64 %indvars.iv to i32
+  %17 = sdiv i32 %16, 4
+  %18 = add i32 %17, %8
+  %19 = zext i32 %18 to i64
+  %20 = getelementptr inbounds <4 x float>* %matrixA, i64 %19
+  %21 = load <4 x float>* %20, align 16, !tbaa !3
+  %22 = add i32 %17, %10
+  %23 = zext i32 %22 to i64
+  %24 = getelementptr inbounds <4 x float>* %matrixA, i64 %23
+  %25 = load <4 x float>* %24, align 16, !tbaa !3
+  %26 = add i32 %17, %12
+  %27 = zext i32 %26 to i64
+  %28 = getelementptr inbounds <4 x float>* %matrixA, i64 %27
+  %29 = load <4 x float>* %28, align 16, !tbaa !3
+  %30 = add i32 %17, %14
+  %31 = zext i32 %30 to i64
+  %32 = getelementptr inbounds <4 x float>* %matrixA, i64 %31
+  %33 = load <4 x float>* %32, align 16, !tbaa !3
+  %34 = mul i32 %16, %5
+  %35 = add i32 %34, %2
+  %36 = zext i32 %35 to i64
+  %37 = getelementptr inbounds <4 x float>* %matrixB, i64 %36
+  %38 = load <4 x float>* %37, align 16, !tbaa !3
+  %39 = or i64 %indvars.iv, 1
+  %40 = trunc i64 %39 to i32
+  %41 = mul i32 %40, %5
+  %42 = add i32 %41, %2
+  %43 = zext i32 %42 to i64
+  %44 = getelementptr inbounds <4 x float>* %matrixB, i64 %43
+  %45 = load <4 x float>* %44, align 16, !tbaa !3
+  %46 = or i64 %indvars.iv, 2
+  %47 = trunc i64 %46 to i32
+  %48 = mul i32 %47, %5
+  %49 = add i32 %48, %2
+  %50 = zext i32 %49 to i64
+  %51 = getelementptr inbounds <4 x float>* %matrixB, i64 %50
+  %52 = load <4 x float>* %51, align 16, !tbaa !3
+  %53 = or i64 %indvars.iv, 3
+  %54 = trunc i64 %53 to i32
+  %55 = mul i32 %54, %5
+  %56 = add i32 %55, %2
+  %57 = zext i32 %56 to i64
+  %58 = getelementptr inbounds <4 x float>* %matrixB, i64 %57
+  %59 = load <4 x float>* %58, align 16, !tbaa !3
+  %60 = extractelement <4 x float> %21, i32 0
+  %61 = extractelement <4 x float> %38, i32 0
+  %62 = extractelement <4 x float> %21, i32 1
+  %63 = extractelement <4 x float> %45, i32 0
+  %64 = fmul float %62, %63
+  %65 = tail call float @llvm.fmuladd.f32(float %60, float %61, float %64)
+  %66 = extractelement <4 x float> %21, i32 2
+  %67 = extractelement <4 x float> %52, i32 0
+  %68 = tail call float @llvm.fmuladd.f32(float %66, float %67, float %65)
+  %69 = extractelement <4 x float> %21, i32 3
+  %70 = extractelement <4 x float> %59, i32 0
+  %71 = tail call float @llvm.fmuladd.f32(float %69, float %70, float %68)
+  %72 = extractelement <4 x float> %sum0.05, i32 0
+  %73 = fadd float %72, %71
+  %74 = insertelement <4 x float> undef, float %73, i32 0
+  %75 = extractelement <4 x float> %38, i32 1
+  %76 = extractelement <4 x float> %45, i32 1
+  %77 = fmul float %62, %76
+  %78 = tail call float @llvm.fmuladd.f32(float %60, float %75, float %77)
+  %79 = extractelement <4 x float> %52, i32 1
+  %80 = tail call float @llvm.fmuladd.f32(float %66, float %79, float %78)
+  %81 = extractelement <4 x float> %59, i32 1
+  %82 = tail call float @llvm.fmuladd.f32(float %69, float %81, float %80)
+  %83 = extractelement <4 x float> %sum0.05, i32 1
+  %84 = fadd float %83, %82
+  %85 = insertelement <4 x float> %74, float %84, i32 1
+  %86 = extractelement <4 x float> %38, i32 2
+  %87 = extractelement <4 x float> %45, i32 2
+  %88 = fmul float %62, %87
+  %89 = tail call float @llvm.fmuladd.f32(float %60, float %86, float %88)
+  %90 = extractelement <4 x float> %52, i32 2
+  %91 = tail call float @llvm.fmuladd.f32(float %66, float %90, float %89)
+  %92 = extractelement <4 x float> %59, i32 2
+  %93 = tail call float @llvm.fmuladd.f32(float %69, float %92, float %91)
+  %94 = extractelement <4 x float> %sum0.05, i32 2
+  %95 = fadd float %94, %93
+  %96 = insertelement <4 x float> %85, float %95, i32 2
+  %97 = extractelement <4 x float> %38, i32 3
+  %98 = extractelement <4 x float> %45, i32 3
+  %99 = fmul float %62, %98
+  %100 = tail call float @llvm.fmuladd.f32(float %60, float %97, float %99)
+  %101 = extractelement <4 x float> %52, i32 3
+  %102 = tail call float @llvm.fmuladd.f32(float %66, float %101, float %100)
+  %103 = extractelement <4 x float> %59, i32 3
+  %104 = tail call float @llvm.fmuladd.f32(float %69, float %103, float %102)
+  %105 = extractelement <4 x float> %sum0.05, i32 3
+  %106 = fadd float %105, %104
+  %107 = insertelement <4 x float> %96, float %106, i32 3
+  %108 = extractelement <4 x float> %25, i32 0
+  %109 = extractelement <4 x float> %25, i32 1
+  %110 = fmul float %109, %63
+  %111 = tail call float @llvm.fmuladd.f32(float %108, float %61, float %110)
+  %112 = extractelement <4 x float> %25, i32 2
+  %113 = tail call float @llvm.fmuladd.f32(float %112, float %67, float %111)
+  %114 = extractelement <4 x float> %25, i32 3
+  %115 = tail call float @llvm.fmuladd.f32(float %114, float %70, float %113)
+  %116 = extractelement <4 x float> %sum1.04, i32 0
+  %117 = fadd float %116, %115
+  %118 = insertelement <4 x float> undef, float %117, i32 0
+  %119 = fmul float %109, %76
+  %120 = tail call float @llvm.fmuladd.f32(float %108, float %75, float %119)
+  %121 = tail call float @llvm.fmuladd.f32(float %112, float %79, float %120)
+  %122 = tail call float @llvm.fmuladd.f32(float %114, float %81, float %121)
+  %123 = extractelement <4 x float> %sum1.04, i32 1
+  %124 = fadd float %123, %122
+  %125 = insertelement <4 x float> %118, float %124, i32 1
+  %126 = fmul float %109, %87
+  %127 = tail call float @llvm.fmuladd.f32(float %108, float %86, float %126)
+  %128 = tail call float @llvm.fmuladd.f32(float %112, float %90, float %127)
+  %129 = tail call float @llvm.fmuladd.f32(float %114, float %92, float %128)
+  %130 = extractelement <4 x float> %sum1.04, i32 2
+  %131 = fadd float %130, %129
+  %132 = insertelement <4 x float> %125, float %131, i32 2
+  %133 = fmul float %109, %98
+  %134 = tail call float @llvm.fmuladd.f32(float %108, float %97, float %133)
+  %135 = tail call float @llvm.fmuladd.f32(float %112, float %101, float %134)
+  %136 = tail call float @llvm.fmuladd.f32(float %114, float %103, float %135)
+  %137 = extractelement <4 x float> %sum1.04, i32 3
+  %138 = fadd float %137, %136
+  %139 = insertelement <4 x float> %132, float %138, i32 3
+  %140 = extractelement <4 x float> %29, i32 0
+  %141 = extractelement <4 x float> %29, i32 1
+  %142 = fmul float %141, %63
+  %143 = tail call float @llvm.fmuladd.f32(float %140, float %61, float %142)
+  %144 = extractelement <4 x float> %29, i32 2
+  %145 = tail call float @llvm.fmuladd.f32(float %144, float %67, float %143)
+  %146 = extractelement <4 x float> %29, i32 3
+  %147 = tail call float @llvm.fmuladd.f32(float %146, float %70, float %145)
+  %148 = extractelement <4 x float> %sum2.03, i32 0
+  %149 = fadd float %148, %147
+  %150 = insertelement <4 x float> undef, float %149, i32 0
+  %151 = fmul float %141, %76
+  %152 = tail call float @llvm.fmuladd.f32(float %140, float %75, float %151)
+  %153 = tail call float @llvm.fmuladd.f32(float %144, float %79, float %152)
+  %154 = tail call float @llvm.fmuladd.f32(float %146, float %81, float %153)
+  %155 = extractelement <4 x float> %sum2.03, i32 1
+  %156 = fadd float %155, %154
+  %157 = insertelement <4 x float> %150, float %156, i32 1
+  %158 = fmul float %141, %87
+  %159 = tail call float @llvm.fmuladd.f32(float %140, float %86, float %158)
+  %160 = tail call float @llvm.fmuladd.f32(float %144, float %90, float %159)
+  %161 = tail call float @llvm.fmuladd.f32(float %146, float %92, float %160)
+  %162 = extractelement <4 x float> %sum2.03, i32 2
+  %163 = fadd float %162, %161
+  %164 = insertelement <4 x float> %157, float %163, i32 2
+  %165 = fmul float %141, %98
+  %166 = tail call float @llvm.fmuladd.f32(float %140, float %97, float %165)
+  %167 = tail call float @llvm.fmuladd.f32(float %144, float %101, float %166)
+  %168 = tail call float @llvm.fmuladd.f32(float %146, float %103, float %167)
+  %169 = extractelement <4 x float> %sum2.03, i32 3
+  %170 = fadd float %169, %168
+  %171 = insertelement <4 x float> %164, float %170, i32 3
+  %172 = extractelement <4 x float> %33, i32 0
+  %173 = extractelement <4 x float> %33, i32 1
+  %174 = fmul float %173, %63
+  %175 = tail call float @llvm.fmuladd.f32(float %172, float %61, float %174)
+  %176 = extractelement <4 x float> %33, i32 2
+  %177 = tail call float @llvm.fmuladd.f32(float %176, float %67, float %175)
+  %178 = extractelement <4 x float> %33, i32 3
+  %179 = tail call float @llvm.fmuladd.f32(float %178, float %70, float %177)
+  %180 = extractelement <4 x float> %sum3.02, i32 0
+  %181 = fadd float %180, %179
+  %182 = insertelement <4 x float> undef, float %181, i32 0
+  %183 = fmul float %173, %76
+  %184 = tail call float @llvm.fmuladd.f32(float %172, float %75, float %183)
+  %185 = tail call float @llvm.fmuladd.f32(float %176, float %79, float %184)
+  %186 = tail call float @llvm.fmuladd.f32(float %178, float %81, float %185)
+  %187 = extractelement <4 x float> %sum3.02, i32 1
+  %188 = fadd float %187, %186
+  %189 = insertelement <4 x float> %182, float %188, i32 1
+  %190 = fmul float %173, %87
+  %191 = tail call float @llvm.fmuladd.f32(float %172, float %86, float %190)
+  %192 = tail call float @llvm.fmuladd.f32(float %176, float %90, float %191)
+  %193 = tail call float @llvm.fmuladd.f32(float %178, float %92, float %192)
+  %194 = extractelement <4 x float> %sum3.02, i32 2
+  %195 = fadd float %194, %193
+  %196 = insertelement <4 x float> %189, float %195, i32 2
+  %197 = fmul float %173, %98
+  %198 = tail call float @llvm.fmuladd.f32(float %172, float %97, float %197)
+  %199 = tail call float @llvm.fmuladd.f32(float %176, float %101, float %198)
+  %200 = tail call float @llvm.fmuladd.f32(float %178, float %103, float %199)
+  %201 = extractelement <4 x float> %sum3.02, i32 3
+  %202 = fadd float %201, %200
+  %203 = insertelement <4 x float> %196, float %202, i32 3
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 4
+  %204 = trunc i64 %indvars.iv.next to i32
+  %205 = icmp ult i32 %204, %widthA
+  br i1 %205, label %15, label %._crit_edge
+
+._crit_edge:                                      ; preds = %15, %._crit_edge12
+  %.pre-phi18 = phi i32 [ %.pre17, %._crit_edge12 ], [ %13, %15 ]
+  %.pre-phi16 = phi i32 [ %.pre15, %._crit_edge12 ], [ %11, %15 ]
+  %.pre-phi14 = phi i32 [ %.pre13, %._crit_edge12 ], [ %9, %15 ]
+  %sum0.0.lcssa = phi <4 x float> [ zeroinitializer, %._crit_edge12 ], [ %107, %15 ]
+  %sum1.0.lcssa = phi <4 x float> [ zeroinitializer, %._crit_edge12 ], [ %139, %15 ]
+  %sum2.0.lcssa = phi <4 x float> [ zeroinitializer, %._crit_edge12 ], [ %171, %15 ]
+  %sum3.0.lcssa = phi <4 x float> [ zeroinitializer, %._crit_edge12 ], [ %203, %15 ]
+  %206 = mul i32 %.pre, %5
+  %207 = add i32 %206, %2
+  %208 = zext i32 %207 to i64
+  %209 = getelementptr inbounds <4 x float>* %matrixC, i64 %208
+  store <4 x float> %sum0.0.lcssa, <4 x float>* %209, align 16, !tbaa !3
+  %210 = mul i32 %.pre-phi14, %5
+  %211 = add i32 %210, %2
+  %212 = zext i32 %211 to i64
+  %213 = getelementptr inbounds <4 x float>* %matrixC, i64 %212
+  store <4 x float> %sum1.0.lcssa, <4 x float>* %213, align 16, !tbaa !3
+  %214 = mul i32 %.pre-phi16, %5
+  %215 = add i32 %214, %2
+  %216 = zext i32 %215 to i64
+  %217 = getelementptr inbounds <4 x float>* %matrixC, i64 %216
+  store <4 x float> %sum2.0.lcssa, <4 x float>* %217, align 16, !tbaa !3
+  %218 = mul i32 %.pre-phi18, %5
+  %219 = add i32 %218, %2
+  %220 = zext i32 %219 to i64
+  %221 = getelementptr inbounds <4 x float>* %matrixC, i64 %220
+  store <4 x float> %sum3.0.lcssa, <4 x float>* %221, align 16, !tbaa !3
+  ret void
+}
+
+declare i64 @get_global_id(i32) #1
+
+; Function Attrs: nounwind readnone
+declare float @llvm.fmuladd.f32(float, float, float) #2
+
+; Function Attrs: nounwind uwtable
+define void @mmmKernel_local(<4 x float>* nocapture readonly %matrixA, <4 x float>* nocapture readonly %matrixB, <4 x float>* nocapture %matrixC, i32 %widthA, <4 x float>* nocapture %blockA) #0 {
+  %1 = tail call i64 @get_local_id(i32 0) #3
+  %2 = tail call i64 @get_local_size(i32 0) #3
+  %3 = tail call i64 @get_local_id(i32 1) #3
+  %4 = tail call i64 @get_global_id(i32 0) #3
+  %5 = tail call i64 @get_global_id(i32 1) #3
+  %6 = shl i64 %5, 2
+  %7 = tail call i64 @get_global_size(i32 0) #3
+  %8 = mul i64 %6, %7
+  %9 = add i64 %8, %4
+  %10 = sdiv i32 %widthA, 4
+  %11 = sext i32 %10 to i64
+  %12 = tail call i64 @get_local_size(i32 0) #3
+  %13 = udiv i64 %11, %12
+  %14 = icmp eq i64 %13, 0
+  br i1 %14, label %._crit_edge19, label %.lr.ph18
+
+.lr.ph18:                                         ; preds = %0
+  %15 = shl i64 %2, 2
+  %16 = mul i64 %15, %3
+  %17 = add i64 %16, %1
+  %18 = shl nsw i64 %11, 2
+  %sext2 = shl i64 %17, 32
+  %19 = ashr exact i64 %sext2, 32
+  %20 = getelementptr inbounds <4 x float>* %blockA, i64 %19
+  %21 = shl i32 %10, 1
+  %22 = mul nsw i32 %10, 3
+  br label %23
+
+; <label>:23                                      ; preds = %.lr.ph18, %._crit_edge
+  %indvars.iv27 = phi i64 [ 0, %.lr.ph18 ], [ %indvars.iv.next28, %._crit_edge ]
+  %sum0.016 = phi <4 x float> [ zeroinitializer, %.lr.ph18 ], [ %sum0.1.lcssa, %._crit_edge ]
+  %sum1.015 = phi <4 x float> [ zeroinitializer, %.lr.ph18 ], [ %sum1.1.lcssa, %._crit_edge ]
+  %sum2.014 = phi <4 x float> [ zeroinitializer, %.lr.ph18 ], [ %sum2.1.lcssa, %._crit_edge ]
+  %sum3.013 = phi <4 x float> [ zeroinitializer, %.lr.ph18 ], [ %sum3.1.lcssa, %._crit_edge ]
+  %24 = tail call i64 @get_local_size(i32 0) #3
+  %25 = mul i64 %24, %indvars.iv27
+  %26 = tail call i64 @get_local_id(i32 0) #3
+  %27 = add i64 %25, %26
+  %28 = tail call i64 @get_global_id(i32 1) #3
+  %29 = mul i64 %18, %28
+  %30 = add i64 %27, %29
+  %31 = trunc i64 %30 to i32
+  %sext1 = shl i64 %30, 32
+  %32 = ashr exact i64 %sext1, 32
+  %33 = getelementptr inbounds <4 x float>* %matrixA, i64 %32
+  %34 = load <4 x float>* %33, align 16, !tbaa !3
+  store <4 x float> %34, <4 x float>* %20, align 16, !tbaa !3
+  %35 = add nsw i32 %31, %10
+  %36 = sext i32 %35 to i64
+  %37 = getelementptr inbounds <4 x float>* %matrixA, i64 %36
+  %38 = load <4 x float>* %37, align 16, !tbaa !3
+  %39 = tail call i64 @get_local_size(i32 0) #3
+  %40 = add i64 %39, %19
+  %41 = getelementptr inbounds <4 x float>* %blockA, i64 %40
+  store <4 x float> %38, <4 x float>* %41, align 16, !tbaa !3
+  %42 = add nsw i32 %31, %21
+  %43 = sext i32 %42 to i64
+  %44 = getelementptr inbounds <4 x float>* %matrixA, i64 %43
+  %45 = load <4 x float>* %44, align 16, !tbaa !3
+  %46 = tail call i64 @get_local_size(i32 0) #3
+  %47 = shl i64 %46, 1
+  %48 = add i64 %47, %19
+  %49 = getelementptr inbounds <4 x float>* %blockA, i64 %48
+  store <4 x float> %45, <4 x float>* %49, align 16, !tbaa !3
+  %50 = add nsw i32 %31, %22
+  %51 = sext i32 %50 to i64
+  %52 = getelementptr inbounds <4 x float>* %matrixA, i64 %51
+  %53 = load <4 x float>* %52, align 16, !tbaa !3
+  %54 = tail call i64 @get_local_size(i32 0) #3
+  %55 = mul i64 %54, 3
+  %56 = add i64 %55, %19
+  %57 = getelementptr inbounds <4 x float>* %blockA, i64 %56
+  store <4 x float> %53, <4 x float>* %57, align 16, !tbaa !3
+  tail call void @barrier(i32 1) #3
+  %58 = tail call i64 @get_global_id(i32 0) #3
+  %59 = tail call i64 @get_local_size(i32 0) #3
+  %60 = tail call i64 @get_global_size(i32 0) #3
+  %61 = tail call i64 @get_local_size(i32 0) #3
+  %.mask = and i64 %61, 4611686018427387903
+  %62 = icmp eq i64 %.mask, 0
+  br i1 %62, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %23
+  %63 = shl nsw i64 %indvars.iv27, 2
+  %64 = mul i64 %63, %59
+  %65 = mul i64 %64, %60
+  %66 = add i64 %65, %58
+  %sext3 = shl i64 %66, 32
+  %67 = ashr exact i64 %sext3, 32
+  br label %68
+
+; <label>:68                                      ; preds = %.lr.ph, %68
+  %indvars.iv = phi i64 [ 0, %.lr.ph ], [ %indvars.iv.next, %68 ]
+  %sum0.18 = phi <4 x float> [ %sum0.016, %.lr.ph ], [ %173, %68 ]
+  %sum1.17 = phi <4 x float> [ %sum1.015, %.lr.ph ], [ %205, %68 ]
+  %sum2.16 = phi <4 x float> [ %sum2.014, %.lr.ph ], [ %237, %68 ]
+  %sum3.15 = phi <4 x float> [ %sum3.013, %.lr.ph ], [ %269, %68 ]
+  %69 = trunc i64 %indvars.iv to i32
+  %70 = ashr exact i32 %69, 2
+  %71 = sext i32 %70 to i64
+  %72 = tail call i64 @get_local_id(i32 1) #3
+  %73 = shl i64 %72, 2
+  %74 = tail call i64 @get_local_size(i32 0) #3
+  %75 = mul i64 %73, %74
+  %76 = add i64 %75, %71
+  %77 = getelementptr inbounds <4 x float>* %blockA, i64 %76
+  %78 = load <4 x float>* %77, align 16, !tbaa !3
+  %79 = tail call i64 @get_local_id(i32 1) #3
+  %80 = shl i64 %79, 2
+  %81 = or i64 %80, 1
+  %82 = tail call i64 @get_local_size(i32 0) #3
+  %83 = mul i64 %81, %82
+  %84 = add i64 %83, %71
+  %85 = getelementptr inbounds <4 x float>* %blockA, i64 %84
+  %86 = load <4 x float>* %85, align 16, !tbaa !3
+  %87 = tail call i64 @get_local_id(i32 1) #3
+  %88 = shl i64 %87, 2
+  %89 = or i64 %88, 2
+  %90 = tail call i64 @get_local_size(i32 0) #3
+  %91 = mul i64 %89, %90
+  %92 = add i64 %91, %71
+  %93 = getelementptr inbounds <4 x float>* %blockA, i64 %92
+  %94 = load <4 x float>* %93, align 16, !tbaa !3
+  %95 = tail call i64 @get_local_id(i32 1) #3
+  %96 = shl i64 %95, 2
+  %97 = or i64 %96, 3
+  %98 = tail call i64 @get_local_size(i32 0) #3
+  %99 = mul i64 %97, %98
+  %100 = add i64 %99, %71
+  %101 = getelementptr inbounds <4 x float>* %blockA, i64 %100
+  %102 = load <4 x float>* %101, align 16, !tbaa !3
+  %103 = tail call i64 @get_global_size(i32 0) #3
+  %104 = mul i64 %103, %indvars.iv
+  %105 = add i64 %104, %67
+  %106 = getelementptr inbounds <4 x float>* %matrixB, i64 %105
+  %107 = load <4 x float>* %106, align 16, !tbaa !3
+  %108 = or i64 %indvars.iv, 1
+  %109 = tail call i64 @get_global_size(i32 0) #3
+  %110 = mul i64 %109, %108
+  %111 = add i64 %110, %67
+  %112 = getelementptr inbounds <4 x float>* %matrixB, i64 %111
+  %113 = load <4 x float>* %112, align 16, !tbaa !3
+  %114 = or i64 %indvars.iv, 2
+  %115 = tail call i64 @get_global_size(i32 0) #3
+  %116 = mul i64 %115, %114
+  %117 = add i64 %116, %67
+  %118 = getelementptr inbounds <4 x float>* %matrixB, i64 %117
+  %119 = load <4 x float>* %118, align 16, !tbaa !3
+  %120 = or i64 %indvars.iv, 3
+  %121 = tail call i64 @get_global_size(i32 0) #3
+  %122 = mul i64 %121, %120
+  %123 = add i64 %122, %67
+  %124 = getelementptr inbounds <4 x float>* %matrixB, i64 %123
+  %125 = load <4 x float>* %124, align 16, !tbaa !3
+  %126 = extractelement <4 x float> %78, i32 0
+  %127 = extractelement <4 x float> %107, i32 0
+  %128 = extractelement <4 x float> %78, i32 1
+  %129 = extractelement <4 x float> %113, i32 0
+  %130 = fmul float %128, %129
+  %131 = tail call float @llvm.fmuladd.f32(float %126, float %127, float %130)
+  %132 = extractelement <4 x float> %78, i32 2
+  %133 = extractelement <4 x float> %119, i32 0
+  %134 = tail call float @llvm.fmuladd.f32(float %132, float %133, float %131)
+  %135 = extractelement <4 x float> %78, i32 3
+  %136 = extractelement <4 x float> %125, i32 0
+  %137 = tail call float @llvm.fmuladd.f32(float %135, float %136, float %134)
+  %138 = extractelement <4 x float> %sum0.18, i32 0
+  %139 = fadd float %138, %137
+  %140 = insertelement <4 x float> undef, float %139, i32 0
+  %141 = extractelement <4 x float> %107, i32 1
+  %142 = extractelement <4 x float> %113, i32 1
+  %143 = fmul float %128, %142
+  %144 = tail call float @llvm.fmuladd.f32(float %126, float %141, float %143)
+  %145 = extractelement <4 x float> %119, i32 1
+  %146 = tail call float @llvm.fmuladd.f32(float %132, float %145, float %144)
+  %147 = extractelement <4 x float> %125, i32 1
+  %148 = tail call float @llvm.fmuladd.f32(float %135, float %147, float %146)
+  %149 = extractelement <4 x float> %sum0.18, i32 1
+  %150 = fadd float %149, %148
+  %151 = insertelement <4 x float> %140, float %150, i32 1
+  %152 = extractelement <4 x float> %107, i32 2
+  %153 = extractelement <4 x float> %113, i32 2
+  %154 = fmul float %128, %153
+  %155 = tail call float @llvm.fmuladd.f32(float %126, float %152, float %154)
+  %156 = extractelement <4 x float> %119, i32 2
+  %157 = tail call float @llvm.fmuladd.f32(float %132, float %156, float %155)
+  %158 = extractelement <4 x float> %125, i32 2
+  %159 = tail call float @llvm.fmuladd.f32(float %135, float %158, float %157)
+  %160 = extractelement <4 x float> %sum0.18, i32 2
+  %161 = fadd float %160, %159
+  %162 = insertelement <4 x float> %151, float %161, i32 2
+  %163 = extractelement <4 x float> %107, i32 3
+  %164 = extractelement <4 x float> %113, i32 3
+  %165 = fmul float %128, %164
+  %166 = tail call float @llvm.fmuladd.f32(float %126, float %163, float %165)
+  %167 = extractelement <4 x float> %119, i32 3
+  %168 = tail call float @llvm.fmuladd.f32(float %132, float %167, float %166)
+  %169 = extractelement <4 x float> %125, i32 3
+  %170 = tail call float @llvm.fmuladd.f32(float %135, float %169, float %168)
+  %171 = extractelement <4 x float> %sum0.18, i32 3
+  %172 = fadd float %171, %170
+  %173 = insertelement <4 x float> %162, float %172, i32 3
+  %174 = extractelement <4 x float> %86, i32 0
+  %175 = extractelement <4 x float> %86, i32 1
+  %176 = fmul float %175, %129
+  %177 = tail call float @llvm.fmuladd.f32(float %174, float %127, float %176)
+  %178 = extractelement <4 x float> %86, i32 2
+  %179 = tail call float @llvm.fmuladd.f32(float %178, float %133, float %177)
+  %180 = extractelement <4 x float> %86, i32 3
+  %181 = tail call float @llvm.fmuladd.f32(float %180, float %136, float %179)
+  %182 = extractelement <4 x float> %sum1.17, i32 0
+  %183 = fadd float %182, %181
+  %184 = insertelement <4 x float> undef, float %183, i32 0
+  %185 = fmul float %175, %142
+  %186 = tail call float @llvm.fmuladd.f32(float %174, float %141, float %185)
+  %187 = tail call float @llvm.fmuladd.f32(float %178, float %145, float %186)
+  %188 = tail call float @llvm.fmuladd.f32(float %180, float %147, float %187)
+  %189 = extractelement <4 x float> %sum1.17, i32 1
+  %190 = fadd float %189, %188
+  %191 = insertelement <4 x float> %184, float %190, i32 1
+  %192 = fmul float %175, %153
+  %193 = tail call float @llvm.fmuladd.f32(float %174, float %152, float %192)
+  %194 = tail call float @llvm.fmuladd.f32(float %178, float %156, float %193)
+  %195 = tail call float @llvm.fmuladd.f32(float %180, float %158, float %194)
+  %196 = extractelement <4 x float> %sum1.17, i32 2
+  %197 = fadd float %196, %195
+  %198 = insertelement <4 x float> %191, float %197, i32 2
+  %199 = fmul float %175, %164
+  %200 = tail call float @llvm.fmuladd.f32(float %174, float %163, float %199)
+  %201 = tail call float @llvm.fmuladd.f32(float %178, float %167, float %200)
+  %202 = tail call float @llvm.fmuladd.f32(float %180, float %169, float %201)
+  %203 = extractelement <4 x float> %sum1.17, i32 3
+  %204 = fadd float %203, %202
+  %205 = insertelement <4 x float> %198, float %204, i32 3
+  %206 = extractelement <4 x float> %94, i32 0
+  %207 = extractelement <4 x float> %94, i32 1
+  %208 = fmul float %207, %129
+  %209 = tail call float @llvm.fmuladd.f32(float %206, float %127, float %208)
+  %210 = extractelement <4 x float> %94, i32 2
+  %211 = tail call float @llvm.fmuladd.f32(float %210, float %133, float %209)
+  %212 = extractelement <4 x float> %94, i32 3
+  %213 = tail call float @llvm.fmuladd.f32(float %212, float %136, float %211)
+  %214 = extractelement <4 x float> %sum2.16, i32 0
+  %215 = fadd float %214, %213
+  %216 = insertelement <4 x float> undef, float %215, i32 0
+  %217 = fmul float %207, %142
+  %218 = tail call float @llvm.fmuladd.f32(float %206, float %141, float %217)
+  %219 = tail call float @llvm.fmuladd.f32(float %210, float %145, float %218)
+  %220 = tail call float @llvm.fmuladd.f32(float %212, float %147, float %219)
+  %221 = extractelement <4 x float> %sum2.16, i32 1
+  %222 = fadd float %221, %220
+  %223 = insertelement <4 x float> %216, float %222, i32 1
+  %224 = fmul float %207, %153
+  %225 = tail call float @llvm.fmuladd.f32(float %206, float %152, float %224)
+  %226 = tail call float @llvm.fmuladd.f32(float %210, float %156, float %225)
+  %227 = tail call float @llvm.fmuladd.f32(float %212, float %158, float %226)
+  %228 = extractelement <4 x float> %sum2.16, i32 2
+  %229 = fadd float %228, %227
+  %230 = insertelement <4 x float> %223, float %229, i32 2
+  %231 = fmul float %207, %164
+  %232 = tail call float @llvm.fmuladd.f32(float %206, float %163, float %231)
+  %233 = tail call float @llvm.fmuladd.f32(float %210, float %167, float %232)
+  %234 = tail call float @llvm.fmuladd.f32(float %212, float %169, float %233)
+  %235 = extractelement <4 x float> %sum2.16, i32 3
+  %236 = fadd float %235, %234
+  %237 = insertelement <4 x float> %230, float %236, i32 3
+  %238 = extractelement <4 x float> %102, i32 0
+  %239 = extractelement <4 x float> %102, i32 1
+  %240 = fmul float %239, %129
+  %241 = tail call float @llvm.fmuladd.f32(float %238, float %127, float %240)
+  %242 = extractelement <4 x float> %102, i32 2
+  %243 = tail call float @llvm.fmuladd.f32(float %242, float %133, float %241)
+  %244 = extractelement <4 x float> %102, i32 3
+  %245 = tail call float @llvm.fmuladd.f32(float %244, float %136, float %243)
+  %246 = extractelement <4 x float> %sum3.15, i32 0
+  %247 = fadd float %246, %245
+  %248 = insertelement <4 x float> undef, float %247, i32 0
+  %249 = fmul float %239, %142
+  %250 = tail call float @llvm.fmuladd.f32(float %238, float %141, float %249)
+  %251 = tail call float @llvm.fmuladd.f32(float %242, float %145, float %250)
+  %252 = tail call float @llvm.fmuladd.f32(float %244, float %147, float %251)
+  %253 = extractelement <4 x float> %sum3.15, i32 1
+  %254 = fadd float %253, %252
+  %255 = insertelement <4 x float> %248, float %254, i32 1
+  %256 = fmul float %239, %153
+  %257 = tail call float @llvm.fmuladd.f32(float %238, float %152, float %256)
+  %258 = tail call float @llvm.fmuladd.f32(float %242, float %156, float %257)
+  %259 = tail call float @llvm.fmuladd.f32(float %244, float %158, float %258)
+  %260 = extractelement <4 x float> %sum3.15, i32 2
+  %261 = fadd float %260, %259
+  %262 = insertelement <4 x float> %255, float %261, i32 2
+  %263 = fmul float %239, %164
+  %264 = tail call float @llvm.fmuladd.f32(float %238, float %163, float %263)
+  %265 = tail call float @llvm.fmuladd.f32(float %242, float %167, float %264)
+  %266 = tail call float @llvm.fmuladd.f32(float %244, float %169, float %265)
+  %267 = extractelement <4 x float> %sum3.15, i32 3
+  %268 = fadd float %267, %266
+  %269 = insertelement <4 x float> %262, float %268, i32 3
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 4
+  %270 = tail call i64 @get_local_size(i32 0) #3
+  %271 = shl i64 %270, 2
+  %272 = icmp ult i64 %indvars.iv.next, %271
+  br i1 %272, label %68, label %._crit_edge
+
+._crit_edge:                                      ; preds = %68, %23
+  %sum0.1.lcssa = phi <4 x float> [ %sum0.016, %23 ], [ %173, %68 ]
+  %sum1.1.lcssa = phi <4 x float> [ %sum1.015, %23 ], [ %205, %68 ]
+  %sum2.1.lcssa = phi <4 x float> [ %sum2.014, %23 ], [ %237, %68 ]
+  %sum3.1.lcssa = phi <4 x float> [ %sum3.013, %23 ], [ %269, %68 ]
+  tail call void @barrier(i32 1) #3
+  %indvars.iv.next28 = add nuw nsw i64 %indvars.iv27, 1
+  %273 = tail call i64 @get_local_size(i32 0) #3
+  %274 = udiv i64 %11, %273
+  %275 = icmp ult i64 %indvars.iv.next28, %274
+  br i1 %275, label %23, label %._crit_edge19
+
+._crit_edge19:                                    ; preds = %._crit_edge, %0
+  %sum0.0.lcssa = phi <4 x float> [ zeroinitializer, %0 ], [ %sum0.1.lcssa, %._crit_edge ]
+  %sum1.0.lcssa = phi <4 x float> [ zeroinitializer, %0 ], [ %sum1.1.lcssa, %._crit_edge ]
+  %sum2.0.lcssa = phi <4 x float> [ zeroinitializer, %0 ], [ %sum2.1.lcssa, %._crit_edge ]
+  %sum3.0.lcssa = phi <4 x float> [ zeroinitializer, %0 ], [ %sum3.1.lcssa, %._crit_edge ]
+  %sext = shl i64 %9, 32
+  %276 = ashr exact i64 %sext, 32
+  %277 = getelementptr inbounds <4 x float>* %matrixC, i64 %276
+  store <4 x float> %sum0.0.lcssa, <4 x float>* %277, align 16, !tbaa !3
+  %278 = tail call i64 @get_global_size(i32 0) #3
+  %279 = add i64 %278, %276
+  %280 = getelementptr inbounds <4 x float>* %matrixC, i64 %279
+  store <4 x float> %sum1.0.lcssa, <4 x float>* %280, align 16, !tbaa !3
+  %281 = tail call i64 @get_global_size(i32 0) #3
+  %282 = shl i64 %281, 1
+  %283 = add i64 %282, %276
+  %284 = getelementptr inbounds <4 x float>* %matrixC, i64 %283
+  store <4 x float> %sum2.0.lcssa, <4 x float>* %284, align 16, !tbaa !3
+  %285 = tail call i64 @get_global_size(i32 0) #3
+  %286 = mul i64 %285, 3
+  %287 = add i64 %286, %276
+  %288 = getelementptr inbounds <4 x float>* %matrixC, i64 %287
+  store <4 x float> %sum3.0.lcssa, <4 x float>* %288, align 16, !tbaa !3
+  ret void
+}
+
+declare i64 @get_local_id(i32) #1
+
+declare i64 @get_local_size(i32) #1
+
+declare i64 @get_global_size(i32) #1
+
+declare void @barrier(i32) #1
+
+attributes #0 = { nounwind uwtable "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { nounwind readnone }
+attributes #3 = { nounwind }
+
+!opencl.kernels = !{!0, !1}
+!llvm.ident = !{!2}
+
+!0 = metadata !{void (<4 x float>*, <4 x float>*, <4 x float>*, i32, i32)* @mmmKernel}
+!1 = metadata !{void (<4 x float>*, <4 x float>*, <4 x float>*, i32, <4 x float>*)* @mmmKernel_local}
+!2 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
+!3 = metadata !{metadata !4, metadata !4, i64 0}
+!4 = metadata !{metadata !"omnipotent char", metadata !5, i64 0}
+!5 = metadata !{metadata !"Simple C/C++ TBAA"}
