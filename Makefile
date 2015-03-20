@@ -1,13 +1,18 @@
 
-.PHONY: m2c clang
+.PHONY: amd clang m2c
 
-all: m2c clang
+all: amd clang m2c
 
-m2c:
-	python m2c_gen.py
+amd:
+	cd amd-fe && $(MAKE)	
 
 clang:
-	python clang_gen.py
+	cd clang-fe && $(MAKE)	
+
+m2c:
+	cd m2c-fe && $(MAKE)	
 
 clean:
-	rm -rf *.clp *.llvm *.ll
+	cd amd-fe && $(MAKE) clean	
+	cd clang-fe && $(MAKE) clean	
+	cd m2c-fe && $(MAKE) clean	
