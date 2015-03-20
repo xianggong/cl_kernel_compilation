@@ -1,86 +1,84 @@
 ; ModuleID = '../kernel-src/AsyncDataTransfer_Kernels.cl'
-target datalayout = "e-p:64:64:64-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v64:64:64-v128:128:128-a0:0:64-s0:64:64-f80:128:128-n8:16:32:64-S128"
-target triple = "x86_64-pc-linux-gnu"
+target datalayout = "e-p:32:32-i64:64-v16:16-v24:32-v32:32-v48:64-v96:128-v192:256-v256:256-v512:512-v1024:1024-v2048:2048-n32:64"
+target triple = "amdgcn"
 
-; Function Attrs: nounwind uwtable
-define void @work(i8* nocapture readonly %input, i8* nocapture %output, i32 %multiplier) #0 {
+; Function Attrs: nounwind
+define void @work(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %multiplier) #0 {
   %zero = alloca i32, align 4
-  %1 = tail call i64 @get_global_size(i32 0) #2
-  %2 = trunc i64 %1 to i32
-  %3 = tail call i64 @get_global_id(i32 0) #2
+  %1 = tail call i32 @get_global_size(i32 0) #2
+  %2 = tail call i32 @get_global_id(i32 0) #2
   store volatile i32 0, i32* %zero, align 4
-  br label %4
+  br label %3
 
-; <label>:4                                       ; preds = %4, %0
-  %i.02 = phi i32 [ 5, %0 ], [ %39, %4 ]
-  %tmp.01 = phi i32 [ 1, %0 ], [ %38, %4 ]
-  %5 = srem i32 %i.02, %2
-  %6 = sext i32 %5 to i64
-  %7 = getelementptr inbounds i8* %input, i64 %6
-  %8 = load i8* %7, align 1, !tbaa !2
-  %9 = zext i8 %8 to i32
-  %10 = shl nsw i32 %i.02, 1
-  %11 = srem i32 %10, %2
-  %12 = sext i32 %11 to i64
-  %13 = getelementptr inbounds i8* %input, i64 %12
-  %14 = load i8* %13, align 1, !tbaa !2
-  %15 = zext i8 %14 to i32
-  %16 = mul nsw i32 %i.02, 3
-  %17 = srem i32 %16, %2
-  %18 = sext i32 %17 to i64
-  %19 = getelementptr inbounds i8* %input, i64 %18
-  %20 = load i8* %19, align 1, !tbaa !2
-  %21 = zext i8 %20 to i32
-  %22 = shl nsw i32 %i.02, 2
-  %23 = srem i32 %22, %2
-  %24 = sext i32 %23 to i64
-  %25 = getelementptr inbounds i8* %input, i64 %24
-  %26 = load i8* %25, align 1, !tbaa !2
+; <label>:3                                       ; preds = %3, %0
+  %i.02 = phi i32 [ 5, %0 ], [ %33, %3 ]
+  %tmp.01 = phi i32 [ 1, %0 ], [ %32, %3 ]
+  %4 = srem i32 %i.02, %1
+  %5 = getelementptr inbounds i8 addrspace(1)* %input, i32 %4
+  %6 = load i8 addrspace(1)* %5, align 1, !tbaa !7
+  %7 = zext i8 %6 to i32
+  %8 = shl nsw i32 %i.02, 1
+  %9 = srem i32 %8, %1
+  %10 = getelementptr inbounds i8 addrspace(1)* %input, i32 %9
+  %11 = load i8 addrspace(1)* %10, align 1, !tbaa !7
+  %12 = zext i8 %11 to i32
+  %13 = mul nsw i32 %i.02, 3
+  %14 = srem i32 %13, %1
+  %15 = getelementptr inbounds i8 addrspace(1)* %input, i32 %14
+  %16 = load i8 addrspace(1)* %15, align 1, !tbaa !7
+  %17 = zext i8 %16 to i32
+  %18 = shl nsw i32 %i.02, 2
+  %19 = srem i32 %18, %1
+  %20 = getelementptr inbounds i8 addrspace(1)* %input, i32 %19
+  %21 = load i8 addrspace(1)* %20, align 1, !tbaa !7
+  %22 = zext i8 %21 to i32
+  %23 = mul nsw i32 %i.02, 5
+  %24 = srem i32 %23, %1
+  %25 = getelementptr inbounds i8 addrspace(1)* %input, i32 %24
+  %26 = load i8 addrspace(1)* %25, align 1, !tbaa !7
   %27 = zext i8 %26 to i32
-  %28 = mul nsw i32 %i.02, 5
-  %29 = srem i32 %28, %2
-  %30 = sext i32 %29 to i64
-  %31 = getelementptr inbounds i8* %input, i64 %30
-  %32 = load i8* %31, align 1, !tbaa !2
-  %33 = zext i8 %32 to i32
-  %34 = add i32 %9, %tmp.01
-  %35 = add i32 %34, %15
-  %36 = add i32 %35, %21
-  %37 = add i32 %36, %27
-  %38 = add i32 %37, %33
-  %39 = add nsw i32 %i.02, 1
-  %exitcond = icmp eq i32 %39, 100
-  br i1 %exitcond, label %40, label %4
+  %28 = add i32 %7, %tmp.01
+  %29 = add i32 %28, %12
+  %30 = add i32 %29, %17
+  %31 = add i32 %30, %22
+  %32 = add i32 %31, %27
+  %33 = add nuw nsw i32 %i.02, 1
+  %exitcond = icmp eq i32 %33, 100
+  br i1 %exitcond, label %34, label %3
 
-; <label>:40                                      ; preds = %4
-  %sext = shl i64 %3, 32
-  %41 = ashr exact i64 %sext, 32
-  %42 = getelementptr inbounds i8* %input, i64 %41
-  %43 = load i8* %42, align 1, !tbaa !2
-  %44 = zext i8 %43 to i32
-  %45 = mul nsw i32 %44, %multiplier
-  %46 = load volatile i32* %zero, align 4
-  %47 = mul i32 %46, %38
-  %48 = add i32 %45, %47
-  %49 = trunc i32 %48 to i8
-  %50 = getelementptr inbounds i8* %output, i64 %41
-  store i8 %49, i8* %50, align 1, !tbaa !2
+; <label>:34                                      ; preds = %3
+  %.lcssa = phi i32 [ %32, %3 ]
+  %35 = getelementptr inbounds i8 addrspace(1)* %input, i32 %2
+  %36 = load i8 addrspace(1)* %35, align 1, !tbaa !7
+  %37 = zext i8 %36 to i32
+  %38 = mul nsw i32 %37, %multiplier
+  %39 = load volatile i32* %zero, align 4
+  %40 = mul i32 %39, %.lcssa
+  %41 = add i32 %38, %40
+  %42 = trunc i32 %41 to i8
+  %43 = getelementptr inbounds i8 addrspace(1)* %output, i32 %2
+  store i8 %42, i8 addrspace(1)* %43, align 1, !tbaa !7
   ret void
 }
 
-declare i64 @get_global_size(i32) #1
+declare i32 @get_global_size(i32) #1
 
-declare i64 @get_global_id(i32) #1
+declare i32 @get_global_id(i32) #1
 
-attributes #0 = { nounwind uwtable "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #2 = { nounwind }
 
 !opencl.kernels = !{!0}
-!llvm.ident = !{!1}
+!llvm.ident = !{!6}
 
-!0 = metadata !{void (i8*, i8*, i32)* @work}
-!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
-!2 = metadata !{metadata !3, metadata !3, i64 0}
-!3 = metadata !{metadata !"omnipotent char", metadata !4, i64 0}
-!4 = metadata !{metadata !"Simple C/C++ TBAA"}
+!0 = !{void (i8 addrspace(1)*, i8 addrspace(1)*, i32)* @work, !1, !2, !3, !4, !5}
+!1 = !{!"kernel_arg_addr_space", i32 1, i32 1, i32 0}
+!2 = !{!"kernel_arg_access_qual", !"none", !"none", !"none"}
+!3 = !{!"kernel_arg_type", !"uchar*", !"uchar*", !"int"}
+!4 = !{!"kernel_arg_base_type", !"uchar*", !"uchar*", !"int"}
+!5 = !{!"kernel_arg_type_qual", !"", !"", !""}
+!6 = !{!"Ubuntu clang version 3.6.1-svn232753-1~exp1 (branches/release_36) (based on LLVM 3.6.1)"}
+!7 = !{!8, !8, i64 0}
+!8 = !{!"omnipotent char", !9, i64 0}
+!9 = !{!"Simple C/C++ TBAA"}

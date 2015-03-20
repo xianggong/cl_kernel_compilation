@@ -1,123 +1,114 @@
 ; ModuleID = '../kernel-src/GaussianNoiseGL_Kernels.cl'
-target datalayout = "e-p:64:64:64-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v64:64:64-v128:128:128-a0:0:64-s0:64:64-f80:128:128-n8:16:32:64-S128"
-target triple = "x86_64-pc-linux-gnu"
+target datalayout = "e-p:32:32-i64:64-v16:16-v24:32-v32:32-v48:64-v96:128-v192:256-v256:256-v512:512-v1024:1024-v2048:2048-n32:64"
+target triple = "amdgcn"
 
 %opencl.image2d_t = type opaque
 
-@gaussian_transform.iv0 = internal global [256 x i32] zeroinitializer, align 16
-@gaussian_transform.iv1 = internal global [256 x i32] zeroinitializer, align 16
+@gaussian_transform.iv0 = internal addrspace(3) global [256 x i32] undef, align 4
+@gaussian_transform.iv1 = internal addrspace(3) global [256 x i32] undef, align 4
 
-; Function Attrs: nounwind uwtable
-define void @gaussian_transform(<4 x i8>* nocapture readonly %inputImage, %opencl.image2d_t* %outputImage, i32 %factor) #0 {
-  %1 = tail call i64 @get_global_id(i32 0) #2
-  %2 = tail call i64 @get_global_size(i32 0) #2
-  %3 = shl i64 %2, 1
-  %4 = tail call i64 @get_global_id(i32 1) #2
-  %5 = mul i64 %3, %4
-  %6 = add i64 %5, %1
-  %7 = tail call i64 @get_global_id(i32 0) #2
-  %8 = tail call i64 @get_global_size(i32 0) #2
-  %9 = add i64 %8, %7
-  %10 = tail call i64 @get_global_size(i32 0) #2
-  %11 = shl i64 %10, 1
-  %12 = tail call i64 @get_global_id(i32 1) #2
-  %13 = mul i64 %11, %12
-  %14 = add i64 %9, %13
-  %sext = shl i64 %6, 32
-  %15 = ashr exact i64 %sext, 32
-  %16 = getelementptr inbounds <4 x i8>* %inputImage, i64 %15
-  %17 = load <4 x i8>* %16, align 4, !tbaa !2
-  %18 = bitcast <4 x i8> %17 to i32
-  %19 = tail call <4 x float> @_Z14convert_float4Dv4_h(i32 %18) #2
-  %sext5 = shl i64 %14, 32
-  %20 = ashr exact i64 %sext5, 32
-  %21 = getelementptr inbounds <4 x i8>* %inputImage, i64 %20
-  %22 = load <4 x i8>* %21, align 4, !tbaa !2
-  %23 = bitcast <4 x i8> %22 to i32
-  %24 = tail call <4 x float> @_Z14convert_float4Dv4_h(i32 %23) #2
-  %25 = extractelement <4 x float> %19, i32 0
-  %26 = extractelement <4 x float> %19, i32 1
-  %27 = fadd float %25, %26
-  %28 = extractelement <4 x float> %19, i32 2
-  %29 = fadd float %28, %27
-  %30 = extractelement <4 x float> %19, i32 3
-  %31 = fadd float %30, %29
-  %32 = fmul float %31, 2.500000e-01
-  %33 = extractelement <4 x float> %24, i32 0
-  %34 = extractelement <4 x float> %24, i32 1
-  %35 = fadd float %33, %34
-  %36 = extractelement <4 x float> %24, i32 2
-  %37 = fadd float %36, %35
-  %38 = extractelement <4 x float> %24, i32 3
-  %39 = fadd float %38, %37
-  %40 = fmul float %39, 2.500000e-01
-  %41 = fsub float -0.000000e+00, %32
-  %42 = fptosi float %41 to i32
-  %43 = tail call float @ran1(i32 %42, i32* getelementptr inbounds ([256 x i32]* @gaussian_transform.iv0, i64 0, i64 0)) #2
-  %44 = fsub float -0.000000e+00, %40
-  %45 = fptosi float %44 to i32
-  %46 = tail call float @ran1(i32 %45, i32* getelementptr inbounds ([256 x i32]* @gaussian_transform.iv1, i64 0, i64 0)) #2
-  %47 = insertelement <2 x float> undef, float %43, i32 0
-  %48 = insertelement <2 x float> %47, float %46, i32 1
-  %49 = bitcast <2 x float> %48 to double
-  %50 = tail call double @BoxMuller(double %49) #2
-  %51 = bitcast double %50 to <2 x float>
-  %52 = extractelement <2 x float> %51, i32 0
-  %53 = sitofp i32 %factor to float
-  %54 = fmul float %53, %52
+; Function Attrs: nounwind
+define void @gaussian_transform(<4 x i8> addrspace(1)* nocapture readonly %inputImage, %opencl.image2d_t addrspace(1)* %outputImage, i32 %factor) #0 {
+  %1 = tail call i32 @get_global_id(i32 0) #2
+  %2 = tail call i32 @get_global_size(i32 0) #2
+  %3 = shl i32 %2, 1
+  %4 = tail call i32 @get_global_id(i32 1) #2
+  %5 = mul i32 %3, %4
+  %6 = add i32 %5, %1
+  %7 = tail call i32 @get_global_id(i32 0) #2
+  %8 = tail call i32 @get_global_size(i32 0) #2
+  %9 = add i32 %8, %7
+  %10 = tail call i32 @get_global_size(i32 0) #2
+  %11 = shl i32 %10, 1
+  %12 = tail call i32 @get_global_id(i32 1) #2
+  %13 = mul i32 %11, %12
+  %14 = add i32 %9, %13
+  %15 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %6
+  %16 = load <4 x i8> addrspace(1)* %15, align 4, !tbaa !7
+  %17 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %16) #2
+  %18 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %14
+  %19 = load <4 x i8> addrspace(1)* %18, align 4, !tbaa !7
+  %20 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %19) #2
+  %21 = extractelement <4 x float> %17, i32 0
+  %22 = extractelement <4 x float> %17, i32 1
+  %23 = fadd float %21, %22
+  %24 = extractelement <4 x float> %17, i32 2
+  %25 = fadd float %24, %23
+  %26 = extractelement <4 x float> %17, i32 3
+  %27 = fadd float %26, %25
+  %28 = fmul float %27, 2.500000e-01
+  %29 = extractelement <4 x float> %20, i32 0
+  %30 = extractelement <4 x float> %20, i32 1
+  %31 = fadd float %29, %30
+  %32 = extractelement <4 x float> %20, i32 2
+  %33 = fadd float %32, %31
+  %34 = extractelement <4 x float> %20, i32 3
+  %35 = fadd float %34, %33
+  %36 = fmul float %35, 2.500000e-01
+  %37 = fsub float -0.000000e+00, %28
+  %38 = fptosi float %37 to i32
+  %39 = tail call float @ran1(i32 %38, i32 addrspace(3)* getelementptr inbounds ([256 x i32] addrspace(3)* @gaussian_transform.iv0, i32 0, i32 0)) #2
+  %40 = fsub float -0.000000e+00, %36
+  %41 = fptosi float %40 to i32
+  %42 = tail call float @ran1(i32 %41, i32 addrspace(3)* getelementptr inbounds ([256 x i32] addrspace(3)* @gaussian_transform.iv1, i32 0, i32 0)) #2
+  %43 = insertelement <2 x float> undef, float %39, i32 0
+  %44 = insertelement <2 x float> %43, float %42, i32 1
+  %45 = tail call <2 x float> @BoxMuller(<2 x float> %44) #2
+  %46 = extractelement <2 x float> %45, i32 0
+  %47 = sitofp i32 %factor to float
+  %48 = fmul float %47, %46
+  %49 = insertelement <4 x float> undef, float %48, i32 0
+  %50 = shufflevector <4 x float> %49, <4 x float> undef, <4 x i32> zeroinitializer
+  %51 = fadd <4 x float> %17, %50
+  %52 = fdiv <4 x float> %51, <float 2.550000e+02, float 2.550000e+02, float 2.550000e+02, float 2.550000e+02>, !fpmath !10
+  %53 = extractelement <2 x float> %45, i32 1
+  %54 = fmul float %47, %53
   %55 = insertelement <4 x float> undef, float %54, i32 0
   %56 = shufflevector <4 x float> %55, <4 x float> undef, <4 x i32> zeroinitializer
-  %57 = fadd <4 x float> %19, %56
-  %58 = fdiv <4 x float> %57, <float 2.550000e+02, float 2.550000e+02, float 2.550000e+02, float 2.550000e+02>, !fpmath !5
-  %59 = extractelement <2 x float> %51, i32 1
-  %60 = fmul float %53, %59
-  %61 = insertelement <4 x float> undef, float %60, i32 0
-  %62 = shufflevector <4 x float> %61, <4 x float> undef, <4 x i32> zeroinitializer
-  %63 = fadd <4 x float> %24, %62
-  %64 = fdiv <4 x float> %63, <float 2.550000e+02, float 2.550000e+02, float 2.550000e+02, float 2.550000e+02>, !fpmath !5
-  %65 = tail call i64 @get_global_id(i32 0) #2
-  %66 = trunc i64 %65 to i32
-  %67 = insertelement <2 x i32> undef, i32 %66, i32 0
-  %68 = tail call i64 @get_global_id(i32 1) #2
-  %69 = trunc i64 %68 to i32
-  %70 = insertelement <2 x i32> %67, i32 %69, i32 1
-  %71 = tail call i64 @get_global_id(i32 0) #2
-  %72 = tail call i64 @get_global_size(i32 0) #2
-  %73 = add i64 %72, %71
-  %74 = trunc i64 %73 to i32
-  %75 = insertelement <2 x i32> undef, i32 %74, i32 0
-  %76 = tail call i64 @get_global_id(i32 1) #2
-  %77 = trunc i64 %76 to i32
-  %78 = insertelement <2 x i32> %75, i32 %77, i32 1
-  %79 = bitcast <2 x i32> %70 to double
-  %80 = tail call i32 (%opencl.image2d_t*, double, <4 x float>, ...)* bitcast (i32 (...)* @write_imagef to i32 (%opencl.image2d_t*, double, <4 x float>, ...)*)(%opencl.image2d_t* %outputImage, double %79, <4 x float> %58) #2
-  %81 = bitcast <2 x i32> %78 to double
-  %82 = tail call i32 (%opencl.image2d_t*, double, <4 x float>, ...)* bitcast (i32 (...)* @write_imagef to i32 (%opencl.image2d_t*, double, <4 x float>, ...)*)(%opencl.image2d_t* %outputImage, double %81, <4 x float> %64) #2
+  %57 = fadd <4 x float> %20, %56
+  %58 = fdiv <4 x float> %57, <float 2.550000e+02, float 2.550000e+02, float 2.550000e+02, float 2.550000e+02>, !fpmath !10
+  %59 = tail call i32 @get_global_id(i32 0) #2
+  %60 = insertelement <2 x i32> undef, i32 %59, i32 0
+  %61 = tail call i32 @get_global_id(i32 1) #2
+  %62 = insertelement <2 x i32> %60, i32 %61, i32 1
+  %63 = tail call i32 @get_global_id(i32 0) #2
+  %64 = tail call i32 @get_global_size(i32 0) #2
+  %65 = add i32 %64, %63
+  %66 = insertelement <2 x i32> undef, i32 %65, i32 0
+  %67 = tail call i32 @get_global_id(i32 1) #2
+  %68 = insertelement <2 x i32> %66, i32 %67, i32 1
+  %69 = tail call i32 bitcast (i32 (...)* @write_imagef to i32 (%opencl.image2d_t addrspace(1)*, <2 x i32>, <4 x float>)*)(%opencl.image2d_t addrspace(1)* %outputImage, <2 x i32> %62, <4 x float> %52) #2
+  %70 = tail call i32 bitcast (i32 (...)* @write_imagef to i32 (%opencl.image2d_t addrspace(1)*, <2 x i32>, <4 x float>)*)(%opencl.image2d_t addrspace(1)* %outputImage, <2 x i32> %68, <4 x float> %58) #2
   ret void
 }
 
-declare i64 @get_global_id(i32) #1
+declare i32 @get_global_id(i32) #1
 
-declare i64 @get_global_size(i32) #1
+declare i32 @get_global_size(i32) #1
 
-declare <4 x float> @_Z14convert_float4Dv4_h(i32) #1
+declare <4 x float> @_Z14convert_float4Dv4_h(<4 x i8>) #1
 
-declare float @ran1(i32, i32*) #1
+declare float @ran1(i32, i32 addrspace(3)*) #1
 
-declare double @BoxMuller(double) #1
+declare <2 x float> @BoxMuller(<2 x float>) #1
 
 declare i32 @write_imagef(...) #1
 
-attributes #0 = { nounwind uwtable "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #2 = { nounwind }
 
 !opencl.kernels = !{!0}
-!llvm.ident = !{!1}
+!llvm.ident = !{!6}
 
-!0 = metadata !{void (<4 x i8>*, %opencl.image2d_t*, i32)* @gaussian_transform}
-!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
-!2 = metadata !{metadata !3, metadata !3, i64 0}
-!3 = metadata !{metadata !"omnipotent char", metadata !4, i64 0}
-!4 = metadata !{metadata !"Simple C/C++ TBAA"}
-!5 = metadata !{float 2.500000e+00}
+!0 = !{void (<4 x i8> addrspace(1)*, %opencl.image2d_t addrspace(1)*, i32)* @gaussian_transform, !1, !2, !3, !4, !5}
+!1 = !{!"kernel_arg_addr_space", i32 1, i32 1, i32 0}
+!2 = !{!"kernel_arg_access_qual", !"none", !"write_only", !"none"}
+!3 = !{!"kernel_arg_type", !"uchar4*", !"image2d_t", !"int"}
+!4 = !{!"kernel_arg_base_type", !"uchar __attribute__((ext_vector_type(4)))*", !"image2d_t", !"int"}
+!5 = !{!"kernel_arg_type_qual", !"", !"", !""}
+!6 = !{!"Ubuntu clang version 3.6.1-svn232753-1~exp1 (branches/release_36) (based on LLVM 3.6.1)"}
+!7 = !{!8, !8, i64 0}
+!8 = !{!"omnipotent char", !9, i64 0}
+!9 = !{!"Simple C/C++ TBAA"}
+!10 = !{float 2.500000e+00}

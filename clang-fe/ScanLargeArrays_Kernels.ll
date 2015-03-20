@@ -1,256 +1,245 @@
 ; ModuleID = '../kernel-src/ScanLargeArrays_Kernels.cl'
-target datalayout = "e-p:64:64:64-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v64:64:64-v128:128:128-a0:0:64-s0:64:64-f80:128:128-n8:16:32:64-S128"
-target triple = "x86_64-pc-linux-gnu"
+target datalayout = "e-p:32:32-i64:64-v16:16-v24:32-v32:32-v48:64-v96:128-v192:256-v256:256-v512:512-v1024:1024-v2048:2048-n32:64"
+target triple = "amdgcn"
 
-@blockAddition.value.0 = internal unnamed_addr global float 0.000000e+00
+@blockAddition.value.0 = internal unnamed_addr addrspace(3) global float undef
 
-; Function Attrs: nounwind uwtable
-define void @blockAddition(float* nocapture readonly %input, float* nocapture %output) #0 {
-  %1 = tail call i64 @get_global_id(i32 0) #2
-  %2 = tail call i64 @get_group_id(i32 0) #2
-  %3 = tail call i64 @get_local_id(i32 0) #2
-  %4 = trunc i64 %3 to i32
-  %5 = icmp eq i32 %4, 0
-  br i1 %5, label %6, label %10
+; Function Attrs: nounwind
+define void @blockAddition(float addrspace(1)* nocapture readonly %input, float addrspace(1)* nocapture %output) #0 {
+  %1 = tail call i32 @get_global_id(i32 0) #2
+  %2 = tail call i32 @get_group_id(i32 0) #2
+  %3 = tail call i32 @get_local_id(i32 0) #2
+  %4 = icmp eq i32 %3, 0
+  br i1 %4, label %5, label %8
 
-; <label>:6                                       ; preds = %0
-  %sext1 = shl i64 %2, 32
-  %7 = ashr exact i64 %sext1, 32
-  %8 = getelementptr inbounds float* %input, i64 %7
-  %9 = load float* %8, align 4, !tbaa !4
-  store float %9, float* @blockAddition.value.0, align 4, !tbaa !4
-  br label %10
+; <label>:5                                       ; preds = %0
+  %6 = getelementptr inbounds float addrspace(1)* %input, i32 %2
+  %7 = load float addrspace(1)* %6, align 4, !tbaa !19
+  store float %7, float addrspace(3)* @blockAddition.value.0, align 4, !tbaa !19
+  br label %8
 
-; <label>:10                                      ; preds = %6, %0
+; <label>:8                                       ; preds = %5, %0
   tail call void @barrier(i32 1) #2
-  %11 = load float* @blockAddition.value.0, align 4, !tbaa !4
-  %sext = shl i64 %1, 32
-  %12 = ashr exact i64 %sext, 32
-  %13 = getelementptr inbounds float* %output, i64 %12
-  %14 = load float* %13, align 4, !tbaa !4
-  %15 = fadd float %11, %14
-  store float %15, float* %13, align 4, !tbaa !4
+  %9 = load float addrspace(3)* @blockAddition.value.0, align 4, !tbaa !19
+  %10 = getelementptr inbounds float addrspace(1)* %output, i32 %1
+  %11 = load float addrspace(1)* %10, align 4, !tbaa !19
+  %12 = fadd float %9, %11
+  store float %12, float addrspace(1)* %10, align 4, !tbaa !19
   ret void
 }
 
-declare i64 @get_global_id(i32) #1
+declare i32 @get_global_id(i32) #1
 
-declare i64 @get_group_id(i32) #1
+declare i32 @get_group_id(i32) #1
 
-declare i64 @get_local_id(i32) #1
+declare i32 @get_local_id(i32) #1
 
 declare void @barrier(i32) #1
 
-; Function Attrs: nounwind uwtable
-define void @ScanLargeArrays(float* nocapture %output, float* nocapture readonly %input, float* nocapture %block, i32 %block_size, float* nocapture %sumBuffer) #0 {
-  %1 = tail call i64 @get_local_id(i32 0) #2
-  %2 = trunc i64 %1 to i32
-  %3 = tail call i64 @get_global_id(i32 0) #2
-  %4 = trunc i64 %3 to i32
-  %5 = tail call i64 @get_group_id(i32 0) #2
-  %6 = shl nsw i32 %4, 1
-  %7 = sext i32 %6 to i64
-  %8 = getelementptr inbounds float* %input, i64 %7
-  %9 = load float* %8, align 4, !tbaa !4
-  %10 = shl nsw i32 %2, 1
-  %11 = sext i32 %10 to i64
-  %12 = getelementptr inbounds float* %block, i64 %11
-  store float %9, float* %12, align 4, !tbaa !4
-  %13 = or i32 %6, 1
-  %14 = sext i32 %13 to i64
-  %15 = getelementptr inbounds float* %input, i64 %14
-  %16 = load float* %15, align 4, !tbaa !4
-  %17 = or i32 %10, 1
-  %18 = sext i32 %17 to i64
-  %19 = getelementptr inbounds float* %block, i64 %18
-  store float %16, float* %19, align 4, !tbaa !4
+; Function Attrs: nounwind
+define void @ScanLargeArrays(float addrspace(1)* nocapture %output, float addrspace(1)* nocapture readonly %input, float addrspace(3)* nocapture %block, i32 %block_size, float addrspace(1)* nocapture %sumBuffer) #0 {
+  %1 = tail call i32 @get_local_id(i32 0) #2
+  %2 = tail call i32 @get_global_id(i32 0) #2
+  %3 = tail call i32 @get_group_id(i32 0) #2
+  %4 = shl nsw i32 %2, 1
+  %5 = getelementptr inbounds float addrspace(1)* %input, i32 %4
+  %6 = load float addrspace(1)* %5, align 4, !tbaa !19
+  %7 = shl nsw i32 %1, 1
+  %8 = getelementptr inbounds float addrspace(3)* %block, i32 %7
+  store float %6, float addrspace(3)* %8, align 4, !tbaa !19
+  %9 = or i32 %4, 1
+  %10 = getelementptr inbounds float addrspace(1)* %input, i32 %9
+  %11 = load float addrspace(1)* %10, align 4, !tbaa !19
+  %12 = or i32 %7, 1
+  %13 = getelementptr inbounds float addrspace(3)* %block, i32 %12
+  store float %11, float addrspace(3)* %13, align 4, !tbaa !19
   tail call void @barrier(i32 1) #2
-  %20 = load float* %block, align 4, !tbaa !4
-  %21 = icmp ugt i32 %block_size, 1
-  br i1 %21, label %.lr.ph, label %._crit_edge
+  %14 = load float addrspace(3)* %block, align 4, !tbaa !19
+  %15 = icmp ugt i32 %block_size, 1
+  br i1 %15, label %.lr.ph, label %._crit_edge
 
 .lr.ph:                                           ; preds = %0
-  %22 = getelementptr inbounds float* %block, i64 1
-  %23 = load float* %22, align 4, !tbaa !4
-  %24 = fadd float %20, %23
-  br label %25
+  %16 = getelementptr inbounds float addrspace(3)* %block, i32 1
+  %17 = load float addrspace(3)* %16, align 4, !tbaa !19
+  %18 = fadd float %14, %17
+  br label %19
 
-; <label>:25                                      ; preds = %.lr.ph, %40
-  %stride.03 = phi i32 [ 1, %.lr.ph ], [ %41, %40 ]
-  %cache1.02 = phi float [ %24, %.lr.ph ], [ %cache1.1, %40 ]
-  %cache0.01 = phi float [ %20, %.lr.ph ], [ %cache0.1, %40 ]
-  %26 = icmp slt i32 %10, %stride.03
-  br i1 %26, label %40, label %27
+; <label>:19                                      ; preds = %.lr.ph, %32
+  %stride.03 = phi i32 [ 1, %.lr.ph ], [ %33, %32 ]
+  %cache1.02 = phi float [ %18, %.lr.ph ], [ %cache1.1, %32 ]
+  %cache0.01 = phi float [ %14, %.lr.ph ], [ %cache0.1, %32 ]
+  %20 = icmp slt i32 %7, %stride.03
+  br i1 %20, label %32, label %21
 
-; <label>:27                                      ; preds = %25
-  %28 = sub nsw i32 %10, %stride.03
-  %29 = sext i32 %28 to i64
-  %30 = getelementptr inbounds float* %block, i64 %29
-  %31 = load float* %30, align 4, !tbaa !4
-  %32 = load float* %12, align 4, !tbaa !4
-  %33 = fadd float %31, %32
-  %34 = sub nsw i32 %17, %stride.03
-  %35 = sext i32 %34 to i64
-  %36 = getelementptr inbounds float* %block, i64 %35
-  %37 = load float* %36, align 4, !tbaa !4
-  %38 = load float* %19, align 4, !tbaa !4
-  %39 = fadd float %37, %38
-  br label %40
+; <label>:21                                      ; preds = %19
+  %22 = sub nsw i32 %7, %stride.03
+  %23 = getelementptr inbounds float addrspace(3)* %block, i32 %22
+  %24 = load float addrspace(3)* %23, align 4, !tbaa !19
+  %25 = load float addrspace(3)* %8, align 4, !tbaa !19
+  %26 = fadd float %24, %25
+  %27 = sub nsw i32 %12, %stride.03
+  %28 = getelementptr inbounds float addrspace(3)* %block, i32 %27
+  %29 = load float addrspace(3)* %28, align 4, !tbaa !19
+  %30 = load float addrspace(3)* %13, align 4, !tbaa !19
+  %31 = fadd float %29, %30
+  br label %32
 
-; <label>:40                                      ; preds = %25, %27
-  %cache0.1 = phi float [ %33, %27 ], [ %cache0.01, %25 ]
-  %cache1.1 = phi float [ %39, %27 ], [ %cache1.02, %25 ]
+; <label>:32                                      ; preds = %19, %21
+  %cache0.1 = phi float [ %26, %21 ], [ %cache0.01, %19 ]
+  %cache1.1 = phi float [ %31, %21 ], [ %cache1.02, %19 ]
   tail call void @barrier(i32 1) #2
-  store float %cache0.1, float* %12, align 4, !tbaa !4
-  store float %cache1.1, float* %19, align 4, !tbaa !4
+  store float %cache0.1, float addrspace(3)* %8, align 4, !tbaa !19
+  store float %cache1.1, float addrspace(3)* %13, align 4, !tbaa !19
   tail call void @barrier(i32 1) #2
-  %41 = shl nsw i32 %stride.03, 1
-  %42 = icmp ult i32 %41, %block_size
-  br i1 %42, label %25, label %._crit_edge
+  %33 = shl nsw i32 %stride.03, 1
+  %34 = icmp ult i32 %33, %block_size
+  br i1 %34, label %19, label %._crit_edge.loopexit
 
-._crit_edge:                                      ; preds = %40, %0
-  %43 = add i32 %block_size, -1
-  %44 = zext i32 %43 to i64
-  %45 = getelementptr inbounds float* %block, i64 %44
-  %46 = load float* %45, align 4, !tbaa !4
-  %sext = shl i64 %5, 32
-  %47 = ashr exact i64 %sext, 32
-  %48 = getelementptr inbounds float* %sumBuffer, i64 %47
-  store float %46, float* %48, align 4, !tbaa !4
-  %49 = icmp eq i32 %2, 0
-  br i1 %49, label %50, label %54
+._crit_edge.loopexit:                             ; preds = %32
+  br label %._crit_edge
 
-; <label>:50                                      ; preds = %._crit_edge
-  %51 = getelementptr inbounds float* %output, i64 %7
-  store float 0.000000e+00, float* %51, align 4, !tbaa !4
-  %52 = load float* %12, align 4, !tbaa !4
-  %53 = getelementptr inbounds float* %output, i64 %14
-  store float %52, float* %53, align 4, !tbaa !4
-  br label %62
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %35 = add i32 %block_size, -1
+  %36 = getelementptr inbounds float addrspace(3)* %block, i32 %35
+  %37 = load float addrspace(3)* %36, align 4, !tbaa !19
+  %38 = getelementptr inbounds float addrspace(1)* %sumBuffer, i32 %3
+  store float %37, float addrspace(1)* %38, align 4, !tbaa !19
+  %39 = icmp eq i32 %1, 0
+  br i1 %39, label %40, label %42
 
-; <label>:54                                      ; preds = %._crit_edge
-  %55 = add nsw i32 %10, -1
-  %56 = sext i32 %55 to i64
-  %57 = getelementptr inbounds float* %block, i64 %56
-  %58 = load float* %57, align 4, !tbaa !4
-  %59 = getelementptr inbounds float* %output, i64 %7
-  store float %58, float* %59, align 4, !tbaa !4
-  %60 = load float* %12, align 4, !tbaa !4
-  %61 = getelementptr inbounds float* %output, i64 %14
-  store float %60, float* %61, align 4, !tbaa !4
-  br label %62
+; <label>:40                                      ; preds = %._crit_edge
+  %41 = getelementptr inbounds float addrspace(1)* %output, i32 %4
+  store float 0.000000e+00, float addrspace(1)* %41, align 4, !tbaa !19
+  br label %47
 
-; <label>:62                                      ; preds = %54, %50
+; <label>:42                                      ; preds = %._crit_edge
+  %43 = add nsw i32 %7, -1
+  %44 = getelementptr inbounds float addrspace(3)* %block, i32 %43
+  %45 = load float addrspace(3)* %44, align 4, !tbaa !19
+  %46 = getelementptr inbounds float addrspace(1)* %output, i32 %4
+  store float %45, float addrspace(1)* %46, align 4, !tbaa !19
+  br label %47
+
+; <label>:47                                      ; preds = %42, %40
+  %.sink = load float addrspace(3)* %8, align 4
+  %48 = getelementptr inbounds float addrspace(1)* %output, i32 %9
+  store float %.sink, float addrspace(1)* %48, align 4
   ret void
 }
 
-; Function Attrs: nounwind uwtable
-define void @prefixSum(float* nocapture %output, float* nocapture readonly %input, float* nocapture %block, i32 %block_size) #0 {
-  %1 = tail call i64 @get_local_id(i32 0) #2
-  %2 = trunc i64 %1 to i32
-  %3 = tail call i64 @get_global_id(i32 0) #2
-  %4 = trunc i64 %3 to i32
-  %5 = tail call i64 @get_group_id(i32 0) #2
-  %6 = shl nsw i32 %4, 1
-  %7 = sext i32 %6 to i64
-  %8 = getelementptr inbounds float* %input, i64 %7
-  %9 = load float* %8, align 4, !tbaa !4
-  %10 = shl nsw i32 %2, 1
-  %11 = sext i32 %10 to i64
-  %12 = getelementptr inbounds float* %block, i64 %11
-  store float %9, float* %12, align 4, !tbaa !4
-  %13 = or i32 %6, 1
-  %14 = sext i32 %13 to i64
-  %15 = getelementptr inbounds float* %input, i64 %14
-  %16 = load float* %15, align 4, !tbaa !4
-  %17 = or i32 %10, 1
-  %18 = sext i32 %17 to i64
-  %19 = getelementptr inbounds float* %block, i64 %18
-  store float %16, float* %19, align 4, !tbaa !4
+; Function Attrs: nounwind
+define void @prefixSum(float addrspace(1)* nocapture %output, float addrspace(1)* nocapture readonly %input, float addrspace(3)* nocapture %block, i32 %block_size) #0 {
+  %1 = tail call i32 @get_local_id(i32 0) #2
+  %2 = tail call i32 @get_global_id(i32 0) #2
+  %3 = tail call i32 @get_group_id(i32 0) #2
+  %4 = shl nsw i32 %2, 1
+  %5 = getelementptr inbounds float addrspace(1)* %input, i32 %4
+  %6 = load float addrspace(1)* %5, align 4, !tbaa !19
+  %7 = shl nsw i32 %1, 1
+  %8 = getelementptr inbounds float addrspace(3)* %block, i32 %7
+  store float %6, float addrspace(3)* %8, align 4, !tbaa !19
+  %9 = or i32 %4, 1
+  %10 = getelementptr inbounds float addrspace(1)* %input, i32 %9
+  %11 = load float addrspace(1)* %10, align 4, !tbaa !19
+  %12 = or i32 %7, 1
+  %13 = getelementptr inbounds float addrspace(3)* %block, i32 %12
+  store float %11, float addrspace(3)* %13, align 4, !tbaa !19
   tail call void @barrier(i32 1) #2
-  %20 = load float* %block, align 4, !tbaa !4
-  %21 = icmp ugt i32 %block_size, 1
-  br i1 %21, label %.lr.ph, label %._crit_edge
+  %14 = load float addrspace(3)* %block, align 4, !tbaa !19
+  %15 = icmp ugt i32 %block_size, 1
+  br i1 %15, label %.lr.ph, label %._crit_edge
 
 .lr.ph:                                           ; preds = %0
-  %22 = getelementptr inbounds float* %block, i64 1
-  %23 = load float* %22, align 4, !tbaa !4
-  %24 = fadd float %20, %23
-  br label %25
+  %16 = getelementptr inbounds float addrspace(3)* %block, i32 1
+  %17 = load float addrspace(3)* %16, align 4, !tbaa !19
+  %18 = fadd float %14, %17
+  br label %19
 
-; <label>:25                                      ; preds = %.lr.ph, %40
-  %stride.03 = phi i32 [ 1, %.lr.ph ], [ %41, %40 ]
-  %cache1.02 = phi float [ %24, %.lr.ph ], [ %cache1.1, %40 ]
-  %cache0.01 = phi float [ %20, %.lr.ph ], [ %cache0.1, %40 ]
-  %26 = icmp slt i32 %10, %stride.03
-  br i1 %26, label %40, label %27
+; <label>:19                                      ; preds = %.lr.ph, %32
+  %stride.03 = phi i32 [ 1, %.lr.ph ], [ %33, %32 ]
+  %cache1.02 = phi float [ %18, %.lr.ph ], [ %cache1.1, %32 ]
+  %cache0.01 = phi float [ %14, %.lr.ph ], [ %cache0.1, %32 ]
+  %20 = icmp slt i32 %7, %stride.03
+  br i1 %20, label %32, label %21
 
-; <label>:27                                      ; preds = %25
-  %28 = sub nsw i32 %10, %stride.03
-  %29 = sext i32 %28 to i64
-  %30 = getelementptr inbounds float* %block, i64 %29
-  %31 = load float* %30, align 4, !tbaa !4
-  %32 = load float* %12, align 4, !tbaa !4
-  %33 = fadd float %31, %32
-  %34 = sub nsw i32 %17, %stride.03
-  %35 = sext i32 %34 to i64
-  %36 = getelementptr inbounds float* %block, i64 %35
-  %37 = load float* %36, align 4, !tbaa !4
-  %38 = load float* %19, align 4, !tbaa !4
-  %39 = fadd float %37, %38
-  br label %40
+; <label>:21                                      ; preds = %19
+  %22 = sub nsw i32 %7, %stride.03
+  %23 = getelementptr inbounds float addrspace(3)* %block, i32 %22
+  %24 = load float addrspace(3)* %23, align 4, !tbaa !19
+  %25 = load float addrspace(3)* %8, align 4, !tbaa !19
+  %26 = fadd float %24, %25
+  %27 = sub nsw i32 %12, %stride.03
+  %28 = getelementptr inbounds float addrspace(3)* %block, i32 %27
+  %29 = load float addrspace(3)* %28, align 4, !tbaa !19
+  %30 = load float addrspace(3)* %13, align 4, !tbaa !19
+  %31 = fadd float %29, %30
+  br label %32
 
-; <label>:40                                      ; preds = %25, %27
-  %cache0.1 = phi float [ %33, %27 ], [ %cache0.01, %25 ]
-  %cache1.1 = phi float [ %39, %27 ], [ %cache1.02, %25 ]
+; <label>:32                                      ; preds = %19, %21
+  %cache0.1 = phi float [ %26, %21 ], [ %cache0.01, %19 ]
+  %cache1.1 = phi float [ %31, %21 ], [ %cache1.02, %19 ]
   tail call void @barrier(i32 1) #2
-  store float %cache0.1, float* %12, align 4, !tbaa !4
-  store float %cache1.1, float* %19, align 4, !tbaa !4
+  store float %cache0.1, float addrspace(3)* %8, align 4, !tbaa !19
+  store float %cache1.1, float addrspace(3)* %13, align 4, !tbaa !19
   tail call void @barrier(i32 1) #2
-  %41 = shl nsw i32 %stride.03, 1
-  %42 = icmp ult i32 %41, %block_size
-  br i1 %42, label %25, label %._crit_edge
+  %33 = shl nsw i32 %stride.03, 1
+  %34 = icmp ult i32 %33, %block_size
+  br i1 %34, label %19, label %._crit_edge.loopexit
 
-._crit_edge:                                      ; preds = %40, %0
-  %43 = icmp eq i32 %2, 0
-  br i1 %43, label %44, label %48
+._crit_edge.loopexit:                             ; preds = %32
+  br label %._crit_edge
 
-; <label>:44                                      ; preds = %._crit_edge
-  %45 = getelementptr inbounds float* %output, i64 %7
-  store float 0.000000e+00, float* %45, align 4, !tbaa !4
-  %46 = load float* %12, align 4, !tbaa !4
-  %47 = getelementptr inbounds float* %output, i64 %14
-  store float %46, float* %47, align 4, !tbaa !4
-  br label %56
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %35 = icmp eq i32 %1, 0
+  br i1 %35, label %36, label %38
 
-; <label>:48                                      ; preds = %._crit_edge
-  %49 = add nsw i32 %10, -1
-  %50 = sext i32 %49 to i64
-  %51 = getelementptr inbounds float* %block, i64 %50
-  %52 = load float* %51, align 4, !tbaa !4
-  %53 = getelementptr inbounds float* %output, i64 %7
-  store float %52, float* %53, align 4, !tbaa !4
-  %54 = load float* %12, align 4, !tbaa !4
-  %55 = getelementptr inbounds float* %output, i64 %14
-  store float %54, float* %55, align 4, !tbaa !4
-  br label %56
+; <label>:36                                      ; preds = %._crit_edge
+  %37 = getelementptr inbounds float addrspace(1)* %output, i32 %4
+  store float 0.000000e+00, float addrspace(1)* %37, align 4, !tbaa !19
+  br label %43
 
-; <label>:56                                      ; preds = %48, %44
+; <label>:38                                      ; preds = %._crit_edge
+  %39 = add nsw i32 %7, -1
+  %40 = getelementptr inbounds float addrspace(3)* %block, i32 %39
+  %41 = load float addrspace(3)* %40, align 4, !tbaa !19
+  %42 = getelementptr inbounds float addrspace(1)* %output, i32 %4
+  store float %41, float addrspace(1)* %42, align 4, !tbaa !19
+  br label %43
+
+; <label>:43                                      ; preds = %38, %36
+  %.sink = load float addrspace(3)* %8, align 4
+  %44 = getelementptr inbounds float addrspace(1)* %output, i32 %9
+  store float %.sink, float addrspace(1)* %44, align 4
   ret void
 }
 
-attributes #0 = { nounwind uwtable "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #2 = { nounwind }
 
-!opencl.kernels = !{!0, !1, !2}
-!llvm.ident = !{!3}
+!opencl.kernels = !{!0, !6, !12}
+!llvm.ident = !{!18}
 
-!0 = metadata !{void (float*, float*)* @blockAddition}
-!1 = metadata !{void (float*, float*, float*, i32, float*)* @ScanLargeArrays}
-!2 = metadata !{void (float*, float*, float*, i32)* @prefixSum}
-!3 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
-!4 = metadata !{metadata !5, metadata !5, i64 0}
-!5 = metadata !{metadata !"float", metadata !6, i64 0}
-!6 = metadata !{metadata !"omnipotent char", metadata !7, i64 0}
-!7 = metadata !{metadata !"Simple C/C++ TBAA"}
+!0 = !{void (float addrspace(1)*, float addrspace(1)*)* @blockAddition, !1, !2, !3, !4, !5}
+!1 = !{!"kernel_arg_addr_space", i32 1, i32 1}
+!2 = !{!"kernel_arg_access_qual", !"none", !"none"}
+!3 = !{!"kernel_arg_type", !"float*", !"float*"}
+!4 = !{!"kernel_arg_base_type", !"float*", !"float*"}
+!5 = !{!"kernel_arg_type_qual", !"", !""}
+!6 = !{void (float addrspace(1)*, float addrspace(1)*, float addrspace(3)*, i32, float addrspace(1)*)* @ScanLargeArrays, !7, !8, !9, !10, !11}
+!7 = !{!"kernel_arg_addr_space", i32 1, i32 1, i32 3, i32 0, i32 1}
+!8 = !{!"kernel_arg_access_qual", !"none", !"none", !"none", !"none", !"none"}
+!9 = !{!"kernel_arg_type", !"float*", !"float*", !"float*", !"uint", !"float*"}
+!10 = !{!"kernel_arg_base_type", !"float*", !"float*", !"float*", !"uint", !"float*"}
+!11 = !{!"kernel_arg_type_qual", !"", !"", !"", !"const", !""}
+!12 = !{void (float addrspace(1)*, float addrspace(1)*, float addrspace(3)*, i32)* @prefixSum, !13, !14, !15, !16, !17}
+!13 = !{!"kernel_arg_addr_space", i32 1, i32 1, i32 3, i32 0}
+!14 = !{!"kernel_arg_access_qual", !"none", !"none", !"none", !"none"}
+!15 = !{!"kernel_arg_type", !"float*", !"float*", !"float*", !"uint"}
+!16 = !{!"kernel_arg_base_type", !"float*", !"float*", !"float*", !"uint"}
+!17 = !{!"kernel_arg_type_qual", !"", !"", !"", !"const"}
+!18 = !{!"Ubuntu clang version 3.6.1-svn232753-1~exp1 (branches/release_36) (based on LLVM 3.6.1)"}
+!19 = !{!20, !20, i64 0}
+!20 = !{!"float", !21, i64 0}
+!21 = !{!"omnipotent char", !22, i64 0}
+!22 = !{!"Simple C/C++ TBAA"}

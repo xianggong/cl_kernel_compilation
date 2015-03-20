@@ -1,34 +1,37 @@
 ; ModuleID = '../kernel-src/VectorAddition_Kernel.cl'
-target datalayout = "e-p:64:64:64-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v64:64:64-v128:128:128-a0:0:64-s0:64:64-f80:128:128-n8:16:32:64-S128"
-target triple = "x86_64-pc-linux-gnu"
+target datalayout = "e-p:32:32-i64:64-v16:16-v24:32-v32:32-v48:64-v96:128-v192:256-v256:256-v512:512-v1024:1024-v2048:2048-n32:64"
+target triple = "amdgcn"
 
-; Function Attrs: nounwind uwtable
-define void @vectorAdd(float* nocapture %output, float* nocapture readonly %inputA, float* nocapture readonly %inputB) #0 {
-  %1 = tail call i64 @get_global_id(i32 0) #2
-  %sext = shl i64 %1, 32
-  %2 = ashr exact i64 %sext, 32
-  %3 = getelementptr inbounds float* %inputA, i64 %2
-  %4 = load float* %3, align 4, !tbaa !2
-  %5 = getelementptr inbounds float* %inputB, i64 %2
-  %6 = load float* %5, align 4, !tbaa !2
-  %7 = fadd float %4, %6
-  %8 = getelementptr inbounds float* %output, i64 %2
-  store float %7, float* %8, align 4, !tbaa !2
+; Function Attrs: nounwind
+define void @vectorAdd(float addrspace(1)* nocapture %output, float addrspace(1)* nocapture readonly %inputA, float addrspace(1)* nocapture readonly %inputB) #0 {
+  %1 = tail call i32 @get_global_id(i32 0) #2
+  %2 = getelementptr inbounds float addrspace(1)* %inputA, i32 %1
+  %3 = load float addrspace(1)* %2, align 4, !tbaa !7
+  %4 = getelementptr inbounds float addrspace(1)* %inputB, i32 %1
+  %5 = load float addrspace(1)* %4, align 4, !tbaa !7
+  %6 = fadd float %3, %5
+  %7 = getelementptr inbounds float addrspace(1)* %output, i32 %1
+  store float %6, float addrspace(1)* %7, align 4, !tbaa !7
   ret void
 }
 
-declare i64 @get_global_id(i32) #1
+declare i32 @get_global_id(i32) #1
 
-attributes #0 = { nounwind uwtable "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #2 = { nounwind }
 
 !opencl.kernels = !{!0}
-!llvm.ident = !{!1}
+!llvm.ident = !{!6}
 
-!0 = metadata !{void (float*, float*, float*)* @vectorAdd}
-!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
-!2 = metadata !{metadata !3, metadata !3, i64 0}
-!3 = metadata !{metadata !"float", metadata !4, i64 0}
-!4 = metadata !{metadata !"omnipotent char", metadata !5, i64 0}
-!5 = metadata !{metadata !"Simple C/C++ TBAA"}
+!0 = !{void (float addrspace(1)*, float addrspace(1)*, float addrspace(1)*)* @vectorAdd, !1, !2, !3, !4, !5}
+!1 = !{!"kernel_arg_addr_space", i32 1, i32 1, i32 1}
+!2 = !{!"kernel_arg_access_qual", !"none", !"none", !"none"}
+!3 = !{!"kernel_arg_type", !"float*", !"float*", !"float*"}
+!4 = !{!"kernel_arg_base_type", !"float*", !"float*", !"float*"}
+!5 = !{!"kernel_arg_type_qual", !"", !"", !""}
+!6 = !{!"Ubuntu clang version 3.6.1-svn232753-1~exp1 (branches/release_36) (based on LLVM 3.6.1)"}
+!7 = !{!8, !8, i64 0}
+!8 = !{!"float", !9, i64 0}
+!9 = !{!"omnipotent char", !10, i64 0}
+!10 = !{!"Simple C/C++ TBAA"}

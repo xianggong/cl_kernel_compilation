@@ -1,143 +1,125 @@
 ; ModuleID = '../kernel-src/MatrixTranspose_Kernels.cl'
-target datalayout = "e-p:64:64:64-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v64:64:64-v128:128:128-a0:0:64-s0:64:64-f80:128:128-n8:16:32:64-S128"
-target triple = "x86_64-pc-linux-gnu"
+target datalayout = "e-p:32:32-i64:64-v16:16-v24:32-v32:32-v48:64-v96:128-v192:256-v256:256-v512:512-v1024:1024-v2048:2048-n32:64"
+target triple = "amdgcn"
 
-; Function Attrs: nounwind uwtable
-define void @matrixTranspose(<4 x float>* nocapture %output, <4 x float>* nocapture readonly %input, <4 x float>* nocapture %block) #0 {
-  %1 = tail call i64 @get_global_size(i32 0) #2
-  %2 = trunc i64 %1 to i32
-  %3 = tail call i64 @get_group_id(i32 0) #2
-  %4 = trunc i64 %3 to i32
-  %5 = tail call i64 @get_group_id(i32 1) #2
-  %6 = trunc i64 %5 to i32
-  %7 = tail call i64 @get_num_groups(i32 0) #2
-  %8 = trunc i64 %7 to i32
-  %9 = add i32 %6, %4
-  %10 = urem i32 %9, %8
-  %11 = tail call i64 @get_local_id(i32 0) #2
-  %12 = trunc i64 %11 to i32
-  %13 = tail call i64 @get_local_id(i32 1) #2
-  %14 = trunc i64 %13 to i32
-  %15 = tail call i64 @get_local_size(i32 0) #2
-  %16 = trunc i64 %15 to i32
-  %17 = mul i32 %16, %10
-  %18 = add i32 %17, %12
-  %19 = mul i32 %16, %4
-  %20 = add i32 %19, %14
-  %21 = shl i32 %2, 2
-  %22 = mul i32 %21, %20
-  %23 = add i32 %18, %22
-  %24 = shl i32 %14, 2
-  %25 = mul i32 %24, %16
-  %26 = add i32 %25, %12
-  %27 = sext i32 %23 to i64
-  %28 = getelementptr inbounds <4 x float>* %input, i64 %27
-  %29 = load <4 x float>* %28, align 16, !tbaa !2
-  %30 = sext i32 %26 to i64
-  %31 = getelementptr inbounds <4 x float>* %block, i64 %30
-  store <4 x float> %29, <4 x float>* %31, align 16, !tbaa !2
-  %32 = add i32 %23, %2
-  %33 = zext i32 %32 to i64
-  %34 = getelementptr inbounds <4 x float>* %input, i64 %33
-  %35 = load <4 x float>* %34, align 16, !tbaa !2
-  %36 = add i32 %26, %16
-  %37 = zext i32 %36 to i64
-  %38 = getelementptr inbounds <4 x float>* %block, i64 %37
-  store <4 x float> %35, <4 x float>* %38, align 16, !tbaa !2
-  %39 = shl i32 %2, 1
-  %40 = add i32 %23, %39
-  %41 = zext i32 %40 to i64
-  %42 = getelementptr inbounds <4 x float>* %input, i64 %41
-  %43 = load <4 x float>* %42, align 16, !tbaa !2
-  %44 = shl i32 %16, 1
-  %45 = add i32 %26, %44
-  %46 = zext i32 %45 to i64
-  %47 = getelementptr inbounds <4 x float>* %block, i64 %46
-  store <4 x float> %43, <4 x float>* %47, align 16, !tbaa !2
-  %48 = mul i32 %2, 3
-  %49 = add i32 %23, %48
-  %50 = zext i32 %49 to i64
-  %51 = getelementptr inbounds <4 x float>* %input, i64 %50
-  %52 = load <4 x float>* %51, align 16, !tbaa !2
-  %53 = mul i32 %16, 3
-  %54 = add i32 %26, %53
-  %55 = zext i32 %54 to i64
-  %56 = getelementptr inbounds <4 x float>* %block, i64 %55
-  store <4 x float> %52, <4 x float>* %56, align 16, !tbaa !2
+; Function Attrs: nounwind
+define void @matrixTranspose(<4 x float> addrspace(1)* nocapture %output, <4 x float> addrspace(1)* nocapture readonly %input, <4 x float> addrspace(3)* nocapture %block) #0 {
+  %1 = tail call i32 @get_global_size(i32 0) #2
+  %2 = tail call i32 @get_group_id(i32 0) #2
+  %3 = tail call i32 @get_group_id(i32 1) #2
+  %4 = tail call i32 @get_num_groups(i32 0) #2
+  %5 = add i32 %3, %2
+  %6 = urem i32 %5, %4
+  %7 = tail call i32 @get_local_id(i32 0) #2
+  %8 = tail call i32 @get_local_id(i32 1) #2
+  %9 = tail call i32 @get_local_size(i32 0) #2
+  %10 = mul i32 %9, %6
+  %11 = add i32 %10, %7
+  %12 = mul i32 %9, %2
+  %13 = add i32 %12, %8
+  %14 = shl i32 %1, 2
+  %15 = mul i32 %14, %13
+  %16 = add i32 %11, %15
+  %17 = shl i32 %8, 2
+  %18 = mul i32 %17, %9
+  %19 = add i32 %18, %7
+  %20 = getelementptr inbounds <4 x float> addrspace(1)* %input, i32 %16
+  %21 = load <4 x float> addrspace(1)* %20, align 16, !tbaa !7
+  %22 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %19
+  store <4 x float> %21, <4 x float> addrspace(3)* %22, align 16, !tbaa !7
+  %23 = add i32 %16, %1
+  %24 = getelementptr inbounds <4 x float> addrspace(1)* %input, i32 %23
+  %25 = load <4 x float> addrspace(1)* %24, align 16, !tbaa !7
+  %26 = add i32 %19, %9
+  %27 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %26
+  store <4 x float> %25, <4 x float> addrspace(3)* %27, align 16, !tbaa !7
+  %28 = shl i32 %1, 1
+  %29 = add i32 %16, %28
+  %30 = getelementptr inbounds <4 x float> addrspace(1)* %input, i32 %29
+  %31 = load <4 x float> addrspace(1)* %30, align 16, !tbaa !7
+  %32 = shl i32 %9, 1
+  %33 = add i32 %19, %32
+  %34 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %33
+  store <4 x float> %31, <4 x float> addrspace(3)* %34, align 16, !tbaa !7
+  %35 = mul i32 %1, 3
+  %36 = add i32 %16, %35
+  %37 = getelementptr inbounds <4 x float> addrspace(1)* %input, i32 %36
+  %38 = load <4 x float> addrspace(1)* %37, align 16, !tbaa !7
+  %39 = mul i32 %9, 3
+  %40 = add i32 %19, %39
+  %41 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %40
+  store <4 x float> %38, <4 x float> addrspace(3)* %41, align 16, !tbaa !7
   tail call void @barrier(i32 1) #2
-  %57 = add i32 %19, %12
-  %58 = add i32 %17, %14
-  %59 = mul i32 %21, %58
-  %60 = add i32 %57, %59
-  %61 = shl i32 %12, 2
-  %62 = mul i32 %61, %16
-  %63 = add i32 %62, %14
-  %64 = sext i32 %63 to i64
-  %65 = getelementptr inbounds <4 x float>* %block, i64 %64
-  %66 = load <4 x float>* %65, align 16, !tbaa !2
-  %67 = add i32 %63, %16
-  %68 = zext i32 %67 to i64
-  %69 = getelementptr inbounds <4 x float>* %block, i64 %68
-  %70 = load <4 x float>* %69, align 16, !tbaa !2
-  %71 = add i32 %63, %44
-  %72 = zext i32 %71 to i64
-  %73 = getelementptr inbounds <4 x float>* %block, i64 %72
-  %74 = load <4 x float>* %73, align 16, !tbaa !2
-  %75 = add i32 %63, %53
-  %76 = zext i32 %75 to i64
-  %77 = getelementptr inbounds <4 x float>* %block, i64 %76
-  %78 = load <4 x float>* %77, align 16, !tbaa !2
-  %79 = shufflevector <4 x float> %66, <4 x float> %70, <4 x i32> <i32 0, i32 4, i32 undef, i32 undef>
-  %80 = shufflevector <4 x float> %79, <4 x float> %74, <4 x i32> <i32 0, i32 1, i32 4, i32 undef>
-  %81 = shufflevector <4 x float> %80, <4 x float> %78, <4 x i32> <i32 0, i32 1, i32 2, i32 4>
-  %82 = sext i32 %60 to i64
-  %83 = getelementptr inbounds <4 x float>* %output, i64 %82
-  store <4 x float> %81, <4 x float>* %83, align 16, !tbaa !2
-  %84 = shufflevector <4 x float> %66, <4 x float> %70, <4 x i32> <i32 1, i32 5, i32 undef, i32 undef>
-  %85 = shufflevector <4 x float> %84, <4 x float> %74, <4 x i32> <i32 0, i32 1, i32 5, i32 undef>
-  %86 = shufflevector <4 x float> %85, <4 x float> %78, <4 x i32> <i32 0, i32 1, i32 2, i32 5>
-  %87 = add i32 %60, %2
-  %88 = zext i32 %87 to i64
-  %89 = getelementptr inbounds <4 x float>* %output, i64 %88
-  store <4 x float> %86, <4 x float>* %89, align 16, !tbaa !2
-  %90 = shufflevector <4 x float> %66, <4 x float> %70, <4 x i32> <i32 2, i32 6, i32 undef, i32 undef>
-  %91 = shufflevector <4 x float> %90, <4 x float> %74, <4 x i32> <i32 0, i32 1, i32 6, i32 undef>
-  %92 = shufflevector <4 x float> %91, <4 x float> %78, <4 x i32> <i32 0, i32 1, i32 2, i32 6>
-  %93 = add i32 %60, %39
-  %94 = zext i32 %93 to i64
-  %95 = getelementptr inbounds <4 x float>* %output, i64 %94
-  store <4 x float> %92, <4 x float>* %95, align 16, !tbaa !2
-  %96 = shufflevector <4 x float> %66, <4 x float> %70, <4 x i32> <i32 3, i32 7, i32 undef, i32 undef>
-  %97 = shufflevector <4 x float> %96, <4 x float> %74, <4 x i32> <i32 0, i32 1, i32 7, i32 undef>
-  %98 = shufflevector <4 x float> %97, <4 x float> %78, <4 x i32> <i32 0, i32 1, i32 2, i32 7>
-  %99 = add i32 %60, %48
-  %100 = zext i32 %99 to i64
-  %101 = getelementptr inbounds <4 x float>* %output, i64 %100
-  store <4 x float> %98, <4 x float>* %101, align 16, !tbaa !2
+  %42 = add i32 %12, %7
+  %43 = add i32 %10, %8
+  %44 = mul i32 %14, %43
+  %45 = add i32 %42, %44
+  %46 = shl i32 %7, 2
+  %47 = mul i32 %46, %9
+  %48 = add i32 %47, %8
+  %49 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %48
+  %50 = load <4 x float> addrspace(3)* %49, align 16, !tbaa !7
+  %51 = add i32 %48, %9
+  %52 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %51
+  %53 = load <4 x float> addrspace(3)* %52, align 16, !tbaa !7
+  %54 = add i32 %48, %32
+  %55 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %54
+  %56 = load <4 x float> addrspace(3)* %55, align 16, !tbaa !7
+  %57 = add i32 %48, %39
+  %58 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %57
+  %59 = load <4 x float> addrspace(3)* %58, align 16, !tbaa !7
+  %60 = shufflevector <4 x float> %50, <4 x float> %53, <4 x i32> <i32 0, i32 4, i32 undef, i32 undef>
+  %61 = shufflevector <4 x float> %60, <4 x float> %56, <4 x i32> <i32 0, i32 1, i32 4, i32 undef>
+  %62 = shufflevector <4 x float> %61, <4 x float> %59, <4 x i32> <i32 0, i32 1, i32 2, i32 4>
+  %63 = getelementptr inbounds <4 x float> addrspace(1)* %output, i32 %45
+  store <4 x float> %62, <4 x float> addrspace(1)* %63, align 16, !tbaa !7
+  %64 = shufflevector <4 x float> %50, <4 x float> %53, <4 x i32> <i32 1, i32 5, i32 undef, i32 undef>
+  %65 = shufflevector <4 x float> %64, <4 x float> %56, <4 x i32> <i32 0, i32 1, i32 5, i32 undef>
+  %66 = shufflevector <4 x float> %65, <4 x float> %59, <4 x i32> <i32 0, i32 1, i32 2, i32 5>
+  %67 = add i32 %45, %1
+  %68 = getelementptr inbounds <4 x float> addrspace(1)* %output, i32 %67
+  store <4 x float> %66, <4 x float> addrspace(1)* %68, align 16, !tbaa !7
+  %69 = shufflevector <4 x float> %50, <4 x float> %53, <4 x i32> <i32 2, i32 6, i32 undef, i32 undef>
+  %70 = shufflevector <4 x float> %69, <4 x float> %56, <4 x i32> <i32 0, i32 1, i32 6, i32 undef>
+  %71 = shufflevector <4 x float> %70, <4 x float> %59, <4 x i32> <i32 0, i32 1, i32 2, i32 6>
+  %72 = add i32 %45, %28
+  %73 = getelementptr inbounds <4 x float> addrspace(1)* %output, i32 %72
+  store <4 x float> %71, <4 x float> addrspace(1)* %73, align 16, !tbaa !7
+  %74 = shufflevector <4 x float> %50, <4 x float> %53, <4 x i32> <i32 3, i32 7, i32 undef, i32 undef>
+  %75 = shufflevector <4 x float> %74, <4 x float> %56, <4 x i32> <i32 0, i32 1, i32 7, i32 undef>
+  %76 = shufflevector <4 x float> %75, <4 x float> %59, <4 x i32> <i32 0, i32 1, i32 2, i32 7>
+  %77 = add i32 %45, %35
+  %78 = getelementptr inbounds <4 x float> addrspace(1)* %output, i32 %77
+  store <4 x float> %76, <4 x float> addrspace(1)* %78, align 16, !tbaa !7
   ret void
 }
 
-declare i64 @get_global_size(i32) #1
+declare i32 @get_global_size(i32) #1
 
-declare i64 @get_group_id(i32) #1
+declare i32 @get_group_id(i32) #1
 
-declare i64 @get_num_groups(i32) #1
+declare i32 @get_num_groups(i32) #1
 
-declare i64 @get_local_id(i32) #1
+declare i32 @get_local_id(i32) #1
 
-declare i64 @get_local_size(i32) #1
+declare i32 @get_local_size(i32) #1
 
 declare void @barrier(i32) #1
 
-attributes #0 = { nounwind uwtable "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #2 = { nounwind }
 
 !opencl.kernels = !{!0}
-!llvm.ident = !{!1}
+!llvm.ident = !{!6}
 
-!0 = metadata !{void (<4 x float>*, <4 x float>*, <4 x float>*)* @matrixTranspose}
-!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
-!2 = metadata !{metadata !3, metadata !3, i64 0}
-!3 = metadata !{metadata !"omnipotent char", metadata !4, i64 0}
-!4 = metadata !{metadata !"Simple C/C++ TBAA"}
+!0 = !{void (<4 x float> addrspace(1)*, <4 x float> addrspace(1)*, <4 x float> addrspace(3)*)* @matrixTranspose, !1, !2, !3, !4, !5}
+!1 = !{!"kernel_arg_addr_space", i32 1, i32 1, i32 3}
+!2 = !{!"kernel_arg_access_qual", !"none", !"none", !"none"}
+!3 = !{!"kernel_arg_type", !"float4*", !"float4*", !"float4*"}
+!4 = !{!"kernel_arg_base_type", !"float __attribute__((ext_vector_type(4)))*", !"float __attribute__((ext_vector_type(4)))*", !"float __attribute__((ext_vector_type(4)))*"}
+!5 = !{!"kernel_arg_type_qual", !"", !"", !""}
+!6 = !{!"Ubuntu clang version 3.6.1-svn232753-1~exp1 (branches/release_36) (based on LLVM 3.6.1)"}
+!7 = !{!8, !8, i64 0}
+!8 = !{!"omnipotent char", !9, i64 0}
+!9 = !{!"Simple C/C++ TBAA"}
