@@ -4,24 +4,23 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @fastWalshTransform(float addrspace(1)* nocapture %tArray, i32 %step) #0 {
-entry:
-  %call = tail call i32 @get_global_id(i32 0) #2
-  %rem = urem i32 %call, %step
-  %mul = shl i32 %step, 1
-  %div = udiv i32 %call, %step
-  %mul1 = mul i32 %mul, %div
-  %add = add i32 %mul1, %rem
-  %add2 = add i32 %add, %step
-  %0 = sext i32 %add to i64
-  %arrayidx = getelementptr inbounds float addrspace(1)* %tArray, i64 %0
-  %1 = load float addrspace(1)* %arrayidx, align 4, !tbaa !2
-  %2 = sext i32 %add2 to i64
-  %arrayidx3 = getelementptr inbounds float addrspace(1)* %tArray, i64 %2
-  %3 = load float addrspace(1)* %arrayidx3, align 4, !tbaa !2
-  %add4 = fadd float %1, %3
-  store float %add4, float addrspace(1)* %arrayidx, align 4, !tbaa !2
-  %sub = fsub float %1, %3
-  store float %sub, float addrspace(1)* %arrayidx3, align 4, !tbaa !2
+  %1 = tail call i32 @get_global_id(i32 0) #2
+  %2 = urem i32 %1, %step
+  %3 = shl i32 %step, 1
+  %4 = udiv i32 %1, %step
+  %5 = mul i32 %3, %4
+  %6 = add i32 %5, %2
+  %7 = add i32 %6, %step
+  %8 = sext i32 %6 to i64
+  %9 = getelementptr inbounds float addrspace(1)* %tArray, i64 %8
+  %10 = load float addrspace(1)* %9, align 4, !tbaa !2
+  %11 = sext i32 %7 to i64
+  %12 = getelementptr inbounds float addrspace(1)* %tArray, i64 %11
+  %13 = load float addrspace(1)* %12, align 4, !tbaa !2
+  %14 = fadd float %10, %13
+  store float %14, float addrspace(1)* %9, align 4, !tbaa !2
+  %15 = fsub float %10, %13
+  store float %15, float addrspace(1)* %12, align 4, !tbaa !2
   ret void
 }
 
@@ -35,7 +34,7 @@ attributes #2 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (float addrspace(1)*, i32)* @fastWalshTransform}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !2 = metadata !{metadata !3, metadata !3, i64 0}
 !3 = metadata !{metadata !"float", metadata !4, i64 0}
 !4 = metadata !{metadata !"omnipotent char", metadata !5, i64 0}

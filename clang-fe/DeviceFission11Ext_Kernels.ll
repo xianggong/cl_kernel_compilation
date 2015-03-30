@@ -4,13 +4,12 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @copy(float addrspace(1)* nocapture readonly %input, float addrspace(1)* nocapture %output) #0 {
-entry:
-  %call = tail call i32 @get_global_id(i32 0) #2
-  %0 = sext i32 %call to i64
-  %arrayidx = getelementptr inbounds float addrspace(1)* %input, i64 %0
-  %1 = load float addrspace(1)* %arrayidx, align 4, !tbaa !2
-  %arrayidx1 = getelementptr inbounds float addrspace(1)* %output, i64 %0
-  store float %1, float addrspace(1)* %arrayidx1, align 4, !tbaa !2
+  %1 = tail call i32 @get_global_id(i32 0) #2
+  %2 = sext i32 %1 to i64
+  %3 = getelementptr inbounds float addrspace(1)* %input, i64 %2
+  %4 = load float addrspace(1)* %3, align 4, !tbaa !2
+  %5 = getelementptr inbounds float addrspace(1)* %output, i64 %2
+  store float %4, float addrspace(1)* %5, align 4, !tbaa !2
   ret void
 }
 
@@ -24,7 +23,7 @@ attributes #2 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (float addrspace(1)*, float addrspace(1)*)* @copy}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !2 = metadata !{metadata !3, metadata !3, i64 0}
 !3 = metadata !{metadata !"float", metadata !4, i64 0}
 !4 = metadata !{metadata !"omnipotent char", metadata !5, i64 0}

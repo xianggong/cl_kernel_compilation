@@ -4,27 +4,26 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @transpose_kernel(<4 x i8> addrspace(1)* nocapture %output, <4 x i8> addrspace(1)* nocapture readonly %input, <4 x i8> addrspace(3)* nocapture %block, i32 %width, i32 %height, i32 %blockSize) #0 {
-entry:
-  %call = tail call i32 @get_global_id(i32 0) #3
-  %call1 = tail call i32 @get_global_id(i32 1) #3
-  %call2 = tail call i32 @get_local_id(i32 0) #3
-  %call3 = tail call i32 @get_local_id(i32 1) #3
-  %mul = mul i32 %call1, %width
-  %add = add i32 %mul, %call
-  %0 = sext i32 %add to i64
-  %arrayidx = getelementptr inbounds <4 x i8> addrspace(1)* %input, i64 %0
-  %1 = load <4 x i8> addrspace(1)* %arrayidx, align 4, !tbaa !3
-  %mul4 = mul i32 %call3, %blockSize
-  %add5 = add i32 %mul4, %call2
-  %arrayidx6 = getelementptr inbounds <4 x i8> addrspace(3)* %block, i32 %add5
-  store <4 x i8> %1, <4 x i8> addrspace(3)* %arrayidx6, align 4, !tbaa !3
+  %1 = tail call i32 @get_global_id(i32 0) #3
+  %2 = tail call i32 @get_global_id(i32 1) #3
+  %3 = tail call i32 @get_local_id(i32 0) #3
+  %4 = tail call i32 @get_local_id(i32 1) #3
+  %5 = mul i32 %2, %width
+  %6 = add i32 %5, %1
+  %7 = sext i32 %6 to i64
+  %8 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i64 %7
+  %9 = load <4 x i8> addrspace(1)* %8, align 4, !tbaa !3
+  %10 = mul i32 %4, %blockSize
+  %11 = add i32 %10, %3
+  %12 = getelementptr inbounds <4 x i8> addrspace(3)* %block, i32 %11
+  store <4 x i8> %9, <4 x i8> addrspace(3)* %12, align 4, !tbaa !3
   tail call void @barrier(i32 1) #3
-  %mul9 = mul i32 %call, %height
-  %add10 = add i32 %call1, %mul9
-  %2 = load <4 x i8> addrspace(3)* %arrayidx6, align 4, !tbaa !3
-  %3 = sext i32 %add10 to i64
-  %arrayidx12 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i64 %3
-  store <4 x i8> %2, <4 x i8> addrspace(1)* %arrayidx12, align 4, !tbaa !3
+  %13 = mul i32 %1, %height
+  %14 = add i32 %2, %13
+  %15 = load <4 x i8> addrspace(3)* %12, align 4, !tbaa !3
+  %16 = sext i32 %14 to i64
+  %17 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i64 %16
+  store <4 x i8> %15, <4 x i8> addrspace(1)* %17, align 4, !tbaa !3
   ret void
 }
 
@@ -36,157 +35,156 @@ declare void @barrier(i32) #1
 
 ; Function Attrs: nounwind
 define void @RecursiveGaussian_kernel(<4 x i8> addrspace(1)* nocapture readonly %input, <4 x i8> addrspace(1)* nocapture %output, i32 %width, i32 %height, float %a0, float %a1, float %a2, float %a3, float %b1, float %b2, float %coefp, float %coefn) #0 {
-entry:
-  %call = tail call i32 @get_global_id(i32 0) #3
-  %cmp = icmp ult i32 %call, %width
-  br i1 %cmp, label %for.cond.preheader, label %for.end94
+  %1 = tail call i32 @get_global_id(i32 0) #3
+  %2 = icmp ult i32 %1, %width
+  br i1 %2, label %.preheader, label %.loopexit
 
-for.cond.preheader:                               ; preds = %entry
-  %cmp1149 = icmp sgt i32 %height, 0
-  br i1 %cmp1149, label %for.body.lr.ph, label %for.end.thread
+.preheader:                                       ; preds = %0
+  %3 = icmp sgt i32 %height, 0
+  br i1 %3, label %.lr.ph15, label %._crit_edge.thread
 
-for.end.thread:                                   ; preds = %for.cond.preheader
+._crit_edge.thread:                               ; preds = %.preheader
   tail call void @barrier(i32 2) #3
-  br label %for.end94
+  br label %.loopexit
 
-for.body.lr.ph:                                   ; preds = %for.cond.preheader
-  %splat.splatinsert = insertelement <4 x float> undef, float %a0, i32 0
-  %splat.splat = shufflevector <4 x float> %splat.splatinsert, <4 x float> undef, <4 x i32> zeroinitializer
-  %splat.splatinsert12 = insertelement <4 x float> undef, float %a1, i32 0
-  %splat.splat13 = shufflevector <4 x float> %splat.splatinsert12, <4 x float> undef, <4 x i32> zeroinitializer
-  %splat.splatinsert15 = insertelement <4 x float> undef, float %b1, i32 0
-  %splat.splat16 = shufflevector <4 x float> %splat.splatinsert15, <4 x float> undef, <4 x i32> zeroinitializer
-  %neg = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %splat.splat16
-  %splat.splatinsert18 = insertelement <4 x float> undef, float %b2, i32 0
-  %splat.splat19 = shufflevector <4 x float> %splat.splatinsert18, <4 x float> undef, <4 x i32> zeroinitializer
-  %neg21 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %splat.splat19
-  br label %for.body
+.lr.ph15:                                         ; preds = %.preheader
+  %4 = insertelement <4 x float> undef, float %a0, i32 0
+  %5 = shufflevector <4 x float> %4, <4 x float> undef, <4 x i32> zeroinitializer
+  %6 = insertelement <4 x float> undef, float %a1, i32 0
+  %7 = shufflevector <4 x float> %6, <4 x float> undef, <4 x i32> zeroinitializer
+  %8 = insertelement <4 x float> undef, float %b1, i32 0
+  %9 = shufflevector <4 x float> %8, <4 x float> undef, <4 x i32> zeroinitializer
+  %10 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %9
+  %11 = insertelement <4 x float> undef, float %b2, i32 0
+  %12 = shufflevector <4 x float> %11, <4 x float> undef, <4 x i32> zeroinitializer
+  %13 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %12
+  br label %14
 
-for.body:                                         ; preds = %for.body, %for.body.lr.ph
-  %indvars.iv154 = phi i64 [ 0, %for.body.lr.ph ], [ %indvars.iv.next155, %for.body ]
-  %xp.0153 = phi <4 x float> [ zeroinitializer, %for.body.lr.ph ], [ %vecinit10, %for.body ]
-  %yp.0152 = phi <4 x float> [ zeroinitializer, %for.body.lr.ph ], [ %9, %for.body ]
-  %yb.0151 = phi <4 x float> [ zeroinitializer, %for.body.lr.ph ], [ %yp.0152, %for.body ]
-  %0 = trunc i64 %indvars.iv154 to i32
-  %mul = mul nsw i32 %0, %width
-  %add = add i32 %mul, %call
-  %1 = sext i32 %add to i64
-  %arrayidx = getelementptr inbounds <4 x i8> addrspace(1)* %input, i64 %1
-  %2 = load <4 x i8> addrspace(1)* %arrayidx, align 4
-  %3 = extractelement <4 x i8> %2, i32 0
-  %conv = uitofp i8 %3 to float
-  %vecinit = insertelement <4 x float> undef, float %conv, i32 0
-  %4 = extractelement <4 x i8> %2, i32 1
-  %conv3 = uitofp i8 %4 to float
-  %vecinit4 = insertelement <4 x float> %vecinit, float %conv3, i32 1
-  %5 = extractelement <4 x i8> %2, i32 2
-  %conv6 = uitofp i8 %5 to float
-  %vecinit7 = insertelement <4 x float> %vecinit4, float %conv6, i32 2
-  %6 = extractelement <4 x i8> %2, i32 3
-  %conv9 = uitofp i8 %6 to float
-  %vecinit10 = insertelement <4 x float> %vecinit7, float %conv9, i32 3
-  %mul14 = fmul <4 x float> %splat.splat13, %xp.0153
-  %7 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %splat.splat, <4 x float> %vecinit10, <4 x float> %mul14)
-  %8 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %neg, <4 x float> %yp.0152, <4 x float> %7)
-  %9 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %neg21, <4 x float> %yb.0151, <4 x float> %8)
-  %10 = extractelement <4 x float> %9, i32 0
-  %conv23 = fptoui float %10 to i8
-  %vecinit24 = insertelement <4 x i8> undef, i8 %conv23, i32 0
-  %11 = extractelement <4 x float> %9, i32 1
-  %conv25 = fptoui float %11 to i8
-  %vecinit26 = insertelement <4 x i8> %vecinit24, i8 %conv25, i32 1
-  %12 = extractelement <4 x float> %9, i32 2
-  %conv27 = fptoui float %12 to i8
-  %vecinit28 = insertelement <4 x i8> %vecinit26, i8 %conv27, i32 2
-  %13 = extractelement <4 x float> %9, i32 3
-  %conv29 = fptoui float %13 to i8
-  %vecinit30 = insertelement <4 x i8> %vecinit28, i8 %conv29, i32 3
-  %arrayidx31 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i64 %1
-  store <4 x i8> %vecinit30, <4 x i8> addrspace(1)* %arrayidx31, align 4, !tbaa !3
-  %indvars.iv.next155 = add nuw nsw i64 %indvars.iv154, 1
-  %lftr.wideiv = trunc i64 %indvars.iv.next155 to i32
+; <label>:14                                      ; preds = %14, %.lr.ph15
+  %indvars.iv16 = phi i64 [ 0, %.lr.ph15 ], [ %indvars.iv.next17, %14 ]
+  %xp.014 = phi <4 x float> [ zeroinitializer, %.lr.ph15 ], [ %32, %14 ]
+  %yp.013 = phi <4 x float> [ zeroinitializer, %.lr.ph15 ], [ %36, %14 ]
+  %yb.012 = phi <4 x float> [ zeroinitializer, %.lr.ph15 ], [ %yp.013, %14 ]
+  %15 = trunc i64 %indvars.iv16 to i32
+  %16 = mul nsw i32 %15, %width
+  %17 = add i32 %16, %1
+  %18 = sext i32 %17 to i64
+  %19 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i64 %18
+  %20 = load <4 x i8> addrspace(1)* %19, align 4
+  %21 = extractelement <4 x i8> %20, i32 0
+  %22 = uitofp i8 %21 to float
+  %23 = insertelement <4 x float> undef, float %22, i32 0
+  %24 = extractelement <4 x i8> %20, i32 1
+  %25 = uitofp i8 %24 to float
+  %26 = insertelement <4 x float> %23, float %25, i32 1
+  %27 = extractelement <4 x i8> %20, i32 2
+  %28 = uitofp i8 %27 to float
+  %29 = insertelement <4 x float> %26, float %28, i32 2
+  %30 = extractelement <4 x i8> %20, i32 3
+  %31 = uitofp i8 %30 to float
+  %32 = insertelement <4 x float> %29, float %31, i32 3
+  %33 = fmul <4 x float> %7, %xp.014
+  %34 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %5, <4 x float> %32, <4 x float> %33)
+  %35 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %10, <4 x float> %yp.013, <4 x float> %34)
+  %36 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %13, <4 x float> %yb.012, <4 x float> %35)
+  %37 = extractelement <4 x float> %36, i32 0
+  %38 = fptoui float %37 to i8
+  %39 = insertelement <4 x i8> undef, i8 %38, i32 0
+  %40 = extractelement <4 x float> %36, i32 1
+  %41 = fptoui float %40 to i8
+  %42 = insertelement <4 x i8> %39, i8 %41, i32 1
+  %43 = extractelement <4 x float> %36, i32 2
+  %44 = fptoui float %43 to i8
+  %45 = insertelement <4 x i8> %42, i8 %44, i32 2
+  %46 = extractelement <4 x float> %36, i32 3
+  %47 = fptoui float %46 to i8
+  %48 = insertelement <4 x i8> %45, i8 %47, i32 3
+  %49 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i64 %18
+  store <4 x i8> %48, <4 x i8> addrspace(1)* %49, align 4, !tbaa !3
+  %indvars.iv.next17 = add nuw nsw i64 %indvars.iv16, 1
+  %lftr.wideiv = trunc i64 %indvars.iv.next17 to i32
   %exitcond = icmp eq i32 %lftr.wideiv, %height
-  br i1 %exitcond, label %for.end, label %for.body
+  br i1 %exitcond, label %._crit_edge, label %14
 
-for.end:                                          ; preds = %for.body
+._crit_edge:                                      ; preds = %14
   tail call void @barrier(i32 2) #3
-  br i1 %cmp1149, label %for.body36.lr.ph, label %for.end94
+  br i1 %3, label %.lr.ph, label %.loopexit
 
-for.body36.lr.ph:                                 ; preds = %for.end
-  %splat.splatinsert55 = insertelement <4 x float> undef, float %a2, i32 0
-  %splat.splat56 = shufflevector <4 x float> %splat.splatinsert55, <4 x float> undef, <4 x i32> zeroinitializer
-  %splat.splatinsert58 = insertelement <4 x float> undef, float %a3, i32 0
-  %splat.splat59 = shufflevector <4 x float> %splat.splatinsert58, <4 x float> undef, <4 x i32> zeroinitializer
-  %splat.splatinsert61 = insertelement <4 x float> undef, float %b1, i32 0
-  %splat.splat62 = shufflevector <4 x float> %splat.splatinsert61, <4 x float> undef, <4 x i32> zeroinitializer
-  %neg64 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %splat.splat62
-  %splat.splatinsert65 = insertelement <4 x float> undef, float %b2, i32 0
-  %splat.splat66 = shufflevector <4 x float> %splat.splatinsert65, <4 x float> undef, <4 x i32> zeroinitializer
-  %neg68 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %splat.splat66
-  %14 = sext i32 %height to i64
-  br label %for.body36
+.lr.ph:                                           ; preds = %._crit_edge
+  %50 = insertelement <4 x float> undef, float %a2, i32 0
+  %51 = shufflevector <4 x float> %50, <4 x float> undef, <4 x i32> zeroinitializer
+  %52 = insertelement <4 x float> undef, float %a3, i32 0
+  %53 = shufflevector <4 x float> %52, <4 x float> undef, <4 x i32> zeroinitializer
+  %54 = insertelement <4 x float> undef, float %b1, i32 0
+  %55 = shufflevector <4 x float> %54, <4 x float> undef, <4 x i32> zeroinitializer
+  %56 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %55
+  %57 = insertelement <4 x float> undef, float %b2, i32 0
+  %58 = shufflevector <4 x float> %57, <4 x float> undef, <4 x i32> zeroinitializer
+  %59 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %58
+  %60 = sext i32 %height to i64
+  br label %61
 
-for.body36:                                       ; preds = %for.body36.lr.ph, %for.body36
-  %indvars.iv = phi i64 [ %14, %for.body36.lr.ph ], [ %indvars.iv.next, %for.body36 ]
-  %xn.0147 = phi <4 x float> [ zeroinitializer, %for.body36.lr.ph ], [ %vecinit53, %for.body36 ]
-  %xa.0146 = phi <4 x float> [ zeroinitializer, %for.body36.lr.ph ], [ %xn.0147, %for.body36 ]
-  %yn.0145 = phi <4 x float> [ zeroinitializer, %for.body36.lr.ph ], [ %24, %for.body36 ]
-  %ya.0144 = phi <4 x float> [ zeroinitializer, %for.body36.lr.ph ], [ %yn.0145, %for.body36 ]
+; <label>:61                                      ; preds = %.lr.ph, %61
+  %indvars.iv = phi i64 [ %60, %.lr.ph ], [ %indvars.iv.next, %61 ]
+  %xn.09 = phi <4 x float> [ zeroinitializer, %.lr.ph ], [ %79, %61 ]
+  %xa.08 = phi <4 x float> [ zeroinitializer, %.lr.ph ], [ %xn.09, %61 ]
+  %yn.07 = phi <4 x float> [ zeroinitializer, %.lr.ph ], [ %83, %61 ]
+  %ya.06 = phi <4 x float> [ zeroinitializer, %.lr.ph ], [ %yn.07, %61 ]
   %indvars.iv.next = add nsw i64 %indvars.iv, -1
-  %15 = trunc i64 %indvars.iv.next to i32
-  %mul38 = mul nsw i32 %15, %width
-  %add39 = add i32 %mul38, %call
-  %16 = sext i32 %add39 to i64
-  %arrayidx42 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i64 %16
-  %17 = load <4 x i8> addrspace(1)* %arrayidx42, align 4
-  %18 = extractelement <4 x i8> %17, i32 0
-  %conv43 = uitofp i8 %18 to float
-  %vecinit44 = insertelement <4 x float> undef, float %conv43, i32 0
-  %19 = extractelement <4 x i8> %17, i32 1
-  %conv46 = uitofp i8 %19 to float
-  %vecinit47 = insertelement <4 x float> %vecinit44, float %conv46, i32 1
-  %20 = extractelement <4 x i8> %17, i32 2
-  %conv49 = uitofp i8 %20 to float
-  %vecinit50 = insertelement <4 x float> %vecinit47, float %conv49, i32 2
-  %21 = extractelement <4 x i8> %17, i32 3
-  %conv52 = uitofp i8 %21 to float
-  %vecinit53 = insertelement <4 x float> %vecinit50, float %conv52, i32 3
-  %mul60 = fmul <4 x float> %splat.splat59, %xa.0146
-  %22 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %splat.splat56, <4 x float> %xn.0147, <4 x float> %mul60)
-  %23 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %neg64, <4 x float> %yn.0145, <4 x float> %22)
-  %24 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %neg68, <4 x float> %ya.0144, <4 x float> %23)
-  %arrayidx70 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i64 %16
-  %25 = load <4 x i8> addrspace(1)* %arrayidx70, align 4
-  %26 = extractelement <4 x i8> %25, i32 0
-  %conv71 = uitofp i8 %26 to float
-  %vecinit72 = insertelement <4 x float> undef, float %conv71, i32 0
-  %27 = extractelement <4 x i8> %25, i32 1
-  %conv74 = uitofp i8 %27 to float
-  %vecinit75 = insertelement <4 x float> %vecinit72, float %conv74, i32 1
-  %28 = extractelement <4 x i8> %25, i32 2
-  %conv77 = uitofp i8 %28 to float
-  %vecinit78 = insertelement <4 x float> %vecinit75, float %conv77, i32 2
-  %29 = extractelement <4 x i8> %25, i32 3
-  %conv80 = uitofp i8 %29 to float
-  %vecinit81 = insertelement <4 x float> %vecinit78, float %conv80, i32 3
-  %add82 = fadd <4 x float> %24, %vecinit81
-  %30 = extractelement <4 x float> %add82, i32 0
-  %conv84 = fptoui float %30 to i8
-  %vecinit85 = insertelement <4 x i8> undef, i8 %conv84, i32 0
-  %31 = extractelement <4 x float> %add82, i32 1
-  %conv86 = fptoui float %31 to i8
-  %vecinit87 = insertelement <4 x i8> %vecinit85, i8 %conv86, i32 1
-  %32 = extractelement <4 x float> %add82, i32 2
-  %conv88 = fptoui float %32 to i8
-  %vecinit89 = insertelement <4 x i8> %vecinit87, i8 %conv88, i32 2
-  %33 = extractelement <4 x float> %add82, i32 3
-  %conv90 = fptoui float %33 to i8
-  %vecinit91 = insertelement <4 x i8> %vecinit89, i8 %conv90, i32 3
-  store <4 x i8> %vecinit91, <4 x i8> addrspace(1)* %arrayidx70, align 4, !tbaa !3
-  %cmp34 = icmp sgt i32 %15, 0
-  br i1 %cmp34, label %for.body36, label %for.end94
+  %62 = trunc i64 %indvars.iv.next to i32
+  %63 = mul nsw i32 %62, %width
+  %64 = add i32 %63, %1
+  %65 = sext i32 %64 to i64
+  %66 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i64 %65
+  %67 = load <4 x i8> addrspace(1)* %66, align 4
+  %68 = extractelement <4 x i8> %67, i32 0
+  %69 = uitofp i8 %68 to float
+  %70 = insertelement <4 x float> undef, float %69, i32 0
+  %71 = extractelement <4 x i8> %67, i32 1
+  %72 = uitofp i8 %71 to float
+  %73 = insertelement <4 x float> %70, float %72, i32 1
+  %74 = extractelement <4 x i8> %67, i32 2
+  %75 = uitofp i8 %74 to float
+  %76 = insertelement <4 x float> %73, float %75, i32 2
+  %77 = extractelement <4 x i8> %67, i32 3
+  %78 = uitofp i8 %77 to float
+  %79 = insertelement <4 x float> %76, float %78, i32 3
+  %80 = fmul <4 x float> %53, %xa.08
+  %81 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %51, <4 x float> %xn.09, <4 x float> %80)
+  %82 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %56, <4 x float> %yn.07, <4 x float> %81)
+  %83 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %59, <4 x float> %ya.06, <4 x float> %82)
+  %84 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i64 %65
+  %85 = load <4 x i8> addrspace(1)* %84, align 4
+  %86 = extractelement <4 x i8> %85, i32 0
+  %87 = uitofp i8 %86 to float
+  %88 = insertelement <4 x float> undef, float %87, i32 0
+  %89 = extractelement <4 x i8> %85, i32 1
+  %90 = uitofp i8 %89 to float
+  %91 = insertelement <4 x float> %88, float %90, i32 1
+  %92 = extractelement <4 x i8> %85, i32 2
+  %93 = uitofp i8 %92 to float
+  %94 = insertelement <4 x float> %91, float %93, i32 2
+  %95 = extractelement <4 x i8> %85, i32 3
+  %96 = uitofp i8 %95 to float
+  %97 = insertelement <4 x float> %94, float %96, i32 3
+  %98 = fadd <4 x float> %83, %97
+  %99 = extractelement <4 x float> %98, i32 0
+  %100 = fptoui float %99 to i8
+  %101 = insertelement <4 x i8> undef, i8 %100, i32 0
+  %102 = extractelement <4 x float> %98, i32 1
+  %103 = fptoui float %102 to i8
+  %104 = insertelement <4 x i8> %101, i8 %103, i32 1
+  %105 = extractelement <4 x float> %98, i32 2
+  %106 = fptoui float %105 to i8
+  %107 = insertelement <4 x i8> %104, i8 %106, i32 2
+  %108 = extractelement <4 x float> %98, i32 3
+  %109 = fptoui float %108 to i8
+  %110 = insertelement <4 x i8> %107, i8 %109, i32 3
+  store <4 x i8> %110, <4 x i8> addrspace(1)* %84, align 4, !tbaa !3
+  %111 = icmp sgt i32 %62, 0
+  br i1 %111, label %61, label %.loopexit
 
-for.end94:                                        ; preds = %for.end, %for.end.thread, %for.body36, %entry
+.loopexit:                                        ; preds = %._crit_edge, %._crit_edge.thread, %61, %0
   ret void
 }
 
@@ -203,7 +201,7 @@ attributes #3 = { nounwind }
 
 !0 = metadata !{void (<4 x i8> addrspace(1)*, <4 x i8> addrspace(1)*, <4 x i8> addrspace(3)*, i32, i32, i32)* @transpose_kernel}
 !1 = metadata !{void (<4 x i8> addrspace(1)*, <4 x i8> addrspace(1)*, i32, i32, float, float, float, float, float, float, float, float)* @RecursiveGaussian_kernel}
-!2 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!2 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !3 = metadata !{metadata !4, metadata !4, i64 0}
 !4 = metadata !{metadata !"omnipotent char", metadata !5, i64 0}
 !5 = metadata !{metadata !"Simple C/C++ TBAA"}

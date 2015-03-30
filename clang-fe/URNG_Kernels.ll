@@ -6,52 +6,51 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define float @ran1(i32 %idum, i32 addrspace(3)* nocapture %iv) #0 {
-entry:
-  %call = tail call i32 @get_local_id(i32 0) #2
-  %call1 = tail call i32 @get_local_id(i32 1) #2
-  %call2 = tail call i32 @get_local_size(i32 0) #2
-  %mul = mul i32 %call2, %call1
-  %add = add i32 %mul, %call
-  %mul11 = shl i32 %add, 4
-  br label %for.body
+  %1 = tail call i32 @get_local_id(i32 0) #2
+  %2 = tail call i32 @get_local_id(i32 1) #2
+  %3 = tail call i32 @get_local_size(i32 0) #2
+  %4 = mul i32 %3, %2
+  %5 = add i32 %4, %1
+  %6 = shl i32 %5, 4
+  br label %7
 
-for.body:                                         ; preds = %for.inc.thread, %entry, %for.inc
-  %idum.addr.052 = phi i32 [ %idum, %entry ], [ %add8.sub6, %for.inc ], [ %add8.sub6, %for.inc.thread ]
-  %j.051 = phi i32 [ 16, %entry ], [ %dec, %for.inc ], [ %dec53, %for.inc.thread ]
-  %div = sdiv i32 %idum.addr.052, 127773
-  %0 = mul i32 %div, -127773
-  %sub = add i32 %0, %idum.addr.052
-  %mul4 = mul nsw i32 %sub, 16807
-  %1 = mul i32 %div, -2836
-  %sub6 = add i32 %mul4, %1
-  %cmp7 = icmp slt i32 %sub6, 0
-  %add8 = add nsw i32 %sub6, 2147483647
-  %add8.sub6 = select i1 %cmp7, i32 %add8, i32 %sub6
-  %cmp9 = icmp slt i32 %j.051, 16
-  br i1 %cmp9, label %for.inc, label %for.inc.thread
+; <label>:7                                       ; preds = %.thread, %0, %18
+  %.02 = phi i32 [ %idum, %0 ], [ %., %18 ], [ %., %.thread ]
+  %j.01 = phi i32 [ 16, %0 ], [ %21, %18 ], [ %17, %.thread ]
+  %8 = sdiv i32 %.02, 127773
+  %9 = mul i32 %8, -127773
+  %10 = add i32 %9, %.02
+  %11 = mul nsw i32 %10, 16807
+  %12 = mul i32 %8, -2836
+  %13 = add i32 %11, %12
+  %14 = icmp slt i32 %13, 0
+  %15 = add nsw i32 %13, 2147483647
+  %. = select i1 %14, i32 %15, i32 %13
+  %16 = icmp slt i32 %j.01, 16
+  br i1 %16, label %18, label %.thread
 
-for.inc.thread:                                   ; preds = %for.body
-  %dec53 = add nsw i32 %j.051, -1
-  br label %for.body
+.thread:                                          ; preds = %7
+  %17 = add nsw i32 %j.01, -1
+  br label %7
 
-for.inc:                                          ; preds = %for.body
-  %add12 = add nsw i32 %j.051, %mul11
-  %arrayidx = getelementptr inbounds i32 addrspace(3)* %iv, i32 %add12
-  store i32 %add8.sub6, i32 addrspace(3)* %arrayidx, align 4, !tbaa !2
-  %dec = add nsw i32 %j.051, -1
-  %cmp = icmp sgt i32 %j.051, 0
-  br i1 %cmp, label %for.body, label %for.end
+; <label>:18                                      ; preds = %7
+  %19 = add nsw i32 %j.01, %6
+  %20 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %19
+  store i32 %., i32 addrspace(3)* %20, align 4, !tbaa !2
+  %21 = add nsw i32 %j.01, -1
+  %22 = icmp sgt i32 %j.01, 0
+  br i1 %22, label %7, label %23
 
-for.end:                                          ; preds = %for.inc
-  %arrayidx15 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %mul11
-  %2 = load i32 addrspace(3)* %arrayidx15, align 4, !tbaa !2
-  %div26 = sdiv i32 %2, 134217728
-  %add28 = add nsw i32 %div26, %mul11
-  %arrayidx29 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %add28
-  %3 = load i32 addrspace(3)* %arrayidx29, align 4, !tbaa !2
-  %conv = sitofp i32 %3 to float
-  %mul30 = fmul float %conv, 0x3E00000000000000
-  ret float %mul30
+; <label>:23                                      ; preds = %18
+  %24 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %6
+  %25 = load i32 addrspace(3)* %24, align 4, !tbaa !2
+  %26 = sdiv i32 %25, 134217728
+  %27 = add nsw i32 %26, %6
+  %28 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %27
+  %29 = load i32 addrspace(3)* %28, align 4, !tbaa !2
+  %30 = sitofp i32 %29 to float
+  %31 = fmul float %30, 0x3E00000000000000
+  ret float %31
 }
 
 declare i32 @get_local_id(i32) #1
@@ -60,35 +59,34 @@ declare i32 @get_local_size(i32) #1
 
 ; Function Attrs: nounwind
 define void @noise_uniform(<4 x i8> addrspace(1)* nocapture readonly %inputImage, <4 x i8> addrspace(1)* nocapture %outputImage, i32 %factor) #0 {
-entry:
-  %call = tail call i32 @get_global_id(i32 0) #2
-  %call1 = tail call i32 @get_global_id(i32 1) #2
-  %call2 = tail call i32 @get_global_size(i32 0) #2
-  %mul = mul i32 %call2, %call1
-  %add = add i32 %mul, %call
-  %0 = sext i32 %add to i64
-  %arrayidx = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %0
-  %1 = load <4 x i8> addrspace(1)* %arrayidx, align 4, !tbaa !6
-  %call3 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %1) #2
-  %2 = extractelement <4 x float> %call3, i32 0
-  %3 = extractelement <4 x float> %call3, i32 1
-  %add4 = fadd float %2, %3
-  %4 = extractelement <4 x float> %call3, i32 2
-  %add5 = fadd float %4, %add4
-  %add6 = fadd float %3, %add5
-  %div = fmul float %add6, 2.500000e-01
-  %sub = fsub float -0.000000e+00, %div
-  %conv = fptosi float %sub to i32
-  %call7 = tail call float @ran1(i32 %conv, i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @noise_uniform.iv, i32 0, i32 0))
-  %sub8 = fadd float %call7, 0xBFE19999A0000000
-  %conv9 = sitofp i32 %factor to float
-  %mul10 = fmul float %conv9, %sub8
-  %splat.splatinsert = insertelement <4 x float> undef, float %mul10, i32 0
-  %splat.splat = shufflevector <4 x float> %splat.splatinsert, <4 x float> undef, <4 x i32> zeroinitializer
-  %add11 = fadd <4 x float> %call3, %splat.splat
-  %call12 = tail call <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float> %add11) #2
-  %arrayidx13 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i64 %0
-  store <4 x i8> %call12, <4 x i8> addrspace(1)* %arrayidx13, align 4, !tbaa !6
+  %1 = tail call i32 @get_global_id(i32 0) #2
+  %2 = tail call i32 @get_global_id(i32 1) #2
+  %3 = tail call i32 @get_global_size(i32 0) #2
+  %4 = mul i32 %3, %2
+  %5 = add i32 %4, %1
+  %6 = sext i32 %5 to i64
+  %7 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %6
+  %8 = load <4 x i8> addrspace(1)* %7, align 4, !tbaa !6
+  %9 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %8) #2
+  %10 = extractelement <4 x float> %9, i32 0
+  %11 = extractelement <4 x float> %9, i32 1
+  %12 = fadd float %10, %11
+  %13 = extractelement <4 x float> %9, i32 2
+  %14 = fadd float %13, %12
+  %15 = fadd float %11, %14
+  %16 = fmul float %15, 2.500000e-01
+  %17 = fsub float -0.000000e+00, %16
+  %18 = fptosi float %17 to i32
+  %19 = tail call float @ran1(i32 %18, i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @noise_uniform.iv, i32 0, i32 0))
+  %20 = fadd float %19, 0xBFE19999A0000000
+  %21 = sitofp i32 %factor to float
+  %22 = fmul float %21, %20
+  %23 = insertelement <4 x float> undef, float %22, i32 0
+  %24 = shufflevector <4 x float> %23, <4 x float> undef, <4 x i32> zeroinitializer
+  %25 = fadd <4 x float> %9, %24
+  %26 = tail call <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float> %25) #2
+  %27 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i64 %6
+  store <4 x i8> %26, <4 x i8> addrspace(1)* %27, align 4, !tbaa !6
   ret void
 }
 
@@ -108,7 +106,7 @@ attributes #2 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (<4 x i8> addrspace(1)*, <4 x i8> addrspace(1)*, i32)* @noise_uniform}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !2 = metadata !{metadata !3, metadata !3, i64 0}
 !3 = metadata !{metadata !"int", metadata !4, i64 0}
 !4 = metadata !{metadata !"omnipotent char", metadata !5, i64 0}

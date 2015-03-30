@@ -4,102 +4,101 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @matrixTranspose(<4 x float> addrspace(1)* nocapture %output, <4 x float> addrspace(1)* nocapture readonly %input, <4 x float> addrspace(3)* nocapture %block) #0 {
-entry:
-  %call = tail call i32 @get_global_size(i32 0) #2
-  %call1 = tail call i32 @get_group_id(i32 0) #2
-  %call2 = tail call i32 @get_group_id(i32 1) #2
-  %call3 = tail call i32 @get_num_groups(i32 0) #2
-  %add = add i32 %call2, %call1
-  %rem = urem i32 %add, %call3
-  %call4 = tail call i32 @get_local_id(i32 0) #2
-  %call5 = tail call i32 @get_local_id(i32 1) #2
-  %call6 = tail call i32 @get_local_size(i32 0) #2
-  %mul = mul i32 %call6, %rem
-  %add7 = add i32 %mul, %call4
-  %mul8 = mul i32 %call6, %call1
-  %add9 = add i32 %mul8, %call5
-  %mul10 = shl i32 %call, 2
-  %mul11 = mul i32 %mul10, %add9
-  %add12 = add i32 %add7, %mul11
-  %mul13 = shl i32 %call5, 2
-  %mul14 = mul i32 %mul13, %call6
-  %add15 = add i32 %mul14, %call4
-  %0 = sext i32 %add12 to i64
-  %arrayidx = getelementptr inbounds <4 x float> addrspace(1)* %input, i64 %0
-  %1 = load <4 x float> addrspace(1)* %arrayidx, align 16, !tbaa !2
-  %arrayidx16 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %add15
-  store <4 x float> %1, <4 x float> addrspace(3)* %arrayidx16, align 16, !tbaa !2
-  %add17 = add i32 %add12, %call
-  %2 = sext i32 %add17 to i64
-  %arrayidx18 = getelementptr inbounds <4 x float> addrspace(1)* %input, i64 %2
-  %3 = load <4 x float> addrspace(1)* %arrayidx18, align 16, !tbaa !2
-  %add19 = add i32 %add15, %call6
-  %arrayidx20 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %add19
-  store <4 x float> %3, <4 x float> addrspace(3)* %arrayidx20, align 16, !tbaa !2
-  %mul21 = shl i32 %call, 1
-  %add22 = add i32 %add12, %mul21
-  %4 = sext i32 %add22 to i64
-  %arrayidx23 = getelementptr inbounds <4 x float> addrspace(1)* %input, i64 %4
-  %5 = load <4 x float> addrspace(1)* %arrayidx23, align 16, !tbaa !2
-  %mul24 = shl i32 %call6, 1
-  %add25 = add i32 %add15, %mul24
-  %arrayidx26 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %add25
-  store <4 x float> %5, <4 x float> addrspace(3)* %arrayidx26, align 16, !tbaa !2
-  %mul27 = mul i32 %call, 3
-  %add28 = add i32 %add12, %mul27
-  %6 = sext i32 %add28 to i64
-  %arrayidx29 = getelementptr inbounds <4 x float> addrspace(1)* %input, i64 %6
-  %7 = load <4 x float> addrspace(1)* %arrayidx29, align 16, !tbaa !2
-  %mul30 = mul i32 %call6, 3
-  %add31 = add i32 %add15, %mul30
-  %arrayidx32 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %add31
-  store <4 x float> %7, <4 x float> addrspace(3)* %arrayidx32, align 16, !tbaa !2
+  %1 = tail call i32 @get_global_size(i32 0) #2
+  %2 = tail call i32 @get_group_id(i32 0) #2
+  %3 = tail call i32 @get_group_id(i32 1) #2
+  %4 = tail call i32 @get_num_groups(i32 0) #2
+  %5 = add i32 %3, %2
+  %6 = urem i32 %5, %4
+  %7 = tail call i32 @get_local_id(i32 0) #2
+  %8 = tail call i32 @get_local_id(i32 1) #2
+  %9 = tail call i32 @get_local_size(i32 0) #2
+  %10 = mul i32 %9, %6
+  %11 = add i32 %10, %7
+  %12 = mul i32 %9, %2
+  %13 = add i32 %12, %8
+  %14 = shl i32 %1, 2
+  %15 = mul i32 %14, %13
+  %16 = add i32 %11, %15
+  %17 = shl i32 %8, 2
+  %18 = mul i32 %17, %9
+  %19 = add i32 %18, %7
+  %20 = sext i32 %16 to i64
+  %21 = getelementptr inbounds <4 x float> addrspace(1)* %input, i64 %20
+  %22 = load <4 x float> addrspace(1)* %21, align 16, !tbaa !2
+  %23 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %19
+  store <4 x float> %22, <4 x float> addrspace(3)* %23, align 16, !tbaa !2
+  %24 = add i32 %16, %1
+  %25 = sext i32 %24 to i64
+  %26 = getelementptr inbounds <4 x float> addrspace(1)* %input, i64 %25
+  %27 = load <4 x float> addrspace(1)* %26, align 16, !tbaa !2
+  %28 = add i32 %19, %9
+  %29 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %28
+  store <4 x float> %27, <4 x float> addrspace(3)* %29, align 16, !tbaa !2
+  %30 = shl i32 %1, 1
+  %31 = add i32 %16, %30
+  %32 = sext i32 %31 to i64
+  %33 = getelementptr inbounds <4 x float> addrspace(1)* %input, i64 %32
+  %34 = load <4 x float> addrspace(1)* %33, align 16, !tbaa !2
+  %35 = shl i32 %9, 1
+  %36 = add i32 %19, %35
+  %37 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %36
+  store <4 x float> %34, <4 x float> addrspace(3)* %37, align 16, !tbaa !2
+  %38 = mul i32 %1, 3
+  %39 = add i32 %16, %38
+  %40 = sext i32 %39 to i64
+  %41 = getelementptr inbounds <4 x float> addrspace(1)* %input, i64 %40
+  %42 = load <4 x float> addrspace(1)* %41, align 16, !tbaa !2
+  %43 = mul i32 %9, 3
+  %44 = add i32 %19, %43
+  %45 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %44
+  store <4 x float> %42, <4 x float> addrspace(3)* %45, align 16, !tbaa !2
   tail call void @barrier(i32 1) #2
-  %add34 = add i32 %mul8, %call4
-  %add36 = add i32 %mul, %call5
-  %mul38 = mul i32 %mul10, %add36
-  %add39 = add i32 %add34, %mul38
-  %mul40 = shl i32 %call4, 2
-  %mul41 = mul i32 %mul40, %call6
-  %add42 = add i32 %mul41, %call5
-  %arrayidx43 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %add42
-  %8 = load <4 x float> addrspace(3)* %arrayidx43, align 16, !tbaa !2
-  %add44 = add i32 %add42, %call6
-  %arrayidx45 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %add44
-  %9 = load <4 x float> addrspace(3)* %arrayidx45, align 16, !tbaa !2
-  %add47 = add i32 %add42, %mul24
-  %arrayidx48 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %add47
-  %10 = load <4 x float> addrspace(3)* %arrayidx48, align 16, !tbaa !2
-  %add50 = add i32 %add42, %mul30
-  %arrayidx51 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %add50
-  %11 = load <4 x float> addrspace(3)* %arrayidx51, align 16, !tbaa !2
-  %vecinit52 = shufflevector <4 x float> %8, <4 x float> %9, <4 x i32> <i32 0, i32 4, i32 undef, i32 undef>
-  %vecinit53 = shufflevector <4 x float> %vecinit52, <4 x float> %10, <4 x i32> <i32 0, i32 1, i32 4, i32 undef>
-  %vecinit54 = shufflevector <4 x float> %vecinit53, <4 x float> %11, <4 x i32> <i32 0, i32 1, i32 2, i32 4>
-  %12 = sext i32 %add39 to i64
-  %arrayidx55 = getelementptr inbounds <4 x float> addrspace(1)* %output, i64 %12
-  store <4 x float> %vecinit54, <4 x float> addrspace(1)* %arrayidx55, align 16, !tbaa !2
-  %vecinit58 = shufflevector <4 x float> %8, <4 x float> %9, <4 x i32> <i32 1, i32 5, i32 undef, i32 undef>
-  %vecinit59 = shufflevector <4 x float> %vecinit58, <4 x float> %10, <4 x i32> <i32 0, i32 1, i32 5, i32 undef>
-  %vecinit60 = shufflevector <4 x float> %vecinit59, <4 x float> %11, <4 x i32> <i32 0, i32 1, i32 2, i32 5>
-  %add61 = add i32 %add39, %call
-  %13 = sext i32 %add61 to i64
-  %arrayidx62 = getelementptr inbounds <4 x float> addrspace(1)* %output, i64 %13
-  store <4 x float> %vecinit60, <4 x float> addrspace(1)* %arrayidx62, align 16, !tbaa !2
-  %vecinit65 = shufflevector <4 x float> %8, <4 x float> %9, <4 x i32> <i32 2, i32 6, i32 undef, i32 undef>
-  %vecinit66 = shufflevector <4 x float> %vecinit65, <4 x float> %10, <4 x i32> <i32 0, i32 1, i32 6, i32 undef>
-  %vecinit67 = shufflevector <4 x float> %vecinit66, <4 x float> %11, <4 x i32> <i32 0, i32 1, i32 2, i32 6>
-  %add69 = add i32 %add39, %mul21
-  %14 = sext i32 %add69 to i64
-  %arrayidx70 = getelementptr inbounds <4 x float> addrspace(1)* %output, i64 %14
-  store <4 x float> %vecinit67, <4 x float> addrspace(1)* %arrayidx70, align 16, !tbaa !2
-  %vecinit73 = shufflevector <4 x float> %8, <4 x float> %9, <4 x i32> <i32 3, i32 7, i32 undef, i32 undef>
-  %vecinit74 = shufflevector <4 x float> %vecinit73, <4 x float> %10, <4 x i32> <i32 0, i32 1, i32 7, i32 undef>
-  %vecinit75 = shufflevector <4 x float> %vecinit74, <4 x float> %11, <4 x i32> <i32 0, i32 1, i32 2, i32 7>
-  %add77 = add i32 %add39, %mul27
-  %15 = sext i32 %add77 to i64
-  %arrayidx78 = getelementptr inbounds <4 x float> addrspace(1)* %output, i64 %15
-  store <4 x float> %vecinit75, <4 x float> addrspace(1)* %arrayidx78, align 16, !tbaa !2
+  %46 = add i32 %12, %7
+  %47 = add i32 %10, %8
+  %48 = mul i32 %14, %47
+  %49 = add i32 %46, %48
+  %50 = shl i32 %7, 2
+  %51 = mul i32 %50, %9
+  %52 = add i32 %51, %8
+  %53 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %52
+  %54 = load <4 x float> addrspace(3)* %53, align 16, !tbaa !2
+  %55 = add i32 %52, %9
+  %56 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %55
+  %57 = load <4 x float> addrspace(3)* %56, align 16, !tbaa !2
+  %58 = add i32 %52, %35
+  %59 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %58
+  %60 = load <4 x float> addrspace(3)* %59, align 16, !tbaa !2
+  %61 = add i32 %52, %43
+  %62 = getelementptr inbounds <4 x float> addrspace(3)* %block, i32 %61
+  %63 = load <4 x float> addrspace(3)* %62, align 16, !tbaa !2
+  %64 = shufflevector <4 x float> %54, <4 x float> %57, <4 x i32> <i32 0, i32 4, i32 undef, i32 undef>
+  %65 = shufflevector <4 x float> %64, <4 x float> %60, <4 x i32> <i32 0, i32 1, i32 4, i32 undef>
+  %66 = shufflevector <4 x float> %65, <4 x float> %63, <4 x i32> <i32 0, i32 1, i32 2, i32 4>
+  %67 = sext i32 %49 to i64
+  %68 = getelementptr inbounds <4 x float> addrspace(1)* %output, i64 %67
+  store <4 x float> %66, <4 x float> addrspace(1)* %68, align 16, !tbaa !2
+  %69 = shufflevector <4 x float> %54, <4 x float> %57, <4 x i32> <i32 1, i32 5, i32 undef, i32 undef>
+  %70 = shufflevector <4 x float> %69, <4 x float> %60, <4 x i32> <i32 0, i32 1, i32 5, i32 undef>
+  %71 = shufflevector <4 x float> %70, <4 x float> %63, <4 x i32> <i32 0, i32 1, i32 2, i32 5>
+  %72 = add i32 %49, %1
+  %73 = sext i32 %72 to i64
+  %74 = getelementptr inbounds <4 x float> addrspace(1)* %output, i64 %73
+  store <4 x float> %71, <4 x float> addrspace(1)* %74, align 16, !tbaa !2
+  %75 = shufflevector <4 x float> %54, <4 x float> %57, <4 x i32> <i32 2, i32 6, i32 undef, i32 undef>
+  %76 = shufflevector <4 x float> %75, <4 x float> %60, <4 x i32> <i32 0, i32 1, i32 6, i32 undef>
+  %77 = shufflevector <4 x float> %76, <4 x float> %63, <4 x i32> <i32 0, i32 1, i32 2, i32 6>
+  %78 = add i32 %49, %30
+  %79 = sext i32 %78 to i64
+  %80 = getelementptr inbounds <4 x float> addrspace(1)* %output, i64 %79
+  store <4 x float> %77, <4 x float> addrspace(1)* %80, align 16, !tbaa !2
+  %81 = shufflevector <4 x float> %54, <4 x float> %57, <4 x i32> <i32 3, i32 7, i32 undef, i32 undef>
+  %82 = shufflevector <4 x float> %81, <4 x float> %60, <4 x i32> <i32 0, i32 1, i32 7, i32 undef>
+  %83 = shufflevector <4 x float> %82, <4 x float> %63, <4 x i32> <i32 0, i32 1, i32 2, i32 7>
+  %84 = add i32 %49, %38
+  %85 = sext i32 %84 to i64
+  %86 = getelementptr inbounds <4 x float> addrspace(1)* %output, i64 %85
+  store <4 x float> %83, <4 x float> addrspace(1)* %86, align 16, !tbaa !2
   ret void
 }
 
@@ -123,7 +122,7 @@ attributes #2 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (<4 x float> addrspace(1)*, <4 x float> addrspace(1)*, <4 x float> addrspace(3)*)* @matrixTranspose}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !2 = metadata !{metadata !3, metadata !3, i64 0}
 !3 = metadata !{metadata !"omnipotent char", metadata !4, i64 0}
 !4 = metadata !{metadata !"Simple C/C++ TBAA"}

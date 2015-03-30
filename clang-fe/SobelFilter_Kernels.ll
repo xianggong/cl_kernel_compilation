@@ -4,92 +4,91 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @sobel_filter(<4 x i8> addrspace(1)* nocapture readonly %inputImage, <4 x i8> addrspace(1)* nocapture %outputImage) #0 {
-entry:
-  %call = tail call i32 @get_global_id(i32 0) #3
-  %call1 = tail call i32 @get_global_id(i32 1) #3
-  %call2 = tail call i32 @get_global_size(i32 0) #3
-  %call3 = tail call i32 @get_global_size(i32 1) #3
-  %mul = mul i32 %call2, %call1
-  %add = add i32 %mul, %call
-  %cmp = icmp eq i32 %call, 0
-  br i1 %cmp, label %if.end, label %land.lhs.true
+  %1 = tail call i32 @get_global_id(i32 0) #3
+  %2 = tail call i32 @get_global_id(i32 1) #3
+  %3 = tail call i32 @get_global_size(i32 0) #3
+  %4 = tail call i32 @get_global_size(i32 1) #3
+  %5 = mul i32 %3, %2
+  %6 = add i32 %5, %1
+  %7 = icmp eq i32 %1, 0
+  br i1 %7, label %76, label %8
 
-land.lhs.true:                                    ; preds = %entry
-  %sub = add i32 %call2, -1
-  %cmp4 = icmp ult i32 %call, %sub
-  %cmp6 = icmp ne i32 %call1, 0
-  %or.cond = and i1 %cmp4, %cmp6
-  %sub8 = add i32 %call3, -1
-  %cmp9 = icmp ult i32 %call1, %sub8
-  %or.cond88 = and i1 %or.cond, %cmp9
-  br i1 %or.cond88, label %if.then, label %if.end
+; <label>:8                                       ; preds = %0
+  %9 = add i32 %3, -1
+  %10 = icmp ult i32 %1, %9
+  %11 = icmp ne i32 %2, 0
+  %or.cond = and i1 %10, %11
+  %12 = add i32 %4, -1
+  %13 = icmp ult i32 %2, %12
+  %or.cond3 = and i1 %or.cond, %13
+  br i1 %or.cond3, label %14, label %76
 
-if.then:                                          ; preds = %land.lhs.true
-  %sub10 = add nsw i32 %add, -1
-  %sub11 = sub i32 %sub10, %call2
-  %0 = sext i32 %sub11 to i64
-  %arrayidx = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %0
-  %1 = load <4 x i8> addrspace(1)* %arrayidx, align 4, !tbaa !2
-  %call12 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %1) #3
-  %sub13 = sub i32 %add, %call2
-  %2 = sext i32 %sub13 to i64
-  %arrayidx14 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %2
-  %3 = load <4 x i8> addrspace(1)* %arrayidx14, align 4, !tbaa !2
-  %call15 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %3) #3
-  %add16 = add nsw i32 %add, 1
-  %sub17 = sub i32 %add16, %call2
-  %4 = sext i32 %sub17 to i64
-  %arrayidx18 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %4
-  %5 = load <4 x i8> addrspace(1)* %arrayidx18, align 4, !tbaa !2
-  %call19 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %5) #3
-  %6 = sext i32 %sub10 to i64
-  %arrayidx21 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %6
-  %7 = load <4 x i8> addrspace(1)* %arrayidx21, align 4, !tbaa !2
-  %call22 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %7) #3
-  %8 = sext i32 %add to i64
-  %arrayidx23 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %8
-  %9 = load <4 x i8> addrspace(1)* %arrayidx23, align 4, !tbaa !2
-  %call24 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %9) #3
-  %10 = sext i32 %add16 to i64
-  %arrayidx26 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %10
-  %11 = load <4 x i8> addrspace(1)* %arrayidx26, align 4, !tbaa !2
-  %call27 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %11) #3
-  %add29 = add i32 %sub10, %call2
-  %12 = sext i32 %add29 to i64
-  %arrayidx30 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %12
-  %13 = load <4 x i8> addrspace(1)* %arrayidx30, align 4, !tbaa !2
-  %call31 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %13) #3
-  %add32 = add i32 %add, %call2
-  %14 = sext i32 %add32 to i64
-  %arrayidx33 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %14
-  %15 = load <4 x i8> addrspace(1)* %arrayidx33, align 4, !tbaa !2
-  %call34 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %15) #3
-  %add36 = add i32 %add16, %call2
-  %16 = sext i32 %add36 to i64
-  %arrayidx37 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %16
-  %17 = load <4 x i8> addrspace(1)* %arrayidx37, align 4, !tbaa !2
-  %call38 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %17) #3
-  %18 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, <4 x float> %call15, <4 x float> %call12)
-  %add40 = fadd <4 x float> %call19, %18
-  %sub41 = fsub <4 x float> %add40, %call31
-  %mul42 = fmul <4 x float> %call34, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
-  %sub43 = fsub <4 x float> %sub41, %mul42
-  %sub44 = fsub <4 x float> %sub43, %call38
-  %sub45 = fsub <4 x float> %call12, %call19
-  %mul46 = fmul <4 x float> %call22, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
-  %add47 = fadd <4 x float> %sub45, %mul46
-  %mul48 = fmul <4 x float> %call27, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
-  %sub49 = fsub <4 x float> %add47, %mul48
-  %add50 = fadd <4 x float> %sub49, %call31
-  %sub51 = fsub <4 x float> %add50, %call38
-  %call52 = tail call <4 x float> @_Z5hypotDv4_fS_(<4 x float> %sub44, <4 x float> %sub51) #3
-  %div = fdiv <4 x float> %call52, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !5
-  %call53 = tail call <4 x i8> @_Z14convert_uchar4Dv4_f(<4 x float> %div) #3
-  %arrayidx54 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i64 %8
-  store <4 x i8> %call53, <4 x i8> addrspace(1)* %arrayidx54, align 4, !tbaa !2
-  br label %if.end
+; <label>:14                                      ; preds = %8
+  %15 = add nsw i32 %6, -1
+  %16 = sub i32 %15, %3
+  %17 = sext i32 %16 to i64
+  %18 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %17
+  %19 = load <4 x i8> addrspace(1)* %18, align 4, !tbaa !2
+  %20 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %19) #3
+  %21 = sub i32 %6, %3
+  %22 = sext i32 %21 to i64
+  %23 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %22
+  %24 = load <4 x i8> addrspace(1)* %23, align 4, !tbaa !2
+  %25 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %24) #3
+  %26 = add nsw i32 %6, 1
+  %27 = sub i32 %26, %3
+  %28 = sext i32 %27 to i64
+  %29 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %28
+  %30 = load <4 x i8> addrspace(1)* %29, align 4, !tbaa !2
+  %31 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %30) #3
+  %32 = sext i32 %15 to i64
+  %33 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %32
+  %34 = load <4 x i8> addrspace(1)* %33, align 4, !tbaa !2
+  %35 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %34) #3
+  %36 = sext i32 %6 to i64
+  %37 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %36
+  %38 = load <4 x i8> addrspace(1)* %37, align 4, !tbaa !2
+  %39 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %38) #3
+  %40 = sext i32 %26 to i64
+  %41 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %40
+  %42 = load <4 x i8> addrspace(1)* %41, align 4, !tbaa !2
+  %43 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %42) #3
+  %44 = add i32 %15, %3
+  %45 = sext i32 %44 to i64
+  %46 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %45
+  %47 = load <4 x i8> addrspace(1)* %46, align 4, !tbaa !2
+  %48 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %47) #3
+  %49 = add i32 %6, %3
+  %50 = sext i32 %49 to i64
+  %51 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %50
+  %52 = load <4 x i8> addrspace(1)* %51, align 4, !tbaa !2
+  %53 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %52) #3
+  %54 = add i32 %26, %3
+  %55 = sext i32 %54 to i64
+  %56 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %55
+  %57 = load <4 x i8> addrspace(1)* %56, align 4, !tbaa !2
+  %58 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %57) #3
+  %59 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, <4 x float> %25, <4 x float> %20)
+  %60 = fadd <4 x float> %31, %59
+  %61 = fsub <4 x float> %60, %48
+  %62 = fmul <4 x float> %53, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
+  %63 = fsub <4 x float> %61, %62
+  %64 = fsub <4 x float> %63, %58
+  %65 = fsub <4 x float> %20, %31
+  %66 = fmul <4 x float> %35, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
+  %67 = fadd <4 x float> %65, %66
+  %68 = fmul <4 x float> %43, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
+  %69 = fsub <4 x float> %67, %68
+  %70 = fadd <4 x float> %69, %48
+  %71 = fsub <4 x float> %70, %58
+  %72 = tail call <4 x float> @_Z5hypotDv4_fS_(<4 x float> %64, <4 x float> %71) #3
+  %73 = fdiv <4 x float> %72, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !5
+  %74 = tail call <4 x i8> @_Z14convert_uchar4Dv4_f(<4 x float> %73) #3
+  %75 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i64 %36
+  store <4 x i8> %74, <4 x i8> addrspace(1)* %75, align 4, !tbaa !2
+  br label %76
 
-if.end:                                           ; preds = %entry, %if.then, %land.lhs.true
+; <label>:76                                      ; preds = %0, %14, %8
   ret void
 }
 
@@ -115,7 +114,7 @@ attributes #3 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (<4 x i8> addrspace(1)*, <4 x i8> addrspace(1)*)* @sobel_filter}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !2 = metadata !{metadata !3, metadata !3, i64 0}
 !3 = metadata !{metadata !"omnipotent char", metadata !4, i64 0}
 !4 = metadata !{metadata !"Simple C/C++ TBAA"}

@@ -4,32 +4,31 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @sineWave(<4 x float> addrspace(1)* nocapture %pos, i32 %width, i32 %height, float %time) #0 {
-entry:
-  %call = tail call i32 @get_global_id(i32 0) #3
-  %call1 = tail call i32 @get_global_id(i32 1) #3
-  %conv = uitofp i32 %call to float
-  %conv2 = uitofp i32 %width to float
-  %div = fdiv float %conv, %conv2, !fpmath !2
-  %conv3 = uitofp i32 %call1 to float
-  %conv4 = uitofp i32 %height to float
-  %div5 = fdiv float %conv3, %conv4, !fpmath !2
-  %0 = tail call float @llvm.fmuladd.f32(float %div, float 2.000000e+00, float -1.000000e+00)
-  %1 = tail call float @llvm.fmuladd.f32(float %div5, float 2.000000e+00, float -1.000000e+00)
-  %2 = tail call float @llvm.fmuladd.f32(float %0, float 4.000000e+00, float %time)
-  %call6 = tail call float @_Z3sinf(float %2) #3
-  %3 = tail call float @llvm.fmuladd.f32(float %1, float 4.000000e+00, float %time)
-  %call7 = tail call float @_Z3cosf(float %3) #3
-  %mul = fmul float %call6, %call7
-  %mul8 = fmul float %mul, 5.000000e-01
-  %vecinit = insertelement <4 x float> undef, float %0, i32 0
-  %vecinit9 = insertelement <4 x float> %vecinit, float %mul8, i32 1
-  %vecinit10 = insertelement <4 x float> %vecinit9, float %1, i32 2
-  %vecinit11 = insertelement <4 x float> %vecinit10, float 1.000000e+00, i32 3
-  %mul12 = mul i32 %call1, %width
-  %add = add i32 %mul12, %call
-  %4 = sext i32 %add to i64
-  %arrayidx = getelementptr inbounds <4 x float> addrspace(1)* %pos, i64 %4
-  store <4 x float> %vecinit11, <4 x float> addrspace(1)* %arrayidx, align 16, !tbaa !3
+  %1 = tail call i32 @get_global_id(i32 0) #3
+  %2 = tail call i32 @get_global_id(i32 1) #3
+  %3 = uitofp i32 %1 to float
+  %4 = uitofp i32 %width to float
+  %5 = fdiv float %3, %4, !fpmath !2
+  %6 = uitofp i32 %2 to float
+  %7 = uitofp i32 %height to float
+  %8 = fdiv float %6, %7, !fpmath !2
+  %9 = tail call float @llvm.fmuladd.f32(float %5, float 2.000000e+00, float -1.000000e+00)
+  %10 = tail call float @llvm.fmuladd.f32(float %8, float 2.000000e+00, float -1.000000e+00)
+  %11 = tail call float @llvm.fmuladd.f32(float %9, float 4.000000e+00, float %time)
+  %12 = tail call float @_Z3sinf(float %11) #3
+  %13 = tail call float @llvm.fmuladd.f32(float %10, float 4.000000e+00, float %time)
+  %14 = tail call float @_Z3cosf(float %13) #3
+  %15 = fmul float %12, %14
+  %16 = fmul float %15, 5.000000e-01
+  %17 = insertelement <4 x float> undef, float %9, i32 0
+  %18 = insertelement <4 x float> %17, float %16, i32 1
+  %19 = insertelement <4 x float> %18, float %10, i32 2
+  %20 = insertelement <4 x float> %19, float 1.000000e+00, i32 3
+  %21 = mul i32 %2, %width
+  %22 = add i32 %21, %1
+  %23 = sext i32 %22 to i64
+  %24 = getelementptr inbounds <4 x float> addrspace(1)* %pos, i64 %23
+  store <4 x float> %20, <4 x float> addrspace(1)* %24, align 16, !tbaa !3
   ret void
 }
 
@@ -51,7 +50,7 @@ attributes #3 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (<4 x float> addrspace(1)*, i32, i32, float)* @sineWave}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !2 = metadata !{float 2.500000e+00}
 !3 = metadata !{metadata !4, metadata !4, i64 0}
 !4 = metadata !{metadata !"omnipotent char", metadata !5, i64 0}

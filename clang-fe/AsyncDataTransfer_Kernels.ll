@@ -4,66 +4,65 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @work(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %multiplier) #0 {
-entry:
   %zero = alloca i32, align 4
-  %call = tail call i32 @get_global_size(i32 0) #2
-  %call1 = tail call i32 @get_global_id(i32 0) #2
+  %1 = tail call i32 @get_global_size(i32 0) #2
+  %2 = tail call i32 @get_global_id(i32 0) #2
   store volatile i32 0, i32* %zero, align 4
-  br label %for.body
+  br label %3
 
-for.body:                                         ; preds = %for.body, %entry
-  %i.051 = phi i32 [ 5, %entry ], [ %inc, %for.body ]
-  %tmp.050 = phi i32 [ 1, %entry ], [ %add23, %for.body ]
-  %rem = srem i32 %i.051, %call
-  %0 = sext i32 %rem to i64
-  %arrayidx = getelementptr inbounds i8 addrspace(1)* %input, i64 %0
-  %1 = load i8 addrspace(1)* %arrayidx, align 1, !tbaa !2
-  %conv = zext i8 %1 to i32
-  %mul4 = shl nsw i32 %i.051, 1
-  %rem5 = srem i32 %mul4, %call
-  %2 = sext i32 %rem5 to i64
-  %arrayidx6 = getelementptr inbounds i8 addrspace(1)* %input, i64 %2
-  %3 = load i8 addrspace(1)* %arrayidx6, align 1, !tbaa !2
-  %conv7 = zext i8 %3 to i32
-  %mul8 = mul nsw i32 %i.051, 3
-  %rem9 = srem i32 %mul8, %call
-  %4 = sext i32 %rem9 to i64
-  %arrayidx10 = getelementptr inbounds i8 addrspace(1)* %input, i64 %4
-  %5 = load i8 addrspace(1)* %arrayidx10, align 1, !tbaa !2
-  %conv11 = zext i8 %5 to i32
-  %mul13 = shl nsw i32 %i.051, 2
-  %rem14 = srem i32 %mul13, %call
-  %6 = sext i32 %rem14 to i64
-  %arrayidx15 = getelementptr inbounds i8 addrspace(1)* %input, i64 %6
-  %7 = load i8 addrspace(1)* %arrayidx15, align 1, !tbaa !2
-  %conv16 = zext i8 %7 to i32
-  %mul18 = mul nsw i32 %i.051, 5
-  %rem19 = srem i32 %mul18, %call
-  %8 = sext i32 %rem19 to i64
-  %arrayidx20 = getelementptr inbounds i8 addrspace(1)* %input, i64 %8
-  %9 = load i8 addrspace(1)* %arrayidx20, align 1, !tbaa !2
-  %conv21 = zext i8 %9 to i32
-  %add = add i32 %conv, %tmp.050
-  %add12 = add i32 %add, %conv7
-  %add17 = add i32 %add12, %conv11
-  %add22 = add i32 %add17, %conv16
-  %add23 = add i32 %add22, %conv21
-  %inc = add nsw i32 %i.051, 1
-  %exitcond = icmp eq i32 %inc, 100
-  br i1 %exitcond, label %for.end, label %for.body
+; <label>:3                                       ; preds = %3, %0
+  %i.02 = phi i32 [ 5, %0 ], [ %38, %3 ]
+  %tmp.01 = phi i32 [ 1, %0 ], [ %37, %3 ]
+  %4 = srem i32 %i.02, %1
+  %5 = sext i32 %4 to i64
+  %6 = getelementptr inbounds i8 addrspace(1)* %input, i64 %5
+  %7 = load i8 addrspace(1)* %6, align 1, !tbaa !2
+  %8 = zext i8 %7 to i32
+  %9 = shl nsw i32 %i.02, 1
+  %10 = srem i32 %9, %1
+  %11 = sext i32 %10 to i64
+  %12 = getelementptr inbounds i8 addrspace(1)* %input, i64 %11
+  %13 = load i8 addrspace(1)* %12, align 1, !tbaa !2
+  %14 = zext i8 %13 to i32
+  %15 = mul nsw i32 %i.02, 3
+  %16 = srem i32 %15, %1
+  %17 = sext i32 %16 to i64
+  %18 = getelementptr inbounds i8 addrspace(1)* %input, i64 %17
+  %19 = load i8 addrspace(1)* %18, align 1, !tbaa !2
+  %20 = zext i8 %19 to i32
+  %21 = shl nsw i32 %i.02, 2
+  %22 = srem i32 %21, %1
+  %23 = sext i32 %22 to i64
+  %24 = getelementptr inbounds i8 addrspace(1)* %input, i64 %23
+  %25 = load i8 addrspace(1)* %24, align 1, !tbaa !2
+  %26 = zext i8 %25 to i32
+  %27 = mul nsw i32 %i.02, 5
+  %28 = srem i32 %27, %1
+  %29 = sext i32 %28 to i64
+  %30 = getelementptr inbounds i8 addrspace(1)* %input, i64 %29
+  %31 = load i8 addrspace(1)* %30, align 1, !tbaa !2
+  %32 = zext i8 %31 to i32
+  %33 = add i32 %8, %tmp.01
+  %34 = add i32 %33, %14
+  %35 = add i32 %34, %20
+  %36 = add i32 %35, %26
+  %37 = add i32 %36, %32
+  %38 = add nsw i32 %i.02, 1
+  %exitcond = icmp eq i32 %38, 100
+  br i1 %exitcond, label %39, label %3
 
-for.end:                                          ; preds = %for.body
-  %10 = sext i32 %call1 to i64
-  %arrayidx24 = getelementptr inbounds i8 addrspace(1)* %input, i64 %10
-  %11 = load i8 addrspace(1)* %arrayidx24, align 1, !tbaa !2
-  %conv25 = zext i8 %11 to i32
-  %mul26 = mul nsw i32 %conv25, %multiplier
-  %zero.0.load49 = load volatile i32* %zero, align 4
-  %mul28 = mul i32 %zero.0.load49, %add23
-  %add29 = add i32 %mul26, %mul28
-  %conv30 = trunc i32 %add29 to i8
-  %arrayidx31 = getelementptr inbounds i8 addrspace(1)* %output, i64 %10
-  store i8 %conv30, i8 addrspace(1)* %arrayidx31, align 1, !tbaa !2
+; <label>:39                                      ; preds = %3
+  %40 = sext i32 %2 to i64
+  %41 = getelementptr inbounds i8 addrspace(1)* %input, i64 %40
+  %42 = load i8 addrspace(1)* %41, align 1, !tbaa !2
+  %43 = zext i8 %42 to i32
+  %44 = mul nsw i32 %43, %multiplier
+  %45 = load volatile i32* %zero, align 4
+  %46 = mul i32 %45, %37
+  %47 = add i32 %44, %46
+  %48 = trunc i32 %47 to i8
+  %49 = getelementptr inbounds i8 addrspace(1)* %output, i64 %40
+  store i8 %48, i8 addrspace(1)* %49, align 1, !tbaa !2
   ret void
 }
 
@@ -79,7 +78,7 @@ attributes #2 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (i8 addrspace(1)*, i8 addrspace(1)*, i32)* @work}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !2 = metadata !{metadata !3, metadata !3, i64 0}
 !3 = metadata !{metadata !"omnipotent char", metadata !4, i64 0}
 !4 = metadata !{metadata !"Simple C/C++ TBAA"}

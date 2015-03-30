@@ -6,19 +6,18 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @OverLap(%opencl.image2d_t* %pconfig_src, %opencl.image2d_t* %pconfig_src2, %opencl.image2d_t* %pconfig_dst) #0 {
-entry:
-  %call = tail call i32 @get_global_id(i32 0) #2
-  %call1 = tail call i32 @get_global_id(i32 1) #2
-  %0 = insertelement <2 x i32> undef, i32 %call, i32 0
-  %1 = insertelement <2 x i32> %0, i32 %call1, i32 1
-  %call2 = tail call i32 bitcast (i32 (...)* @read_imageui to i32 (%opencl.image2d_t*, i32, <2 x i32>)*)(%opencl.image2d_t* %pconfig_src, i32 0, <2 x i32> %1) #2
-  %splat.splatinsert = insertelement <4 x i32> undef, i32 %call2, i32 0
-  %splat.splat = shufflevector <4 x i32> %splat.splatinsert, <4 x i32> undef, <4 x i32> zeroinitializer
-  %call3 = tail call i32 bitcast (i32 (...)* @read_imageui to i32 (%opencl.image2d_t*, i32, <2 x i32>)*)(%opencl.image2d_t* %pconfig_src2, i32 0, <2 x i32> %1) #2
-  %splat.splatinsert4 = insertelement <4 x i32> undef, i32 %call3, i32 0
-  %splat.splat5 = shufflevector <4 x i32> %splat.splatinsert4, <4 x i32> undef, <4 x i32> zeroinitializer
-  %add = add <4 x i32> %splat.splat, %splat.splat5
-  %call6 = tail call i32 bitcast (i32 (...)* @write_imageui to i32 (%opencl.image2d_t*, <2 x i32>, <4 x i32>)*)(%opencl.image2d_t* %pconfig_dst, <2 x i32> %1, <4 x i32> %add) #2
+  %1 = tail call i32 @get_global_id(i32 0) #2
+  %2 = tail call i32 @get_global_id(i32 1) #2
+  %3 = insertelement <2 x i32> undef, i32 %1, i32 0
+  %4 = insertelement <2 x i32> %3, i32 %2, i32 1
+  %5 = tail call i32 bitcast (i32 (...)* @read_imageui to i32 (%opencl.image2d_t*, i32, <2 x i32>)*)(%opencl.image2d_t* %pconfig_src, i32 0, <2 x i32> %4) #2
+  %6 = insertelement <4 x i32> undef, i32 %5, i32 0
+  %7 = shufflevector <4 x i32> %6, <4 x i32> undef, <4 x i32> zeroinitializer
+  %8 = tail call i32 bitcast (i32 (...)* @read_imageui to i32 (%opencl.image2d_t*, i32, <2 x i32>)*)(%opencl.image2d_t* %pconfig_src2, i32 0, <2 x i32> %4) #2
+  %9 = insertelement <4 x i32> undef, i32 %8, i32 0
+  %10 = shufflevector <4 x i32> %9, <4 x i32> undef, <4 x i32> zeroinitializer
+  %11 = add <4 x i32> %7, %10
+  %12 = tail call i32 bitcast (i32 (...)* @write_imageui to i32 (%opencl.image2d_t*, <2 x i32>, <4 x i32>)*)(%opencl.image2d_t* %pconfig_dst, <2 x i32> %4, <4 x i32> %11) #2
   ret void
 }
 
@@ -36,4 +35,4 @@ attributes #2 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (%opencl.image2d_t*, %opencl.image2d_t*, %opencl.image2d_t*)* @OverLap}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}

@@ -8,149 +8,147 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind readonly
 define i32 @compare(i8 addrspace(1)* nocapture readonly %text, i8 addrspace(3)* nocapture readonly %pattern, i32 %length) #0 {
-entry:
-  %cmp24 = icmp eq i32 %length, 0
-  br i1 %cmp24, label %return, label %for.body
+  %1 = icmp eq i32 %length, 0
+  br i1 %1, label %split2, label %.lr.ph
 
-for.cond:                                         ; preds = %for.body
-  %cmp = icmp ult i32 %inc, %length
-  br i1 %cmp, label %for.body, label %return
+; <label>:2                                       ; preds = %.lr.ph
+  %3 = icmp ult i32 %14, %length
+  br i1 %3, label %.lr.ph, label %split2
 
-for.body:                                         ; preds = %entry, %for.cond
-  %l.025 = phi i32 [ %inc, %for.cond ], [ 0, %entry ]
-  %0 = sext i32 %l.025 to i64
-  %arrayidx = getelementptr inbounds i8 addrspace(1)* %text, i64 %0
-  %1 = load i8 addrspace(1)* %arrayidx, align 1, !tbaa !3
-  %conv = zext i8 %1 to i32
-  %.off = add i8 %1, -65
-  %2 = icmp ult i8 %.off, 26
-  %add = add nsw i32 %conv, 32
-  %add.conv = select i1 %2, i32 %add, i32 %conv
-  %arrayidx11 = getelementptr inbounds i8 addrspace(3)* %pattern, i32 %l.025
-  %3 = load i8 addrspace(3)* %arrayidx11, align 1, !tbaa !3
-  %conv12 = zext i8 %3 to i32
-  %cmp13 = icmp eq i32 %add.conv, %conv12
-  %inc = add i32 %l.025, 1
-  br i1 %cmp13, label %for.cond, label %return
+.lr.ph:                                           ; preds = %0, %2
+  %l.01 = phi i32 [ %14, %2 ], [ 0, %0 ]
+  %4 = sext i32 %l.01 to i64
+  %5 = getelementptr inbounds i8 addrspace(1)* %text, i64 %4
+  %6 = load i8 addrspace(1)* %5, align 1, !tbaa !3
+  %7 = zext i8 %6 to i32
+  %.off = add i8 %6, -65
+  %8 = icmp ult i8 %.off, 26
+  %9 = add nsw i32 %7, 32
+  %. = select i1 %8, i32 %9, i32 %7
+  %10 = getelementptr inbounds i8 addrspace(3)* %pattern, i32 %l.01
+  %11 = load i8 addrspace(3)* %10, align 1, !tbaa !3
+  %12 = zext i8 %11 to i32
+  %13 = icmp eq i32 %., %12
+  %14 = add i32 %l.01, 1
+  br i1 %13, label %2, label %split2
 
-return:                                           ; preds = %for.cond, %for.body, %entry
-  %retval.0 = phi i32 [ 1, %entry ], [ 0, %for.body ], [ 1, %for.cond ]
-  ret i32 %retval.0
+split2:                                           ; preds = %2, %.lr.ph, %0
+  %.0 = phi i32 [ 1, %0 ], [ 0, %.lr.ph ], [ 1, %2 ]
+  ret i32 %.0
 }
 
 ; Function Attrs: nounwind
 define void @StringSearchNaive(i8 addrspace(1)* nocapture readonly %text, i32 %textLength, i8 addrspace(1)* nocapture readonly %pattern, i32 %patternLength, i32 addrspace(1)* nocapture %resultBuffer, i32 addrspace(1)* nocapture %resultCountPerWG, i32 %maxSearchLength, i8 addrspace(3)* nocapture %localPattern) #1 {
-entry:
-  %call = tail call i32 @get_local_id(i32 0) #3
-  %call1 = tail call i32 @get_local_size(i32 0) #3
-  %call2 = tail call i32 @get_group_id(i32 0) #3
-  %sub = sub i32 %textLength, %patternLength
-  %add = add i32 %sub, 1
-  %mul = mul i32 %call2, %maxSearchLength
-  %add3 = add i32 %mul, %maxSearchLength
-  %cmp = icmp ugt i32 %mul, %add
-  br i1 %cmp, label %if.end47, label %if.end
+  %1 = tail call i32 @get_local_id(i32 0) #3
+  %2 = tail call i32 @get_local_size(i32 0) #3
+  %3 = tail call i32 @get_group_id(i32 0) #3
+  %4 = sub i32 %textLength, %patternLength
+  %5 = add i32 %4, 1
+  %6 = mul i32 %3, %maxSearchLength
+  %7 = add i32 %6, %maxSearchLength
+  %8 = icmp ugt i32 %6, %5
+  br i1 %8, label %56, label %9
 
-if.end:                                           ; preds = %entry
-  %cmp4 = icmp ugt i32 %add3, %add
-  %add.add3 = select i1 %cmp4, i32 %add, i32 %add3
-  %cmp780 = icmp ult i32 %call, %patternLength
-  br i1 %cmp780, label %for.body.lr.ph, label %for.end
+; <label>:9                                       ; preds = %0
+  %10 = icmp ugt i32 %7, %5
+  %. = select i1 %10, i32 %5, i32 %7
+  %11 = icmp ult i32 %1, %patternLength
+  br i1 %11, label %.lr.ph6, label %._crit_edge7
 
-for.body.lr.ph:                                   ; preds = %if.end
-  %0 = sext i32 %call to i64
-  %1 = sext i32 %call1 to i64
-  br label %for.body
+.lr.ph6:                                          ; preds = %9
+  %12 = sext i32 %1 to i64
+  %13 = sext i32 %2 to i64
+  br label %14
 
-for.body:                                         ; preds = %for.body.lr.ph, %for.body
-  %indvars.iv = phi i64 [ %0, %for.body.lr.ph ], [ %indvars.iv.next, %for.body ]
-  %idx.081 = phi i32 [ %call, %for.body.lr.ph ], [ %add22, %for.body ]
-  %arrayidx = getelementptr inbounds i8 addrspace(1)* %pattern, i64 %indvars.iv
-  %2 = load i8 addrspace(1)* %arrayidx, align 1, !tbaa !3
-  %conv = zext i8 %2 to i32
-  %.off = add i8 %2, -65
-  %3 = icmp ult i8 %.off, 26
-  %add17 = add nsw i32 %conv, 32
-  %add17.conv = select i1 %3, i32 %add17, i32 %conv
-  %conv20 = trunc i32 %add17.conv to i8
-  %arrayidx21 = getelementptr inbounds i8 addrspace(3)* %localPattern, i32 %idx.081
-  store i8 %conv20, i8 addrspace(3)* %arrayidx21, align 1, !tbaa !3
-  %indvars.iv.next = add nsw i64 %indvars.iv, %1
-  %add22 = add nsw i32 %idx.081, %call1
-  %4 = trunc i64 %indvars.iv.next to i32
-  %cmp7 = icmp ult i32 %4, %patternLength
-  br i1 %cmp7, label %for.body, label %for.end
+; <label>:14                                      ; preds = %.lr.ph6, %14
+  %indvars.iv = phi i64 [ %12, %.lr.ph6 ], [ %indvars.iv.next, %14 ]
+  %idx.04 = phi i32 [ %1, %.lr.ph6 ], [ %22, %14 ]
+  %15 = getelementptr inbounds i8 addrspace(1)* %pattern, i64 %indvars.iv
+  %16 = load i8 addrspace(1)* %15, align 1, !tbaa !3
+  %17 = zext i8 %16 to i32
+  %.off = add i8 %16, -65
+  %18 = icmp ult i8 %.off, 26
+  %19 = add nsw i32 %17, 32
+  %.2 = select i1 %18, i32 %19, i32 %17
+  %20 = trunc i32 %.2 to i8
+  %21 = getelementptr inbounds i8 addrspace(3)* %localPattern, i32 %idx.04
+  store i8 %20, i8 addrspace(3)* %21, align 1, !tbaa !3
+  %indvars.iv.next = add nsw i64 %indvars.iv, %13
+  %22 = add nsw i32 %idx.04, %2
+  %23 = trunc i64 %indvars.iv.next to i32
+  %24 = icmp ult i32 %23, %patternLength
+  br i1 %24, label %14, label %._crit_edge7
 
-for.end:                                          ; preds = %for.body, %if.end
-  %cmp23 = icmp eq i32 %call, 0
-  br i1 %cmp23, label %if.then25, label %if.end26
+._crit_edge7:                                     ; preds = %14, %9
+  %25 = icmp eq i32 %1, 0
+  br i1 %25, label %26, label %27
 
-if.then25:                                        ; preds = %for.end
+; <label>:26                                      ; preds = %._crit_edge7
   store volatile i32 0, i32 addrspace(3)* @StringSearchNaive.groupSuccessCounter, align 4, !tbaa !6
-  br label %if.end26
+  br label %27
 
-if.end26:                                         ; preds = %if.then25, %for.end
+; <label>:27                                      ; preds = %26, %._crit_edge7
   tail call void @barrier(i32 1) #3
-  %add27 = add i32 %mul, %call
-  %cmp2978 = icmp ult i32 %add27, %add.add3
-  br i1 %cmp2978, label %for.body31.lr.ph, label %for.end42
+  %28 = add i32 %6, %1
+  %29 = icmp ult i32 %28, %.
+  br i1 %29, label %.lr.ph, label %._crit_edge
 
-for.body31.lr.ph:                                 ; preds = %if.end26
-  %cmp24.i = icmp eq i32 %patternLength, 0
-  br label %for.body31
+.lr.ph:                                           ; preds = %27
+  %30 = icmp eq i32 %patternLength, 0
+  br label %31
 
-for.body31:                                       ; preds = %for.body31.lr.ph, %for.inc40
-  %stringPos.079 = phi i32 [ %add27, %for.body31.lr.ph ], [ %add41, %for.inc40 ]
-  %5 = sext i32 %stringPos.079 to i64
-  br i1 %cmp24.i, label %if.then35, label %for.body.i
+; <label>:31                                      ; preds = %.lr.ph, %compare.exit.thread1
+  %stringPos.03 = phi i32 [ %28, %.lr.ph ], [ %50, %compare.exit.thread1 ]
+  %32 = sext i32 %stringPos.03 to i64
+  br i1 %30, label %.loopexit, label %.lr.ph.i
 
-for.cond.i:                                       ; preds = %for.body.i
-  %cmp.i = icmp ult i32 %inc.i, %patternLength
-  br i1 %cmp.i, label %for.body.i, label %if.then35
+; <label>:33                                      ; preds = %.lr.ph.i
+  %34 = icmp ult i32 %45, %patternLength
+  br i1 %34, label %.lr.ph.i, label %.loopexit
 
-for.body.i:                                       ; preds = %for.body31, %for.cond.i
-  %l.025.i = phi i32 [ %inc.i, %for.cond.i ], [ 0, %for.body31 ]
-  %6 = sext i32 %l.025.i to i64
-  %add.ptr.sum = add i64 %6, %5
-  %arrayidx.i = getelementptr inbounds i8 addrspace(1)* %text, i64 %add.ptr.sum
-  %7 = load i8 addrspace(1)* %arrayidx.i, align 1, !tbaa !3
-  %conv.i = zext i8 %7 to i32
-  %.off.i = add i8 %7, -65
-  %8 = icmp ult i8 %.off.i, 26
-  %add.i = add nsw i32 %conv.i, 32
-  %add.conv.i = select i1 %8, i32 %add.i, i32 %conv.i
-  %arrayidx11.i = getelementptr inbounds i8 addrspace(3)* %localPattern, i32 %l.025.i
-  %9 = load i8 addrspace(3)* %arrayidx11.i, align 1, !tbaa !3
-  %conv12.i = zext i8 %9 to i32
-  %cmp13.i = icmp eq i32 %add.conv.i, %conv12.i
-  %inc.i = add i32 %l.025.i, 1
-  br i1 %cmp13.i, label %for.cond.i, label %for.inc40
+.lr.ph.i:                                         ; preds = %31, %33
+  %l.01.i = phi i32 [ %45, %33 ], [ 0, %31 ]
+  %35 = sext i32 %l.01.i to i64
+  %.sum = add i64 %35, %32
+  %36 = getelementptr inbounds i8 addrspace(1)* %text, i64 %.sum
+  %37 = load i8 addrspace(1)* %36, align 1, !tbaa !3
+  %38 = zext i8 %37 to i32
+  %.off.i = add i8 %37, -65
+  %39 = icmp ult i8 %.off.i, 26
+  %40 = add nsw i32 %38, 32
+  %..i = select i1 %39, i32 %40, i32 %38
+  %41 = getelementptr inbounds i8 addrspace(3)* %localPattern, i32 %l.01.i
+  %42 = load i8 addrspace(3)* %41, align 1, !tbaa !3
+  %43 = zext i8 %42 to i32
+  %44 = icmp eq i32 %..i, %43
+  %45 = add i32 %l.01.i, 1
+  br i1 %44, label %33, label %compare.exit.thread1
 
-if.then35:                                        ; preds = %for.cond.i, %for.body31
-  %call36 = tail call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @StringSearchNaive.groupSuccessCounter, i32 1) #3
-  %add37 = add i32 %call36, %mul
-  %10 = sext i32 %add37 to i64
-  %arrayidx38 = getelementptr inbounds i32 addrspace(1)* %resultBuffer, i64 %10
-  store i32 %stringPos.079, i32 addrspace(1)* %arrayidx38, align 4, !tbaa !6
-  br label %for.inc40
+.loopexit:                                        ; preds = %33, %31
+  %46 = tail call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @StringSearchNaive.groupSuccessCounter, i32 1) #3
+  %47 = add i32 %46, %6
+  %48 = sext i32 %47 to i64
+  %49 = getelementptr inbounds i32 addrspace(1)* %resultBuffer, i64 %48
+  store i32 %stringPos.03, i32 addrspace(1)* %49, align 4, !tbaa !6
+  br label %compare.exit.thread1
 
-for.inc40:                                        ; preds = %for.body.i, %if.then35
-  %add41 = add i32 %stringPos.079, %call1
-  %cmp29 = icmp ult i32 %add41, %add.add3
-  br i1 %cmp29, label %for.body31, label %for.end42
+compare.exit.thread1:                             ; preds = %.lr.ph.i, %.loopexit
+  %50 = add i32 %stringPos.03, %2
+  %51 = icmp ult i32 %50, %.
+  br i1 %51, label %31, label %._crit_edge
 
-for.end42:                                        ; preds = %for.inc40, %if.end26
+._crit_edge:                                      ; preds = %compare.exit.thread1, %27
   tail call void @barrier(i32 1) #3
-  br i1 %cmp23, label %if.then45, label %if.end47
+  br i1 %25, label %52, label %56
 
-if.then45:                                        ; preds = %for.end42
-  %11 = load volatile i32 addrspace(3)* @StringSearchNaive.groupSuccessCounter, align 4, !tbaa !6
-  %12 = sext i32 %call2 to i64
-  %arrayidx46 = getelementptr inbounds i32 addrspace(1)* %resultCountPerWG, i64 %12
-  store i32 %11, i32 addrspace(1)* %arrayidx46, align 4, !tbaa !6
-  br label %if.end47
+; <label>:52                                      ; preds = %._crit_edge
+  %53 = load volatile i32 addrspace(3)* @StringSearchNaive.groupSuccessCounter, align 4, !tbaa !6
+  %54 = sext i32 %3 to i64
+  %55 = getelementptr inbounds i32 addrspace(1)* %resultCountPerWG, i64 %54
+  store i32 %53, i32 addrspace(1)* %55, align 4, !tbaa !6
+  br label %56
 
-if.end47:                                         ; preds = %entry, %if.then45, %for.end42
+; <label>:56                                      ; preds = %0, %52, %._crit_edge
   ret void
 }
 
@@ -166,188 +164,187 @@ declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #2
 
 ; Function Attrs: nounwind
 define void @StringSearchLoadBalance(i8 addrspace(1)* nocapture readonly %text, i32 %textLength, i8 addrspace(1)* nocapture readonly %pattern, i32 %patternLength, i32 addrspace(1)* nocapture %resultBuffer, i32 addrspace(1)* nocapture %resultCountPerWG, i32 %maxSearchLength, i8 addrspace(3)* nocapture %localPattern, i32 addrspace(3)* nocapture %stack1) #1 {
-entry:
-  %call = tail call i32 @get_local_id(i32 0) #3
-  %call1 = tail call i32 @get_local_size(i32 0) #3
-  %call2 = tail call i32 @get_group_id(i32 0) #3
-  %cmp = icmp eq i32 %call, 0
-  br i1 %cmp, label %if.then, label %if.end
+  %1 = tail call i32 @get_local_id(i32 0) #3
+  %2 = tail call i32 @get_local_size(i32 0) #3
+  %3 = tail call i32 @get_group_id(i32 0) #3
+  %4 = icmp eq i32 %1, 0
+  br i1 %4, label %5, label %6
 
-if.then:                                          ; preds = %entry
+; <label>:5                                       ; preds = %0
   store i32 0, i32 addrspace(3)* @StringSearchLoadBalance.groupSuccessCounter, align 4, !tbaa !6
   store i32 0, i32 addrspace(3)* @StringSearchLoadBalance.stack1Counter, align 4, !tbaa !6
-  br label %if.end
+  br label %6
 
-if.end:                                           ; preds = %if.then, %entry
-  %sub = sub i32 %textLength, %patternLength
-  %add = add i32 %sub, 1
-  %mul = mul i32 %call2, %maxSearchLength
-  %add3 = add i32 %mul, %maxSearchLength
-  %cmp4 = icmp ugt i32 %mul, %add
-  br i1 %cmp4, label %if.end138, label %if.end6
+; <label>:6                                       ; preds = %5, %0
+  %7 = sub i32 %textLength, %patternLength
+  %8 = add i32 %7, 1
+  %9 = mul i32 %3, %maxSearchLength
+  %10 = add i32 %9, %maxSearchLength
+  %11 = icmp ugt i32 %9, %8
+  br i1 %11, label %104, label %12
 
-if.end6:                                          ; preds = %if.end
-  %cmp7 = icmp ugt i32 %add3, %add
-  %add.add3 = select i1 %cmp7, i32 %add, i32 %add3
-  %sub10 = sub i32 %add.add3, %mul
-  %cmp11214 = icmp ult i32 %call, %patternLength
-  br i1 %cmp11214, label %for.body, label %for.end
+; <label>:12                                      ; preds = %6
+  %13 = icmp ugt i32 %10, %8
+  %. = select i1 %13, i32 %8, i32 %10
+  %14 = sub i32 %., %9
+  %15 = icmp ult i32 %1, %patternLength
+  br i1 %15, label %.lr.ph, label %._crit_edge
 
-for.body:                                         ; preds = %if.end6, %for.body
-  %idx.0215 = phi i32 [ %add26, %for.body ], [ %call, %if.end6 ]
-  %0 = sext i32 %idx.0215 to i64
-  %arrayidx = getelementptr inbounds i8 addrspace(1)* %pattern, i64 %0
-  %1 = load i8 addrspace(1)* %arrayidx, align 1, !tbaa !3
-  %conv = zext i8 %1 to i32
-  %.off213 = add i8 %1, -65
-  %2 = icmp ult i8 %.off213, 26
-  %add21 = add nsw i32 %conv, 32
-  %add21.conv = select i1 %2, i32 %add21, i32 %conv
-  %conv24 = trunc i32 %add21.conv to i8
-  %arrayidx25 = getelementptr inbounds i8 addrspace(3)* %localPattern, i32 %idx.0215
-  store i8 %conv24, i8 addrspace(3)* %arrayidx25, align 1, !tbaa !3
-  %add26 = add i32 %idx.0215, %call1
-  %cmp11 = icmp ult i32 %add26, %patternLength
-  br i1 %cmp11, label %for.body, label %for.end
+.lr.ph:                                           ; preds = %12, %.lr.ph
+  %idx.015 = phi i32 [ %24, %.lr.ph ], [ %1, %12 ]
+  %16 = sext i32 %idx.015 to i64
+  %17 = getelementptr inbounds i8 addrspace(1)* %pattern, i64 %16
+  %18 = load i8 addrspace(1)* %17, align 1, !tbaa !3
+  %19 = zext i8 %18 to i32
+  %.off14 = add i8 %18, -65
+  %20 = icmp ult i8 %.off14, 26
+  %21 = add nsw i32 %19, 32
+  %.8 = select i1 %20, i32 %21, i32 %19
+  %22 = trunc i32 %.8 to i8
+  %23 = getelementptr inbounds i8 addrspace(3)* %localPattern, i32 %idx.015
+  store i8 %22, i8 addrspace(3)* %23, align 1, !tbaa !3
+  %24 = add i32 %idx.015, %2
+  %25 = icmp ult i32 %24, %patternLength
+  br i1 %25, label %.lr.ph, label %._crit_edge
 
-for.end:                                          ; preds = %for.body, %if.end6
+._crit_edge:                                      ; preds = %.lr.ph, %12
   tail call void @barrier(i32 1) #3
-  %3 = load i8 addrspace(3)* %localPattern, align 1, !tbaa !3
-  %arrayidx28 = getelementptr inbounds i8 addrspace(3)* %localPattern, i32 1
-  %4 = load i8 addrspace(3)* %arrayidx28, align 1, !tbaa !3
-  %conv32 = zext i8 %3 to i32
-  %conv59 = zext i8 %4 to i32
-  %5 = sext i32 %mul to i64
-  %sub111 = add i32 %patternLength, -2
-  %cmp24.i = icmp eq i32 %sub111, 0
-  %add.ptr.sum = add i64 %5, 2
-  %6 = sext i32 %call to i64
-  %7 = sext i32 %call1 to i64
-  br label %while.body
+  %26 = load i8 addrspace(3)* %localPattern, align 1, !tbaa !3
+  %27 = getelementptr inbounds i8 addrspace(3)* %localPattern, i32 1
+  %28 = load i8 addrspace(3)* %27, align 1, !tbaa !3
+  %29 = zext i8 %26 to i32
+  %30 = zext i8 %28 to i32
+  %31 = sext i32 %9 to i64
+  %32 = add i32 %patternLength, -2
+  %33 = icmp eq i32 %32, 0
+  %.sum = add i64 %31, 2
+  %34 = sext i32 %1 to i64
+  %35 = sext i32 %2 to i64
+  br label %.backedge
 
-while.body:                                       ; preds = %if.end121, %land.lhs.true97, %for.end
-  %indvars.iv = phi i64 [ %6, %for.end ], [ %indvars.iv.next, %land.lhs.true97 ], [ %indvars.iv.next, %if.end121 ]
-  %8 = trunc i64 %indvars.iv to i32
-  %cmp29 = icmp ult i32 %8, %sub10
-  br i1 %cmp29, label %if.then31, label %if.end93
+.backedge:                                        ; preds = %compare.exit.thread7, %62, %._crit_edge
+  %indvars.iv = phi i64 [ %34, %._crit_edge ], [ %indvars.iv.next, %62 ], [ %indvars.iv.next, %compare.exit.thread7 ]
+  %36 = trunc i64 %indvars.iv to i32
+  %37 = icmp ult i32 %36, %14
+  br i1 %37, label %38, label %59
 
-if.then31:                                        ; preds = %while.body
-  %add33 = add i32 %8, %mul
-  %9 = sext i32 %add33 to i64
-  %arrayidx34 = getelementptr inbounds i8 addrspace(1)* %text, i64 %9
-  %10 = load i8 addrspace(1)* %arrayidx34, align 1, !tbaa !3
-  %conv35 = zext i8 %10 to i32
-  %.off = add i8 %10, -65
-  %11 = icmp ult i8 %.off, 26
-  %add49 = add nsw i32 %conv35, 32
-  %add49.conv35 = select i1 %11, i32 %add49, i32 %conv35
-  %cmp56 = icmp eq i32 %conv32, %add49.conv35
-  br i1 %cmp56, label %land.lhs.true58, label %if.end93
+; <label>:38                                      ; preds = %.backedge
+  %39 = add i32 %36, %9
+  %40 = sext i32 %39 to i64
+  %41 = getelementptr inbounds i8 addrspace(1)* %text, i64 %40
+  %42 = load i8 addrspace(1)* %41, align 1, !tbaa !3
+  %43 = zext i8 %42 to i32
+  %.off = add i8 %42, -65
+  %44 = icmp ult i8 %.off, 26
+  %45 = add nsw i32 %43, 32
+  %.9 = select i1 %44, i32 %45, i32 %43
+  %46 = icmp eq i32 %29, %.9
+  br i1 %46, label %47, label %59
 
-land.lhs.true58:                                  ; preds = %if.then31
-  %add61 = add i32 %add33, 1
-  %12 = sext i32 %add61 to i64
-  %arrayidx62 = getelementptr inbounds i8 addrspace(1)* %text, i64 %12
-  %13 = load i8 addrspace(1)* %arrayidx62, align 1, !tbaa !3
-  %conv63 = zext i8 %13 to i32
-  %.off212 = add i8 %13, -65
-  %14 = icmp ult i8 %.off212, 26
-  %add79 = add nsw i32 %conv63, 32
-  %add79.conv63 = select i1 %14, i32 %add79, i32 %conv63
-  %cmp87 = icmp eq i32 %conv59, %add79.conv63
-  br i1 %cmp87, label %if.then89, label %if.end93
+; <label>:47                                      ; preds = %38
+  %48 = add i32 %39, 1
+  %49 = sext i32 %48 to i64
+  %50 = getelementptr inbounds i8 addrspace(1)* %text, i64 %49
+  %51 = load i8 addrspace(1)* %50, align 1, !tbaa !3
+  %52 = zext i8 %51 to i32
+  %.off13 = add i8 %51, -65
+  %53 = icmp ult i8 %.off13, 26
+  %54 = add nsw i32 %52, 32
+  %.10 = select i1 %53, i32 %54, i32 %52
+  %55 = icmp eq i32 %30, %.10
+  br i1 %55, label %56, label %59
 
-if.then89:                                        ; preds = %land.lhs.true58
-  %call90 = tail call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @StringSearchLoadBalance.stack1Counter, i32 1) #3
-  %arrayidx91 = getelementptr inbounds i32 addrspace(3)* %stack1, i32 %call90
-  store i32 %8, i32 addrspace(3)* %arrayidx91, align 4, !tbaa !6
-  br label %if.end93
+; <label>:56                                      ; preds = %47
+  %57 = tail call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @StringSearchLoadBalance.stack1Counter, i32 1) #3
+  %58 = getelementptr inbounds i32 addrspace(3)* %stack1, i32 %57
+  store i32 %36, i32 addrspace(3)* %58, align 4, !tbaa !6
+  br label %59
 
-if.end93:                                         ; preds = %if.then31, %land.lhs.true58, %if.then89, %while.body
-  %indvars.iv.next = add nsw i64 %indvars.iv, %7
+; <label>:59                                      ; preds = %38, %47, %56, %.backedge
+  %indvars.iv.next = add nsw i64 %indvars.iv, %35
   tail call void @barrier(i32 1) #3
-  %15 = load i32 addrspace(3)* @StringSearchLoadBalance.stack1Counter, align 4, !tbaa !6
+  %60 = load i32 addrspace(3)* @StringSearchLoadBalance.stack1Counter, align 4, !tbaa !6
   tail call void @barrier(i32 1) #3
-  %cmp95 = icmp ult i32 %15, %call1
-  br i1 %cmp95, label %land.lhs.true97, label %if.end102
+  %61 = icmp ult i32 %60, %2
+  br i1 %61, label %62, label %67
 
-land.lhs.true97:                                  ; preds = %if.end93
-  %16 = trunc i64 %indvars.iv.next to i32
-  %div = srem i32 %16, %call1
-  %mul98 = sub i32 %16, %div
-  %cmp99 = icmp ult i32 %mul98, %sub10
-  br i1 %cmp99, label %while.body, label %if.end102
+; <label>:62                                      ; preds = %59
+  %63 = trunc i64 %indvars.iv.next to i32
+  %64 = srem i32 %63, %2
+  %65 = sub i32 %63, %64
+  %66 = icmp ult i32 %65, %14
+  br i1 %66, label %.backedge, label %67
 
-if.end102:                                        ; preds = %land.lhs.true97, %if.end93
-  %cmp103 = icmp ult i32 %call, %15
-  br i1 %cmp103, label %if.then105, label %if.end121
+; <label>:67                                      ; preds = %62, %59
+  %68 = icmp ult i32 %1, %60
+  br i1 %68, label %69, label %compare.exit.thread7
 
-if.then105:                                       ; preds = %if.end102
-  %call106 = tail call i32 @_Z10atomic_subPVU3AS3jj(i32 addrspace(3)* @StringSearchLoadBalance.stack1Counter, i32 1) #3
-  %dec = add nsw i32 %call106, -1
-  %arrayidx107 = getelementptr inbounds i32 addrspace(3)* %stack1, i32 %dec
-  %17 = load i32 addrspace(3)* %arrayidx107, align 4, !tbaa !6
-  br i1 %cmp24.i, label %if.then115, label %for.body.i.preheader
+; <label>:69                                      ; preds = %67
+  %70 = tail call i32 @_Z10atomic_subPVU3AS3jj(i32 addrspace(3)* @StringSearchLoadBalance.stack1Counter, i32 1) #3
+  %71 = add nsw i32 %70, -1
+  %72 = getelementptr inbounds i32 addrspace(3)* %stack1, i32 %71
+  %73 = load i32 addrspace(3)* %72, align 4, !tbaa !6
+  br i1 %33, label %.loopexit, label %.lr.ph.i.preheader
 
-for.body.i.preheader:                             ; preds = %if.then105
-  %18 = sext i32 %17 to i64
-  %add.ptr108.sum = add i64 %add.ptr.sum, %18
-  br label %for.body.i
+.lr.ph.i.preheader:                               ; preds = %69
+  %74 = sext i32 %73 to i64
+  %.sum4 = add i64 %.sum, %74
+  br label %.lr.ph.i
 
-for.cond.i:                                       ; preds = %for.body.i
-  %cmp.i = icmp ult i32 %inc.i, %sub111
-  br i1 %cmp.i, label %for.body.i, label %if.then115
+; <label>:75                                      ; preds = %.lr.ph.i
+  %76 = icmp ult i32 %87, %32
+  br i1 %76, label %.lr.ph.i, label %.loopexit
 
-for.body.i:                                       ; preds = %for.body.i.preheader, %for.cond.i
-  %l.025.i = phi i32 [ %inc.i, %for.cond.i ], [ 0, %for.body.i.preheader ]
-  %19 = sext i32 %l.025.i to i64
-  %add.ptr109.sum = add i64 %add.ptr108.sum, %19
-  %arrayidx.i = getelementptr inbounds i8 addrspace(1)* %text, i64 %add.ptr109.sum
-  %20 = load i8 addrspace(1)* %arrayidx.i, align 1, !tbaa !3
-  %conv.i = zext i8 %20 to i32
-  %.off.i = add i8 %20, -65
-  %21 = icmp ult i8 %.off.i, 26
-  %add.i = add nsw i32 %conv.i, 32
-  %add.conv.i = select i1 %21, i32 %add.i, i32 %conv.i
-  %add.ptr110.sum = add i32 %l.025.i, 2
-  %arrayidx11.i = getelementptr inbounds i8 addrspace(3)* %localPattern, i32 %add.ptr110.sum
-  %22 = load i8 addrspace(3)* %arrayidx11.i, align 1, !tbaa !3
-  %conv12.i = zext i8 %22 to i32
-  %cmp13.i = icmp eq i32 %add.conv.i, %conv12.i
-  %inc.i = add i32 %l.025.i, 1
-  br i1 %cmp13.i, label %for.cond.i, label %if.end121
+.lr.ph.i:                                         ; preds = %.lr.ph.i.preheader, %75
+  %l.01.i = phi i32 [ %87, %75 ], [ 0, %.lr.ph.i.preheader ]
+  %77 = sext i32 %l.01.i to i64
+  %.sum11 = add i64 %.sum4, %77
+  %78 = getelementptr inbounds i8 addrspace(1)* %text, i64 %.sum11
+  %79 = load i8 addrspace(1)* %78, align 1, !tbaa !3
+  %80 = zext i8 %79 to i32
+  %.off.i = add i8 %79, -65
+  %81 = icmp ult i8 %.off.i, 26
+  %82 = add nsw i32 %80, 32
+  %..i = select i1 %81, i32 %82, i32 %80
+  %.sum12 = add i32 %l.01.i, 2
+  %83 = getelementptr inbounds i8 addrspace(3)* %localPattern, i32 %.sum12
+  %84 = load i8 addrspace(3)* %83, align 1, !tbaa !3
+  %85 = zext i8 %84 to i32
+  %86 = icmp eq i32 %..i, %85
+  %87 = add i32 %l.01.i, 1
+  br i1 %86, label %75, label %compare.exit.thread7
 
-if.then115:                                       ; preds = %for.cond.i, %if.then105
-  %call116 = tail call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @StringSearchLoadBalance.groupSuccessCounter, i32 1) #3
-  %add117 = add i32 %17, %mul
-  %add118 = add i32 %call116, %mul
-  %23 = sext i32 %add118 to i64
-  %arrayidx119 = getelementptr inbounds i32 addrspace(1)* %resultBuffer, i64 %23
-  store i32 %add117, i32 addrspace(1)* %arrayidx119, align 4, !tbaa !6
-  br label %if.end121
+.loopexit:                                        ; preds = %75, %69
+  %88 = tail call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @StringSearchLoadBalance.groupSuccessCounter, i32 1) #3
+  %89 = add i32 %73, %9
+  %90 = add i32 %88, %9
+  %91 = sext i32 %90 to i64
+  %92 = getelementptr inbounds i32 addrspace(1)* %resultBuffer, i64 %91
+  store i32 %89, i32 addrspace(1)* %92, align 4, !tbaa !6
+  br label %compare.exit.thread7
 
-if.end121:                                        ; preds = %for.body.i, %if.then115, %if.end102
+compare.exit.thread7:                             ; preds = %.lr.ph.i, %.loopexit, %67
   tail call void @barrier(i32 1) #3
-  %24 = trunc i64 %indvars.iv.next to i32
-  %div122 = srem i32 %24, %call1
-  %mul123 = sub i32 %24, %div122
-  %cmp124 = icmp uge i32 %mul123, %sub10
-  %25 = load i32 addrspace(3)* @StringSearchLoadBalance.stack1Counter, align 4, !tbaa !6
-  %cmp127 = icmp eq i32 %25, 0
-  %or.cond139 = and i1 %cmp124, %cmp127
-  br i1 %or.cond139, label %while.end, label %while.body
+  %93 = trunc i64 %indvars.iv.next to i32
+  %94 = srem i32 %93, %2
+  %95 = sub i32 %93, %94
+  %96 = icmp uge i32 %95, %14
+  %97 = load i32 addrspace(3)* @StringSearchLoadBalance.stack1Counter, align 4, !tbaa !6
+  %98 = icmp eq i32 %97, 0
+  %or.cond3 = and i1 %96, %98
+  br i1 %or.cond3, label %99, label %.backedge
 
-while.end:                                        ; preds = %if.end121
-  br i1 %cmp, label %if.then136, label %if.end138
+; <label>:99                                      ; preds = %compare.exit.thread7
+  br i1 %4, label %100, label %104
 
-if.then136:                                       ; preds = %while.end
-  %26 = load i32 addrspace(3)* @StringSearchLoadBalance.groupSuccessCounter, align 4, !tbaa !6
-  %27 = sext i32 %call2 to i64
-  %arrayidx137 = getelementptr inbounds i32 addrspace(1)* %resultCountPerWG, i64 %27
-  store i32 %26, i32 addrspace(1)* %arrayidx137, align 4, !tbaa !6
-  br label %if.end138
+; <label>:100                                     ; preds = %99
+  %101 = load i32 addrspace(3)* @StringSearchLoadBalance.groupSuccessCounter, align 4, !tbaa !6
+  %102 = sext i32 %3 to i64
+  %103 = getelementptr inbounds i32 addrspace(1)* %resultCountPerWG, i64 %102
+  store i32 %101, i32 addrspace(1)* %103, align 4, !tbaa !6
+  br label %104
 
-if.end138:                                        ; preds = %if.end, %if.then136, %while.end
+; <label>:104                                     ; preds = %6, %100, %99
   ret void
 }
 
@@ -363,7 +360,7 @@ attributes #3 = { nounwind }
 
 !0 = metadata !{void (i8 addrspace(1)*, i32, i8 addrspace(1)*, i32, i32 addrspace(1)*, i32 addrspace(1)*, i32, i8 addrspace(3)*)* @StringSearchNaive}
 !1 = metadata !{void (i8 addrspace(1)*, i32, i8 addrspace(1)*, i32, i32 addrspace(1)*, i32 addrspace(1)*, i32, i8 addrspace(3)*, i32 addrspace(3)*)* @StringSearchLoadBalance}
-!2 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!2 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !3 = metadata !{metadata !4, metadata !4, i64 0}
 !4 = metadata !{metadata !"omnipotent char", metadata !5, i64 0}
 !5 = metadata !{metadata !"Simple C/C++ TBAA"}

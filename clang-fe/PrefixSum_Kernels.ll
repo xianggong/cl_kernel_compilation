@@ -4,147 +4,146 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @group_prefixSum(float addrspace(1)* nocapture %output, float addrspace(1)* nocapture readonly %input, float addrspace(3)* nocapture %block, i32 %length, i32 %idxOffset) #0 {
-entry:
-  %call = tail call i32 @get_local_id(i32 0) #2
-  %call1 = tail call i32 @get_local_size(i32 0) #2
-  %call2 = tail call i32 @get_group_id(i32 0) #2
-  %mul = mul nsw i32 %call2, %call1
-  %add = add nsw i32 %mul, %call
-  %mul3 = shl nsw i32 %add, 1
-  %add4123 = or i32 %mul3, 1
-  %mul5 = mul i32 %add4123, %idxOffset
-  %sub = add i32 %mul5, -1
-  %cmp = icmp ult i32 %sub, %length
-  br i1 %cmp, label %if.then, label %if.end
+  %1 = tail call i32 @get_local_id(i32 0) #2
+  %2 = tail call i32 @get_local_size(i32 0) #2
+  %3 = tail call i32 @get_group_id(i32 0) #2
+  %4 = mul nsw i32 %3, %2
+  %5 = add nsw i32 %4, %1
+  %6 = shl nsw i32 %5, 1
+  %7 = or i32 %6, 1
+  %8 = mul i32 %7, %idxOffset
+  %9 = add i32 %8, -1
+  %10 = icmp ult i32 %9, %length
+  br i1 %10, label %11, label %17
 
-if.then:                                          ; preds = %entry
-  %0 = sext i32 %sub to i64
-  %arrayidx = getelementptr inbounds float addrspace(1)* %input, i64 %0
-  %1 = load float addrspace(1)* %arrayidx, align 4, !tbaa !3
-  %mul6 = shl nsw i32 %call, 1
-  %arrayidx7 = getelementptr inbounds float addrspace(3)* %block, i32 %mul6
-  store float %1, float addrspace(3)* %arrayidx7, align 4, !tbaa !3
-  br label %if.end
+; <label>:11                                      ; preds = %0
+  %12 = sext i32 %9 to i64
+  %13 = getelementptr inbounds float addrspace(1)* %input, i64 %12
+  %14 = load float addrspace(1)* %13, align 4, !tbaa !3
+  %15 = shl nsw i32 %1, 1
+  %16 = getelementptr inbounds float addrspace(3)* %block, i32 %15
+  store float %14, float addrspace(3)* %16, align 4, !tbaa !3
+  br label %17
 
-if.end:                                           ; preds = %if.then, %entry
-  %add8 = add i32 %sub, %idxOffset
-  %cmp9 = icmp ult i32 %add8, %length
-  br i1 %cmp9, label %if.then10, label %if.end16
+; <label>:17                                      ; preds = %11, %0
+  %18 = add i32 %9, %idxOffset
+  %19 = icmp ult i32 %18, %length
+  br i1 %19, label %20, label %27
 
-if.then10:                                        ; preds = %if.end
-  %2 = sext i32 %add8 to i64
-  %arrayidx12 = getelementptr inbounds float addrspace(1)* %input, i64 %2
-  %3 = load float addrspace(1)* %arrayidx12, align 4, !tbaa !3
-  %mul13 = shl nsw i32 %call, 1
-  %add14127 = or i32 %mul13, 1
-  %arrayidx15 = getelementptr inbounds float addrspace(3)* %block, i32 %add14127
-  store float %3, float addrspace(3)* %arrayidx15, align 4, !tbaa !3
-  br label %if.end16
+; <label>:20                                      ; preds = %17
+  %21 = sext i32 %18 to i64
+  %22 = getelementptr inbounds float addrspace(1)* %input, i64 %21
+  %23 = load float addrspace(1)* %22, align 4, !tbaa !3
+  %24 = shl nsw i32 %1, 1
+  %25 = or i32 %24, 1
+  %26 = getelementptr inbounds float addrspace(3)* %block, i32 %25
+  store float %23, float addrspace(3)* %26, align 4, !tbaa !3
+  br label %27
 
-if.end16:                                         ; preds = %if.then10, %if.end
-  %shr = lshr i32 %length, 1
-  %cmp17131 = icmp eq i32 %shr, 0
-  br i1 %cmp17131, label %for.end, label %for.body.lr.ph
+; <label>:27                                      ; preds = %20, %17
+  %28 = lshr i32 %length, 1
+  %29 = icmp eq i32 %28, 0
+  br i1 %29, label %._crit_edge9, label %.lr.ph8
 
-for.body.lr.ph:                                   ; preds = %if.end16
-  %mul20 = shl nsw i32 %call, 1
-  %add21126 = or i32 %mul20, 1
-  %add25 = add nsw i32 %mul20, 2
-  br label %for.body
+.lr.ph8:                                          ; preds = %27
+  %30 = shl nsw i32 %1, 1
+  %31 = or i32 %30, 1
+  %32 = add nsw i32 %30, 2
+  br label %33
 
-for.body:                                         ; preds = %for.body.lr.ph, %if.end31
-  %offset.0133 = phi i32 [ 1, %for.body.lr.ph ], [ %shl, %if.end31 ]
-  %l.0132 = phi i32 [ %shr, %for.body.lr.ph ], [ %shr32, %if.end31 ]
+; <label>:33                                      ; preds = %.lr.ph8, %45
+  %offset.06 = phi i32 [ 1, %.lr.ph8 ], [ %46, %45 ]
+  %l.05 = phi i32 [ %28, %.lr.ph8 ], [ %47, %45 ]
   tail call void @barrier(i32 1) #2
-  %cmp18 = icmp slt i32 %call, %l.0132
-  br i1 %cmp18, label %if.then19, label %if.end31
+  %34 = icmp slt i32 %1, %l.05
+  br i1 %34, label %35, label %45
 
-if.then19:                                        ; preds = %for.body
-  %mul22 = mul nsw i32 %offset.0133, %add21126
-  %sub23 = add nsw i32 %mul22, -1
-  %mul26 = mul nsw i32 %offset.0133, %add25
-  %sub27 = add nsw i32 %mul26, -1
-  %arrayidx28 = getelementptr inbounds float addrspace(3)* %block, i32 %sub23
-  %4 = load float addrspace(3)* %arrayidx28, align 4, !tbaa !3
-  %arrayidx29 = getelementptr inbounds float addrspace(3)* %block, i32 %sub27
-  %5 = load float addrspace(3)* %arrayidx29, align 4, !tbaa !3
-  %add30 = fadd float %4, %5
-  store float %add30, float addrspace(3)* %arrayidx29, align 4, !tbaa !3
-  br label %if.end31
+; <label>:35                                      ; preds = %33
+  %36 = mul nsw i32 %offset.06, %31
+  %37 = add nsw i32 %36, -1
+  %38 = mul nsw i32 %offset.06, %32
+  %39 = add nsw i32 %38, -1
+  %40 = getelementptr inbounds float addrspace(3)* %block, i32 %37
+  %41 = load float addrspace(3)* %40, align 4, !tbaa !3
+  %42 = getelementptr inbounds float addrspace(3)* %block, i32 %39
+  %43 = load float addrspace(3)* %42, align 4, !tbaa !3
+  %44 = fadd float %41, %43
+  store float %44, float addrspace(3)* %42, align 4, !tbaa !3
+  br label %45
 
-if.end31:                                         ; preds = %if.then19, %for.body
-  %shl = shl i32 %offset.0133, 1
-  %shr32 = ashr i32 %l.0132, 1
-  %cmp17 = icmp sgt i32 %shr32, 0
-  br i1 %cmp17, label %for.body, label %for.end
+; <label>:45                                      ; preds = %35, %33
+  %46 = shl i32 %offset.06, 1
+  %47 = ashr i32 %l.05, 1
+  %48 = icmp sgt i32 %47, 0
+  br i1 %48, label %33, label %._crit_edge9
 
-for.end:                                          ; preds = %if.end31, %if.end16
-  %offset.0.lcssa = phi i32 [ 1, %if.end16 ], [ %shl, %if.end31 ]
-  %cmp33 = icmp ult i32 %offset.0.lcssa, %length
-  %shl35 = zext i1 %cmp33 to i32
-  %shl35.offset.0 = shl i32 %offset.0.lcssa, %shl35
-  %shr37 = ashr i32 %shl35.offset.0, 1
-  %cmp39128 = icmp sgt i32 %shr37, 0
-  br i1 %cmp39128, label %for.body40.lr.ph, label %for.end58
+._crit_edge9:                                     ; preds = %45, %27
+  %offset.0.lcssa = phi i32 [ 1, %27 ], [ %46, %45 ]
+  %49 = icmp ult i32 %offset.0.lcssa, %length
+  %50 = zext i1 %49 to i32
+  %.offset.0 = shl i32 %offset.0.lcssa, %50
+  %51 = ashr i32 %.offset.0, 1
+  %52 = icmp sgt i32 %51, 0
+  br i1 %52, label %.lr.ph, label %._crit_edge
 
-for.body40.lr.ph:                                 ; preds = %for.end
-  %add46 = add nsw i32 %call, 1
-  br label %for.body40
+.lr.ph:                                           ; preds = %._crit_edge9
+  %53 = add nsw i32 %1, 1
+  br label %54
 
-for.body40:                                       ; preds = %for.body40.lr.ph, %for.inc56
-  %offset.2130 = phi i32 [ %shl35.offset.0, %for.body40.lr.ph ], [ %shr42, %for.inc56 ]
-  %d.0129 = phi i32 [ 0, %for.body40.lr.ph ], [ %shl57, %for.inc56 ]
-  %add41125 = or i32 %d.0129, 1
-  %shr42 = ashr i32 %offset.2130, 1
+; <label>:54                                      ; preds = %.lr.ph, %68
+  %offset.24 = phi i32 [ %.offset.0, %.lr.ph ], [ %56, %68 ]
+  %d.03 = phi i32 [ 0, %.lr.ph ], [ %69, %68 ]
+  %55 = or i32 %d.03, 1
+  %56 = ashr i32 %offset.24, 1
   tail call void @barrier(i32 1) #2
-  %cmp43 = icmp slt i32 %call, %add41125
-  br i1 %cmp43, label %if.then44, label %for.inc56
+  %57 = icmp slt i32 %1, %55
+  br i1 %57, label %58, label %68
 
-if.then44:                                        ; preds = %for.body40
-  %mul47 = mul nsw i32 %shr42, %add46
-  %sub48 = add nsw i32 %mul47, -1
-  %shr50 = ashr i32 %offset.2130, 2
-  %add51 = add nsw i32 %sub48, %shr50
-  %arrayidx52 = getelementptr inbounds float addrspace(3)* %block, i32 %sub48
-  %6 = load float addrspace(3)* %arrayidx52, align 4, !tbaa !3
-  %arrayidx53 = getelementptr inbounds float addrspace(3)* %block, i32 %add51
-  %7 = load float addrspace(3)* %arrayidx53, align 4, !tbaa !3
-  %add54 = fadd float %6, %7
-  store float %add54, float addrspace(3)* %arrayidx53, align 4, !tbaa !3
-  br label %for.inc56
+; <label>:58                                      ; preds = %54
+  %59 = mul nsw i32 %56, %53
+  %60 = add nsw i32 %59, -1
+  %61 = ashr i32 %offset.24, 2
+  %62 = add nsw i32 %60, %61
+  %63 = getelementptr inbounds float addrspace(3)* %block, i32 %60
+  %64 = load float addrspace(3)* %63, align 4, !tbaa !3
+  %65 = getelementptr inbounds float addrspace(3)* %block, i32 %62
+  %66 = load float addrspace(3)* %65, align 4, !tbaa !3
+  %67 = fadd float %64, %66
+  store float %67, float addrspace(3)* %65, align 4, !tbaa !3
+  br label %68
 
-for.inc56:                                        ; preds = %for.body40, %if.then44
-  %shl57 = shl i32 %add41125, 1
-  %cmp39 = icmp slt i32 %shl57, %shr37
-  br i1 %cmp39, label %for.body40, label %for.end58
+; <label>:68                                      ; preds = %54, %58
+  %69 = shl i32 %55, 1
+  %70 = icmp slt i32 %69, %51
+  br i1 %70, label %54, label %._crit_edge
 
-for.end58:                                        ; preds = %for.inc56, %for.end
+._crit_edge:                                      ; preds = %68, %._crit_edge9
   tail call void @barrier(i32 1) #2
-  br i1 %cmp, label %if.then60, label %if.end64
+  br i1 %10, label %71, label %77
 
-if.then60:                                        ; preds = %for.end58
-  %mul61 = shl nsw i32 %call, 1
-  %arrayidx62 = getelementptr inbounds float addrspace(3)* %block, i32 %mul61
-  %8 = load float addrspace(3)* %arrayidx62, align 4, !tbaa !3
-  %9 = sext i32 %sub to i64
-  %arrayidx63 = getelementptr inbounds float addrspace(1)* %output, i64 %9
-  store float %8, float addrspace(1)* %arrayidx63, align 4, !tbaa !3
-  br label %if.end64
+; <label>:71                                      ; preds = %._crit_edge
+  %72 = shl nsw i32 %1, 1
+  %73 = getelementptr inbounds float addrspace(3)* %block, i32 %72
+  %74 = load float addrspace(3)* %73, align 4, !tbaa !3
+  %75 = sext i32 %9 to i64
+  %76 = getelementptr inbounds float addrspace(1)* %output, i64 %75
+  store float %74, float addrspace(1)* %76, align 4, !tbaa !3
+  br label %77
 
-if.end64:                                         ; preds = %if.then60, %for.end58
-  br i1 %cmp9, label %if.then67, label %if.end73
+; <label>:77                                      ; preds = %71, %._crit_edge
+  br i1 %19, label %78, label %85
 
-if.then67:                                        ; preds = %if.end64
-  %mul68 = shl nsw i32 %call, 1
-  %add69124 = or i32 %mul68, 1
-  %arrayidx70 = getelementptr inbounds float addrspace(3)* %block, i32 %add69124
-  %10 = load float addrspace(3)* %arrayidx70, align 4, !tbaa !3
-  %11 = sext i32 %add8 to i64
-  %arrayidx72 = getelementptr inbounds float addrspace(1)* %output, i64 %11
-  store float %10, float addrspace(1)* %arrayidx72, align 4, !tbaa !3
-  br label %if.end73
+; <label>:78                                      ; preds = %77
+  %79 = shl nsw i32 %1, 1
+  %80 = or i32 %79, 1
+  %81 = getelementptr inbounds float addrspace(3)* %block, i32 %80
+  %82 = load float addrspace(3)* %81, align 4, !tbaa !3
+  %83 = sext i32 %18 to i64
+  %84 = getelementptr inbounds float addrspace(1)* %output, i64 %83
+  store float %82, float addrspace(1)* %84, align 4, !tbaa !3
+  br label %85
 
-if.end73:                                         ; preds = %if.then67, %if.end64
+; <label>:85                                      ; preds = %78, %77
   ret void
 }
 
@@ -158,41 +157,40 @@ declare void @barrier(i32) #1
 
 ; Function Attrs: nounwind
 define void @global_prefixSum(float addrspace(1)* nocapture %buffer, i32 %offset, i32 %length) #0 {
-entry:
-  %call = tail call i32 @get_local_size(i32 0) #2
-  %call1 = tail call i32 @get_group_id(i32 0) #2
-  %div = udiv i32 %offset, %call
-  %shl = shl i32 %offset, 1
-  %sub = sub i32 %shl, %div
-  %div2 = udiv i32 %call1, %sub
-  %add = add i32 %div2, 1
-  %mul = mul i32 %add, %div
-  %add3 = add i32 %mul, %call1
-  %mul4 = mul nsw i32 %add3, %call
-  %call5 = tail call i32 @get_local_id(i32 0) #2
-  %add6 = add i32 %mul4, %call5
-  %add7 = add nsw i32 %add6, 1
-  %rem = urem i32 %add7, %offset
-  %cmp = icmp ne i32 %rem, 0
-  %cmp8 = icmp ult i32 %add6, %length
-  %or.cond = and i1 %cmp, %cmp8
-  br i1 %or.cond, label %if.then, label %if.end
+  %1 = tail call i32 @get_local_size(i32 0) #2
+  %2 = tail call i32 @get_group_id(i32 0) #2
+  %3 = udiv i32 %offset, %1
+  %4 = shl i32 %offset, 1
+  %5 = sub i32 %4, %3
+  %6 = udiv i32 %2, %5
+  %7 = add i32 %6, 1
+  %8 = mul i32 %7, %3
+  %9 = add i32 %8, %2
+  %10 = mul nsw i32 %9, %1
+  %11 = tail call i32 @get_local_id(i32 0) #2
+  %12 = add i32 %10, %11
+  %13 = add nsw i32 %12, 1
+  %14 = urem i32 %13, %offset
+  %15 = icmp ne i32 %14, 0
+  %16 = icmp ult i32 %12, %length
+  %or.cond = and i1 %15, %16
+  br i1 %or.cond, label %17, label %27
 
-if.then:                                          ; preds = %entry
-  %rem9 = urem i32 %add6, %offset
-  %add10.neg = add i32 %add6, -1
-  %sub11 = sub i32 %add10.neg, %rem9
-  %0 = sext i32 %sub11 to i64
-  %arrayidx = getelementptr inbounds float addrspace(1)* %buffer, i64 %0
-  %1 = load float addrspace(1)* %arrayidx, align 4, !tbaa !3
-  %2 = sext i32 %add6 to i64
-  %arrayidx12 = getelementptr inbounds float addrspace(1)* %buffer, i64 %2
-  %3 = load float addrspace(1)* %arrayidx12, align 4, !tbaa !3
-  %add13 = fadd float %1, %3
-  store float %add13, float addrspace(1)* %arrayidx12, align 4, !tbaa !3
-  br label %if.end
+; <label>:17                                      ; preds = %0
+  %18 = urem i32 %12, %offset
+  %.neg1 = add i32 %12, -1
+  %19 = sub i32 %.neg1, %18
+  %20 = sext i32 %19 to i64
+  %21 = getelementptr inbounds float addrspace(1)* %buffer, i64 %20
+  %22 = load float addrspace(1)* %21, align 4, !tbaa !3
+  %23 = sext i32 %12 to i64
+  %24 = getelementptr inbounds float addrspace(1)* %buffer, i64 %23
+  %25 = load float addrspace(1)* %24, align 4, !tbaa !3
+  %26 = fadd float %22, %25
+  store float %26, float addrspace(1)* %24, align 4, !tbaa !3
+  br label %27
 
-if.end:                                           ; preds = %entry, %if.then
+; <label>:27                                      ; preds = %0, %17
   ret void
 }
 
@@ -205,7 +203,7 @@ attributes #2 = { nounwind }
 
 !0 = metadata !{void (float addrspace(1)*, float addrspace(1)*, float addrspace(3)*, i32, i32)* @group_prefixSum}
 !1 = metadata !{void (float addrspace(1)*, i32, i32)* @global_prefixSum}
-!2 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!2 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !3 = metadata !{metadata !4, metadata !4, i64 0}
 !4 = metadata !{metadata !"float", metadata !5, i64 0}
 !5 = metadata !{metadata !"omnipotent char", metadata !6, i64 0}

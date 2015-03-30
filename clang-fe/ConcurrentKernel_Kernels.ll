@@ -10,77 +10,76 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @work1(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   %zero = alloca i32, align 4
-  %call = tail call i32 @get_global_size(i32 0) #2
-  %call1 = tail call i32 @get_global_id(i32 0) #2
-  %call2 = tail call i32 @get_local_id(i32 0) #2
+  %1 = tail call i32 @get_global_size(i32 0) #2
+  %2 = tail call i32 @get_global_id(i32 0) #2
+  %3 = tail call i32 @get_local_id(i32 0) #2
   store volatile i32 0, i32* %zero, align 4
-  br label %for.body
+  br label %5
 
-for.cond27.preheader:                             ; preds = %for.body
-  %cmp2863 = icmp ult i32 %call1, %bufferSize
-  br i1 %cmp2863, label %for.body30, label %for.end41
+.preheader:                                       ; preds = %5
+  %4 = icmp ult i32 %2, %bufferSize
+  br i1 %4, label %.lr.ph, label %._crit_edge
 
-for.body:                                         ; preds = %for.body, %entry
-  %i.066 = phi i32 [ 1, %entry ], [ %inc, %for.body ]
-  %tmp.065 = phi i32 [ 1, %entry ], [ %add24, %for.body ]
-  %rem = urem i32 %i.066, %bufferSize
-  %0 = sext i32 %rem to i64
-  %arrayidx = getelementptr inbounds i8 addrspace(1)* %input, i64 %0
-  %1 = load i8 addrspace(1)* %arrayidx, align 1, !tbaa !11
-  %conv = zext i8 %1 to i32
-  %mul5 = shl nsw i32 %i.066, 1
-  %rem6 = urem i32 %mul5, %bufferSize
-  %2 = sext i32 %rem6 to i64
-  %arrayidx7 = getelementptr inbounds i8 addrspace(1)* %input, i64 %2
-  %3 = load i8 addrspace(1)* %arrayidx7, align 1, !tbaa !11
-  %conv8 = zext i8 %3 to i32
-  %mul9 = mul nsw i32 %i.066, 3
-  %rem10 = urem i32 %mul9, %bufferSize
-  %4 = sext i32 %rem10 to i64
-  %arrayidx11 = getelementptr inbounds i8 addrspace(1)* %input, i64 %4
-  %5 = load i8 addrspace(1)* %arrayidx11, align 1, !tbaa !11
-  %conv12 = zext i8 %5 to i32
-  %mul14 = shl nsw i32 %i.066, 2
-  %rem15 = urem i32 %mul14, %bufferSize
-  %6 = sext i32 %rem15 to i64
-  %arrayidx16 = getelementptr inbounds i8 addrspace(1)* %input, i64 %6
-  %7 = load i8 addrspace(1)* %arrayidx16, align 1, !tbaa !11
-  %conv17 = zext i8 %7 to i32
-  %mul19 = mul nsw i32 %i.066, 5
-  %rem20 = urem i32 %mul19, %bufferSize
-  %8 = sext i32 %rem20 to i64
-  %arrayidx21 = getelementptr inbounds i8 addrspace(1)* %input, i64 %8
-  %9 = load i8 addrspace(1)* %arrayidx21, align 1, !tbaa !11
-  %conv22 = zext i8 %9 to i32
-  %add = add i32 %conv, %tmp.065
-  %add13 = add i32 %add, %conv8
-  %add18 = add i32 %add13, %conv12
-  %add23 = add i32 %add18, %conv17
-  %add24 = add i32 %add23, %conv22
-  %inc = add nsw i32 %i.066, 1
-  %exitcond = icmp eq i32 %inc, 5000
-  br i1 %exitcond, label %for.cond27.preheader, label %for.body
+; <label>:5                                       ; preds = %5, %0
+  %i.04 = phi i32 [ 1, %0 ], [ %40, %5 ]
+  %tmp.03 = phi i32 [ 1, %0 ], [ %39, %5 ]
+  %6 = urem i32 %i.04, %bufferSize
+  %7 = sext i32 %6 to i64
+  %8 = getelementptr inbounds i8 addrspace(1)* %input, i64 %7
+  %9 = load i8 addrspace(1)* %8, align 1, !tbaa !11
+  %10 = zext i8 %9 to i32
+  %11 = shl nsw i32 %i.04, 1
+  %12 = urem i32 %11, %bufferSize
+  %13 = sext i32 %12 to i64
+  %14 = getelementptr inbounds i8 addrspace(1)* %input, i64 %13
+  %15 = load i8 addrspace(1)* %14, align 1, !tbaa !11
+  %16 = zext i8 %15 to i32
+  %17 = mul nsw i32 %i.04, 3
+  %18 = urem i32 %17, %bufferSize
+  %19 = sext i32 %18 to i64
+  %20 = getelementptr inbounds i8 addrspace(1)* %input, i64 %19
+  %21 = load i8 addrspace(1)* %20, align 1, !tbaa !11
+  %22 = zext i8 %21 to i32
+  %23 = shl nsw i32 %i.04, 2
+  %24 = urem i32 %23, %bufferSize
+  %25 = sext i32 %24 to i64
+  %26 = getelementptr inbounds i8 addrspace(1)* %input, i64 %25
+  %27 = load i8 addrspace(1)* %26, align 1, !tbaa !11
+  %28 = zext i8 %27 to i32
+  %29 = mul nsw i32 %i.04, 5
+  %30 = urem i32 %29, %bufferSize
+  %31 = sext i32 %30 to i64
+  %32 = getelementptr inbounds i8 addrspace(1)* %input, i64 %31
+  %33 = load i8 addrspace(1)* %32, align 1, !tbaa !11
+  %34 = zext i8 %33 to i32
+  %35 = add i32 %10, %tmp.03
+  %36 = add i32 %35, %16
+  %37 = add i32 %36, %22
+  %38 = add i32 %37, %28
+  %39 = add i32 %38, %34
+  %40 = add nsw i32 %i.04, 1
+  %exitcond = icmp eq i32 %40, 5000
+  br i1 %exitcond, label %.preheader, label %5
 
-for.body30:                                       ; preds = %for.cond27.preheader, %for.body30
-  %i26.064 = phi i32 [ %add40, %for.body30 ], [ %call1, %for.cond27.preheader ]
-  %10 = sext i32 %i26.064 to i64
-  %arrayidx31 = getelementptr inbounds i8 addrspace(1)* %input, i64 %10
-  %11 = load i8 addrspace(1)* %arrayidx31, align 1, !tbaa !11
-  %conv32 = zext i8 %11 to i32
-  %mul33 = mul nsw i32 %conv32, %multiplier
-  %zero.0.load62 = load volatile i32* %zero, align 4
-  %mul35 = mul i32 %zero.0.load62, %add24
-  %add36 = add i32 %mul33, %mul35
-  %conv37 = trunc i32 %add36 to i8
-  %arrayidx38 = getelementptr inbounds i8 addrspace(1)* %output, i64 %10
-  store i8 %conv37, i8 addrspace(1)* %arrayidx38, align 1, !tbaa !11
-  %add40 = add i32 %i26.064, %call
-  %cmp28 = icmp ult i32 %add40, %bufferSize
-  br i1 %cmp28, label %for.body30, label %for.end41
+.lr.ph:                                           ; preds = %.preheader, %.lr.ph
+  %i1.02 = phi i32 [ %51, %.lr.ph ], [ %2, %.preheader ]
+  %41 = sext i32 %i1.02 to i64
+  %42 = getelementptr inbounds i8 addrspace(1)* %input, i64 %41
+  %43 = load i8 addrspace(1)* %42, align 1, !tbaa !11
+  %44 = zext i8 %43 to i32
+  %45 = mul nsw i32 %44, %multiplier
+  %46 = load volatile i32* %zero, align 4
+  %47 = mul i32 %46, %39
+  %48 = add i32 %45, %47
+  %49 = trunc i32 %48 to i8
+  %50 = getelementptr inbounds i8 addrspace(1)* %output, i64 %41
+  store i8 %49, i8 addrspace(1)* %50, align 1, !tbaa !11
+  %51 = add i32 %i1.02, %1
+  %52 = icmp ult i32 %51, %bufferSize
+  br i1 %52, label %.lr.ph, label %._crit_edge
 
-for.end41:                                        ; preds = %for.body30, %for.cond27.preheader
+._crit_edge:                                      ; preds = %.lr.ph, %.preheader
   ret void
 }
 
@@ -92,152 +91,141 @@ declare i32 @get_local_id(i32) #1
 
 ; Function Attrs: nounwind
 define void @work2(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier, i8 addrspace(3)* nocapture %lds) #0 {
-entry:
   %zero = alloca i32, align 4
-  %call = tail call i32 @get_global_size(i32 0) #2
-  %call1 = tail call i32 @get_global_id(i32 0) #2
-  %call2 = tail call i32 @get_local_id(i32 0) #2
+  %1 = tail call i32 @get_global_size(i32 0) #2
+  %2 = tail call i32 @get_global_id(i32 0) #2
+  %3 = tail call i32 @get_local_id(i32 0) #2
   store volatile i32 0, i32* %zero, align 4
-  br label %for.body
+  br label %6
 
-for.cond26.preheader:                             ; preds = %for.body
-  %cmp2766 = icmp ult i32 %call1, %bufferSize
-  br i1 %cmp2766, label %for.body29.lr.ph, label %for.end42
+.preheader:                                       ; preds = %6
+  %4 = icmp ult i32 %2, %bufferSize
+  br i1 %4, label %.lr.ph, label %._crit_edge
 
-for.body29.lr.ph:                                 ; preds = %for.cond26.preheader
-  %arrayidx31 = getelementptr inbounds i8 addrspace(3)* %lds, i32 %call2
-  br label %for.body29
+.lr.ph:                                           ; preds = %.preheader
+  %5 = getelementptr inbounds i8 addrspace(3)* %lds, i32 %3
+  br label %43
 
-for.body:                                         ; preds = %for.body, %entry
-  %i.069 = phi i32 [ 1, %entry ], [ %inc, %for.body ]
-  %tmp.068 = phi i32 [ 1, %entry ], [ %add23, %for.body ]
-  %mul = shl nsw i32 %i.069, 1
-  %rem = urem i32 %mul, %bufferSize
-  %0 = sext i32 %rem to i64
-  %arrayidx = getelementptr inbounds i8 addrspace(1)* %input, i64 %0
-  %1 = load i8 addrspace(1)* %arrayidx, align 1, !tbaa !11
-  %conv = zext i8 %1 to i32
-  %mul5 = shl nsw i32 %i.069, 2
-  %rem6 = urem i32 %mul5, %bufferSize
-  %2 = sext i32 %rem6 to i64
-  %arrayidx7 = getelementptr inbounds i8 addrspace(1)* %input, i64 %2
-  %3 = load i8 addrspace(1)* %arrayidx7, align 1, !tbaa !11
-  %conv8 = zext i8 %3 to i32
-  %mul9 = mul nsw i32 %i.069, 6
-  %rem10 = urem i32 %mul9, %bufferSize
-  %4 = sext i32 %rem10 to i64
-  %arrayidx11 = getelementptr inbounds i8 addrspace(1)* %input, i64 %4
-  %5 = load i8 addrspace(1)* %arrayidx11, align 1, !tbaa !11
-  %conv12 = zext i8 %5 to i32
-  %mul13 = shl nsw i32 %i.069, 3
-  %rem14 = urem i32 %mul13, %bufferSize
-  %6 = sext i32 %rem14 to i64
-  %arrayidx15 = getelementptr inbounds i8 addrspace(1)* %input, i64 %6
-  %7 = load i8 addrspace(1)* %arrayidx15, align 1, !tbaa !11
-  %conv16 = zext i8 %7 to i32
-  %mul18 = mul nsw i32 %i.069, 10
-  %rem19 = urem i32 %mul18, %bufferSize
-  %8 = sext i32 %rem19 to i64
-  %arrayidx20 = getelementptr inbounds i8 addrspace(1)* %input, i64 %8
-  %9 = load i8 addrspace(1)* %arrayidx20, align 1, !tbaa !11
-  %conv21 = zext i8 %9 to i32
-  %sub = add i32 %conv, %tmp.068
-  %add = sub i32 %sub, %conv8
-  %sub17 = add i32 %add, %conv12
-  %add22 = sub i32 %sub17, %conv16
-  %add23 = add i32 %add22, %conv21
-  %inc = add nsw i32 %i.069, 1
-  %exitcond = icmp eq i32 %inc, 10000
-  br i1 %exitcond, label %for.cond26.preheader, label %for.body
+; <label>:6                                       ; preds = %6, %0
+  %i.05 = phi i32 [ 1, %0 ], [ %42, %6 ]
+  %tmp.04 = phi i32 [ 1, %0 ], [ %41, %6 ]
+  %7 = shl nsw i32 %i.05, 1
+  %8 = urem i32 %7, %bufferSize
+  %9 = sext i32 %8 to i64
+  %10 = getelementptr inbounds i8 addrspace(1)* %input, i64 %9
+  %11 = load i8 addrspace(1)* %10, align 1, !tbaa !11
+  %12 = zext i8 %11 to i32
+  %13 = shl nsw i32 %i.05, 2
+  %14 = urem i32 %13, %bufferSize
+  %15 = sext i32 %14 to i64
+  %16 = getelementptr inbounds i8 addrspace(1)* %input, i64 %15
+  %17 = load i8 addrspace(1)* %16, align 1, !tbaa !11
+  %18 = zext i8 %17 to i32
+  %19 = mul nsw i32 %i.05, 6
+  %20 = urem i32 %19, %bufferSize
+  %21 = sext i32 %20 to i64
+  %22 = getelementptr inbounds i8 addrspace(1)* %input, i64 %21
+  %23 = load i8 addrspace(1)* %22, align 1, !tbaa !11
+  %24 = zext i8 %23 to i32
+  %25 = shl nsw i32 %i.05, 3
+  %26 = urem i32 %25, %bufferSize
+  %27 = sext i32 %26 to i64
+  %28 = getelementptr inbounds i8 addrspace(1)* %input, i64 %27
+  %29 = load i8 addrspace(1)* %28, align 1, !tbaa !11
+  %30 = zext i8 %29 to i32
+  %31 = mul nsw i32 %i.05, 10
+  %32 = urem i32 %31, %bufferSize
+  %33 = sext i32 %32 to i64
+  %34 = getelementptr inbounds i8 addrspace(1)* %input, i64 %33
+  %35 = load i8 addrspace(1)* %34, align 1, !tbaa !11
+  %36 = zext i8 %35 to i32
+  %37 = add i32 %12, %tmp.04
+  %38 = sub i32 %37, %18
+  %39 = add i32 %38, %24
+  %40 = sub i32 %39, %30
+  %41 = add i32 %40, %36
+  %42 = add nsw i32 %i.05, 1
+  %exitcond = icmp eq i32 %42, 10000
+  br i1 %exitcond, label %.preheader, label %6
 
-for.body29:                                       ; preds = %for.body29.lr.ph, %for.body29
-  %i25.067 = phi i32 [ %call1, %for.body29.lr.ph ], [ %add41, %for.body29 ]
-  %10 = sext i32 %i25.067 to i64
-  %arrayidx30 = getelementptr inbounds i8 addrspace(1)* %input, i64 %10
-  %11 = load i8 addrspace(1)* %arrayidx30, align 1, !tbaa !11
-  store i8 %11, i8 addrspace(3)* %arrayidx31, align 1, !tbaa !11
-  %conv33 = zext i8 %11 to i32
-  %mul34 = mul nsw i32 %conv33, %multiplier
-  %zero.0.load65 = load volatile i32* %zero, align 4
-  %mul36 = mul nsw i32 %zero.0.load65, %add23
-  %add37 = add nsw i32 %mul34, %mul36
-  %conv38 = trunc i32 %add37 to i8
-  %arrayidx39 = getelementptr inbounds i8 addrspace(1)* %output, i64 %10
-  store i8 %conv38, i8 addrspace(1)* %arrayidx39, align 1, !tbaa !11
-  %add41 = add i32 %i25.067, %call
-  %cmp27 = icmp ult i32 %add41, %bufferSize
-  br i1 %cmp27, label %for.body29, label %for.end42
+; <label>:43                                      ; preds = %.lr.ph, %43
+  %i1.03 = phi i32 [ %2, %.lr.ph ], [ %54, %43 ]
+  %44 = sext i32 %i1.03 to i64
+  %45 = getelementptr inbounds i8 addrspace(1)* %input, i64 %44
+  %46 = load i8 addrspace(1)* %45, align 1, !tbaa !11
+  store i8 %46, i8 addrspace(3)* %5, align 1, !tbaa !11
+  %47 = zext i8 %46 to i32
+  %48 = mul nsw i32 %47, %multiplier
+  %49 = load volatile i32* %zero, align 4
+  %50 = mul nsw i32 %49, %41
+  %51 = add nsw i32 %48, %50
+  %52 = trunc i32 %51 to i8
+  %53 = getelementptr inbounds i8 addrspace(1)* %output, i64 %44
+  store i8 %52, i8 addrspace(1)* %53, align 1, !tbaa !11
+  %54 = add i32 %i1.03, %1
+  %55 = icmp ult i32 %54, %bufferSize
+  br i1 %55, label %43, label %._crit_edge
 
-for.end42:                                        ; preds = %for.body29, %for.cond26.preheader
+._crit_edge:                                      ; preds = %43, %.preheader
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @K1(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   tail call void @work1(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier)
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @K2(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   tail call void @work2(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier, i8 addrspace(3)* getelementptr inbounds ([8192 x i8] addrspace(3)* @K2.lds, i32 0, i32 0))
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @K3(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   tail call void @work1(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier)
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @K4(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   tail call void @work2(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier, i8 addrspace(3)* getelementptr inbounds ([8192 x i8] addrspace(3)* @K4.lds, i32 0, i32 0))
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @K5(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   tail call void @work1(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier)
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @K6(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   tail call void @work2(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier, i8 addrspace(3)* getelementptr inbounds ([8192 x i8] addrspace(3)* @K6.lds, i32 0, i32 0))
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @K7(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   tail call void @work1(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier)
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @K8(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   tail call void @work2(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier, i8 addrspace(3)* getelementptr inbounds ([8192 x i8] addrspace(3)* @K8.lds, i32 0, i32 0))
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @K9(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   tail call void @work1(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier)
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @K10(i8 addrspace(1)* nocapture readonly %input, i8 addrspace(1)* nocapture %output, i32 %bufferSize, i32 %multiplier) #0 {
-entry:
   tail call void @work2(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier, i8 addrspace(3)* getelementptr inbounds ([8192 x i8] addrspace(3)* @K10.lds, i32 0, i32 0))
   ret void
 }
@@ -259,7 +247,7 @@ attributes #2 = { nounwind }
 !7 = metadata !{void (i8 addrspace(1)*, i8 addrspace(1)*, i32, i32)* @K8}
 !8 = metadata !{void (i8 addrspace(1)*, i8 addrspace(1)*, i32, i32)* @K9}
 !9 = metadata !{void (i8 addrspace(1)*, i8 addrspace(1)*, i32, i32)* @K10}
-!10 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!10 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !11 = metadata !{metadata !12, metadata !12, i64 0}
 !12 = metadata !{metadata !"omnipotent char", metadata !13, i64 0}
 !13 = metadata !{metadata !"Simple C/C++ TBAA"}

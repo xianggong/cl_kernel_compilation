@@ -4,130 +4,129 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @nbody_sim(<4 x float> addrspace(1)* nocapture readonly %pos, <4 x float> addrspace(1)* nocapture readonly %vel, i32 %numBodies, float %deltaTime, float %epsSqr, <4 x float> addrspace(1)* nocapture %newPosition, <4 x float> addrspace(1)* nocapture %newVelocity) #0 {
-entry:
-  %call = tail call i32 @get_global_id(i32 0) #4
-  %0 = sext i32 %call to i64
-  %arrayidx = getelementptr inbounds <4 x float> addrspace(1)* %pos, i64 %0
-  %1 = load <4 x float> addrspace(1)* %arrayidx, align 16, !tbaa !2
-  %cmp113 = icmp sgt i32 %numBodies, 8
-  br i1 %cmp113, label %for.cond1.preheader.lr.ph, label %for.cond14.preheader
+  %1 = tail call i32 @get_global_id(i32 0) #4
+  %2 = sext i32 %1 to i64
+  %3 = getelementptr inbounds <4 x float> addrspace(1)* %pos, i64 %2
+  %4 = load <4 x float> addrspace(1)* %3, align 16, !tbaa !2
+  %5 = icmp sgt i32 %numBodies, 8
+  br i1 %5, label %.preheader9.lr.ph, label %.preheader
 
-for.cond1.preheader.lr.ph:                        ; preds = %entry
-  %2 = shufflevector <4 x float> %1, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
-  br label %for.cond1.preheader
+.preheader9.lr.ph:                                ; preds = %0
+  %6 = shufflevector <4 x float> %4, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
+  br label %.preheader9
 
-for.cond.loopexit:                                ; preds = %for.body3
-  %3 = add i32 %i.0114, 8
-  %add = add nsw i32 %indvars.iv121, 9
-  %cmp = icmp slt i32 %add, %numBodies
-  %indvars.iv.next122 = add i32 %indvars.iv121, 8
-  %indvars.iv.next124 = add i32 %indvars.iv123, 8
-  br i1 %cmp, label %for.cond1.preheader, label %for.cond14.preheader
+.loopexit:                                        ; preds = %14
+  %7 = add i32 %i.013, 8
+  %8 = add nsw i32 %indvars.iv21, 9
+  %9 = icmp slt i32 %8, %numBodies
+  %indvars.iv.next22 = add i32 %indvars.iv21, 8
+  %indvars.iv.next24 = add i32 %indvars.iv23, 8
+  br i1 %9, label %.preheader9, label %.preheader
 
-for.cond1.preheader:                              ; preds = %for.cond1.preheader.lr.ph, %for.cond.loopexit
-  %indvars.iv123 = phi i32 [ 8, %for.cond1.preheader.lr.ph ], [ %indvars.iv.next124, %for.cond.loopexit ]
-  %indvars.iv121 = phi i32 [ 7, %for.cond1.preheader.lr.ph ], [ %indvars.iv.next122, %for.cond.loopexit ]
-  %acc.0115 = phi <4 x float> [ zeroinitializer, %for.cond1.preheader.lr.ph ], [ %17, %for.cond.loopexit ]
-  %i.0114 = phi i32 [ 0, %for.cond1.preheader.lr.ph ], [ %3, %for.cond.loopexit ]
-  %4 = sext i32 %i.0114 to i64
-  br label %for.body3
+.preheader9:                                      ; preds = %.preheader9.lr.ph, %.loopexit
+  %indvars.iv23 = phi i32 [ 8, %.preheader9.lr.ph ], [ %indvars.iv.next24, %.loopexit ]
+  %indvars.iv21 = phi i32 [ 7, %.preheader9.lr.ph ], [ %indvars.iv.next22, %.loopexit ]
+  %acc.014 = phi <4 x float> [ zeroinitializer, %.preheader9.lr.ph ], [ %38, %.loopexit ]
+  %i.013 = phi i32 [ 0, %.preheader9.lr.ph ], [ %7, %.loopexit ]
+  %10 = sext i32 %i.013 to i64
+  br label %14
 
-for.cond14.preheader:                             ; preds = %for.cond.loopexit, %entry
-  %acc.0.lcssa = phi <4 x float> [ zeroinitializer, %entry ], [ %17, %for.cond.loopexit ]
-  %i.0.lcssa = phi i32 [ 0, %entry ], [ %3, %for.cond.loopexit ]
-  %cmp15107 = icmp slt i32 %i.0.lcssa, %numBodies
-  %5 = shufflevector <4 x float> %1, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
-  br i1 %cmp15107, label %for.body16.lr.ph, label %for.end40
+.preheader:                                       ; preds = %.loopexit, %0
+  %acc.0.lcssa = phi <4 x float> [ zeroinitializer, %0 ], [ %38, %.loopexit ]
+  %i.0.lcssa = phi i32 [ 0, %0 ], [ %7, %.loopexit ]
+  %11 = icmp slt i32 %i.0.lcssa, %numBodies
+  %12 = shufflevector <4 x float> %4, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
+  br i1 %11, label %.lr.ph, label %._crit_edge
 
-for.body16.lr.ph:                                 ; preds = %for.cond14.preheader
-  %6 = sext i32 %i.0.lcssa to i64
-  br label %for.body16
+.lr.ph:                                           ; preds = %.preheader
+  %13 = sext i32 %i.0.lcssa to i64
+  br label %39
 
-for.body3:                                        ; preds = %for.body3, %for.cond1.preheader
-  %indvars.iv119 = phi i64 [ %4, %for.cond1.preheader ], [ %indvars.iv.next120, %for.body3 ]
-  %acc.1112 = phi <4 x float> [ %acc.0115, %for.cond1.preheader ], [ %17, %for.body3 ]
-  %arrayidx4 = getelementptr inbounds <4 x float> addrspace(1)* %pos, i64 %indvars.iv119
-  %7 = load <4 x float> addrspace(1)* %arrayidx4, align 16, !tbaa !2
-  %8 = shufflevector <4 x float> %7, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
-  %sub = fsub <3 x float> %8, %2
-  %9 = extractelement <3 x float> %sub, i32 0
-  %10 = extractelement <3 x float> %sub, i32 1
-  %mul5 = fmul float %10, %10
-  %11 = tail call float @llvm.fmuladd.f32(float %9, float %9, float %mul5)
-  %12 = extractelement <3 x float> %sub, i32 2
-  %13 = tail call float @llvm.fmuladd.f32(float %12, float %12, float %11)
-  %add6 = fadd float %13, %epsSqr
-  %call7 = tail call float @llvm.sqrt.f32(float %add6)
-  %div = fdiv float 1.000000e+00, %call7, !fpmath !5
-  %mul = fmul float %div, %div
-  %mul8 = fmul float %div, %mul
-  %14 = extractelement <4 x float> %7, i32 3
-  %mul9 = fmul float %14, %mul8
-  %splat.splatinsert = insertelement <3 x float> undef, float %mul9, i32 0
-  %splat.splat = shufflevector <3 x float> %splat.splatinsert, <3 x float> undef, <3 x i32> zeroinitializer
-  %mul10 = fmul <3 x float> %sub, %splat.splat
-  %15 = shufflevector <4 x float> %acc.1112, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
-  %add11 = fadd <3 x float> %15, %mul10
-  %16 = shufflevector <3 x float> %add11, <3 x float> undef, <4 x i32> <i32 0, i32 1, i32 2, i32 undef>
-  %17 = shufflevector <4 x float> %acc.1112, <4 x float> %16, <4 x i32> <i32 4, i32 5, i32 6, i32 3>
-  %indvars.iv.next120 = add nsw i64 %indvars.iv119, 1
-  %lftr.wideiv125 = trunc i64 %indvars.iv.next120 to i32
-  %exitcond126 = icmp eq i32 %lftr.wideiv125, %indvars.iv123
-  br i1 %exitcond126, label %for.cond.loopexit, label %for.body3
-
-for.body16:                                       ; preds = %for.body16, %for.body16.lr.ph
-  %indvars.iv = phi i64 [ %6, %for.body16.lr.ph ], [ %indvars.iv.next, %for.body16 ]
-  %acc.2109 = phi <4 x float> [ %acc.0.lcssa, %for.body16.lr.ph ], [ %28, %for.body16 ]
-  %arrayidx18 = getelementptr inbounds <4 x float> addrspace(1)* %pos, i64 %indvars.iv
-  %18 = load <4 x float> addrspace(1)* %arrayidx18, align 16, !tbaa !2
-  %19 = shufflevector <4 x float> %18, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
-  %sub20 = fsub <3 x float> %19, %5
-  %20 = extractelement <3 x float> %sub20, i32 0
-  %21 = extractelement <3 x float> %sub20, i32 1
-  %mul23 = fmul float %21, %21
-  %22 = tail call float @llvm.fmuladd.f32(float %20, float %20, float %mul23)
-  %23 = extractelement <3 x float> %sub20, i32 2
+; <label>:14                                      ; preds = %14, %.preheader9
+  %indvars.iv19 = phi i64 [ %10, %.preheader9 ], [ %indvars.iv.next20, %14 ]
+  %acc.112 = phi <4 x float> [ %acc.014, %.preheader9 ], [ %38, %14 ]
+  %15 = getelementptr inbounds <4 x float> addrspace(1)* %pos, i64 %indvars.iv19
+  %16 = load <4 x float> addrspace(1)* %15, align 16, !tbaa !2
+  %17 = shufflevector <4 x float> %16, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
+  %18 = fsub <3 x float> %17, %6
+  %19 = extractelement <3 x float> %18, i32 0
+  %20 = extractelement <3 x float> %18, i32 1
+  %21 = fmul float %20, %20
+  %22 = tail call float @llvm.fmuladd.f32(float %19, float %19, float %21)
+  %23 = extractelement <3 x float> %18, i32 2
   %24 = tail call float @llvm.fmuladd.f32(float %23, float %23, float %22)
-  %add26 = fadd float %24, %epsSqr
-  %call27 = tail call float @llvm.sqrt.f32(float %add26)
-  %div28 = fdiv float 1.000000e+00, %call27, !fpmath !5
-  %mul30 = fmul float %div28, %div28
-  %mul31 = fmul float %div28, %mul30
-  %25 = extractelement <4 x float> %18, i32 3
-  %mul33 = fmul float %25, %mul31
-  %splat.splatinsert34 = insertelement <3 x float> undef, float %mul33, i32 0
-  %splat.splat35 = shufflevector <3 x float> %splat.splatinsert34, <3 x float> undef, <3 x i32> zeroinitializer
-  %mul36 = fmul <3 x float> %sub20, %splat.splat35
-  %26 = shufflevector <4 x float> %acc.2109, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
-  %add37 = fadd <3 x float> %26, %mul36
-  %27 = shufflevector <3 x float> %add37, <3 x float> undef, <4 x i32> <i32 0, i32 1, i32 2, i32 undef>
-  %28 = shufflevector <4 x float> %acc.2109, <4 x float> %27, <4 x i32> <i32 4, i32 5, i32 6, i32 3>
+  %25 = fadd float %24, %epsSqr
+  %26 = tail call float @llvm.sqrt.f32(float %25)
+  %27 = fdiv float 1.000000e+00, %26, !fpmath !5
+  %28 = fmul float %27, %27
+  %29 = fmul float %27, %28
+  %30 = extractelement <4 x float> %16, i32 3
+  %31 = fmul float %30, %29
+  %32 = insertelement <3 x float> undef, float %31, i32 0
+  %33 = shufflevector <3 x float> %32, <3 x float> undef, <3 x i32> zeroinitializer
+  %34 = fmul <3 x float> %18, %33
+  %35 = shufflevector <4 x float> %acc.112, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
+  %36 = fadd <3 x float> %35, %34
+  %37 = shufflevector <3 x float> %36, <3 x float> undef, <4 x i32> <i32 0, i32 1, i32 2, i32 undef>
+  %38 = shufflevector <4 x float> %acc.112, <4 x float> %37, <4 x i32> <i32 4, i32 5, i32 6, i32 3>
+  %indvars.iv.next20 = add nsw i64 %indvars.iv19, 1
+  %lftr.wideiv25 = trunc i64 %indvars.iv.next20 to i32
+  %exitcond26 = icmp eq i32 %lftr.wideiv25, %indvars.iv23
+  br i1 %exitcond26, label %.loopexit, label %14
+
+; <label>:39                                      ; preds = %39, %.lr.ph
+  %indvars.iv = phi i64 [ %13, %.lr.ph ], [ %indvars.iv.next, %39 ]
+  %acc.28 = phi <4 x float> [ %acc.0.lcssa, %.lr.ph ], [ %63, %39 ]
+  %40 = getelementptr inbounds <4 x float> addrspace(1)* %pos, i64 %indvars.iv
+  %41 = load <4 x float> addrspace(1)* %40, align 16, !tbaa !2
+  %42 = shufflevector <4 x float> %41, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
+  %43 = fsub <3 x float> %42, %12
+  %44 = extractelement <3 x float> %43, i32 0
+  %45 = extractelement <3 x float> %43, i32 1
+  %46 = fmul float %45, %45
+  %47 = tail call float @llvm.fmuladd.f32(float %44, float %44, float %46)
+  %48 = extractelement <3 x float> %43, i32 2
+  %49 = tail call float @llvm.fmuladd.f32(float %48, float %48, float %47)
+  %50 = fadd float %49, %epsSqr
+  %51 = tail call float @llvm.sqrt.f32(float %50)
+  %52 = fdiv float 1.000000e+00, %51, !fpmath !5
+  %53 = fmul float %52, %52
+  %54 = fmul float %52, %53
+  %55 = extractelement <4 x float> %41, i32 3
+  %56 = fmul float %55, %54
+  %57 = insertelement <3 x float> undef, float %56, i32 0
+  %58 = shufflevector <3 x float> %57, <3 x float> undef, <3 x i32> zeroinitializer
+  %59 = fmul <3 x float> %43, %58
+  %60 = shufflevector <4 x float> %acc.28, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
+  %61 = fadd <3 x float> %60, %59
+  %62 = shufflevector <3 x float> %61, <3 x float> undef, <4 x i32> <i32 0, i32 1, i32 2, i32 undef>
+  %63 = shufflevector <4 x float> %acc.28, <4 x float> %62, <4 x i32> <i32 4, i32 5, i32 6, i32 3>
   %indvars.iv.next = add nsw i64 %indvars.iv, 1
   %lftr.wideiv = trunc i64 %indvars.iv.next to i32
   %exitcond = icmp eq i32 %lftr.wideiv, %numBodies
-  br i1 %exitcond, label %for.end40, label %for.body16
+  br i1 %exitcond, label %._crit_edge, label %39
 
-for.end40:                                        ; preds = %for.cond14.preheader, %for.body16
-  %acc.2.lcssa = phi <4 x float> [ %28, %for.body16 ], [ %acc.0.lcssa, %for.cond14.preheader ]
-  %arrayidx41 = getelementptr inbounds <4 x float> addrspace(1)* %vel, i64 %0
-  %29 = load <4 x float> addrspace(1)* %arrayidx41, align 16, !tbaa !2
-  %30 = shufflevector <4 x float> %29, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
-  %splat.splatinsert42 = insertelement <3 x float> undef, float %deltaTime, i32 0
-  %splat.splat43 = shufflevector <3 x float> %splat.splatinsert42, <3 x float> undef, <3 x i32> zeroinitializer
-  %31 = tail call <3 x float> @llvm.fmuladd.v3f32(<3 x float> %30, <3 x float> %splat.splat43, <3 x float> %5)
-  %32 = shufflevector <4 x float> %acc.2.lcssa, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
-  %mul45 = fmul <3 x float> %32, <float 5.000000e-01, float 5.000000e-01, float 5.000000e-01>
-  %mul48 = fmul <3 x float> %splat.splat43, %mul45
-  %33 = tail call <3 x float> @llvm.fmuladd.v3f32(<3 x float> %mul48, <3 x float> %splat.splat43, <3 x float> %31)
-  %34 = shufflevector <3 x float> %33, <3 x float> undef, <4 x i32> <i32 0, i32 1, i32 2, i32 undef>
-  %35 = shufflevector <4 x float> %34, <4 x float> %1, <4 x i32> <i32 0, i32 1, i32 2, i32 7>
-  %36 = tail call <3 x float> @llvm.fmuladd.v3f32(<3 x float> %32, <3 x float> %splat.splat43, <3 x float> %30)
-  %37 = shufflevector <3 x float> %36, <3 x float> undef, <4 x i32> <i32 0, i32 1, i32 2, i32 undef>
-  %38 = shufflevector <4 x float> %37, <4 x float> %29, <4 x i32> <i32 0, i32 1, i32 2, i32 7>
-  %arrayidx55 = getelementptr inbounds <4 x float> addrspace(1)* %newPosition, i64 %0
-  store <4 x float> %35, <4 x float> addrspace(1)* %arrayidx55, align 16, !tbaa !2
-  %arrayidx56 = getelementptr inbounds <4 x float> addrspace(1)* %newVelocity, i64 %0
-  store <4 x float> %38, <4 x float> addrspace(1)* %arrayidx56, align 16, !tbaa !2
+._crit_edge:                                      ; preds = %.preheader, %39
+  %acc.2.lcssa = phi <4 x float> [ %63, %39 ], [ %acc.0.lcssa, %.preheader ]
+  %64 = getelementptr inbounds <4 x float> addrspace(1)* %vel, i64 %2
+  %65 = load <4 x float> addrspace(1)* %64, align 16, !tbaa !2
+  %66 = shufflevector <4 x float> %65, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
+  %67 = insertelement <3 x float> undef, float %deltaTime, i32 0
+  %68 = shufflevector <3 x float> %67, <3 x float> undef, <3 x i32> zeroinitializer
+  %69 = tail call <3 x float> @llvm.fmuladd.v3f32(<3 x float> %66, <3 x float> %68, <3 x float> %12)
+  %70 = shufflevector <4 x float> %acc.2.lcssa, <4 x float> undef, <3 x i32> <i32 0, i32 1, i32 2>
+  %71 = fmul <3 x float> %70, <float 5.000000e-01, float 5.000000e-01, float 5.000000e-01>
+  %72 = fmul <3 x float> %68, %71
+  %73 = tail call <3 x float> @llvm.fmuladd.v3f32(<3 x float> %72, <3 x float> %68, <3 x float> %69)
+  %74 = shufflevector <3 x float> %73, <3 x float> undef, <4 x i32> <i32 0, i32 1, i32 2, i32 undef>
+  %75 = shufflevector <4 x float> %74, <4 x float> %4, <4 x i32> <i32 0, i32 1, i32 2, i32 7>
+  %76 = tail call <3 x float> @llvm.fmuladd.v3f32(<3 x float> %70, <3 x float> %68, <3 x float> %66)
+  %77 = shufflevector <3 x float> %76, <3 x float> undef, <4 x i32> <i32 0, i32 1, i32 2, i32 undef>
+  %78 = shufflevector <4 x float> %77, <4 x float> %65, <4 x i32> <i32 0, i32 1, i32 2, i32 7>
+  %79 = getelementptr inbounds <4 x float> addrspace(1)* %newPosition, i64 %2
+  store <4 x float> %75, <4 x float> addrspace(1)* %79, align 16, !tbaa !2
+  %80 = getelementptr inbounds <4 x float> addrspace(1)* %newVelocity, i64 %2
+  store <4 x float> %78, <4 x float> addrspace(1)* %80, align 16, !tbaa !2
   ret void
 }
 
@@ -152,7 +151,7 @@ attributes #4 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (<4 x float> addrspace(1)*, <4 x float> addrspace(1)*, i32, float, float, <4 x float> addrspace(1)*, <4 x float> addrspace(1)*)* @nbody_sim}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !2 = metadata !{metadata !3, metadata !3, i64 0}
 !3 = metadata !{metadata !"omnipotent char", metadata !4, i64 0}
 !4 = metadata !{metadata !"Simple C/C++ TBAA"}

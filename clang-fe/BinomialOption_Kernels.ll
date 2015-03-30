@@ -4,119 +4,118 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @binomial_options(i32 %numSteps, <4 x float> addrspace(1)* nocapture readonly %randArray, <4 x float> addrspace(1)* nocapture %output, <4 x float> addrspace(3)* nocapture %callA, <4 x float> addrspace(3)* nocapture %callB) #0 {
-entry:
-  %call = tail call i32 @get_local_id(i32 0) #4
-  %call1 = tail call i32 @get_group_id(i32 0) #4
-  %0 = sext i32 %call1 to i64
-  %arrayidx = getelementptr inbounds <4 x float> addrspace(1)* %randArray, i64 %0
-  %1 = load <4 x float> addrspace(1)* %arrayidx, align 16, !tbaa !2
-  %sub = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %1
-  %mul2 = fmul <4 x float> %1, <float 3.000000e+01, float 3.000000e+01, float 3.000000e+01, float 3.000000e+01>
-  %2 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %sub, <4 x float> <float 5.000000e+00, float 5.000000e+00, float 5.000000e+00, float 5.000000e+00>, <4 x float> %mul2)
-  %mul4 = fmul <4 x float> %1, <float 1.000000e+02, float 1.000000e+02, float 1.000000e+02, float 1.000000e+02>
-  %3 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %sub, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, <4 x float> %mul4)
-  %mul6 = fmul <4 x float> %1, <float 1.000000e+01, float 1.000000e+01, float 1.000000e+01, float 1.000000e+01>
-  %4 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %sub, <4 x float> <float 2.500000e-01, float 2.500000e-01, float 2.500000e-01, float 2.500000e-01>, <4 x float> %mul6)
-  %conv = sitofp i32 %numSteps to float
-  %div = fdiv float 1.000000e+00, %conv, !fpmath !5
-  %splat.splatinsert = insertelement <4 x float> undef, float %div, i32 0
-  %splat.splat = shufflevector <4 x float> %splat.splatinsert, <4 x float> undef, <4 x i32> zeroinitializer
-  %mul = fmul <4 x float> %4, %splat.splat
-  %call7 = tail call <4 x float> @llvm.sqrt.v4f32(<4 x float> %mul)
-  %mul8 = fmul <4 x float> %call7, <float 0x3FD3333340000000, float 0x3FD3333340000000, float 0x3FD3333340000000, float 0x3FD3333340000000>
-  %mul9 = fmul <4 x float> %mul, <float 0x3F947AE140000000, float 0x3F947AE140000000, float 0x3F947AE140000000, float 0x3F947AE140000000>
-  %call10 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %mul9) #4
-  %div11 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %call10, !fpmath !5
-  %call12 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %mul8) #4
-  %div13 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %call12, !fpmath !5
-  %sub14 = fsub <4 x float> %call10, %div13
-  %sub15 = fsub <4 x float> %call12, %div13
-  %div16 = fdiv <4 x float> %sub14, %sub15, !fpmath !5
-  %sub17 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %div16
-  %mul18 = fmul <4 x float> %div11, %div16
-  %mul19 = fmul <4 x float> %div11, %sub17
-  %conv20 = uitofp i32 %call to float
-  %neg = fsub float -0.000000e+00, %conv
-  %5 = tail call float @llvm.fmuladd.f32(float 2.000000e+00, float %conv20, float %neg)
-  %splat.splatinsert23 = insertelement <4 x float> undef, float %5, i32 0
-  %splat.splat24 = shufflevector <4 x float> %splat.splatinsert23, <4 x float> undef, <4 x i32> zeroinitializer
-  %mul25 = fmul <4 x float> %mul8, %splat.splat24
-  %call26 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %mul25) #4
-  %neg28 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %3
-  %6 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %2, <4 x float> %call26, <4 x float> %neg28)
-  %7 = extractelement <4 x float> %6, i32 0
-  %cmp = fcmp ogt float %7, 0.000000e+00
-  %cond = select i1 %cmp, float %7, float 0.000000e+00
-  %arrayidx30 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %call
-  %8 = insertelement <4 x float> undef, float %cond, i32 0
-  %9 = extractelement <4 x float> %6, i32 1
-  %cmp31 = fcmp ogt float %9, 0.000000e+00
-  %cond36 = select i1 %cmp31, float %9, float 0.000000e+00
-  %10 = insertelement <4 x float> %8, float %cond36, i32 1
-  %11 = extractelement <4 x float> %6, i32 2
-  %cmp38 = fcmp ogt float %11, 0.000000e+00
-  %cond43 = select i1 %cmp38, float %11, float 0.000000e+00
-  %12 = insertelement <4 x float> %10, float %cond43, i32 2
-  %13 = extractelement <4 x float> %6, i32 3
-  %cmp45 = fcmp ogt float %13, 0.000000e+00
-  %cond50 = select i1 %cmp45, float %13, float 0.000000e+00
-  %14 = insertelement <4 x float> %12, float %cond50, i32 3
-  store <4 x float> %14, <4 x float> addrspace(3)* %arrayidx30, align 16
+  %1 = tail call i32 @get_local_id(i32 0) #4
+  %2 = tail call i32 @get_group_id(i32 0) #4
+  %3 = sext i32 %2 to i64
+  %4 = getelementptr inbounds <4 x float> addrspace(1)* %randArray, i64 %3
+  %5 = load <4 x float> addrspace(1)* %4, align 16, !tbaa !2
+  %6 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %5
+  %7 = fmul <4 x float> %5, <float 3.000000e+01, float 3.000000e+01, float 3.000000e+01, float 3.000000e+01>
+  %8 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %6, <4 x float> <float 5.000000e+00, float 5.000000e+00, float 5.000000e+00, float 5.000000e+00>, <4 x float> %7)
+  %9 = fmul <4 x float> %5, <float 1.000000e+02, float 1.000000e+02, float 1.000000e+02, float 1.000000e+02>
+  %10 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %6, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, <4 x float> %9)
+  %11 = fmul <4 x float> %5, <float 1.000000e+01, float 1.000000e+01, float 1.000000e+01, float 1.000000e+01>
+  %12 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %6, <4 x float> <float 2.500000e-01, float 2.500000e-01, float 2.500000e-01, float 2.500000e-01>, <4 x float> %11)
+  %13 = sitofp i32 %numSteps to float
+  %14 = fdiv float 1.000000e+00, %13, !fpmath !5
+  %15 = insertelement <4 x float> undef, float %14, i32 0
+  %16 = shufflevector <4 x float> %15, <4 x float> undef, <4 x i32> zeroinitializer
+  %17 = fmul <4 x float> %12, %16
+  %18 = tail call <4 x float> @llvm.sqrt.v4f32(<4 x float> %17)
+  %19 = fmul <4 x float> %18, <float 0x3FD3333340000000, float 0x3FD3333340000000, float 0x3FD3333340000000, float 0x3FD3333340000000>
+  %20 = fmul <4 x float> %17, <float 0x3F947AE140000000, float 0x3F947AE140000000, float 0x3F947AE140000000, float 0x3F947AE140000000>
+  %21 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %20) #4
+  %22 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %21, !fpmath !5
+  %23 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %19) #4
+  %24 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %23, !fpmath !5
+  %25 = fsub <4 x float> %21, %24
+  %26 = fsub <4 x float> %23, %24
+  %27 = fdiv <4 x float> %25, %26, !fpmath !5
+  %28 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %27
+  %29 = fmul <4 x float> %22, %27
+  %30 = fmul <4 x float> %22, %28
+  %31 = uitofp i32 %1 to float
+  %32 = fsub float -0.000000e+00, %13
+  %33 = tail call float @llvm.fmuladd.f32(float 2.000000e+00, float %31, float %32)
+  %34 = insertelement <4 x float> undef, float %33, i32 0
+  %35 = shufflevector <4 x float> %34, <4 x float> undef, <4 x i32> zeroinitializer
+  %36 = fmul <4 x float> %19, %35
+  %37 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %36) #4
+  %38 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %10
+  %39 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %8, <4 x float> %37, <4 x float> %38)
+  %40 = extractelement <4 x float> %39, i32 0
+  %41 = fcmp ogt float %40, 0.000000e+00
+  %42 = select i1 %41, float %40, float 0.000000e+00
+  %43 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %1
+  %44 = insertelement <4 x float> undef, float %42, i32 0
+  %45 = extractelement <4 x float> %39, i32 1
+  %46 = fcmp ogt float %45, 0.000000e+00
+  %47 = select i1 %46, float %45, float 0.000000e+00
+  %48 = insertelement <4 x float> %44, float %47, i32 1
+  %49 = extractelement <4 x float> %39, i32 2
+  %50 = fcmp ogt float %49, 0.000000e+00
+  %51 = select i1 %50, float %49, float 0.000000e+00
+  %52 = insertelement <4 x float> %48, float %51, i32 2
+  %53 = extractelement <4 x float> %39, i32 3
+  %54 = fcmp ogt float %53, 0.000000e+00
+  %55 = select i1 %54, float %53, float 0.000000e+00
+  %56 = insertelement <4 x float> %52, float %55, i32 3
+  store <4 x float> %56, <4 x float> addrspace(3)* %43, align 16
   tail call void @barrier(i32 1) #4
-  %cmp52127 = icmp sgt i32 %numSteps, 0
-  br i1 %cmp52127, label %for.body.lr.ph, label %for.end
+  %57 = icmp sgt i32 %numSteps, 0
+  br i1 %57, label %.lr.ph, label %._crit_edge
 
-for.body.lr.ph:                                   ; preds = %entry
-  %add = add i32 %call, 1
-  %arrayidx58 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %add
-  %arrayidx60 = getelementptr inbounds <4 x float> addrspace(3)* %callB, i32 %call
-  %arrayidx68 = getelementptr inbounds <4 x float> addrspace(3)* %callB, i32 %add
-  br label %for.body
+.lr.ph:                                           ; preds = %0
+  %58 = add i32 %1, 1
+  %59 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %58
+  %60 = getelementptr inbounds <4 x float> addrspace(3)* %callB, i32 %1
+  %61 = getelementptr inbounds <4 x float> addrspace(3)* %callB, i32 %58
+  br label %62
 
-for.body:                                         ; preds = %for.body.lr.ph, %if.end71
-  %j.0128 = phi i32 [ %numSteps, %for.body.lr.ph ], [ %sub72, %if.end71 ]
-  %cmp54 = icmp ult i32 %call, %j.0128
-  br i1 %cmp54, label %if.then, label %if.end
+; <label>:62                                      ; preds = %.lr.ph, %77
+  %j.01 = phi i32 [ %numSteps, %.lr.ph ], [ %78, %77 ]
+  %63 = icmp ult i32 %1, %j.01
+  br i1 %63, label %64, label %69
 
-if.then:                                          ; preds = %for.body
-  %15 = load <4 x float> addrspace(3)* %arrayidx30, align 16, !tbaa !2
-  %16 = load <4 x float> addrspace(3)* %arrayidx58, align 16, !tbaa !2
-  %mul59 = fmul <4 x float> %mul19, %16
-  %17 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %mul18, <4 x float> %15, <4 x float> %mul59)
-  store <4 x float> %17, <4 x float> addrspace(3)* %arrayidx60, align 16, !tbaa !2
-  br label %if.end
+; <label>:64                                      ; preds = %62
+  %65 = load <4 x float> addrspace(3)* %43, align 16, !tbaa !2
+  %66 = load <4 x float> addrspace(3)* %59, align 16, !tbaa !2
+  %67 = fmul <4 x float> %30, %66
+  %68 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %29, <4 x float> %65, <4 x float> %67)
+  store <4 x float> %68, <4 x float> addrspace(3)* %60, align 16, !tbaa !2
+  br label %69
 
-if.end:                                           ; preds = %if.then, %for.body
+; <label>:69                                      ; preds = %64, %62
   tail call void @barrier(i32 1) #4
-  %sub61 = add nsw i32 %j.0128, -1
-  %cmp62 = icmp ult i32 %call, %sub61
-  br i1 %cmp62, label %if.then64, label %if.end71
+  %70 = add nsw i32 %j.01, -1
+  %71 = icmp ult i32 %1, %70
+  br i1 %71, label %72, label %77
 
-if.then64:                                        ; preds = %if.end
-  %18 = load <4 x float> addrspace(3)* %arrayidx60, align 16, !tbaa !2
-  %19 = load <4 x float> addrspace(3)* %arrayidx68, align 16, !tbaa !2
-  %mul69 = fmul <4 x float> %mul19, %19
-  %20 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %mul18, <4 x float> %18, <4 x float> %mul69)
-  store <4 x float> %20, <4 x float> addrspace(3)* %arrayidx30, align 16, !tbaa !2
-  br label %if.end71
+; <label>:72                                      ; preds = %69
+  %73 = load <4 x float> addrspace(3)* %60, align 16, !tbaa !2
+  %74 = load <4 x float> addrspace(3)* %61, align 16, !tbaa !2
+  %75 = fmul <4 x float> %30, %74
+  %76 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %29, <4 x float> %73, <4 x float> %75)
+  store <4 x float> %76, <4 x float> addrspace(3)* %43, align 16, !tbaa !2
+  br label %77
 
-if.end71:                                         ; preds = %if.then64, %if.end
+; <label>:77                                      ; preds = %72, %69
   tail call void @barrier(i32 1) #4
-  %sub72 = add nsw i32 %j.0128, -2
-  %cmp52 = icmp sgt i32 %sub72, 0
-  br i1 %cmp52, label %for.body, label %for.end
+  %78 = add nsw i32 %j.01, -2
+  %79 = icmp sgt i32 %78, 0
+  br i1 %79, label %62, label %._crit_edge
 
-for.end:                                          ; preds = %if.end71, %entry
-  %cmp73 = icmp eq i32 %call, 0
-  br i1 %cmp73, label %if.then75, label %if.end78
+._crit_edge:                                      ; preds = %77, %0
+  %80 = icmp eq i32 %1, 0
+  br i1 %80, label %81, label %84
 
-if.then75:                                        ; preds = %for.end
-  %21 = load <4 x float> addrspace(3)* %callA, align 16, !tbaa !2
-  %arrayidx77 = getelementptr inbounds <4 x float> addrspace(1)* %output, i64 %0
-  store <4 x float> %21, <4 x float> addrspace(1)* %arrayidx77, align 16, !tbaa !2
-  br label %if.end78
+; <label>:81                                      ; preds = %._crit_edge
+  %82 = load <4 x float> addrspace(3)* %callA, align 16, !tbaa !2
+  %83 = getelementptr inbounds <4 x float> addrspace(1)* %output, i64 %3
+  store <4 x float> %82, <4 x float> addrspace(1)* %83, align 16, !tbaa !2
+  br label %84
 
-if.end78:                                         ; preds = %if.then75, %for.end
+; <label>:84                                      ; preds = %81, %._crit_edge
   ret void
 }
 
@@ -147,7 +146,7 @@ attributes #4 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (i32, <4 x float> addrspace(1)*, <4 x float> addrspace(1)*, <4 x float> addrspace(3)*, <4 x float> addrspace(3)*)* @binomial_options}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !2 = metadata !{metadata !3, metadata !3, i64 0}
 !3 = metadata !{metadata !"omnipotent char", metadata !4, i64 0}
 !4 = metadata !{metadata !"Simple C/C++ TBAA"}

@@ -4,59 +4,58 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @reduce(<4 x i32> addrspace(1)* nocapture readonly %input, <4 x i32> addrspace(1)* nocapture %output, <4 x i32> addrspace(3)* nocapture %sdata) #0 {
-entry:
-  %call = tail call i32 @get_local_id(i32 0) #2
-  %call1 = tail call i32 @get_group_id(i32 0) #2
-  %call2 = tail call i32 @get_global_id(i32 0) #2
-  %call3 = tail call i32 @get_local_size(i32 0) #2
-  %mul = shl i32 %call2, 1
-  %0 = sext i32 %mul to i64
-  %arrayidx = getelementptr inbounds <4 x i32> addrspace(1)* %input, i64 %0
-  %1 = load <4 x i32> addrspace(1)* %arrayidx, align 16, !tbaa !2
-  %add29 = or i32 %mul, 1
-  %2 = sext i32 %add29 to i64
-  %arrayidx4 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i64 %2
-  %3 = load <4 x i32> addrspace(1)* %arrayidx4, align 16, !tbaa !2
-  %add5 = add <4 x i32> %1, %3
-  %arrayidx6 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 %call
-  store <4 x i32> %add5, <4 x i32> addrspace(3)* %arrayidx6, align 16, !tbaa !2
+  %1 = tail call i32 @get_local_id(i32 0) #2
+  %2 = tail call i32 @get_group_id(i32 0) #2
+  %3 = tail call i32 @get_global_id(i32 0) #2
+  %4 = tail call i32 @get_local_size(i32 0) #2
+  %5 = shl i32 %3, 1
+  %6 = sext i32 %5 to i64
+  %7 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i64 %6
+  %8 = load <4 x i32> addrspace(1)* %7, align 16, !tbaa !2
+  %9 = or i32 %5, 1
+  %10 = sext i32 %9 to i64
+  %11 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i64 %10
+  %12 = load <4 x i32> addrspace(1)* %11, align 16, !tbaa !2
+  %13 = add <4 x i32> %8, %12
+  %14 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 %1
+  store <4 x i32> %13, <4 x i32> addrspace(3)* %14, align 16, !tbaa !2
   tail call void @barrier(i32 1) #2
-  %s.030 = lshr i32 %call3, 1
-  %cmp31 = icmp eq i32 %s.030, 0
-  br i1 %cmp31, label %for.end, label %for.body
+  %s.01 = lshr i32 %4, 1
+  %15 = icmp eq i32 %s.01, 0
+  br i1 %15, label %._crit_edge, label %.lr.ph
 
-for.body:                                         ; preds = %entry, %if.end
-  %s.032 = phi i32 [ %s.0, %if.end ], [ %s.030, %entry ]
-  %cmp7 = icmp ult i32 %call, %s.032
-  br i1 %cmp7, label %if.then, label %if.end
+.lr.ph:                                           ; preds = %0, %23
+  %s.02 = phi i32 [ %s.0, %23 ], [ %s.01, %0 ]
+  %16 = icmp ult i32 %1, %s.02
+  br i1 %16, label %17, label %23
 
-if.then:                                          ; preds = %for.body
-  %add8 = add i32 %s.032, %call
-  %arrayidx9 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 %add8
-  %4 = load <4 x i32> addrspace(3)* %arrayidx9, align 16, !tbaa !2
-  %5 = load <4 x i32> addrspace(3)* %arrayidx6, align 16, !tbaa !2
-  %add11 = add <4 x i32> %5, %4
-  store <4 x i32> %add11, <4 x i32> addrspace(3)* %arrayidx6, align 16, !tbaa !2
-  br label %if.end
+; <label>:17                                      ; preds = %.lr.ph
+  %18 = add i32 %s.02, %1
+  %19 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 %18
+  %20 = load <4 x i32> addrspace(3)* %19, align 16, !tbaa !2
+  %21 = load <4 x i32> addrspace(3)* %14, align 16, !tbaa !2
+  %22 = add <4 x i32> %21, %20
+  store <4 x i32> %22, <4 x i32> addrspace(3)* %14, align 16, !tbaa !2
+  br label %23
 
-if.end:                                           ; preds = %if.then, %for.body
+; <label>:23                                      ; preds = %17, %.lr.ph
   tail call void @barrier(i32 1) #2
-  %s.0 = lshr i32 %s.032, 1
-  %cmp = icmp eq i32 %s.0, 0
-  br i1 %cmp, label %for.end, label %for.body
+  %s.0 = lshr i32 %s.02, 1
+  %24 = icmp eq i32 %s.0, 0
+  br i1 %24, label %._crit_edge, label %.lr.ph
 
-for.end:                                          ; preds = %if.end, %entry
-  %cmp13 = icmp eq i32 %call, 0
-  br i1 %cmp13, label %if.then14, label %if.end17
+._crit_edge:                                      ; preds = %23, %0
+  %25 = icmp eq i32 %1, 0
+  br i1 %25, label %26, label %30
 
-if.then14:                                        ; preds = %for.end
-  %6 = load <4 x i32> addrspace(3)* %sdata, align 16, !tbaa !2
-  %7 = sext i32 %call1 to i64
-  %arrayidx16 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i64 %7
-  store <4 x i32> %6, <4 x i32> addrspace(1)* %arrayidx16, align 16, !tbaa !2
-  br label %if.end17
+; <label>:26                                      ; preds = %._crit_edge
+  %27 = load <4 x i32> addrspace(3)* %sdata, align 16, !tbaa !2
+  %28 = sext i32 %2 to i64
+  %29 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i64 %28
+  store <4 x i32> %27, <4 x i32> addrspace(1)* %29, align 16, !tbaa !2
+  br label %30
 
-if.end17:                                         ; preds = %if.then14, %for.end
+; <label>:30                                      ; preds = %26, %._crit_edge
   ret void
 }
 
@@ -78,7 +77,7 @@ attributes #2 = { nounwind }
 !llvm.ident = !{!1}
 
 !0 = metadata !{void (<4 x i32> addrspace(1)*, <4 x i32> addrspace(1)*, <4 x i32> addrspace(3)*)* @reduce}
-!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!1 = metadata !{metadata !"Ubuntu clang version 3.4-1ubuntu3 (tags/RELEASE_34/final) (based on LLVM 3.4)"}
 !2 = metadata !{metadata !3, metadata !3, i64 0}
 !3 = metadata !{metadata !"omnipotent char", metadata !4, i64 0}
 !4 = metadata !{metadata !"Simple C/C++ TBAA"}
