@@ -1,35 +1,38 @@
 ; ModuleID = '../kernel-src/BinarySearch_Kernels.cl'
-target datalayout = "e-p:32:32-i64:64-v16:16-v24:32-v32:32-v48:64-v96:128-v192:256-v256:256-v512:512-v1024:1024-v2048:2048-n32:64"
-target triple = "amdgcn"
+target datalayout = "e-p:64:64:64-p3:32:32:32-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v16:16:16-v24:32:32-v32:32:32-v48:64:64-v64:64:64-v96:128:128-v128:128:128-v192:256:256-v256:256:256-v512:512:512-v1024:1024:1024-v2048:2048:2048-n32:64"
+target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @binarySearch(<4 x i32> addrspace(1)* nocapture %outputArray, i32 addrspace(1)* nocapture readonly %sortedArray, i32 %subdivSize, i32 %globalLowerIndex, i32 %findMe) #0 {
-  %1 = tail call i32 @get_global_id(i32 0) #2
-  %2 = mul i32 %1, %subdivSize
-  %3 = add i32 %2, %globalLowerIndex
-  %4 = getelementptr inbounds i32 addrspace(1)* %sortedArray, i32 %3
-  %5 = load i32 addrspace(1)* %4, align 4, !tbaa !18
-  %6 = icmp ugt i32 %5, %findMe
-  br i1 %6, label %19, label %7
+entry:
+  %call = tail call i32 @get_global_id(i32 0) #2
+  %mul = mul i32 %call, %subdivSize
+  %add = add i32 %mul, %globalLowerIndex
+  %0 = sext i32 %add to i64
+  %arrayidx = getelementptr inbounds i32 addrspace(1)* %sortedArray, i64 %0
+  %1 = load i32 addrspace(1)* %arrayidx, align 4, !tbaa !4
+  %cmp = icmp ugt i32 %1, %findMe
+  br i1 %cmp, label %if.end, label %lor.lhs.false
 
-; <label>:7                                       ; preds = %0
-  %8 = add i32 %1, 1
-  %9 = mul i32 %8, %subdivSize
-  %10 = add i32 %globalLowerIndex, -1
-  %11 = add i32 %10, %9
-  %12 = getelementptr inbounds i32 addrspace(1)* %sortedArray, i32 %11
-  %13 = load i32 addrspace(1)* %12, align 4, !tbaa !18
-  %14 = icmp ult i32 %13, %findMe
-  br i1 %14, label %19, label %15
+lor.lhs.false:                                    ; preds = %entry
+  %add1 = add i32 %call, 1
+  %mul2 = mul i32 %add1, %subdivSize
+  %add3 = add i32 %globalLowerIndex, -1
+  %sub = add i32 %add3, %mul2
+  %2 = sext i32 %sub to i64
+  %arrayidx4 = getelementptr inbounds i32 addrspace(1)* %sortedArray, i64 %2
+  %3 = load i32 addrspace(1)* %arrayidx4, align 4, !tbaa !4
+  %cmp5 = icmp ult i32 %3, %findMe
+  br i1 %cmp5, label %if.end, label %if.else
 
-; <label>:15                                      ; preds = %7
-  %16 = load <4 x i32> addrspace(1)* %outputArray, align 16
-  %17 = insertelement <4 x i32> %16, i32 %1, i32 0
-  %18 = insertelement <4 x i32> %17, i32 1, i32 3
-  store <4 x i32> %18, <4 x i32> addrspace(1)* %outputArray, align 16
-  br label %19
+if.else:                                          ; preds = %lor.lhs.false
+  %4 = load <4 x i32> addrspace(1)* %outputArray, align 16
+  %5 = insertelement <4 x i32> %4, i32 %call, i32 0
+  %6 = insertelement <4 x i32> %5, i32 1, i32 3
+  store <4 x i32> %6, <4 x i32> addrspace(1)* %outputArray, align 16
+  br label %if.end
 
-; <label>:19                                      ; preds = %0, %7, %15
+if.end:                                           ; preds = %entry, %lor.lhs.false, %if.else
   ret void
 }
 
@@ -37,110 +40,102 @@ declare i32 @get_global_id(i32) #1
 
 ; Function Attrs: nounwind
 define void @binarySearch_mulkeys(i32 addrspace(1)* nocapture readonly %keys, i32 addrspace(1)* nocapture readonly %input, i32 %numKeys, i32 addrspace(1)* nocapture %output) #0 {
-  %1 = tail call i32 @get_global_id(i32 0) #2
-  %2 = shl nsw i32 %1, 8
-  %3 = icmp eq i32 %numKeys, 0
-  br i1 %3, label %._crit_edge, label %.lr.ph
+entry:
+  %call = tail call i32 @get_global_id(i32 0) #2
+  %mul = shl nsw i32 %call, 8
+  %cmp16 = icmp eq i32 %numKeys, 0
+  br i1 %cmp16, label %for.end, label %for.body.lr.ph
 
-.lr.ph:                                           ; preds = %0
-  %4 = or i32 %2, 255
-  %5 = getelementptr inbounds i32 addrspace(1)* %input, i32 %2
-  %6 = getelementptr inbounds i32 addrspace(1)* %input, i32 %4
-  %7 = add i32 %numKeys, -1
-  br label %8
+for.body.lr.ph:                                   ; preds = %entry
+  %add15 = or i32 %mul, 255
+  %0 = sext i32 %mul to i64
+  %arrayidx1 = getelementptr inbounds i32 addrspace(1)* %input, i64 %0
+  %1 = sext i32 %add15 to i64
+  %arrayidx4 = getelementptr inbounds i32 addrspace(1)* %input, i64 %1
+  br label %for.body
 
-; <label>:8                                       ; preds = %18, %.lr.ph
-  %i.01 = phi i32 [ 0, %.lr.ph ], [ %19, %18 ]
-  %9 = getelementptr inbounds i32 addrspace(1)* %keys, i32 %i.01
-  %10 = load i32 addrspace(1)* %9, align 4, !tbaa !18
-  %11 = load i32 addrspace(1)* %5, align 4, !tbaa !18
-  %12 = icmp ult i32 %10, %11
-  br i1 %12, label %18, label %13
+for.body:                                         ; preds = %for.inc, %for.body.lr.ph
+  %indvars.iv = phi i64 [ 0, %for.body.lr.ph ], [ %indvars.iv.next, %for.inc ]
+  %arrayidx = getelementptr inbounds i32 addrspace(1)* %keys, i64 %indvars.iv
+  %2 = load i32 addrspace(1)* %arrayidx, align 4, !tbaa !4
+  %3 = load i32 addrspace(1)* %arrayidx1, align 4, !tbaa !4
+  %cmp2 = icmp ult i32 %2, %3
+  br i1 %cmp2, label %for.inc, label %land.lhs.true
 
-; <label>:13                                      ; preds = %8
-  %14 = load i32 addrspace(1)* %6, align 4, !tbaa !18
-  %15 = icmp ugt i32 %10, %14
-  br i1 %15, label %18, label %16
+land.lhs.true:                                    ; preds = %for.body
+  %4 = load i32 addrspace(1)* %arrayidx4, align 4, !tbaa !4
+  %cmp5 = icmp ugt i32 %2, %4
+  br i1 %cmp5, label %for.inc, label %if.then
 
-; <label>:16                                      ; preds = %13
-  %17 = getelementptr inbounds i32 addrspace(1)* %output, i32 %i.01
-  store i32 %2, i32 addrspace(1)* %17, align 4, !tbaa !18
-  br label %18
+if.then:                                          ; preds = %land.lhs.true
+  %arrayidx6 = getelementptr inbounds i32 addrspace(1)* %output, i64 %indvars.iv
+  store i32 %mul, i32 addrspace(1)* %arrayidx6, align 4, !tbaa !4
+  br label %for.inc
 
-; <label>:18                                      ; preds = %13, %8, %16
-  %19 = add nuw nsw i32 %i.01, 1
-  %exitcond = icmp eq i32 %i.01, %7
-  br i1 %exitcond, label %._crit_edge.loopexit, label %8
+for.inc:                                          ; preds = %land.lhs.true, %for.body, %if.then
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
+  %lftr.wideiv = trunc i64 %indvars.iv.next to i32
+  %exitcond = icmp eq i32 %lftr.wideiv, %numKeys
+  br i1 %exitcond, label %for.end, label %for.body
 
-._crit_edge.loopexit:                             ; preds = %18
-  br label %._crit_edge
-
-._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+for.end:                                          ; preds = %for.inc, %entry
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @binarySearch_mulkeysConcurrent(i32 addrspace(1)* nocapture readonly %keys, i32 addrspace(1)* nocapture readonly %input, i32 %inputSize, i32 %numSubdivisions, i32 addrspace(1)* nocapture %output) #0 {
-  %1 = tail call i32 @get_global_id(i32 0) #2
-  %2 = urem i32 %1, %numSubdivisions
-  %3 = udiv i32 %inputSize, %numSubdivisions
-  %4 = mul i32 %3, %2
-  %5 = add i32 %4, %3
-  %6 = tail call i32 @get_global_id(i32 0) #2
-  %7 = udiv i32 %6, %numSubdivisions
-  %8 = getelementptr inbounds i32 addrspace(1)* %keys, i32 %7
-  %9 = load i32 addrspace(1)* %8, align 4, !tbaa !18
-  %10 = icmp slt i32 %5, %4
-  br i1 %10, label %.loopexit, label %.lr.ph.preheader
+entry:
+  %call = tail call i32 @get_global_id(i32 0) #2
+  %rem = urem i32 %call, %numSubdivisions
+  %div = udiv i32 %inputSize, %numSubdivisions
+  %mul = mul i32 %div, %rem
+  %add = add i32 %mul, %div
+  %call2 = tail call i32 @get_global_id(i32 0) #2
+  %div3 = udiv i32 %call2, %numSubdivisions
+  %0 = sext i32 %div3 to i64
+  %arrayidx = getelementptr inbounds i32 addrspace(1)* %keys, i64 %0
+  %1 = load i32 addrspace(1)* %arrayidx, align 4, !tbaa !4
+  %cmp3234 = icmp slt i32 %add, %mul
+  br i1 %cmp3234, label %while.end, label %while.body.lr.ph
 
-.lr.ph.preheader:                                 ; preds = %0
-  br label %.lr.ph
+while.body.lr.ph:                                 ; preds = %entry, %if.then13
+  %lBound.0.ph36 = phi i32 [ %lBound.033, %if.then13 ], [ %mul, %entry ]
+  %uBound.0.ph35 = phi i32 [ %sub, %if.then13 ], [ %add, %entry ]
+  br label %while.body
 
-.lr.ph:                                           ; preds = %.lr.ph.preheader, %.outer
-  %lBound.0.ph6 = phi i32 [ %lBound.04.lcssa17, %.outer ], [ %4, %.lr.ph.preheader ]
-  %uBound.0.ph5 = phi i32 [ %23, %.outer ], [ %5, %.lr.ph.preheader ]
-  br label %11
+while.cond:                                       ; preds = %if.else
+  %cmp = icmp slt i32 %uBound.0.ph35, %add15
+  br i1 %cmp, label %while.end, label %while.body
 
-; <label>:11                                      ; preds = %.lr.ph, %25
-  %lBound.04 = phi i32 [ %lBound.0.ph6, %.lr.ph ], [ %26, %25 ]
-  %12 = add nsw i32 %lBound.04, %uBound.0.ph5
-  %13 = sdiv i32 %12, 2
-  %14 = getelementptr inbounds i32 addrspace(1)* %input, i32 %13
-  %15 = load i32 addrspace(1)* %14, align 4, !tbaa !18
-  %16 = icmp eq i32 %15, %9
-  br i1 %16, label %17, label %21
+while.body:                                       ; preds = %while.body.lr.ph, %while.cond
+  %lBound.033 = phi i32 [ %lBound.0.ph36, %while.body.lr.ph ], [ %add15, %while.cond ]
+  %add4 = add nsw i32 %lBound.033, %uBound.0.ph35
+  %div5 = sdiv i32 %add4, 2
+  %2 = sext i32 %div5 to i64
+  %arrayidx6 = getelementptr inbounds i32 addrspace(1)* %input, i64 %2
+  %3 = load i32 addrspace(1)* %arrayidx6, align 4, !tbaa !4
+  %cmp7 = icmp eq i32 %3, %1
+  br i1 %cmp7, label %if.then, label %if.else
 
-; <label>:17                                      ; preds = %11
-  %.lcssa = phi i32 [ %13, %11 ]
-  %18 = tail call i32 @get_global_id(i32 0) #2
-  %19 = udiv i32 %18, %numSubdivisions
-  %20 = getelementptr inbounds i32 addrspace(1)* %output, i32 %19
-  store i32 %.lcssa, i32 addrspace(1)* %20, align 4, !tbaa !18
-  br label %.loopexit
+if.then:                                          ; preds = %while.body
+  %call8 = tail call i32 @get_global_id(i32 0) #2
+  %div9 = udiv i32 %call8, %numSubdivisions
+  %4 = sext i32 %div9 to i64
+  %arrayidx10 = getelementptr inbounds i32 addrspace(1)* %output, i64 %4
+  store i32 %div5, i32 addrspace(1)* %arrayidx10, align 4, !tbaa !4
+  br label %while.end
 
-; <label>:21                                      ; preds = %11
-  %22 = icmp ugt i32 %15, %9
-  br i1 %22, label %.outer, label %25
+if.else:                                          ; preds = %while.body
+  %cmp12 = icmp ugt i32 %3, %1
+  %add15 = add nsw i32 %div5, 1
+  br i1 %cmp12, label %if.then13, label %while.cond
 
-.outer:                                           ; preds = %21
-  %.lcssa19 = phi i32 [ %13, %21 ]
-  %lBound.04.lcssa17 = phi i32 [ %lBound.04, %21 ]
-  %23 = add nsw i32 %.lcssa19, -1
-  %24 = icmp sgt i32 %.lcssa19, %lBound.04.lcssa17
-  br i1 %24, label %.lr.ph, label %.loopexit.loopexit16
+if.then13:                                        ; preds = %if.else
+  %sub = add nsw i32 %div5, -1
+  %cmp32 = icmp sgt i32 %div5, %lBound.033
+  br i1 %cmp32, label %while.body.lr.ph, label %while.end
 
-; <label>:25                                      ; preds = %21
-  %26 = add nsw i32 %13, 1
-  %27 = icmp slt i32 %uBound.0.ph5, %26
-  br i1 %27, label %.loopexit.loopexit, label %11
-
-.loopexit.loopexit:                               ; preds = %25
-  br label %.loopexit
-
-.loopexit.loopexit16:                             ; preds = %.outer
-  br label %.loopexit
-
-.loopexit:                                        ; preds = %.loopexit.loopexit16, %.loopexit.loopexit, %0, %17
+while.end:                                        ; preds = %while.cond, %if.then13, %entry, %if.then
   ret void
 }
 
@@ -148,28 +143,14 @@ attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"=
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #2 = { nounwind }
 
-!opencl.kernels = !{!0, !6, !12}
-!llvm.ident = !{!17}
+!opencl.kernels = !{!0, !1, !2}
+!llvm.ident = !{!3}
 
-!0 = !{void (<4 x i32> addrspace(1)*, i32 addrspace(1)*, i32, i32, i32)* @binarySearch, !1, !2, !3, !4, !5}
-!1 = !{!"kernel_arg_addr_space", i32 1, i32 1, i32 0, i32 0, i32 0}
-!2 = !{!"kernel_arg_access_qual", !"none", !"none", !"none", !"none", !"none"}
-!3 = !{!"kernel_arg_type", !"uint4*", !"uint*", !"uint", !"uint", !"uint"}
-!4 = !{!"kernel_arg_base_type", !"uint __attribute__((ext_vector_type(4)))*", !"uint*", !"uint", !"uint", !"uint"}
-!5 = !{!"kernel_arg_type_qual", !"", !"", !"const", !"const", !"const"}
-!6 = !{void (i32 addrspace(1)*, i32 addrspace(1)*, i32, i32 addrspace(1)*)* @binarySearch_mulkeys, !7, !8, !9, !10, !11}
-!7 = !{!"kernel_arg_addr_space", i32 1, i32 1, i32 0, i32 1}
-!8 = !{!"kernel_arg_access_qual", !"none", !"none", !"none", !"none"}
-!9 = !{!"kernel_arg_type", !"int*", !"uint*", !"uint", !"int*"}
-!10 = !{!"kernel_arg_base_type", !"int*", !"uint*", !"uint", !"int*"}
-!11 = !{!"kernel_arg_type_qual", !"", !"", !"const", !""}
-!12 = !{void (i32 addrspace(1)*, i32 addrspace(1)*, i32, i32, i32 addrspace(1)*)* @binarySearch_mulkeysConcurrent, !13, !2, !14, !15, !16}
-!13 = !{!"kernel_arg_addr_space", i32 1, i32 1, i32 0, i32 0, i32 1}
-!14 = !{!"kernel_arg_type", !"uint*", !"uint*", !"uint", !"uint", !"int*"}
-!15 = !{!"kernel_arg_base_type", !"uint*", !"uint*", !"uint", !"uint", !"int*"}
-!16 = !{!"kernel_arg_type_qual", !"", !"", !"const", !"const", !""}
-!17 = !{!"Ubuntu clang version 3.6.1-svn232753-1~exp1 (branches/release_36) (based on LLVM 3.6.1)"}
-!18 = !{!19, !19, i64 0}
-!19 = !{!"int", !20, i64 0}
-!20 = !{!"omnipotent char", !21, i64 0}
-!21 = !{!"Simple C/C++ TBAA"}
+!0 = metadata !{void (<4 x i32> addrspace(1)*, i32 addrspace(1)*, i32, i32, i32)* @binarySearch}
+!1 = metadata !{void (i32 addrspace(1)*, i32 addrspace(1)*, i32, i32 addrspace(1)*)* @binarySearch_mulkeys}
+!2 = metadata !{void (i32 addrspace(1)*, i32 addrspace(1)*, i32, i32, i32 addrspace(1)*)* @binarySearch_mulkeysConcurrent}
+!3 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!4 = metadata !{metadata !5, metadata !5, i64 0}
+!5 = metadata !{metadata !"int", metadata !6, i64 0}
+!6 = metadata !{metadata !"omnipotent char", metadata !7, i64 0}
+!7 = metadata !{metadata !"Simple C/C++ TBAA"}

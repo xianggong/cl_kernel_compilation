@@ -1,359 +1,359 @@
 ; ModuleID = '../kernel-src/BlackScholes_Kernels.cl'
-target datalayout = "e-p:32:32-i64:64-v16:16-v24:32-v32:32-v48:64-v96:128-v192:256-v256:256-v512:512-v1024:1024-v2048:2048-n32:64"
-target triple = "amdgcn"
+target datalayout = "e-p:64:64:64-p3:32:32:32-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v16:16:16-v24:32:32-v32:32:32-v48:64:64-v64:64:64-v96:128:128-v128:128:128-v192:256:256-v256:256:256-v512:512:512-v1024:1024:1024-v2048:2048:2048-n32:64"
+target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @phi(<4 x float> %X, <4 x float>* nocapture %phi) #0 {
-  %1 = tail call <4 x float> @llvm.fabs.v4f32(<4 x float> %X)
-  %2 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000>, <4 x float> %1, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>)
-  %3 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %2, !fpmath !10
-  %4 = fmul <4 x float> %X, %X
-  %5 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %4
-  %6 = fdiv <4 x float> %5, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !10
-  %7 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %6) #3
-  %8 = fmul <4 x float> %7, <float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000>
-  %9 = fmul <4 x float> %3, %8
-  %10 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %3, <4 x float> <float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000>, <4 x float> <float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000>)
-  %11 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %3, <4 x float> %10, <4 x float> <float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000>)
-  %12 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %3, <4 x float> %11, <4 x float> <float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000>)
-  %13 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %3, <4 x float> %12, <4 x float> <float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000>)
-  %14 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %9
-  %15 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %14, <4 x float> %13, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>)
-  %16 = fcmp olt <4 x float> %X, zeroinitializer
-  %17 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %15
-  %.v = select <4 x i1> %16, <4 x float> %17, <4 x float> %15
-  store <4 x float> %.v, <4 x float>* %phi, align 16, !tbaa !11
+entry:
+  %call = tail call <4 x float> @llvm.fabs.v4f32(<4 x float> %X)
+  %0 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000>, <4 x float> %call, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>)
+  %div = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %0, !fpmath !3
+  %1 = fmul <4 x float> %X, %X
+  %mul = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %1
+  %div1 = fdiv <4 x float> %mul, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !3
+  %call2 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %div1) #4
+  %mul3 = fmul <4 x float> %call2, <float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000>
+  %mul4 = fmul <4 x float> %div, %mul3
+  %2 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div, <4 x float> <float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000>, <4 x float> <float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000>)
+  %3 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div, <4 x float> %2, <4 x float> <float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000>)
+  %4 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div, <4 x float> %3, <4 x float> <float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000>)
+  %5 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div, <4 x float> %4, <4 x float> <float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000>)
+  %neg = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %mul4
+  %6 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %neg, <4 x float> %5, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>)
+  %cmp = fcmp olt <4 x float> %X, zeroinitializer
+  %sub10 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %6
+  %cond.v = select <4 x i1> %cmp, <4 x float> %sub10, <4 x float> %6
+  store <4 x float> %cond.v, <4 x float>* %phi, align 16, !tbaa !4
   ret void
 }
 
-; Function Attrs: nounwind readnone
+; Function Attrs: nounwind readonly
 declare <4 x float> @llvm.fabs.v4f32(<4 x float>) #1
 
 ; Function Attrs: nounwind readnone
-declare <4 x float> @llvm.fmuladd.v4f32(<4 x float>, <4 x float>, <4 x float>) #1
+declare <4 x float> @llvm.fmuladd.v4f32(<4 x float>, <4 x float>, <4 x float>) #2
 
-declare <4 x float> @_Z3expDv4_f(<4 x float>) #2
+declare <4 x float> @_Z3expDv4_f(<4 x float>) #3
 
 ; Function Attrs: nounwind
 define void @blackScholes(<4 x float> addrspace(1)* nocapture readonly %randArray, i32 %width, <4 x float> addrspace(1)* nocapture %call, <4 x float> addrspace(1)* nocapture %put) #0 {
-  %1 = tail call i32 @get_global_id(i32 0) #3
-  %2 = tail call i32 @get_global_id(i32 1) #3
-  %3 = mul i32 %2, %width
-  %4 = add i32 %3, %1
-  %5 = getelementptr inbounds <4 x float> addrspace(1)* %randArray, i32 %4
-  %6 = load <4 x float> addrspace(1)* %5, align 16, !tbaa !11
-  %7 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %6
-  %8 = fmul <4 x float> %7, <float 1.000000e+02, float 1.000000e+02, float 1.000000e+02, float 1.000000e+02>
-  %9 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 1.000000e+01, float 1.000000e+01, float 1.000000e+01, float 1.000000e+01>, <4 x float> %6, <4 x float> %8)
-  %10 = fmul <4 x float> %7, <float 1.000000e+01, float 1.000000e+01, float 1.000000e+01, float 1.000000e+01>
-  %11 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, <4 x float> %6, <4 x float> %10)
-  %12 = fmul <4 x float> %7, <float 0x3FA99999A0000000, float 0x3FA99999A0000000, float 0x3FA99999A0000000, float 0x3FA99999A0000000>
-  %13 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3F847AE140000000, float 0x3F847AE140000000, float 0x3F847AE140000000, float 0x3F847AE140000000>, <4 x float> %6, <4 x float> %12)
-  %14 = fmul <4 x float> %7, <float 0x3FB99999A0000000, float 0x3FB99999A0000000, float 0x3FB99999A0000000, float 0x3FB99999A0000000>
-  %15 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3F847AE140000000, float 0x3F847AE140000000, float 0x3F847AE140000000, float 0x3F847AE140000000>, <4 x float> %6, <4 x float> %14)
-  %16 = tail call <4 x float> @llvm.sqrt.v4f32(<4 x float> %11)
-  %17 = fmul <4 x float> %15, %16
-  %18 = fdiv <4 x float> %9, %9, !fpmath !10
-  %19 = tail call <4 x float> @llvm.log2.v4f32(<4 x float> %18)
-  %20 = fmul <4 x float> %15, %15
-  %21 = fdiv <4 x float> %20, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !10
-  %22 = fadd <4 x float> %13, %21
-  %23 = fmul <4 x float> %11, %22
-  %24 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %19, <4 x float> <float 0x3FE62E4300000000, float 0x3FE62E4300000000, float 0x3FE62E4300000000, float 0x3FE62E4300000000>, <4 x float> %23)
-  %25 = fdiv <4 x float> %24, %17, !fpmath !10
-  %26 = fsub <4 x float> %25, %17
-  %27 = fmul <4 x float> %11, %13
-  %28 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %27
-  %29 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %28) #3
-  %30 = fmul <4 x float> %9, %29
-  %31 = tail call <4 x float> @llvm.fabs.v4f32(<4 x float> %25) #3
-  %32 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000>, <4 x float> %31, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #3
-  %33 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %32, !fpmath !10
-  %34 = fmul <4 x float> %25, %25
-  %35 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %34
-  %36 = fdiv <4 x float> %35, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !10
-  %37 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %36) #3
-  %38 = fmul <4 x float> %37, <float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000>
-  %39 = fmul <4 x float> %33, %38
-  %40 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %33, <4 x float> <float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000>, <4 x float> <float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000>) #3
-  %41 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %33, <4 x float> %40, <4 x float> <float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000>) #3
-  %42 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %33, <4 x float> %41, <4 x float> <float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000>) #3
-  %43 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %33, <4 x float> %42, <4 x float> <float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000>) #3
-  %44 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %39
-  %45 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %44, <4 x float> %43, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #3
-  %46 = fcmp olt <4 x float> %25, zeroinitializer
-  %47 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %45
-  %.v.i = select <4 x i1> %46, <4 x float> %47, <4 x float> %45
-  %48 = tail call <4 x float> @llvm.fabs.v4f32(<4 x float> %26) #3
-  %49 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000>, <4 x float> %48, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #3
-  %50 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %49, !fpmath !10
-  %51 = fmul <4 x float> %26, %26
-  %52 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %51
-  %53 = fdiv <4 x float> %52, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !10
-  %54 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %53) #3
-  %55 = fmul <4 x float> %54, <float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000>
-  %56 = fmul <4 x float> %50, %55
-  %57 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %50, <4 x float> <float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000>, <4 x float> <float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000>) #3
-  %58 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %50, <4 x float> %57, <4 x float> <float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000>) #3
-  %59 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %50, <4 x float> %58, <4 x float> <float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000>) #3
-  %60 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %50, <4 x float> %59, <4 x float> <float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000>) #3
-  %61 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %56
-  %62 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %61, <4 x float> %60, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #3
-  %63 = fcmp olt <4 x float> %26, zeroinitializer
-  %64 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %62
-  %.v.i1 = select <4 x i1> %63, <4 x float> %64, <4 x float> %62
-  %65 = fmul <4 x float> %30, %.v.i1
-  %66 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %65
-  %67 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %9, <4 x float> %.v.i, <4 x float> %66)
-  %68 = getelementptr inbounds <4 x float> addrspace(1)* %call, i32 %4
-  store <4 x float> %67, <4 x float> addrspace(1)* %68, align 16, !tbaa !11
-  %69 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %25
-  %70 = tail call <4 x float> @llvm.fabs.v4f32(<4 x float> %69) #3
-  %71 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000>, <4 x float> %70, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #3
-  %72 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %71, !fpmath !10
-  %73 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %36) #3
-  %74 = fmul <4 x float> %73, <float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000>
-  %75 = fmul <4 x float> %72, %74
-  %76 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %72, <4 x float> <float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000>, <4 x float> <float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000>) #3
-  %77 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %72, <4 x float> %76, <4 x float> <float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000>) #3
-  %78 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %72, <4 x float> %77, <4 x float> <float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000>) #3
-  %79 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %72, <4 x float> %78, <4 x float> <float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000>) #3
-  %80 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %75
-  %81 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %80, <4 x float> %79, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #3
-  %82 = fcmp olt <4 x float> %69, zeroinitializer
-  %83 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %81
-  %.v.i2 = select <4 x i1> %82, <4 x float> %83, <4 x float> %81
-  %84 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %26
-  %85 = tail call <4 x float> @llvm.fabs.v4f32(<4 x float> %84) #3
-  %86 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000>, <4 x float> %85, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #3
-  %87 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %86, !fpmath !10
-  %88 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %53) #3
-  %89 = fmul <4 x float> %88, <float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000>
-  %90 = fmul <4 x float> %87, %89
-  %91 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %87, <4 x float> <float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000>, <4 x float> <float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000>) #3
-  %92 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %87, <4 x float> %91, <4 x float> <float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000>) #3
-  %93 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %87, <4 x float> %92, <4 x float> <float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000>) #3
-  %94 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %87, <4 x float> %93, <4 x float> <float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000>) #3
-  %95 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %90
-  %96 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %95, <4 x float> %94, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #3
-  %97 = fcmp olt <4 x float> %84, zeroinitializer
-  %98 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %96
-  %.v.i3 = select <4 x i1> %97, <4 x float> %98, <4 x float> %96
-  %99 = fmul <4 x float> %9, %.v.i2
-  %100 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %99
-  %101 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %30, <4 x float> %.v.i3, <4 x float> %100)
-  %102 = getelementptr inbounds <4 x float> addrspace(1)* %put, i32 %4
-  store <4 x float> %101, <4 x float> addrspace(1)* %102, align 16, !tbaa !11
+entry:
+  %call1 = tail call i32 @get_global_id(i32 0) #4
+  %call2 = tail call i32 @get_global_id(i32 1) #4
+  %mul = mul i32 %call2, %width
+  %add = add i32 %mul, %call1
+  %0 = sext i32 %add to i64
+  %arrayidx = getelementptr inbounds <4 x float> addrspace(1)* %randArray, i64 %0
+  %1 = load <4 x float> addrspace(1)* %arrayidx, align 16, !tbaa !4
+  %sub = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %1
+  %mul4 = fmul <4 x float> %sub, <float 1.000000e+02, float 1.000000e+02, float 1.000000e+02, float 1.000000e+02>
+  %2 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 1.000000e+01, float 1.000000e+01, float 1.000000e+01, float 1.000000e+01>, <4 x float> %1, <4 x float> %mul4)
+  %mul10 = fmul <4 x float> %sub, <float 1.000000e+01, float 1.000000e+01, float 1.000000e+01, float 1.000000e+01>
+  %3 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, <4 x float> %1, <4 x float> %mul10)
+  %mul13 = fmul <4 x float> %sub, <float 0x3FA99999A0000000, float 0x3FA99999A0000000, float 0x3FA99999A0000000, float 0x3FA99999A0000000>
+  %4 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3F847AE140000000, float 0x3F847AE140000000, float 0x3F847AE140000000, float 0x3F847AE140000000>, <4 x float> %1, <4 x float> %mul13)
+  %mul16 = fmul <4 x float> %sub, <float 0x3FB99999A0000000, float 0x3FB99999A0000000, float 0x3FB99999A0000000, float 0x3FB99999A0000000>
+  %5 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3F847AE140000000, float 0x3F847AE140000000, float 0x3F847AE140000000, float 0x3F847AE140000000>, <4 x float> %1, <4 x float> %mul16)
+  %call17 = tail call <4 x float> @llvm.sqrt.v4f32(<4 x float> %3)
+  %mul18 = fmul <4 x float> %5, %call17
+  %div = fdiv <4 x float> %2, %2, !fpmath !3
+  %call19 = tail call <4 x float> @llvm.log2.v4f32(<4 x float> %div)
+  %mul21 = fmul <4 x float> %5, %5
+  %div22 = fdiv <4 x float> %mul21, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !3
+  %add23 = fadd <4 x float> %4, %div22
+  %mul24 = fmul <4 x float> %3, %add23
+  %6 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %call19, <4 x float> <float 0x3FE62E4300000000, float 0x3FE62E4300000000, float 0x3FE62E4300000000, float 0x3FE62E4300000000>, <4 x float> %mul24)
+  %div25 = fdiv <4 x float> %6, %mul18, !fpmath !3
+  %sub26 = fsub <4 x float> %div25, %mul18
+  %7 = fmul <4 x float> %3, %4
+  %mul28 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %7
+  %call29 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %mul28) #4
+  %mul30 = fmul <4 x float> %2, %call29
+  %call.i = tail call <4 x float> @llvm.fabs.v4f32(<4 x float> %div25) #4
+  %8 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000>, <4 x float> %call.i, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #4
+  %div.i = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %8, !fpmath !3
+  %9 = fmul <4 x float> %div25, %div25
+  %mul.i = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %9
+  %div1.i = fdiv <4 x float> %mul.i, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !3
+  %call2.i = tail call <4 x float> @_Z3expDv4_f(<4 x float> %div1.i) #4
+  %mul3.i = fmul <4 x float> %call2.i, <float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000>
+  %mul4.i = fmul <4 x float> %div.i, %mul3.i
+  %10 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i, <4 x float> <float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000>, <4 x float> <float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000>) #4
+  %11 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i, <4 x float> %10, <4 x float> <float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000>) #4
+  %12 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i, <4 x float> %11, <4 x float> <float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000>) #4
+  %13 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i, <4 x float> %12, <4 x float> <float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000>) #4
+  %neg.i = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %mul4.i
+  %14 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %neg.i, <4 x float> %13, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #4
+  %cmp.i = fcmp olt <4 x float> %div25, zeroinitializer
+  %sub10.i = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %14
+  %cond.v.i = select <4 x i1> %cmp.i, <4 x float> %sub10.i, <4 x float> %14
+  %call.i72 = tail call <4 x float> @llvm.fabs.v4f32(<4 x float> %sub26) #4
+  %15 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000>, <4 x float> %call.i72, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #4
+  %div.i73 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %15, !fpmath !3
+  %16 = fmul <4 x float> %sub26, %sub26
+  %mul.i74 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %16
+  %div1.i75 = fdiv <4 x float> %mul.i74, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !3
+  %call2.i76 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %div1.i75) #4
+  %mul3.i77 = fmul <4 x float> %call2.i76, <float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000>
+  %mul4.i78 = fmul <4 x float> %div.i73, %mul3.i77
+  %17 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i73, <4 x float> <float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000>, <4 x float> <float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000>) #4
+  %18 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i73, <4 x float> %17, <4 x float> <float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000>) #4
+  %19 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i73, <4 x float> %18, <4 x float> <float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000>) #4
+  %20 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i73, <4 x float> %19, <4 x float> <float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000>) #4
+  %neg.i79 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %mul4.i78
+  %21 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %neg.i79, <4 x float> %20, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #4
+  %cmp.i80 = fcmp olt <4 x float> %sub26, zeroinitializer
+  %sub10.i81 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %21
+  %cond.v.i82 = select <4 x i1> %cmp.i80, <4 x float> %sub10.i81, <4 x float> %21
+  %mul32 = fmul <4 x float> %mul30, %cond.v.i82
+  %neg = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %mul32
+  %22 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %2, <4 x float> %cond.v.i, <4 x float> %neg)
+  %arrayidx35 = getelementptr inbounds <4 x float> addrspace(1)* %call, i64 %0
+  store <4 x float> %22, <4 x float> addrspace(1)* %arrayidx35, align 16, !tbaa !4
+  %sub36 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %div25
+  %call.i83 = tail call <4 x float> @llvm.fabs.v4f32(<4 x float> %sub36) #4
+  %23 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000>, <4 x float> %call.i83, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #4
+  %div.i84 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %23, !fpmath !3
+  %call2.i87 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %div1.i) #4
+  %mul3.i88 = fmul <4 x float> %call2.i87, <float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000>
+  %mul4.i89 = fmul <4 x float> %div.i84, %mul3.i88
+  %24 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i84, <4 x float> <float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000>, <4 x float> <float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000>) #4
+  %25 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i84, <4 x float> %24, <4 x float> <float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000>) #4
+  %26 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i84, <4 x float> %25, <4 x float> <float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000>) #4
+  %27 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i84, <4 x float> %26, <4 x float> <float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000>) #4
+  %neg.i90 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %mul4.i89
+  %28 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %neg.i90, <4 x float> %27, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #4
+  %cmp.i91 = fcmp olt <4 x float> %sub36, zeroinitializer
+  %sub10.i92 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %28
+  %cond.v.i93 = select <4 x i1> %cmp.i91, <4 x float> %sub10.i92, <4 x float> %28
+  %sub37 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %sub26
+  %call.i94 = tail call <4 x float> @llvm.fabs.v4f32(<4 x float> %sub37) #4
+  %29 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000, float 0x3FCDA67120000000>, <4 x float> %call.i94, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #4
+  %div.i95 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %29, !fpmath !3
+  %call2.i98 = tail call <4 x float> @_Z3expDv4_f(<4 x float> %div1.i75) #4
+  %mul3.i99 = fmul <4 x float> %call2.i98, <float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000, float 0x3FD9884540000000>
+  %mul4.i100 = fmul <4 x float> %div.i95, %mul3.i99
+  %30 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i95, <4 x float> <float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000, float 0x3FF548CDE0000000>, <4 x float> <float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000, float 0xBFFD23DD40000000>) #4
+  %31 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i95, <4 x float> %30, <4 x float> <float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000, float 0x3FFC80EF00000000>) #4
+  %32 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i95, <4 x float> %31, <4 x float> <float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000, float 0xBFD6D1F0E0000000>) #4
+  %33 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %div.i95, <4 x float> %32, <4 x float> <float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000, float 0x3FD470BF40000000>) #4
+  %neg.i101 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %mul4.i100
+  %34 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %neg.i101, <4 x float> %33, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>) #4
+  %cmp.i102 = fcmp olt <4 x float> %sub37, zeroinitializer
+  %sub10.i103 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %34
+  %cond.v.i104 = select <4 x i1> %cmp.i102, <4 x float> %sub10.i103, <4 x float> %34
+  %mul39 = fmul <4 x float> %2, %cond.v.i93
+  %neg40 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %mul39
+  %35 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %mul30, <4 x float> %cond.v.i104, <4 x float> %neg40)
+  %arrayidx43 = getelementptr inbounds <4 x float> addrspace(1)* %put, i64 %0
+  store <4 x float> %35, <4 x float> addrspace(1)* %arrayidx43, align 16, !tbaa !4
   ret void
 }
 
-declare i32 @get_global_id(i32) #2
+declare i32 @get_global_id(i32) #3
 
-; Function Attrs: nounwind readnone
+; Function Attrs: nounwind readonly
 declare <4 x float> @llvm.sqrt.v4f32(<4 x float>) #1
 
-; Function Attrs: nounwind readnone
+; Function Attrs: nounwind readonly
 declare <4 x float> @llvm.log2.v4f32(<4 x float>) #1
 
 ; Function Attrs: nounwind
 define void @phi_scalar(float %X, float* nocapture %phi) #0 {
-  %1 = tail call float @llvm.fabs.f32(float %X)
-  %2 = tail call float @llvm.fmuladd.f32(float 0x3FCDA67120000000, float %1, float 1.000000e+00)
-  %3 = fdiv float 1.000000e+00, %2, !fpmath !10
-  %4 = fmul float %X, %X
-  %5 = fmul float %4, -5.000000e-01
-  %6 = tail call float @_Z3expf(float %5) #3
-  %7 = fmul float %6, 0x3FD9884540000000
-  %8 = fmul float %3, %7
-  %9 = tail call float @llvm.fmuladd.f32(float %3, float 0x3FF548CDE0000000, float 0xBFFD23DD40000000)
-  %10 = tail call float @llvm.fmuladd.f32(float %3, float %9, float 0x3FFC80EF00000000)
-  %11 = tail call float @llvm.fmuladd.f32(float %3, float %10, float 0xBFD6D1F0E0000000)
-  %12 = tail call float @llvm.fmuladd.f32(float %3, float %11, float 0x3FD470BF40000000)
-  %13 = fsub float -0.000000e+00, %8
-  %14 = tail call float @llvm.fmuladd.f32(float %13, float %12, float 1.000000e+00)
-  %15 = fcmp olt float %X, 0.000000e+00
-  br i1 %15, label %16, label %18
+entry:
+  %call = tail call float @llvm.fabs.f32(float %X)
+  %0 = tail call float @llvm.fmuladd.f32(float 0x3FCDA67120000000, float %call, float 1.000000e+00)
+  %div = fdiv float 1.000000e+00, %0, !fpmath !3
+  %1 = fmul float %X, %X
+  %div1 = fmul float %1, -5.000000e-01
+  %call2 = tail call float @_Z3expf(float %div1) #4
+  %mul3 = fmul float %call2, 0x3FD9884540000000
+  %mul4 = fmul float %div, %mul3
+  %2 = tail call float @llvm.fmuladd.f32(float %div, float 0x3FF548CDE0000000, float 0xBFFD23DD40000000)
+  %3 = tail call float @llvm.fmuladd.f32(float %div, float %2, float 0x3FFC80EF00000000)
+  %4 = tail call float @llvm.fmuladd.f32(float %div, float %3, float 0xBFD6D1F0E0000000)
+  %5 = tail call float @llvm.fmuladd.f32(float %div, float %4, float 0x3FD470BF40000000)
+  %neg = fsub float -0.000000e+00, %mul4
+  %6 = tail call float @llvm.fmuladd.f32(float %neg, float %5, float 1.000000e+00)
+  %cmp = fcmp olt float %X, 0.000000e+00
+  br i1 %cmp, label %cond.true, label %cond.end
 
-; <label>:16                                      ; preds = %0
-  %17 = fsub float 1.000000e+00, %14
-  br label %18
+cond.true:                                        ; preds = %entry
+  %sub10 = fsub float 1.000000e+00, %6
+  br label %cond.end
 
-; <label>:18                                      ; preds = %0, %16
-  %19 = phi float [ %17, %16 ], [ %14, %0 ]
-  store float %19, float* %phi, align 4, !tbaa !14
+cond.end:                                         ; preds = %entry, %cond.true
+  %cond = phi float [ %sub10, %cond.true ], [ %6, %entry ]
+  store float %cond, float* %phi, align 4, !tbaa !7
   ret void
 }
 
-; Function Attrs: nounwind readnone
+; Function Attrs: nounwind readonly
 declare float @llvm.fabs.f32(float) #1
 
 ; Function Attrs: nounwind readnone
-declare float @llvm.fmuladd.f32(float, float, float) #1
+declare float @llvm.fmuladd.f32(float, float, float) #2
 
-declare float @_Z3expf(float) #2
+declare float @_Z3expf(float) #3
 
 ; Function Attrs: nounwind
 define void @blackScholes_scalar(float addrspace(1)* nocapture readonly %randArray, i32 %width, float addrspace(1)* nocapture %call, float addrspace(1)* nocapture %put) #0 {
-  %1 = tail call i32 @get_global_id(i32 0) #3
-  %2 = tail call i32 @get_global_id(i32 1) #3
-  %3 = mul i32 %2, %width
-  %4 = add i32 %3, %1
-  %5 = getelementptr inbounds float addrspace(1)* %randArray, i32 %4
-  %6 = load float addrspace(1)* %5, align 4, !tbaa !14
-  %7 = fsub float 1.000000e+00, %6
-  %8 = fmul float %7, 1.000000e+02
-  %9 = tail call float @llvm.fmuladd.f32(float 1.000000e+01, float %6, float %8)
-  %10 = fmul float %7, 1.000000e+01
-  %11 = tail call float @llvm.fmuladd.f32(float 1.000000e+00, float %6, float %10)
-  %12 = fmul float %7, 0x3FA99999A0000000
-  %13 = tail call float @llvm.fmuladd.f32(float 0x3F847AE140000000, float %6, float %12)
-  %14 = fmul float %7, 0x3FB99999A0000000
-  %15 = tail call float @llvm.fmuladd.f32(float 0x3F847AE140000000, float %6, float %14)
-  %16 = tail call float @llvm.sqrt.f32(float %11)
-  %17 = fmul float %15, %16
-  %18 = fdiv float %9, %9, !fpmath !10
-  %19 = tail call float @llvm.log2.f32(float %18)
-  %20 = fmul float %15, %15
-  %21 = fmul float %20, 5.000000e-01
-  %22 = fadd float %13, %21
-  %23 = fmul float %11, %22
-  %24 = tail call float @llvm.fmuladd.f32(float %19, float 0x3FE62E4300000000, float %23)
-  %25 = fdiv float %24, %17, !fpmath !10
-  %26 = fsub float %25, %17
-  %27 = fmul float %11, %13
-  %28 = fsub float -0.000000e+00, %27
-  %29 = tail call float @_Z3expf(float %28) #3
-  %30 = fmul float %9, %29
-  %31 = tail call float @llvm.fabs.f32(float %25) #3
-  %32 = tail call float @llvm.fmuladd.f32(float 0x3FCDA67120000000, float %31, float 1.000000e+00) #3
-  %33 = fdiv float 1.000000e+00, %32, !fpmath !10
-  %34 = fmul float %25, %25
-  %35 = fmul float %34, -5.000000e-01
-  %36 = tail call float @_Z3expf(float %35) #3
-  %37 = fmul float %36, 0x3FD9884540000000
-  %38 = fmul float %33, %37
-  %39 = tail call float @llvm.fmuladd.f32(float %33, float 0x3FF548CDE0000000, float 0xBFFD23DD40000000) #3
-  %40 = tail call float @llvm.fmuladd.f32(float %33, float %39, float 0x3FFC80EF00000000) #3
-  %41 = tail call float @llvm.fmuladd.f32(float %33, float %40, float 0xBFD6D1F0E0000000) #3
-  %42 = tail call float @llvm.fmuladd.f32(float %33, float %41, float 0x3FD470BF40000000) #3
-  %43 = fsub float -0.000000e+00, %38
-  %44 = tail call float @llvm.fmuladd.f32(float %43, float %42, float 1.000000e+00) #3
-  %45 = fcmp olt float %25, 0.000000e+00
-  br i1 %45, label %46, label %phi_scalar.exit
+entry:
+  %call1 = tail call i32 @get_global_id(i32 0) #4
+  %call2 = tail call i32 @get_global_id(i32 1) #4
+  %mul = mul i32 %call2, %width
+  %add = add i32 %mul, %call1
+  %0 = sext i32 %add to i64
+  %arrayidx = getelementptr inbounds float addrspace(1)* %randArray, i64 %0
+  %1 = load float addrspace(1)* %arrayidx, align 4, !tbaa !7
+  %sub = fsub float 1.000000e+00, %1
+  %mul4 = fmul float %sub, 1.000000e+02
+  %2 = tail call float @llvm.fmuladd.f32(float 1.000000e+01, float %1, float %mul4)
+  %mul10 = fmul float %sub, 1.000000e+01
+  %3 = tail call float @llvm.fmuladd.f32(float 1.000000e+00, float %1, float %mul10)
+  %mul13 = fmul float %sub, 0x3FA99999A0000000
+  %4 = tail call float @llvm.fmuladd.f32(float 0x3F847AE140000000, float %1, float %mul13)
+  %mul16 = fmul float %sub, 0x3FB99999A0000000
+  %5 = tail call float @llvm.fmuladd.f32(float 0x3F847AE140000000, float %1, float %mul16)
+  %call17 = tail call float @llvm.sqrt.f32(float %3)
+  %mul18 = fmul float %5, %call17
+  %div = fdiv float %2, %2, !fpmath !3
+  %call19 = tail call float @llvm.log2.f32(float %div)
+  %mul21 = fmul float %5, %5
+  %div22 = fmul float %mul21, 5.000000e-01
+  %add23 = fadd float %4, %div22
+  %mul24 = fmul float %3, %add23
+  %6 = tail call float @llvm.fmuladd.f32(float %call19, float 0x3FE62E4300000000, float %mul24)
+  %div25 = fdiv float %6, %mul18, !fpmath !3
+  %sub26 = fsub float %div25, %mul18
+  %7 = fmul float %3, %4
+  %mul28 = fsub float -0.000000e+00, %7
+  %call29 = tail call float @_Z3expf(float %mul28) #4
+  %mul30 = fmul float %2, %call29
+  %call.i = tail call float @llvm.fabs.f32(float %div25) #4
+  %8 = tail call float @llvm.fmuladd.f32(float 0x3FCDA67120000000, float %call.i, float 1.000000e+00) #4
+  %div.i = fdiv float 1.000000e+00, %8, !fpmath !3
+  %9 = fmul float %div25, %div25
+  %div1.i = fmul float %9, -5.000000e-01
+  %call2.i = tail call float @_Z3expf(float %div1.i) #4
+  %mul3.i = fmul float %call2.i, 0x3FD9884540000000
+  %mul4.i = fmul float %div.i, %mul3.i
+  %10 = tail call float @llvm.fmuladd.f32(float %div.i, float 0x3FF548CDE0000000, float 0xBFFD23DD40000000) #4
+  %11 = tail call float @llvm.fmuladd.f32(float %div.i, float %10, float 0x3FFC80EF00000000) #4
+  %12 = tail call float @llvm.fmuladd.f32(float %div.i, float %11, float 0xBFD6D1F0E0000000) #4
+  %13 = tail call float @llvm.fmuladd.f32(float %div.i, float %12, float 0x3FD470BF40000000) #4
+  %neg.i = fsub float -0.000000e+00, %mul4.i
+  %14 = tail call float @llvm.fmuladd.f32(float %neg.i, float %13, float 1.000000e+00) #4
+  %cmp.i = fcmp olt float %div25, 0.000000e+00
+  br i1 %cmp.i, label %cond.true.i, label %phi_scalar.exit
 
-; <label>:46                                      ; preds = %0
-  %47 = fsub float 1.000000e+00, %44
+cond.true.i:                                      ; preds = %entry
+  %sub10.i = fsub float 1.000000e+00, %14
   br label %phi_scalar.exit
 
-phi_scalar.exit:                                  ; preds = %0, %46
-  %48 = phi float [ %47, %46 ], [ %44, %0 ]
-  %49 = tail call float @llvm.fabs.f32(float %26) #3
-  %50 = tail call float @llvm.fmuladd.f32(float 0x3FCDA67120000000, float %49, float 1.000000e+00) #3
-  %51 = fdiv float 1.000000e+00, %50, !fpmath !10
-  %52 = fmul float %26, %26
-  %53 = fmul float %52, -5.000000e-01
-  %54 = tail call float @_Z3expf(float %53) #3
-  %55 = fmul float %54, 0x3FD9884540000000
-  %56 = fmul float %51, %55
-  %57 = tail call float @llvm.fmuladd.f32(float %51, float 0x3FF548CDE0000000, float 0xBFFD23DD40000000) #3
-  %58 = tail call float @llvm.fmuladd.f32(float %51, float %57, float 0x3FFC80EF00000000) #3
-  %59 = tail call float @llvm.fmuladd.f32(float %51, float %58, float 0xBFD6D1F0E0000000) #3
-  %60 = tail call float @llvm.fmuladd.f32(float %51, float %59, float 0x3FD470BF40000000) #3
-  %61 = fsub float -0.000000e+00, %56
-  %62 = tail call float @llvm.fmuladd.f32(float %61, float %60, float 1.000000e+00) #3
-  %63 = fcmp olt float %26, 0.000000e+00
-  br i1 %63, label %64, label %phi_scalar.exit1
+phi_scalar.exit:                                  ; preds = %entry, %cond.true.i
+  %cond.i = phi float [ %sub10.i, %cond.true.i ], [ %14, %entry ]
+  %call.i72 = tail call float @llvm.fabs.f32(float %sub26) #4
+  %15 = tail call float @llvm.fmuladd.f32(float 0x3FCDA67120000000, float %call.i72, float 1.000000e+00) #4
+  %div.i73 = fdiv float 1.000000e+00, %15, !fpmath !3
+  %16 = fmul float %sub26, %sub26
+  %div1.i74 = fmul float %16, -5.000000e-01
+  %call2.i75 = tail call float @_Z3expf(float %div1.i74) #4
+  %mul3.i76 = fmul float %call2.i75, 0x3FD9884540000000
+  %mul4.i77 = fmul float %div.i73, %mul3.i76
+  %17 = tail call float @llvm.fmuladd.f32(float %div.i73, float 0x3FF548CDE0000000, float 0xBFFD23DD40000000) #4
+  %18 = tail call float @llvm.fmuladd.f32(float %div.i73, float %17, float 0x3FFC80EF00000000) #4
+  %19 = tail call float @llvm.fmuladd.f32(float %div.i73, float %18, float 0xBFD6D1F0E0000000) #4
+  %20 = tail call float @llvm.fmuladd.f32(float %div.i73, float %19, float 0x3FD470BF40000000) #4
+  %neg.i78 = fsub float -0.000000e+00, %mul4.i77
+  %21 = tail call float @llvm.fmuladd.f32(float %neg.i78, float %20, float 1.000000e+00) #4
+  %cmp.i79 = fcmp olt float %sub26, 0.000000e+00
+  br i1 %cmp.i79, label %cond.true.i81, label %phi_scalar.exit83
 
-; <label>:64                                      ; preds = %phi_scalar.exit
-  %65 = fsub float 1.000000e+00, %62
-  br label %phi_scalar.exit1
+cond.true.i81:                                    ; preds = %phi_scalar.exit
+  %sub10.i80 = fsub float 1.000000e+00, %21
+  br label %phi_scalar.exit83
 
-phi_scalar.exit1:                                 ; preds = %phi_scalar.exit, %64
-  %66 = phi float [ %65, %64 ], [ %62, %phi_scalar.exit ]
-  %67 = fmul float %30, %66
-  %68 = fsub float -0.000000e+00, %67
-  %69 = tail call float @llvm.fmuladd.f32(float %9, float %48, float %68)
-  %70 = getelementptr inbounds float addrspace(1)* %call, i32 %4
-  store float %69, float addrspace(1)* %70, align 4, !tbaa !14
-  %71 = fsub float -0.000000e+00, %25
-  %72 = tail call float @llvm.fabs.f32(float %71) #3
-  %73 = tail call float @llvm.fmuladd.f32(float 0x3FCDA67120000000, float %72, float 1.000000e+00) #3
-  %74 = fdiv float 1.000000e+00, %73, !fpmath !10
-  %75 = tail call float @_Z3expf(float %35) #3
-  %76 = fmul float %75, 0x3FD9884540000000
-  %77 = fmul float %74, %76
-  %78 = tail call float @llvm.fmuladd.f32(float %74, float 0x3FF548CDE0000000, float 0xBFFD23DD40000000) #3
-  %79 = tail call float @llvm.fmuladd.f32(float %74, float %78, float 0x3FFC80EF00000000) #3
-  %80 = tail call float @llvm.fmuladd.f32(float %74, float %79, float 0xBFD6D1F0E0000000) #3
-  %81 = tail call float @llvm.fmuladd.f32(float %74, float %80, float 0x3FD470BF40000000) #3
-  %82 = fsub float -0.000000e+00, %77
-  %83 = tail call float @llvm.fmuladd.f32(float %82, float %81, float 1.000000e+00) #3
-  %84 = fcmp ogt float %25, -0.000000e+00
-  br i1 %84, label %85, label %phi_scalar.exit2
+phi_scalar.exit83:                                ; preds = %phi_scalar.exit, %cond.true.i81
+  %cond.i82 = phi float [ %sub10.i80, %cond.true.i81 ], [ %21, %phi_scalar.exit ]
+  %mul32 = fmul float %mul30, %cond.i82
+  %neg = fsub float -0.000000e+00, %mul32
+  %22 = tail call float @llvm.fmuladd.f32(float %2, float %cond.i, float %neg)
+  %arrayidx35 = getelementptr inbounds float addrspace(1)* %call, i64 %0
+  store float %22, float addrspace(1)* %arrayidx35, align 4, !tbaa !7
+  %sub36 = fsub float -0.000000e+00, %div25
+  %call.i84 = tail call float @llvm.fabs.f32(float %sub36) #4
+  %23 = tail call float @llvm.fmuladd.f32(float 0x3FCDA67120000000, float %call.i84, float 1.000000e+00) #4
+  %div.i85 = fdiv float 1.000000e+00, %23, !fpmath !3
+  %call2.i87 = tail call float @_Z3expf(float %div1.i) #4
+  %mul3.i88 = fmul float %call2.i87, 0x3FD9884540000000
+  %mul4.i89 = fmul float %div.i85, %mul3.i88
+  %24 = tail call float @llvm.fmuladd.f32(float %div.i85, float 0x3FF548CDE0000000, float 0xBFFD23DD40000000) #4
+  %25 = tail call float @llvm.fmuladd.f32(float %div.i85, float %24, float 0x3FFC80EF00000000) #4
+  %26 = tail call float @llvm.fmuladd.f32(float %div.i85, float %25, float 0xBFD6D1F0E0000000) #4
+  %27 = tail call float @llvm.fmuladd.f32(float %div.i85, float %26, float 0x3FD470BF40000000) #4
+  %neg.i90 = fsub float -0.000000e+00, %mul4.i89
+  %28 = tail call float @llvm.fmuladd.f32(float %neg.i90, float %27, float 1.000000e+00) #4
+  %cmp.i91 = fcmp ogt float %div25, -0.000000e+00
+  br i1 %cmp.i91, label %cond.true.i93, label %phi_scalar.exit95
 
-; <label>:85                                      ; preds = %phi_scalar.exit1
-  %86 = fsub float 1.000000e+00, %83
-  br label %phi_scalar.exit2
+cond.true.i93:                                    ; preds = %phi_scalar.exit83
+  %sub10.i92 = fsub float 1.000000e+00, %28
+  br label %phi_scalar.exit95
 
-phi_scalar.exit2:                                 ; preds = %phi_scalar.exit1, %85
-  %87 = phi float [ %86, %85 ], [ %83, %phi_scalar.exit1 ]
-  %88 = fsub float -0.000000e+00, %26
-  %89 = tail call float @llvm.fabs.f32(float %88) #3
-  %90 = tail call float @llvm.fmuladd.f32(float 0x3FCDA67120000000, float %89, float 1.000000e+00) #3
-  %91 = fdiv float 1.000000e+00, %90, !fpmath !10
-  %92 = tail call float @_Z3expf(float %53) #3
-  %93 = fmul float %92, 0x3FD9884540000000
-  %94 = fmul float %91, %93
-  %95 = tail call float @llvm.fmuladd.f32(float %91, float 0x3FF548CDE0000000, float 0xBFFD23DD40000000) #3
-  %96 = tail call float @llvm.fmuladd.f32(float %91, float %95, float 0x3FFC80EF00000000) #3
-  %97 = tail call float @llvm.fmuladd.f32(float %91, float %96, float 0xBFD6D1F0E0000000) #3
-  %98 = tail call float @llvm.fmuladd.f32(float %91, float %97, float 0x3FD470BF40000000) #3
-  %99 = fsub float -0.000000e+00, %94
-  %100 = tail call float @llvm.fmuladd.f32(float %99, float %98, float 1.000000e+00) #3
-  %101 = fcmp ogt float %26, -0.000000e+00
-  br i1 %101, label %102, label %phi_scalar.exit3
+phi_scalar.exit95:                                ; preds = %phi_scalar.exit83, %cond.true.i93
+  %cond.i94 = phi float [ %sub10.i92, %cond.true.i93 ], [ %28, %phi_scalar.exit83 ]
+  %sub37 = fsub float -0.000000e+00, %sub26
+  %call.i96 = tail call float @llvm.fabs.f32(float %sub37) #4
+  %29 = tail call float @llvm.fmuladd.f32(float 0x3FCDA67120000000, float %call.i96, float 1.000000e+00) #4
+  %div.i97 = fdiv float 1.000000e+00, %29, !fpmath !3
+  %call2.i99 = tail call float @_Z3expf(float %div1.i74) #4
+  %mul3.i100 = fmul float %call2.i99, 0x3FD9884540000000
+  %mul4.i101 = fmul float %div.i97, %mul3.i100
+  %30 = tail call float @llvm.fmuladd.f32(float %div.i97, float 0x3FF548CDE0000000, float 0xBFFD23DD40000000) #4
+  %31 = tail call float @llvm.fmuladd.f32(float %div.i97, float %30, float 0x3FFC80EF00000000) #4
+  %32 = tail call float @llvm.fmuladd.f32(float %div.i97, float %31, float 0xBFD6D1F0E0000000) #4
+  %33 = tail call float @llvm.fmuladd.f32(float %div.i97, float %32, float 0x3FD470BF40000000) #4
+  %neg.i102 = fsub float -0.000000e+00, %mul4.i101
+  %34 = tail call float @llvm.fmuladd.f32(float %neg.i102, float %33, float 1.000000e+00) #4
+  %cmp.i103 = fcmp ogt float %sub26, -0.000000e+00
+  br i1 %cmp.i103, label %cond.true.i105, label %phi_scalar.exit107
 
-; <label>:102                                     ; preds = %phi_scalar.exit2
-  %103 = fsub float 1.000000e+00, %100
-  br label %phi_scalar.exit3
+cond.true.i105:                                   ; preds = %phi_scalar.exit95
+  %sub10.i104 = fsub float 1.000000e+00, %34
+  br label %phi_scalar.exit107
 
-phi_scalar.exit3:                                 ; preds = %phi_scalar.exit2, %102
-  %104 = phi float [ %103, %102 ], [ %100, %phi_scalar.exit2 ]
-  %105 = fmul float %9, %87
-  %106 = fsub float -0.000000e+00, %105
-  %107 = tail call float @llvm.fmuladd.f32(float %30, float %104, float %106)
-  %108 = getelementptr inbounds float addrspace(1)* %put, i32 %4
-  store float %107, float addrspace(1)* %108, align 4, !tbaa !14
+phi_scalar.exit107:                               ; preds = %phi_scalar.exit95, %cond.true.i105
+  %cond.i106 = phi float [ %sub10.i104, %cond.true.i105 ], [ %34, %phi_scalar.exit95 ]
+  %mul39 = fmul float %2, %cond.i94
+  %neg40 = fsub float -0.000000e+00, %mul39
+  %35 = tail call float @llvm.fmuladd.f32(float %mul30, float %cond.i106, float %neg40)
+  %arrayidx43 = getelementptr inbounds float addrspace(1)* %put, i64 %0
+  store float %35, float addrspace(1)* %arrayidx43, align 4, !tbaa !7
   ret void
 }
 
-; Function Attrs: nounwind readnone
+; Function Attrs: nounwind readonly
 declare float @llvm.sqrt.f32(float) #1
 
-; Function Attrs: nounwind readnone
+; Function Attrs: nounwind readonly
 declare float @llvm.log2.f32(float) #1
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { nounwind readnone }
-attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #3 = { nounwind }
+attributes #1 = { nounwind readonly }
+attributes #2 = { nounwind readnone }
+attributes #3 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #4 = { nounwind }
 
-!opencl.kernels = !{!0, !6}
-!llvm.ident = !{!9}
+!opencl.kernels = !{!0, !1}
+!llvm.ident = !{!2}
 
-!0 = !{void (<4 x float> addrspace(1)*, i32, <4 x float> addrspace(1)*, <4 x float> addrspace(1)*)* @blackScholes, !1, !2, !3, !4, !5}
-!1 = !{!"kernel_arg_addr_space", i32 1, i32 0, i32 1, i32 1}
-!2 = !{!"kernel_arg_access_qual", !"none", !"none", !"none", !"none"}
-!3 = !{!"kernel_arg_type", !"float4*", !"int", !"float4*", !"float4*"}
-!4 = !{!"kernel_arg_base_type", !"float __attribute__((ext_vector_type(4)))*", !"int", !"float __attribute__((ext_vector_type(4)))*", !"float __attribute__((ext_vector_type(4)))*"}
-!5 = !{!"kernel_arg_type_qual", !"const", !"", !"", !""}
-!6 = !{void (float addrspace(1)*, i32, float addrspace(1)*, float addrspace(1)*)* @blackScholes_scalar, !1, !2, !7, !8, !5}
-!7 = !{!"kernel_arg_type", !"float*", !"int", !"float*", !"float*"}
-!8 = !{!"kernel_arg_base_type", !"float*", !"int", !"float*", !"float*"}
-!9 = !{!"Ubuntu clang version 3.6.1-svn232753-1~exp1 (branches/release_36) (based on LLVM 3.6.1)"}
-!10 = !{float 2.500000e+00}
-!11 = !{!12, !12, i64 0}
-!12 = !{!"omnipotent char", !13, i64 0}
-!13 = !{!"Simple C/C++ TBAA"}
-!14 = !{!15, !15, i64 0}
-!15 = !{!"float", !12, i64 0}
+!0 = metadata !{void (<4 x float> addrspace(1)*, i32, <4 x float> addrspace(1)*, <4 x float> addrspace(1)*)* @blackScholes}
+!1 = metadata !{void (float addrspace(1)*, i32, float addrspace(1)*, float addrspace(1)*)* @blackScholes_scalar}
+!2 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!3 = metadata !{float 2.500000e+00}
+!4 = metadata !{metadata !5, metadata !5, i64 0}
+!5 = metadata !{metadata !"omnipotent char", metadata !6, i64 0}
+!6 = metadata !{metadata !"Simple C/C++ TBAA"}
+!7 = metadata !{metadata !8, metadata !8, i64 0}
+!8 = metadata !{metadata !"float", metadata !5, i64 0}

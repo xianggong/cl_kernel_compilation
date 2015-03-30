@@ -1,85 +1,95 @@
 ; ModuleID = '../kernel-src/SobelFilter_Kernels.cl'
-target datalayout = "e-p:32:32-i64:64-v16:16-v24:32-v32:32-v48:64-v96:128-v192:256-v256:256-v512:512-v1024:1024-v2048:2048-n32:64"
-target triple = "amdgcn"
+target datalayout = "e-p:64:64:64-p3:32:32:32-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v16:16:16-v24:32:32-v32:32:32-v48:64:64-v64:64:64-v96:128:128-v128:128:128-v192:256:256-v256:256:256-v512:512:512-v1024:1024:1024-v2048:2048:2048-n32:64"
+target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @sobel_filter(<4 x i8> addrspace(1)* nocapture readonly %inputImage, <4 x i8> addrspace(1)* nocapture %outputImage) #0 {
-  %1 = tail call i32 @get_global_id(i32 0) #3
-  %2 = tail call i32 @get_global_id(i32 1) #3
-  %3 = tail call i32 @get_global_size(i32 0) #3
-  %4 = tail call i32 @get_global_size(i32 1) #3
-  %5 = mul i32 %3, %2
-  %6 = add i32 %5, %1
-  %7 = icmp eq i32 %1, 0
-  br i1 %7, label %67, label %8
+entry:
+  %call = tail call i32 @get_global_id(i32 0) #3
+  %call1 = tail call i32 @get_global_id(i32 1) #3
+  %call2 = tail call i32 @get_global_size(i32 0) #3
+  %call3 = tail call i32 @get_global_size(i32 1) #3
+  %mul = mul i32 %call2, %call1
+  %add = add i32 %mul, %call
+  %cmp = icmp eq i32 %call, 0
+  br i1 %cmp, label %if.end, label %land.lhs.true
 
-; <label>:8                                       ; preds = %0
-  %9 = add i32 %3, -1
-  %10 = icmp ult i32 %1, %9
-  %11 = icmp ne i32 %2, 0
-  %or.cond = and i1 %11, %10
-  %12 = add i32 %4, -1
-  %13 = icmp ult i32 %2, %12
-  %or.cond3 = and i1 %or.cond, %13
-  br i1 %or.cond3, label %14, label %67
+land.lhs.true:                                    ; preds = %entry
+  %sub = add i32 %call2, -1
+  %cmp4 = icmp ult i32 %call, %sub
+  %cmp6 = icmp ne i32 %call1, 0
+  %or.cond = and i1 %cmp4, %cmp6
+  %sub8 = add i32 %call3, -1
+  %cmp9 = icmp ult i32 %call1, %sub8
+  %or.cond88 = and i1 %or.cond, %cmp9
+  br i1 %or.cond88, label %if.then, label %if.end
 
-; <label>:14                                      ; preds = %8
-  %15 = add nsw i32 %6, -1
-  %16 = sub i32 %15, %3
-  %17 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %16
-  %18 = load <4 x i8> addrspace(1)* %17, align 4, !tbaa !7
-  %19 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %18) #3
-  %20 = sub i32 %6, %3
-  %21 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %20
-  %22 = load <4 x i8> addrspace(1)* %21, align 4, !tbaa !7
-  %23 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %22) #3
-  %24 = add nsw i32 %6, 1
-  %25 = sub i32 %24, %3
-  %26 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %25
-  %27 = load <4 x i8> addrspace(1)* %26, align 4, !tbaa !7
-  %28 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %27) #3
-  %29 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %15
-  %30 = load <4 x i8> addrspace(1)* %29, align 4, !tbaa !7
-  %31 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %30) #3
-  %32 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %6
-  %33 = load <4 x i8> addrspace(1)* %32, align 4, !tbaa !7
-  %34 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %33) #3
-  %35 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %24
-  %36 = load <4 x i8> addrspace(1)* %35, align 4, !tbaa !7
-  %37 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %36) #3
-  %38 = add i32 %15, %3
-  %39 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %38
-  %40 = load <4 x i8> addrspace(1)* %39, align 4, !tbaa !7
-  %41 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %40) #3
-  %42 = add i32 %6, %3
-  %43 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %42
-  %44 = load <4 x i8> addrspace(1)* %43, align 4, !tbaa !7
-  %45 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %44) #3
-  %46 = add i32 %24, %3
-  %47 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %46
-  %48 = load <4 x i8> addrspace(1)* %47, align 4, !tbaa !7
-  %49 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %48) #3
-  %50 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, <4 x float> %23, <4 x float> %19)
-  %51 = fadd <4 x float> %28, %50
-  %52 = fsub <4 x float> %51, %41
-  %53 = fmul <4 x float> %45, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
-  %54 = fsub <4 x float> %52, %53
-  %55 = fsub <4 x float> %54, %49
-  %56 = fsub <4 x float> %19, %28
-  %57 = fmul <4 x float> %31, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
-  %58 = fadd <4 x float> %56, %57
-  %59 = fmul <4 x float> %37, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
-  %60 = fsub <4 x float> %58, %59
-  %61 = fadd <4 x float> %60, %41
-  %62 = fsub <4 x float> %61, %49
-  %63 = tail call <4 x float> @_Z5hypotDv4_fS_(<4 x float> %55, <4 x float> %62) #3
-  %64 = fdiv <4 x float> %63, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !10
-  %65 = tail call <4 x i8> @_Z14convert_uchar4Dv4_f(<4 x float> %64) #3
-  %66 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %6
-  store <4 x i8> %65, <4 x i8> addrspace(1)* %66, align 4, !tbaa !7
-  br label %67
+if.then:                                          ; preds = %land.lhs.true
+  %sub10 = add nsw i32 %add, -1
+  %sub11 = sub i32 %sub10, %call2
+  %0 = sext i32 %sub11 to i64
+  %arrayidx = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %0
+  %1 = load <4 x i8> addrspace(1)* %arrayidx, align 4, !tbaa !2
+  %call12 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %1) #3
+  %sub13 = sub i32 %add, %call2
+  %2 = sext i32 %sub13 to i64
+  %arrayidx14 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %2
+  %3 = load <4 x i8> addrspace(1)* %arrayidx14, align 4, !tbaa !2
+  %call15 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %3) #3
+  %add16 = add nsw i32 %add, 1
+  %sub17 = sub i32 %add16, %call2
+  %4 = sext i32 %sub17 to i64
+  %arrayidx18 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %4
+  %5 = load <4 x i8> addrspace(1)* %arrayidx18, align 4, !tbaa !2
+  %call19 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %5) #3
+  %6 = sext i32 %sub10 to i64
+  %arrayidx21 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %6
+  %7 = load <4 x i8> addrspace(1)* %arrayidx21, align 4, !tbaa !2
+  %call22 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %7) #3
+  %8 = sext i32 %add to i64
+  %arrayidx23 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %8
+  %9 = load <4 x i8> addrspace(1)* %arrayidx23, align 4, !tbaa !2
+  %call24 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %9) #3
+  %10 = sext i32 %add16 to i64
+  %arrayidx26 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %10
+  %11 = load <4 x i8> addrspace(1)* %arrayidx26, align 4, !tbaa !2
+  %call27 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %11) #3
+  %add29 = add i32 %sub10, %call2
+  %12 = sext i32 %add29 to i64
+  %arrayidx30 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %12
+  %13 = load <4 x i8> addrspace(1)* %arrayidx30, align 4, !tbaa !2
+  %call31 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %13) #3
+  %add32 = add i32 %add, %call2
+  %14 = sext i32 %add32 to i64
+  %arrayidx33 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %14
+  %15 = load <4 x i8> addrspace(1)* %arrayidx33, align 4, !tbaa !2
+  %call34 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %15) #3
+  %add36 = add i32 %add16, %call2
+  %16 = sext i32 %add36 to i64
+  %arrayidx37 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i64 %16
+  %17 = load <4 x i8> addrspace(1)* %arrayidx37, align 4, !tbaa !2
+  %call38 = tail call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %17) #3
+  %18 = tail call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, <4 x float> %call15, <4 x float> %call12)
+  %add40 = fadd <4 x float> %call19, %18
+  %sub41 = fsub <4 x float> %add40, %call31
+  %mul42 = fmul <4 x float> %call34, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
+  %sub43 = fsub <4 x float> %sub41, %mul42
+  %sub44 = fsub <4 x float> %sub43, %call38
+  %sub45 = fsub <4 x float> %call12, %call19
+  %mul46 = fmul <4 x float> %call22, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
+  %add47 = fadd <4 x float> %sub45, %mul46
+  %mul48 = fmul <4 x float> %call27, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>
+  %sub49 = fsub <4 x float> %add47, %mul48
+  %add50 = fadd <4 x float> %sub49, %call31
+  %sub51 = fsub <4 x float> %add50, %call38
+  %call52 = tail call <4 x float> @_Z5hypotDv4_fS_(<4 x float> %sub44, <4 x float> %sub51) #3
+  %div = fdiv <4 x float> %call52, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !5
+  %call53 = tail call <4 x i8> @_Z14convert_uchar4Dv4_f(<4 x float> %div) #3
+  %arrayidx54 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i64 %8
+  store <4 x i8> %call53, <4 x i8> addrspace(1)* %arrayidx54, align 4, !tbaa !2
+  br label %if.end
 
-; <label>:67                                      ; preds = %0, %14, %8
+if.end:                                           ; preds = %entry, %if.then, %land.lhs.true
   ret void
 }
 
@@ -102,16 +112,11 @@ attributes #2 = { nounwind readnone }
 attributes #3 = { nounwind }
 
 !opencl.kernels = !{!0}
-!llvm.ident = !{!6}
+!llvm.ident = !{!1}
 
-!0 = !{void (<4 x i8> addrspace(1)*, <4 x i8> addrspace(1)*)* @sobel_filter, !1, !2, !3, !4, !5}
-!1 = !{!"kernel_arg_addr_space", i32 1, i32 1}
-!2 = !{!"kernel_arg_access_qual", !"none", !"none"}
-!3 = !{!"kernel_arg_type", !"uchar4*", !"uchar4*"}
-!4 = !{!"kernel_arg_base_type", !"uchar __attribute__((ext_vector_type(4)))*", !"uchar __attribute__((ext_vector_type(4)))*"}
-!5 = !{!"kernel_arg_type_qual", !"", !""}
-!6 = !{!"Ubuntu clang version 3.6.1-svn232753-1~exp1 (branches/release_36) (based on LLVM 3.6.1)"}
-!7 = !{!8, !8, i64 0}
-!8 = !{!"omnipotent char", !9, i64 0}
-!9 = !{!"Simple C/C++ TBAA"}
-!10 = !{float 2.500000e+00}
+!0 = metadata !{void (<4 x i8> addrspace(1)*, <4 x i8> addrspace(1)*)* @sobel_filter}
+!1 = metadata !{metadata !"clang version 3.4.2 (tags/RELEASE_34/dot2-final)"}
+!2 = metadata !{metadata !3, metadata !3, i64 0}
+!3 = metadata !{metadata !"omnipotent char", metadata !4, i64 0}
+!4 = metadata !{metadata !"Simple C/C++ TBAA"}
+!5 = metadata !{float 2.500000e+00}

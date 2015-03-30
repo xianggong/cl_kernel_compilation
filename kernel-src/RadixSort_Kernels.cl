@@ -62,7 +62,6 @@ void histogram(__global const uint* unsortedData,
     /* Copy calculated histogram bin to global memory */
     
         uint bucketPos = groupId  * groupSize + localId ;
-        //uint bucketPos = localId * numGroups + groupId ;
         buckets[bucketPos] = sharedArray[localId];
     
 }

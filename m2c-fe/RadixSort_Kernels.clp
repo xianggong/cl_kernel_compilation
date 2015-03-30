@@ -37,11 +37,10 @@ void histogram(__global const uint* unsortedData,
 
 
         uint bucketPos = groupId * groupSize + localId ;
-
         buckets[bucketPos] = sharedArray[localId];
 
 }
-# 81 "RadixSort_Kernels.cl"
+# 80 "RadixSort_Kernels.cl"
 __kernel
 void permute(__global const uint* unsortedData,
              __global const uint* scanedBuckets,
