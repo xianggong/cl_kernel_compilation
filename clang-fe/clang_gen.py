@@ -11,7 +11,7 @@ prefix_bc = "clang -c -emit-llvm "
 #clpara = " -target amdgcn "
 #clpara = " -triple=spir64-unknow-unknow "
 #clpara = " -target amdgcn -mcpu=verde "
-clpara = " -target r600-- -mcpu=verde "
+clpara = " -O0 -target r600-- -mcpu=verde "
 header = " -I " + header_dir + " -include " + header_dir + "clc/clc.h " + " -D cl_clang_storage_class_specifiers " 
 #header = ""
 
