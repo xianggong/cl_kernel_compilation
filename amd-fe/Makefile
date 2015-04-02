@@ -7,4 +7,4 @@ amd:
 	python amd_gen.py
 
 clean:
-	rm -rf *.ll
+	rm -rf *.ll *.opt.bc

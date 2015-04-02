@@ -7,4 +7,4 @@ m2c:
 	python m2c_gen.py
 
 clean:
-	rm -rf *.clp *.llvm *.ll
+	rm -rf *.clp *.bc *.ll *.s
