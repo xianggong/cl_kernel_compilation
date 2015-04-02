@@ -1,0 +1,6 @@
+#define get_global_id __get_global_id_u32
+#define get_local_id __get_local_id_u32
+#define get_group_id __get_group_id_u32
+#define get_global_size __get_global_size_u32
+#define get_local_size __get_local_size_u32
+#define get_num_groups __get_num_groups_u32

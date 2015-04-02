@@ -36,7 +36,7 @@ for file in os.listdir(root_dir):
                 # Remove kernel sources
                 call(command_cp_kernel_src.split())
                 call(command_gen_ir.split())
-                if os.path.isfile(file_name + ".bc"):
+                if os.path.isfile(file_name + ".llvm"):
                         call(command_rename.split())
                         call(command_dis_bc.split())
                         call(command_opt_bc.split())
