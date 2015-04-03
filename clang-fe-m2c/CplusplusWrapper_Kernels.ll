@@ -4,28 +4,28 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @vectorAdd(float addrspace(1)* %output, float addrspace(1)* %inputA, float addrspace(1)* %inputB) #0 {
-  %1 = alloca float addrspace(1)*, align 4
-  %2 = alloca float addrspace(1)*, align 4
-  %3 = alloca float addrspace(1)*, align 4
+  %tmp_1 = alloca float addrspace(1)*, align 4
+  %tmp_2 = alloca float addrspace(1)*, align 4
+  %tmp_3 = alloca float addrspace(1)*, align 4
   %gid = alloca i32, align 4
-  store float addrspace(1)* %output, float addrspace(1)** %1, align 4
-  store float addrspace(1)* %inputA, float addrspace(1)** %2, align 4
-  store float addrspace(1)* %inputB, float addrspace(1)** %3, align 4
-  %4 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %4, i32* %gid, align 4
-  %5 = load i32* %gid, align 4
-  %6 = load float addrspace(1)** %2, align 4
-  %7 = getelementptr inbounds float addrspace(1)* %6, i32 %5
-  %8 = load float addrspace(1)* %7, align 4
-  %9 = load i32* %gid, align 4
-  %10 = load float addrspace(1)** %3, align 4
-  %11 = getelementptr inbounds float addrspace(1)* %10, i32 %9
-  %12 = load float addrspace(1)* %11, align 4
-  %13 = fadd float %8, %12
-  %14 = load i32* %gid, align 4
-  %15 = load float addrspace(1)** %1, align 4
-  %16 = getelementptr inbounds float addrspace(1)* %15, i32 %14
-  store float %13, float addrspace(1)* %16, align 4
+  store float addrspace(1)* %output, float addrspace(1)** %tmp_1, align 4
+  store float addrspace(1)* %inputA, float addrspace(1)** %tmp_2, align 4
+  store float addrspace(1)* %inputB, float addrspace(1)** %tmp_3, align 4
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_4, i32* %gid, align 4
+  %tmp_5 = load i32* %gid, align 4
+  %tmp_6 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_7 = getelementptr inbounds float addrspace(1)* %tmp_6, i32 %tmp_5
+  %tmp_8 = load float addrspace(1)* %tmp_7, align 4
+  %tmp_9 = load i32* %gid, align 4
+  %tmp_10 = load float addrspace(1)** %tmp_3, align 4
+  %tmp_11 = getelementptr inbounds float addrspace(1)* %tmp_10, i32 %tmp_9
+  %tmp_12 = load float addrspace(1)* %tmp_11, align 4
+  %tmp_13 = fadd float %tmp_8, %tmp_12
+  %tmp_14 = load i32* %gid, align 4
+  %tmp_15 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_16 = getelementptr inbounds float addrspace(1)* %tmp_15, i32 %tmp_14
+  store float %tmp_13, float addrspace(1)* %tmp_16, align 4
   ret void
 }
 

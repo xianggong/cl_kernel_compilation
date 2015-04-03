@@ -4,22 +4,22 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @Add(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
   %xPos = alloca i32, align 4
-  store i32 addrspace(1)* %input, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %output, i32 addrspace(1)** %2, align 4
-  %3 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %3, i32* %xPos, align 4
-  %4 = load i32* %xPos, align 4
-  %5 = load i32 addrspace(1)** %1, align 4
-  %6 = getelementptr inbounds i32 addrspace(1)* %5, i32 %4
-  %7 = load i32 addrspace(1)* %6, align 4
-  %8 = add nsw i32 %7, 1
-  %9 = load i32* %xPos, align 4
-  %10 = load i32 addrspace(1)** %2, align 4
-  %11 = getelementptr inbounds i32 addrspace(1)* %10, i32 %9
-  store i32 %8, i32 addrspace(1)* %11, align 4
+  store i32 addrspace(1)* %input, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %output, i32 addrspace(1)** %tmp_2, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_3, i32* %xPos, align 4
+  %tmp_4 = load i32* %xPos, align 4
+  %tmp_5 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_6 = getelementptr inbounds i32 addrspace(1)* %tmp_5, i32 %tmp_4
+  %tmp_7 = load i32 addrspace(1)* %tmp_6, align 4
+  %tmp_8 = add nsw i32 %tmp_7, 1
+  %tmp_9 = load i32* %xPos, align 4
+  %tmp_10 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_11 = getelementptr inbounds i32 addrspace(1)* %tmp_10, i32 %tmp_9
+  store i32 %tmp_8, i32 addrspace(1)* %tmp_11, align 4
   ret void
 }
 
@@ -27,22 +27,22 @@ declare i32 @__get_global_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define void @Sub(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
   %xPos = alloca i32, align 4
-  store i32 addrspace(1)* %input, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %output, i32 addrspace(1)** %2, align 4
-  %3 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %3, i32* %xPos, align 4
-  %4 = load i32* %xPos, align 4
-  %5 = load i32 addrspace(1)** %1, align 4
-  %6 = getelementptr inbounds i32 addrspace(1)* %5, i32 %4
-  %7 = load i32 addrspace(1)* %6, align 4
-  %8 = sub nsw i32 %7, 1
-  %9 = load i32* %xPos, align 4
-  %10 = load i32 addrspace(1)** %2, align 4
-  %11 = getelementptr inbounds i32 addrspace(1)* %10, i32 %9
-  store i32 %8, i32 addrspace(1)* %11, align 4
+  store i32 addrspace(1)* %input, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %output, i32 addrspace(1)** %tmp_2, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_3, i32* %xPos, align 4
+  %tmp_4 = load i32* %xPos, align 4
+  %tmp_5 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_6 = getelementptr inbounds i32 addrspace(1)* %tmp_5, i32 %tmp_4
+  %tmp_7 = load i32 addrspace(1)* %tmp_6, align 4
+  %tmp_8 = sub nsw i32 %tmp_7, 1
+  %tmp_9 = load i32* %xPos, align 4
+  %tmp_10 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_11 = getelementptr inbounds i32 addrspace(1)* %tmp_10, i32 %tmp_9
+  store i32 %tmp_8, i32 addrspace(1)* %tmp_11, align 4
   ret void
 }
 

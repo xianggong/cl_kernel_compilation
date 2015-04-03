@@ -4,24 +4,24 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @helloworld(i8 addrspace(1)* %in, i8 addrspace(1)* %out) #0 {
-  %1 = alloca i8 addrspace(1)*, align 4
-  %2 = alloca i8 addrspace(1)*, align 4
+  %tmp_1 = alloca i8 addrspace(1)*, align 4
+  %tmp_2 = alloca i8 addrspace(1)*, align 4
   %num = alloca i32, align 4
-  store i8 addrspace(1)* %in, i8 addrspace(1)** %1, align 4
-  store i8 addrspace(1)* %out, i8 addrspace(1)** %2, align 4
-  %3 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %3, i32* %num, align 4
-  %4 = load i32* %num, align 4
-  %5 = load i8 addrspace(1)** %1, align 4
-  %6 = getelementptr inbounds i8 addrspace(1)* %5, i32 %4
-  %7 = load i8 addrspace(1)* %6, align 1
-  %8 = sext i8 %7 to i32
-  %9 = add nsw i32 %8, 1
-  %10 = trunc i32 %9 to i8
-  %11 = load i32* %num, align 4
-  %12 = load i8 addrspace(1)** %2, align 4
-  %13 = getelementptr inbounds i8 addrspace(1)* %12, i32 %11
-  store i8 %10, i8 addrspace(1)* %13, align 1
+  store i8 addrspace(1)* %in, i8 addrspace(1)** %tmp_1, align 4
+  store i8 addrspace(1)* %out, i8 addrspace(1)** %tmp_2, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_3, i32* %num, align 4
+  %tmp_4 = load i32* %num, align 4
+  %tmp_5 = load i8 addrspace(1)** %tmp_1, align 4
+  %tmp_6 = getelementptr inbounds i8 addrspace(1)* %tmp_5, i32 %tmp_4
+  %tmp_7 = load i8 addrspace(1)* %tmp_6, align 1
+  %tmp_8 = sext i8 %tmp_7 to i32
+  %tmp_9 = add nsw i32 %tmp_8, 1
+  %tmp_10 = trunc i32 %tmp_9 to i8
+  %tmp_11 = load i32* %num, align 4
+  %tmp_12 = load i8 addrspace(1)** %tmp_2, align 4
+  %tmp_13 = getelementptr inbounds i8 addrspace(1)* %tmp_12, i32 %tmp_11
+  store i8 %tmp_10, i8 addrspace(1)* %tmp_13, align 1
   ret void
 }
 

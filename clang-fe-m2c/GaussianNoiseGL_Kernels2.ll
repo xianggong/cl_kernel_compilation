@@ -4,151 +4,151 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
-  %1 = alloca i32, align 4
-  %2 = alloca i32 addrspace(3)*, align 4
+  %tmp_1 = alloca i32, align 4
+  %tmp_2 = alloca i32 addrspace(3)*, align 4
   %j = alloca i32, align 4
   %k = alloca i32, align 4
   %iy = alloca i32, align 4
   %tid = alloca i32, align 4
-  store i32 %idum, i32* %1, align 4
-  store i32 addrspace(3)* %iv, i32 addrspace(3)** %2, align 4
+  store i32 %idum, i32* %tmp_1, align 4
+  store i32 addrspace(3)* %iv, i32 addrspace(3)** %tmp_2, align 4
   store i32 0, i32* %iy, align 4
-  %3 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %3, i32* %tid, align 4
+  %tmp_3 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_3, i32* %tid, align 4
   store i32 4, i32* %j, align 4
-  br label %4
+  br label %tmp_4
 
-; <label>:4                                       ; preds = %35, %0
-  %5 = load i32* %j, align 4
-  %6 = icmp sge i32 %5, 0
-  br i1 %6, label %7, label %38
+tmp_4:                                       ; preds = %tmp_35, %tmp_0
+  %tmp_5 = load i32* %j, align 4
+  %tmp_6 = icmp sge i32 %tmp_5, 0
+  br i1 %tmp_6, label %tmp_7, label %tmp_38
 
-; <label>:7                                       ; preds = %4
-  %8 = load i32* %1, align 4
-  %9 = sdiv i32 %8, 127773
-  store i32 %9, i32* %k, align 4
-  %10 = load i32* %1, align 4
-  %11 = load i32* %k, align 4
-  %12 = mul nsw i32 %11, 127773
-  %13 = sub nsw i32 %10, %12
-  %14 = mul nsw i32 16807, %13
-  %15 = load i32* %k, align 4
-  %16 = mul nsw i32 2836, %15
-  %17 = sub nsw i32 %14, %16
-  store i32 %17, i32* %1, align 4
-  %18 = load i32* %1, align 4
-  %19 = icmp slt i32 %18, 0
-  br i1 %19, label %20, label %23
+tmp_7:                                       ; preds = %tmp_4
+  %tmp_8 = load i32* %tmp_1, align 4
+  %tmp_9 = sdiv i32 %tmp_8, 127773
+  store i32 %tmp_9, i32* %k, align 4
+  %tmp_10 = load i32* %tmp_1, align 4
+  %tmp_11 = load i32* %k, align 4
+  %tmp_12 = mul nsw i32 %tmp_11, 127773
+  %tmp_13 = sub nsw i32 %tmp_10, %tmp_12
+  %tmp_14 = mul nsw i32 16807, %tmp_13
+  %tmp_15 = load i32* %k, align 4
+  %tmp_16 = mul nsw i32 2836, %tmp_15
+  %tmp_17 = sub nsw i32 %tmp_14, %tmp_16
+  store i32 %tmp_17, i32* %tmp_1, align 4
+  %tmp_18 = load i32* %tmp_1, align 4
+  %tmp_19 = icmp slt i32 %tmp_18, 0
+  br i1 %tmp_19, label %tmp_20, label %tmp_23
 
-; <label>:20                                      ; preds = %7
-  %21 = load i32* %1, align 4
-  %22 = add nsw i32 %21, 2147483647
-  store i32 %22, i32* %1, align 4
-  br label %23
+tmp_20:                                      ; preds = %tmp_7
+  %tmp_21 = load i32* %tmp_1, align 4
+  %tmp_22 = add nsw i32 %tmp_21, 2147483647
+  store i32 %tmp_22, i32* %tmp_1, align 4
+  br label %tmp_23
 
-; <label>:23                                      ; preds = %20, %7
-  %24 = load i32* %j, align 4
-  %25 = icmp slt i32 %24, 4
-  br i1 %25, label %26, label %34
+tmp_23:                                      ; preds = %tmp_20, %tmp_7
+  %tmp_24 = load i32* %j, align 4
+  %tmp_25 = icmp slt i32 %tmp_24, 4
+  br i1 %tmp_25, label %tmp_26, label %tmp_34
 
-; <label>:26                                      ; preds = %23
-  %27 = load i32* %1, align 4
-  %28 = load i32* %tid, align 4
-  %29 = mul nsw i32 4, %28
-  %30 = load i32* %j, align 4
-  %31 = add nsw i32 %29, %30
-  %32 = load i32 addrspace(3)** %2, align 4
-  %33 = getelementptr inbounds i32 addrspace(3)* %32, i32 %31
-  store i32 %27, i32 addrspace(3)* %33, align 4
-  br label %34
+tmp_26:                                      ; preds = %tmp_23
+  %tmp_27 = load i32* %tmp_1, align 4
+  %tmp_28 = load i32* %tid, align 4
+  %tmp_29 = mul nsw i32 4, %tmp_28
+  %tmp_30 = load i32* %j, align 4
+  %tmp_31 = add nsw i32 %tmp_29, %tmp_30
+  %tmp_32 = load i32 addrspace(3)** %tmp_2, align 4
+  %tmp_33 = getelementptr inbounds i32 addrspace(3)* %tmp_32, i32 %tmp_31
+  store i32 %tmp_27, i32 addrspace(3)* %tmp_33, align 4
+  br label %tmp_34
 
-; <label>:34                                      ; preds = %26, %23
-  br label %35
+tmp_34:                                      ; preds = %tmp_26, %tmp_23
+  br label %tmp_35
 
-; <label>:35                                      ; preds = %34
-  %36 = load i32* %j, align 4
-  %37 = add nsw i32 %36, -1
-  store i32 %37, i32* %j, align 4
-  br label %4
+tmp_35:                                      ; preds = %tmp_34
+  %tmp_36 = load i32* %j, align 4
+  %tmp_37 = add nsw i32 %tmp_36, -1
+  store i32 %tmp_37, i32* %j, align 4
+  br label %tmp_4
 
-; <label>:38                                      ; preds = %4
-  %39 = load i32 addrspace(3)** %2, align 4
-  %40 = getelementptr inbounds i32 addrspace(3)* %39, i32 0
-  %41 = load i32 addrspace(3)* %40, align 4
-  store i32 %41, i32* %iy, align 4
-  %42 = load i32* %1, align 4
-  %43 = sdiv i32 %42, 127773
-  store i32 %43, i32* %k, align 4
-  %44 = load i32* %1, align 4
-  %45 = load i32* %k, align 4
-  %46 = mul nsw i32 %45, 127773
-  %47 = sub nsw i32 %44, %46
-  %48 = mul nsw i32 16807, %47
-  %49 = load i32* %k, align 4
-  %50 = mul nsw i32 2836, %49
-  %51 = sub nsw i32 %48, %50
-  store i32 %51, i32* %1, align 4
-  %52 = load i32* %1, align 4
-  %53 = icmp slt i32 %52, 0
-  br i1 %53, label %54, label %57
+tmp_38:                                      ; preds = %tmp_4
+  %tmp_39 = load i32 addrspace(3)** %tmp_2, align 4
+  %tmp_40 = getelementptr inbounds i32 addrspace(3)* %tmp_39, i32 0
+  %tmp_41 = load i32 addrspace(3)* %tmp_40, align 4
+  store i32 %tmp_41, i32* %iy, align 4
+  %tmp_42 = load i32* %tmp_1, align 4
+  %tmp_43 = sdiv i32 %tmp_42, 127773
+  store i32 %tmp_43, i32* %k, align 4
+  %tmp_44 = load i32* %tmp_1, align 4
+  %tmp_45 = load i32* %k, align 4
+  %tmp_46 = mul nsw i32 %tmp_45, 127773
+  %tmp_47 = sub nsw i32 %tmp_44, %tmp_46
+  %tmp_48 = mul nsw i32 16807, %tmp_47
+  %tmp_49 = load i32* %k, align 4
+  %tmp_50 = mul nsw i32 2836, %tmp_49
+  %tmp_51 = sub nsw i32 %tmp_48, %tmp_50
+  store i32 %tmp_51, i32* %tmp_1, align 4
+  %tmp_52 = load i32* %tmp_1, align 4
+  %tmp_53 = icmp slt i32 %tmp_52, 0
+  br i1 %tmp_53, label %tmp_54, label %tmp_57
 
-; <label>:54                                      ; preds = %38
-  %55 = load i32* %1, align 4
-  %56 = add nsw i32 %55, 2147483647
-  store i32 %56, i32* %1, align 4
-  br label %57
+tmp_54:                                      ; preds = %tmp_38
+  %tmp_55 = load i32* %tmp_1, align 4
+  %tmp_56 = add nsw i32 %tmp_55, 2147483647
+  store i32 %tmp_56, i32* %tmp_1, align 4
+  br label %tmp_57
 
-; <label>:57                                      ; preds = %54, %38
-  %58 = load i32* %iy, align 4
-  %59 = sdiv i32 %58, 536870912
-  store i32 %59, i32* %j, align 4
-  %60 = load i32* %tid, align 4
-  %61 = mul nsw i32 4, %60
-  %62 = load i32* %j, align 4
-  %63 = add nsw i32 %61, %62
-  %64 = load i32 addrspace(3)** %2, align 4
-  %65 = getelementptr inbounds i32 addrspace(3)* %64, i32 %63
-  %66 = load i32 addrspace(3)* %65, align 4
-  store i32 %66, i32* %iy, align 4
-  %67 = load i32* %iy, align 4
-  %68 = sitofp i32 %67 to float
-  %69 = fmul float 0x3E00000000000000, %68
-  ret float %69
+tmp_57:                                      ; preds = %tmp_54, %tmp_38
+  %tmp_58 = load i32* %iy, align 4
+  %tmp_59 = sdiv i32 %tmp_58, 536870912
+  store i32 %tmp_59, i32* %j, align 4
+  %tmp_60 = load i32* %tid, align 4
+  %tmp_61 = mul nsw i32 4, %tmp_60
+  %tmp_62 = load i32* %j, align 4
+  %tmp_63 = add nsw i32 %tmp_61, %tmp_62
+  %tmp_64 = load i32 addrspace(3)** %tmp_2, align 4
+  %tmp_65 = getelementptr inbounds i32 addrspace(3)* %tmp_64, i32 %tmp_63
+  %tmp_66 = load i32 addrspace(3)* %tmp_65, align 4
+  store i32 %tmp_66, i32* %iy, align 4
+  %tmp_67 = load i32* %iy, align 4
+  %tmp_68 = sitofp i32 %tmp_67 to float
+  %tmp_69 = fmul float 0x3E00000000000000, %tmp_68
+  ret float %tmp_69
 }
 
 declare i32 @__get_local_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define <2 x float> @BoxMuller(<2 x float> %uniform) #0 {
-  %1 = alloca <2 x float>, align 8
+  %tmp_1 = alloca <2 x float>, align 8
   %r = alloca float, align 4
   %theta = alloca float, align 4
-  %2 = alloca <2 x float>, align 8
-  store <2 x float> %uniform, <2 x float>* %1, align 8
-  %3 = load <2 x float>* %1, align 8
-  %4 = extractelement <2 x float> %3, i32 0
-  %5 = call float @llvm.log2.f32(float %4)
-  %6 = fmul float %5, 0x3FE62E4300000000
-  %7 = fmul float -2.000000e+00, %6
-  %8 = call float @llvm.sqrt.f32(float %7)
-  store float %8, float* %r, align 4
-  %9 = load <2 x float>* %1, align 8
-  %10 = extractelement <2 x float> %9, i32 1
-  %11 = fmul float 0x40191EB860000000, %10
-  store float %11, float* %theta, align 4
-  %12 = load float* %r, align 4
-  %13 = load float* %theta, align 4
-  %14 = call float @_Z3sinf(float %13)
-  %15 = fmul float %12, %14
-  %16 = insertelement <2 x float> undef, float %15, i32 0
-  %17 = load float* %r, align 4
-  %18 = load float* %theta, align 4
-  %19 = call float @_Z3cosf(float %18)
-  %20 = fmul float %17, %19
-  %21 = insertelement <2 x float> %16, float %20, i32 1
-  store <2 x float> %21, <2 x float>* %2
-  %22 = load <2 x float>* %2
-  ret <2 x float> %22
+  %tmp_2 = alloca <2 x float>, align 8
+  store <2 x float> %uniform, <2 x float>* %tmp_1, align 8
+  %tmp_3 = load <2 x float>* %tmp_1, align 8
+  %tmp_4 = extractelement <2 x float> %tmp_3, i32 0
+  %tmp_5 = call float @llvm.log2.f32(float %tmp_4)
+  %tmp_6 = fmul float %tmp_5, 0x3FE62E4300000000
+  %tmp_7 = fmul float -2.000000e+00, %tmp_6
+  %tmp_8 = call float @llvm.sqrt.f32(float %tmp_7)
+  store float %tmp_8, float* %r, align 4
+  %tmp_9 = load <2 x float>* %tmp_1, align 8
+  %tmp_10 = extractelement <2 x float> %tmp_9, i32 1
+  %tmp_11 = fmul float 0x40191EB860000000, %tmp_10
+  store float %tmp_11, float* %theta, align 4
+  %tmp_12 = load float* %r, align 4
+  %tmp_13 = load float* %theta, align 4
+  %tmp_14 = call float @_Z3sinf(float %tmp_13)
+  %tmp_15 = fmul float %tmp_12, %tmp_14
+  %tmp_16 = insertelement <2 x float> undef, float %tmp_15, i32 0
+  %tmp_17 = load float* %r, align 4
+  %tmp_18 = load float* %theta, align 4
+  %tmp_19 = call float @_Z3cosf(float %tmp_18)
+  %tmp_20 = fmul float %tmp_17, %tmp_19
+  %tmp_21 = insertelement <2 x float> %tmp_16, float %tmp_20, i32 1
+  store <2 x float> %tmp_21, <2 x float>* %tmp_2
+  %tmp_22 = load <2 x float>* %tmp_2
+  ret <2 x float> %tmp_22
 }
 
 ; Function Attrs: nounwind readonly

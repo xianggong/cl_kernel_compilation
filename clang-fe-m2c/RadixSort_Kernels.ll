@@ -4,10 +4,10 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @histogram(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %buckets, i32 %shiftCount, i32 addrspace(3)* %sharedArray) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
-  %3 = alloca i32, align 4
-  %4 = alloca i32 addrspace(3)*, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
+  %tmp_3 = alloca i32, align 4
+  %tmp_4 = alloca i32 addrspace(3)*, align 4
   %localId = alloca i32, align 4
   %globalId = alloca i32, align 4
   %groupId = alloca i32, align 4
@@ -15,57 +15,57 @@ define void @histogram(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %bucke
   %numGroups = alloca i32, align 4
   %value = alloca i32, align 4
   %bucketPos = alloca i32, align 4
-  store i32 addrspace(1)* %unsortedData, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %buckets, i32 addrspace(1)** %2, align 4
-  store i32 %shiftCount, i32* %3, align 4
-  store i32 addrspace(3)* %sharedArray, i32 addrspace(3)** %4, align 4
-  %5 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %5, i32* %localId, align 4
-  %6 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %6, i32* %globalId, align 4
-  %7 = call i32 @__get_group_id_u32(i32 0)
-  store i32 %7, i32* %groupId, align 4
-  %8 = call i32 @__get_local_size_u32(i32 0)
-  store i32 %8, i32* %groupSize, align 4
-  %9 = call i32 @__get_global_size_u32(i32 0)
-  %10 = call i32 @__get_local_size_u32(i32 0)
-  %11 = udiv i32 %9, %10
-  store i32 %11, i32* %numGroups, align 4
-  %12 = load i32* %localId, align 4
-  %13 = load i32 addrspace(3)** %4, align 4
-  %14 = getelementptr inbounds i32 addrspace(3)* %13, i32 %12
-  store i32 0, i32 addrspace(3)* %14, align 4
+  store i32 addrspace(1)* %unsortedData, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %buckets, i32 addrspace(1)** %tmp_2, align 4
+  store i32 %shiftCount, i32* %tmp_3, align 4
+  store i32 addrspace(3)* %sharedArray, i32 addrspace(3)** %tmp_4, align 4
+  %tmp_5 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_5, i32* %localId, align 4
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_6, i32* %globalId, align 4
+  %tmp_7 = call i32 @__get_group_id_u32(i32 0)
+  store i32 %tmp_7, i32* %groupId, align 4
+  %tmp_8 = call i32 @__get_local_size_u32(i32 0)
+  store i32 %tmp_8, i32* %groupSize, align 4
+  %tmp_9 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_10 = call i32 @__get_local_size_u32(i32 0)
+  %tmp_11 = udiv i32 %tmp_9, %tmp_10
+  store i32 %tmp_11, i32* %numGroups, align 4
+  %tmp_12 = load i32* %localId, align 4
+  %tmp_13 = load i32 addrspace(3)** %tmp_4, align 4
+  %tmp_14 = getelementptr inbounds i32 addrspace(3)* %tmp_13, i32 %tmp_12
+  store i32 0, i32 addrspace(3)* %tmp_14, align 4
   call void @barrier(i32 1)
-  %15 = load i32* %globalId, align 4
-  %16 = load i32 addrspace(1)** %1, align 4
-  %17 = getelementptr inbounds i32 addrspace(1)* %16, i32 %15
-  %18 = load i32 addrspace(1)* %17, align 4
-  store i32 %18, i32* %value, align 4
-  %19 = load i32* %value, align 4
-  %20 = load i32* %3, align 4
-  %21 = and i32 %20, 31
-  %22 = lshr i32 %19, %21
-  %23 = and i32 %22, 255
-  store i32 %23, i32* %value, align 4
-  %24 = load i32 addrspace(3)** %4, align 4
-  %25 = load i32* %value, align 4
-  %26 = getelementptr inbounds i32 addrspace(3)* %24, i32 %25
-  %27 = call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* %26, i32 1)
+  %tmp_15 = load i32* %globalId, align 4
+  %tmp_16 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_17 = getelementptr inbounds i32 addrspace(1)* %tmp_16, i32 %tmp_15
+  %tmp_18 = load i32 addrspace(1)* %tmp_17, align 4
+  store i32 %tmp_18, i32* %value, align 4
+  %tmp_19 = load i32* %value, align 4
+  %tmp_20 = load i32* %tmp_3, align 4
+  %tmp_21 = and i32 %tmp_20, 31
+  %tmp_22 = lshr i32 %tmp_19, %tmp_21
+  %tmp_23 = and i32 %tmp_22, 255
+  store i32 %tmp_23, i32* %value, align 4
+  %tmp_24 = load i32 addrspace(3)** %tmp_4, align 4
+  %tmp_25 = load i32* %value, align 4
+  %tmp_26 = getelementptr inbounds i32 addrspace(3)* %tmp_24, i32 %tmp_25
+  %tmp_27 = call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* %tmp_26, i32 1)
   call void @barrier(i32 1)
-  %28 = load i32* %groupId, align 4
-  %29 = load i32* %groupSize, align 4
-  %30 = mul i32 %28, %29
-  %31 = load i32* %localId, align 4
-  %32 = add i32 %30, %31
-  store i32 %32, i32* %bucketPos, align 4
-  %33 = load i32* %localId, align 4
-  %34 = load i32 addrspace(3)** %4, align 4
-  %35 = getelementptr inbounds i32 addrspace(3)* %34, i32 %33
-  %36 = load i32 addrspace(3)* %35, align 4
-  %37 = load i32* %bucketPos, align 4
-  %38 = load i32 addrspace(1)** %2, align 4
-  %39 = getelementptr inbounds i32 addrspace(1)* %38, i32 %37
-  store i32 %36, i32 addrspace(1)* %39, align 4
+  %tmp_28 = load i32* %groupId, align 4
+  %tmp_29 = load i32* %groupSize, align 4
+  %tmp_30 = mul i32 %tmp_28, %tmp_29
+  %tmp_31 = load i32* %localId, align 4
+  %tmp_32 = add i32 %tmp_30, %tmp_31
+  store i32 %tmp_32, i32* %bucketPos, align 4
+  %tmp_33 = load i32* %localId, align 4
+  %tmp_34 = load i32 addrspace(3)** %tmp_4, align 4
+  %tmp_35 = getelementptr inbounds i32 addrspace(3)* %tmp_34, i32 %tmp_33
+  %tmp_36 = load i32 addrspace(3)* %tmp_35, align 4
+  %tmp_37 = load i32* %bucketPos, align 4
+  %tmp_38 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_39 = getelementptr inbounds i32 addrspace(1)* %tmp_38, i32 %tmp_37
+  store i32 %tmp_36, i32 addrspace(1)* %tmp_39, align 4
   ret void
 }
 
@@ -85,11 +85,11 @@ declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #1
 
 ; Function Attrs: nounwind
 define void @permute(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %scanedBuckets, i32 %shiftCount, i16 addrspace(3)* %sharedBuckets, i32 addrspace(1)* %sortedData) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
-  %3 = alloca i32, align 4
-  %4 = alloca i16 addrspace(3)*, align 4
-  %5 = alloca i32 addrspace(1)*, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
+  %tmp_3 = alloca i32, align 4
+  %tmp_4 = alloca i16 addrspace(3)*, align 4
+  %tmp_5 = alloca i32 addrspace(1)*, align 4
   %groupId = alloca i32, align 4
   %localId = alloca i32, align 4
   %globalId = alloca i32, align 4
@@ -99,134 +99,134 @@ define void @permute(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %scanedB
   %i1 = alloca i32, align 4
   %value = alloca i32, align 4
   %index = alloca i32, align 4
-  store i32 addrspace(1)* %unsortedData, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %scanedBuckets, i32 addrspace(1)** %2, align 4
-  store i32 %shiftCount, i32* %3, align 4
-  store i16 addrspace(3)* %sharedBuckets, i16 addrspace(3)** %4, align 4
-  store i32 addrspace(1)* %sortedData, i32 addrspace(1)** %5, align 4
-  %6 = call i32 @__get_group_id_u32(i32 0)
-  store i32 %6, i32* %groupId, align 4
-  %7 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %7, i32* %localId, align 4
-  %8 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %8, i32* %globalId, align 4
-  %9 = call i32 @__get_local_size_u32(i32 0)
-  store i32 %9, i32* %groupSize, align 4
+  store i32 addrspace(1)* %unsortedData, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %scanedBuckets, i32 addrspace(1)** %tmp_2, align 4
+  store i32 %shiftCount, i32* %tmp_3, align 4
+  store i16 addrspace(3)* %sharedBuckets, i16 addrspace(3)** %tmp_4, align 4
+  store i32 addrspace(1)* %sortedData, i32 addrspace(1)** %tmp_5, align 4
+  %tmp_6 = call i32 @__get_group_id_u32(i32 0)
+  store i32 %tmp_6, i32* %groupId, align 4
+  %tmp_7 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_7, i32* %localId, align 4
+  %tmp_8 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_8, i32* %globalId, align 4
+  %tmp_9 = call i32 @__get_local_size_u32(i32 0)
+  store i32 %tmp_9, i32* %groupSize, align 4
   store i32 0, i32* %i, align 4
-  br label %10
+  br label %tmp_10
 
-; <label>:10                                      ; preds = %34, %0
-  %11 = load i32* %i, align 4
-  %12 = icmp slt i32 %11, 256
-  br i1 %12, label %13, label %37
+tmp_10:                                      ; preds = %tmp_34, %tmp_0
+  %tmp_11 = load i32* %i, align 4
+  %tmp_12 = icmp slt i32 %tmp_11, 256
+  br i1 %tmp_12, label %tmp_13, label %tmp_37
 
-; <label>:13                                      ; preds = %10
-  %14 = load i32* %groupId, align 4
-  %15 = mul i32 %14, 256
-  %16 = load i32* %groupSize, align 4
-  %17 = mul i32 %15, %16
-  %18 = load i32* %localId, align 4
-  %19 = mul i32 %18, 256
-  %20 = add i32 %17, %19
-  %21 = load i32* %i, align 4
-  %22 = add i32 %20, %21
-  store i32 %22, i32* %bucketPos, align 4
-  %23 = load i32* %bucketPos, align 4
-  %24 = load i32 addrspace(1)** %2, align 4
-  %25 = getelementptr inbounds i32 addrspace(1)* %24, i32 %23
-  %26 = load i32 addrspace(1)* %25, align 4
-  %27 = trunc i32 %26 to i16
-  %28 = load i32* %localId, align 4
-  %29 = mul i32 %28, 256
-  %30 = load i32* %i, align 4
-  %31 = add i32 %29, %30
-  %32 = load i16 addrspace(3)** %4, align 4
-  %33 = getelementptr inbounds i16 addrspace(3)* %32, i32 %31
-  store i16 %27, i16 addrspace(3)* %33, align 2
-  br label %34
+tmp_13:                                      ; preds = %tmp_10
+  %tmp_14 = load i32* %groupId, align 4
+  %tmp_15 = mul i32 %tmp_14, 256
+  %tmp_16 = load i32* %groupSize, align 4
+  %tmp_17 = mul i32 %tmp_15, %tmp_16
+  %tmp_18 = load i32* %localId, align 4
+  %tmp_19 = mul i32 %tmp_18, 256
+  %tmp_20 = add i32 %tmp_17, %tmp_19
+  %tmp_21 = load i32* %i, align 4
+  %tmp_22 = add i32 %tmp_20, %tmp_21
+  store i32 %tmp_22, i32* %bucketPos, align 4
+  %tmp_23 = load i32* %bucketPos, align 4
+  %tmp_24 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_25 = getelementptr inbounds i32 addrspace(1)* %tmp_24, i32 %tmp_23
+  %tmp_26 = load i32 addrspace(1)* %tmp_25, align 4
+  %tmp_27 = trunc i32 %tmp_26 to i16
+  %tmp_28 = load i32* %localId, align 4
+  %tmp_29 = mul i32 %tmp_28, 256
+  %tmp_30 = load i32* %i, align 4
+  %tmp_31 = add i32 %tmp_29, %tmp_30
+  %tmp_32 = load i16 addrspace(3)** %tmp_4, align 4
+  %tmp_33 = getelementptr inbounds i16 addrspace(3)* %tmp_32, i32 %tmp_31
+  store i16 %tmp_27, i16 addrspace(3)* %tmp_33, align 2
+  br label %tmp_34
 
-; <label>:34                                      ; preds = %13
-  %35 = load i32* %i, align 4
-  %36 = add nsw i32 %35, 1
-  store i32 %36, i32* %i, align 4
-  br label %10
+tmp_34:                                      ; preds = %tmp_13
+  %tmp_35 = load i32* %i, align 4
+  %tmp_36 = add nsw i32 %tmp_35, 1
+  store i32 %tmp_36, i32* %i, align 4
+  br label %tmp_10
 
-; <label>:37                                      ; preds = %10
+tmp_37:                                      ; preds = %tmp_10
   call void @barrier(i32 1)
   store i32 0, i32* %i1, align 4
-  br label %38
+  br label %tmp_38
 
-; <label>:38                                      ; preds = %81, %37
-  %39 = load i32* %i1, align 4
-  %40 = icmp slt i32 %39, 256
-  br i1 %40, label %41, label %84
+tmp_38:                                      ; preds = %tmp_81, %tmp_37
+  %tmp_39 = load i32* %i1, align 4
+  %tmp_40 = icmp slt i32 %tmp_39, 256
+  br i1 %tmp_40, label %tmp_41, label %tmp_84
 
-; <label>:41                                      ; preds = %38
-  %42 = load i32* %globalId, align 4
-  %43 = mul i32 %42, 256
-  %44 = load i32* %i1, align 4
-  %45 = add i32 %43, %44
-  %46 = load i32 addrspace(1)** %1, align 4
-  %47 = getelementptr inbounds i32 addrspace(1)* %46, i32 %45
-  %48 = load i32 addrspace(1)* %47, align 4
-  store i32 %48, i32* %value, align 4
-  %49 = load i32* %value, align 4
-  %50 = load i32* %3, align 4
-  %51 = and i32 %50, 31
-  %52 = lshr i32 %49, %51
-  %53 = and i32 %52, 255
-  store i32 %53, i32* %value, align 4
-  %54 = load i32* %localId, align 4
-  %55 = mul i32 %54, 256
-  %56 = load i32* %value, align 4
-  %57 = add i32 %55, %56
-  %58 = load i16 addrspace(3)** %4, align 4
-  %59 = getelementptr inbounds i16 addrspace(3)* %58, i32 %57
-  %60 = load i16 addrspace(3)* %59, align 2
-  %61 = zext i16 %60 to i32
-  store i32 %61, i32* %index, align 4
-  %62 = load i32* %globalId, align 4
-  %63 = mul i32 %62, 256
-  %64 = load i32* %i1, align 4
-  %65 = add i32 %63, %64
-  %66 = load i32 addrspace(1)** %1, align 4
-  %67 = getelementptr inbounds i32 addrspace(1)* %66, i32 %65
-  %68 = load i32 addrspace(1)* %67, align 4
-  %69 = load i32* %index, align 4
-  %70 = load i32 addrspace(1)** %5, align 4
-  %71 = getelementptr inbounds i32 addrspace(1)* %70, i32 %69
-  store i32 %68, i32 addrspace(1)* %71, align 4
-  %72 = load i32* %index, align 4
-  %73 = add i32 %72, 1
-  %74 = trunc i32 %73 to i16
-  %75 = load i32* %localId, align 4
-  %76 = mul i32 %75, 256
-  %77 = load i32* %value, align 4
-  %78 = add i32 %76, %77
-  %79 = load i16 addrspace(3)** %4, align 4
-  %80 = getelementptr inbounds i16 addrspace(3)* %79, i32 %78
-  store i16 %74, i16 addrspace(3)* %80, align 2
+tmp_41:                                      ; preds = %tmp_38
+  %tmp_42 = load i32* %globalId, align 4
+  %tmp_43 = mul i32 %tmp_42, 256
+  %tmp_44 = load i32* %i1, align 4
+  %tmp_45 = add i32 %tmp_43, %tmp_44
+  %tmp_46 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_47 = getelementptr inbounds i32 addrspace(1)* %tmp_46, i32 %tmp_45
+  %tmp_48 = load i32 addrspace(1)* %tmp_47, align 4
+  store i32 %tmp_48, i32* %value, align 4
+  %tmp_49 = load i32* %value, align 4
+  %tmp_50 = load i32* %tmp_3, align 4
+  %tmp_51 = and i32 %tmp_50, 31
+  %tmp_52 = lshr i32 %tmp_49, %tmp_51
+  %tmp_53 = and i32 %tmp_52, 255
+  store i32 %tmp_53, i32* %value, align 4
+  %tmp_54 = load i32* %localId, align 4
+  %tmp_55 = mul i32 %tmp_54, 256
+  %tmp_56 = load i32* %value, align 4
+  %tmp_57 = add i32 %tmp_55, %tmp_56
+  %tmp_58 = load i16 addrspace(3)** %tmp_4, align 4
+  %tmp_59 = getelementptr inbounds i16 addrspace(3)* %tmp_58, i32 %tmp_57
+  %tmp_60 = load i16 addrspace(3)* %tmp_59, align 2
+  %tmp_61 = zext i16 %tmp_60 to i32
+  store i32 %tmp_61, i32* %index, align 4
+  %tmp_62 = load i32* %globalId, align 4
+  %tmp_63 = mul i32 %tmp_62, 256
+  %tmp_64 = load i32* %i1, align 4
+  %tmp_65 = add i32 %tmp_63, %tmp_64
+  %tmp_66 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_67 = getelementptr inbounds i32 addrspace(1)* %tmp_66, i32 %tmp_65
+  %tmp_68 = load i32 addrspace(1)* %tmp_67, align 4
+  %tmp_69 = load i32* %index, align 4
+  %tmp_70 = load i32 addrspace(1)** %tmp_5, align 4
+  %tmp_71 = getelementptr inbounds i32 addrspace(1)* %tmp_70, i32 %tmp_69
+  store i32 %tmp_68, i32 addrspace(1)* %tmp_71, align 4
+  %tmp_72 = load i32* %index, align 4
+  %tmp_73 = add i32 %tmp_72, 1
+  %tmp_74 = trunc i32 %tmp_73 to i16
+  %tmp_75 = load i32* %localId, align 4
+  %tmp_76 = mul i32 %tmp_75, 256
+  %tmp_77 = load i32* %value, align 4
+  %tmp_78 = add i32 %tmp_76, %tmp_77
+  %tmp_79 = load i16 addrspace(3)** %tmp_4, align 4
+  %tmp_80 = getelementptr inbounds i16 addrspace(3)* %tmp_79, i32 %tmp_78
+  store i16 %tmp_74, i16 addrspace(3)* %tmp_80, align 2
   call void @barrier(i32 1)
-  br label %81
+  br label %tmp_81
 
-; <label>:81                                      ; preds = %41
-  %82 = load i32* %i1, align 4
-  %83 = add nsw i32 %82, 1
-  store i32 %83, i32* %i1, align 4
-  br label %38
+tmp_81:                                      ; preds = %tmp_41
+  %tmp_82 = load i32* %i1, align 4
+  %tmp_83 = add nsw i32 %tmp_82, 1
+  store i32 %tmp_83, i32* %i1, align 4
+  br label %tmp_38
 
-; <label>:84                                      ; preds = %38
+tmp_84:                                      ; preds = %tmp_38
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @ScanArraysdim2(i32 addrspace(1)* %output, i32 addrspace(1)* %input, i32 addrspace(3)* %block, i32 %block_size, i32 %stride, i32 addrspace(1)* %sumBuffer) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
-  %3 = alloca i32 addrspace(3)*, align 4
-  %4 = alloca i32, align 4
-  %5 = alloca i32, align 4
-  %6 = alloca i32 addrspace(1)*, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
+  %tmp_3 = alloca i32 addrspace(3)*, align 4
+  %tmp_4 = alloca i32, align 4
+  %tmp_5 = alloca i32, align 4
+  %tmp_6 = alloca i32 addrspace(1)*, align 4
   %tidx = alloca i32, align 4
   %tidy = alloca i32, align 4
   %gidx = alloca i32, align 4
@@ -238,351 +238,351 @@ define void @ScanArraysdim2(i32 addrspace(1)* %output, i32 addrspace(1)* %input,
   %groupIndex = alloca i32, align 4
   %cache = alloca i32, align 4
   %dis = alloca i32, align 4
-  store i32 addrspace(1)* %output, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %input, i32 addrspace(1)** %2, align 4
-  store i32 addrspace(3)* %block, i32 addrspace(3)** %3, align 4
-  store i32 %block_size, i32* %4, align 4
-  store i32 %stride, i32* %5, align 4
-  store i32 addrspace(1)* %sumBuffer, i32 addrspace(1)** %6, align 4
-  %7 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %7, i32* %tidx, align 4
-  %8 = call i32 @__get_local_id_u32(i32 1)
-  store i32 %8, i32* %tidy, align 4
-  %9 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %9, i32* %gidx, align 4
-  %10 = call i32 @__get_global_id_u32(i32 1)
-  store i32 %10, i32* %gidy, align 4
-  %11 = call i32 @__get_group_id_u32(i32 0)
-  store i32 %11, i32* %bidx, align 4
-  %12 = call i32 @__get_group_id_u32(i32 1)
-  store i32 %12, i32* %bidy, align 4
-  %13 = load i32* %tidy, align 4
-  %14 = load i32* %4, align 4
-  %15 = mul i32 %13, %14
-  %16 = load i32* %tidx, align 4
-  %17 = add i32 %15, %16
-  store i32 %17, i32* %lIndex, align 4
-  %18 = load i32* %gidx, align 4
-  %19 = shl i32 %18, 8
-  %20 = load i32* %gidy, align 4
-  %21 = add nsw i32 %19, %20
-  store i32 %21, i32* %gpos, align 4
-  %22 = load i32* %bidy, align 4
-  %23 = call i32 @__get_global_size_u32(i32 0)
-  %24 = load i32* %4, align 4
-  %25 = udiv i32 %23, %24
-  %26 = mul i32 %22, %25
-  %27 = load i32* %bidx, align 4
-  %28 = add i32 %26, %27
-  store i32 %28, i32* %groupIndex, align 4
-  %29 = load i32* %gpos, align 4
-  %30 = load i32 addrspace(1)** %2, align 4
-  %31 = getelementptr inbounds i32 addrspace(1)* %30, i32 %29
-  %32 = load i32 addrspace(1)* %31, align 4
-  %33 = load i32* %tidx, align 4
-  %34 = load i32 addrspace(3)** %3, align 4
-  %35 = getelementptr inbounds i32 addrspace(3)* %34, i32 %33
-  store i32 %32, i32 addrspace(3)* %35, align 4
+  store i32 addrspace(1)* %output, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %input, i32 addrspace(1)** %tmp_2, align 4
+  store i32 addrspace(3)* %block, i32 addrspace(3)** %tmp_3, align 4
+  store i32 %block_size, i32* %tmp_4, align 4
+  store i32 %stride, i32* %tmp_5, align 4
+  store i32 addrspace(1)* %sumBuffer, i32 addrspace(1)** %tmp_6, align 4
+  %tmp_7 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_7, i32* %tidx, align 4
+  %tmp_8 = call i32 @__get_local_id_u32(i32 1)
+  store i32 %tmp_8, i32* %tidy, align 4
+  %tmp_9 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_9, i32* %gidx, align 4
+  %tmp_10 = call i32 @__get_global_id_u32(i32 1)
+  store i32 %tmp_10, i32* %gidy, align 4
+  %tmp_11 = call i32 @__get_group_id_u32(i32 0)
+  store i32 %tmp_11, i32* %bidx, align 4
+  %tmp_12 = call i32 @__get_group_id_u32(i32 1)
+  store i32 %tmp_12, i32* %bidy, align 4
+  %tmp_13 = load i32* %tidy, align 4
+  %tmp_14 = load i32* %tmp_4, align 4
+  %tmp_15 = mul i32 %tmp_13, %tmp_14
+  %tmp_16 = load i32* %tidx, align 4
+  %tmp_17 = add i32 %tmp_15, %tmp_16
+  store i32 %tmp_17, i32* %lIndex, align 4
+  %tmp_18 = load i32* %gidx, align 4
+  %tmp_19 = shl i32 %tmp_18, 8
+  %tmp_20 = load i32* %gidy, align 4
+  %tmp_21 = add nsw i32 %tmp_19, %tmp_20
+  store i32 %tmp_21, i32* %gpos, align 4
+  %tmp_22 = load i32* %bidy, align 4
+  %tmp_23 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_24 = load i32* %tmp_4, align 4
+  %tmp_25 = udiv i32 %tmp_23, %tmp_24
+  %tmp_26 = mul i32 %tmp_22, %tmp_25
+  %tmp_27 = load i32* %bidx, align 4
+  %tmp_28 = add i32 %tmp_26, %tmp_27
+  store i32 %tmp_28, i32* %groupIndex, align 4
+  %tmp_29 = load i32* %gpos, align 4
+  %tmp_30 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_31 = getelementptr inbounds i32 addrspace(1)* %tmp_30, i32 %tmp_29
+  %tmp_32 = load i32 addrspace(1)* %tmp_31, align 4
+  %tmp_33 = load i32* %tidx, align 4
+  %tmp_34 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_35 = getelementptr inbounds i32 addrspace(3)* %tmp_34, i32 %tmp_33
+  store i32 %tmp_32, i32 addrspace(3)* %tmp_35, align 4
   call void @barrier(i32 1)
-  %36 = load i32 addrspace(3)** %3, align 4
-  %37 = getelementptr inbounds i32 addrspace(3)* %36, i32 0
-  %38 = load i32 addrspace(3)* %37, align 4
-  store i32 %38, i32* %cache, align 4
+  %tmp_36 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_37 = getelementptr inbounds i32 addrspace(3)* %tmp_36, i32 0
+  %tmp_38 = load i32 addrspace(3)* %tmp_37, align 4
+  store i32 %tmp_38, i32* %cache, align 4
   store i32 1, i32* %dis, align 4
-  br label %39
+  br label %tmp_39
 
-; <label>:39                                      ; preds = %64, %0
-  %40 = load i32* %dis, align 4
-  %41 = load i32* %4, align 4
-  %42 = icmp ult i32 %40, %41
-  br i1 %42, label %43, label %67
+tmp_39:                                      ; preds = %tmp_64, %tmp_0
+  %tmp_40 = load i32* %dis, align 4
+  %tmp_41 = load i32* %tmp_4, align 4
+  %tmp_42 = icmp ult i32 %tmp_40, %tmp_41
+  br i1 %tmp_42, label %tmp_43, label %tmp_67
 
-; <label>:43                                      ; preds = %39
-  %44 = load i32* %tidx, align 4
-  %45 = load i32* %dis, align 4
-  %46 = icmp sge i32 %44, %45
-  br i1 %46, label %47, label %59
+tmp_43:                                      ; preds = %tmp_39
+  %tmp_44 = load i32* %tidx, align 4
+  %tmp_45 = load i32* %dis, align 4
+  %tmp_46 = icmp sge i32 %tmp_44, %tmp_45
+  br i1 %tmp_46, label %tmp_47, label %tmp_59
 
-; <label>:47                                      ; preds = %43
-  %48 = load i32* %tidx, align 4
-  %49 = load i32* %dis, align 4
-  %50 = sub nsw i32 %48, %49
-  %51 = load i32 addrspace(3)** %3, align 4
-  %52 = getelementptr inbounds i32 addrspace(3)* %51, i32 %50
-  %53 = load i32 addrspace(3)* %52, align 4
-  %54 = load i32* %tidx, align 4
-  %55 = load i32 addrspace(3)** %3, align 4
-  %56 = getelementptr inbounds i32 addrspace(3)* %55, i32 %54
-  %57 = load i32 addrspace(3)* %56, align 4
-  %58 = add i32 %53, %57
-  store i32 %58, i32* %cache, align 4
-  br label %59
+tmp_47:                                      ; preds = %tmp_43
+  %tmp_48 = load i32* %tidx, align 4
+  %tmp_49 = load i32* %dis, align 4
+  %tmp_50 = sub nsw i32 %tmp_48, %tmp_49
+  %tmp_51 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_52 = getelementptr inbounds i32 addrspace(3)* %tmp_51, i32 %tmp_50
+  %tmp_53 = load i32 addrspace(3)* %tmp_52, align 4
+  %tmp_54 = load i32* %tidx, align 4
+  %tmp_55 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_56 = getelementptr inbounds i32 addrspace(3)* %tmp_55, i32 %tmp_54
+  %tmp_57 = load i32 addrspace(3)* %tmp_56, align 4
+  %tmp_58 = add i32 %tmp_53, %tmp_57
+  store i32 %tmp_58, i32* %cache, align 4
+  br label %tmp_59
 
-; <label>:59                                      ; preds = %47, %43
+tmp_59:                                      ; preds = %tmp_47, %tmp_43
   call void @barrier(i32 1)
-  %60 = load i32* %cache, align 4
-  %61 = load i32* %tidx, align 4
-  %62 = load i32 addrspace(3)** %3, align 4
-  %63 = getelementptr inbounds i32 addrspace(3)* %62, i32 %61
-  store i32 %60, i32 addrspace(3)* %63, align 4
+  %tmp_60 = load i32* %cache, align 4
+  %tmp_61 = load i32* %tidx, align 4
+  %tmp_62 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_63 = getelementptr inbounds i32 addrspace(3)* %tmp_62, i32 %tmp_61
+  store i32 %tmp_60, i32 addrspace(3)* %tmp_63, align 4
   call void @barrier(i32 1)
-  br label %64
+  br label %tmp_64
 
-; <label>:64                                      ; preds = %59
-  %65 = load i32* %dis, align 4
-  %66 = mul nsw i32 %65, 2
-  store i32 %66, i32* %dis, align 4
-  br label %39
+tmp_64:                                      ; preds = %tmp_59
+  %tmp_65 = load i32* %dis, align 4
+  %tmp_66 = mul nsw i32 %tmp_65, 2
+  store i32 %tmp_66, i32* %dis, align 4
+  br label %tmp_39
 
-; <label>:67                                      ; preds = %39
-  %68 = load i32* %4, align 4
-  %69 = sub i32 %68, 1
-  %70 = load i32 addrspace(3)** %3, align 4
-  %71 = getelementptr inbounds i32 addrspace(3)* %70, i32 %69
-  %72 = load i32 addrspace(3)* %71, align 4
-  %73 = load i32* %groupIndex, align 4
-  %74 = load i32 addrspace(1)** %6, align 4
-  %75 = getelementptr inbounds i32 addrspace(1)* %74, i32 %73
-  store i32 %72, i32 addrspace(1)* %75, align 4
-  %76 = load i32* %tidx, align 4
-  %77 = icmp eq i32 %76, 0
-  br i1 %77, label %78, label %82
+tmp_67:                                      ; preds = %tmp_39
+  %tmp_68 = load i32* %tmp_4, align 4
+  %tmp_69 = sub i32 %tmp_68, 1
+  %tmp_70 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_71 = getelementptr inbounds i32 addrspace(3)* %tmp_70, i32 %tmp_69
+  %tmp_72 = load i32 addrspace(3)* %tmp_71, align 4
+  %tmp_73 = load i32* %groupIndex, align 4
+  %tmp_74 = load i32 addrspace(1)** %tmp_6, align 4
+  %tmp_75 = getelementptr inbounds i32 addrspace(1)* %tmp_74, i32 %tmp_73
+  store i32 %tmp_72, i32 addrspace(1)* %tmp_75, align 4
+  %tmp_76 = load i32* %tidx, align 4
+  %tmp_77 = icmp eq i32 %tmp_76, 0
+  br i1 %tmp_77, label %tmp_78, label %tmp_82
 
-; <label>:78                                      ; preds = %67
-  %79 = load i32* %gpos, align 4
-  %80 = load i32 addrspace(1)** %1, align 4
-  %81 = getelementptr inbounds i32 addrspace(1)* %80, i32 %79
-  store i32 0, i32 addrspace(1)* %81, align 4
-  br label %91
+tmp_78:                                      ; preds = %tmp_67
+  %tmp_79 = load i32* %gpos, align 4
+  %tmp_80 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_81 = getelementptr inbounds i32 addrspace(1)* %tmp_80, i32 %tmp_79
+  store i32 0, i32 addrspace(1)* %tmp_81, align 4
+  br label %tmp_91
 
-; <label>:82                                      ; preds = %67
-  %83 = load i32* %tidx, align 4
-  %84 = sub nsw i32 %83, 1
-  %85 = load i32 addrspace(3)** %3, align 4
-  %86 = getelementptr inbounds i32 addrspace(3)* %85, i32 %84
-  %87 = load i32 addrspace(3)* %86, align 4
-  %88 = load i32* %gpos, align 4
-  %89 = load i32 addrspace(1)** %1, align 4
-  %90 = getelementptr inbounds i32 addrspace(1)* %89, i32 %88
-  store i32 %87, i32 addrspace(1)* %90, align 4
-  br label %91
+tmp_82:                                      ; preds = %tmp_67
+  %tmp_83 = load i32* %tidx, align 4
+  %tmp_84 = sub nsw i32 %tmp_83, 1
+  %tmp_85 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_86 = getelementptr inbounds i32 addrspace(3)* %tmp_85, i32 %tmp_84
+  %tmp_87 = load i32 addrspace(3)* %tmp_86, align 4
+  %tmp_88 = load i32* %gpos, align 4
+  %tmp_89 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_90 = getelementptr inbounds i32 addrspace(1)* %tmp_89, i32 %tmp_88
+  store i32 %tmp_87, i32 addrspace(1)* %tmp_90, align 4
+  br label %tmp_91
 
-; <label>:91                                      ; preds = %82, %78
+tmp_91:                                      ; preds = %tmp_82, %tmp_78
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @ScanArraysdim1(i32 addrspace(1)* %output, i32 addrspace(1)* %input, i32 addrspace(3)* %block, i32 %block_size) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
-  %3 = alloca i32 addrspace(3)*, align 4
-  %4 = alloca i32, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
+  %tmp_3 = alloca i32 addrspace(3)*, align 4
+  %tmp_4 = alloca i32, align 4
   %tid = alloca i32, align 4
   %gid = alloca i32, align 4
   %bid = alloca i32, align 4
   %cache = alloca i32, align 4
   %stride = alloca i32, align 4
-  store i32 addrspace(1)* %output, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %input, i32 addrspace(1)** %2, align 4
-  store i32 addrspace(3)* %block, i32 addrspace(3)** %3, align 4
-  store i32 %block_size, i32* %4, align 4
-  %5 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %5, i32* %tid, align 4
-  %6 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %6, i32* %gid, align 4
-  %7 = call i32 @__get_group_id_u32(i32 0)
-  store i32 %7, i32* %bid, align 4
-  %8 = load i32* %gid, align 4
-  %9 = load i32 addrspace(1)** %2, align 4
-  %10 = getelementptr inbounds i32 addrspace(1)* %9, i32 %8
-  %11 = load i32 addrspace(1)* %10, align 4
-  %12 = load i32* %tid, align 4
-  %13 = load i32 addrspace(3)** %3, align 4
-  %14 = getelementptr inbounds i32 addrspace(3)* %13, i32 %12
-  store i32 %11, i32 addrspace(3)* %14, align 4
-  %15 = load i32 addrspace(3)** %3, align 4
-  %16 = getelementptr inbounds i32 addrspace(3)* %15, i32 0
-  %17 = load i32 addrspace(3)* %16, align 4
-  store i32 %17, i32* %cache, align 4
+  store i32 addrspace(1)* %output, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %input, i32 addrspace(1)** %tmp_2, align 4
+  store i32 addrspace(3)* %block, i32 addrspace(3)** %tmp_3, align 4
+  store i32 %block_size, i32* %tmp_4, align 4
+  %tmp_5 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_5, i32* %tid, align 4
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_6, i32* %gid, align 4
+  %tmp_7 = call i32 @__get_group_id_u32(i32 0)
+  store i32 %tmp_7, i32* %bid, align 4
+  %tmp_8 = load i32* %gid, align 4
+  %tmp_9 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_10 = getelementptr inbounds i32 addrspace(1)* %tmp_9, i32 %tmp_8
+  %tmp_11 = load i32 addrspace(1)* %tmp_10, align 4
+  %tmp_12 = load i32* %tid, align 4
+  %tmp_13 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_14 = getelementptr inbounds i32 addrspace(3)* %tmp_13, i32 %tmp_12
+  store i32 %tmp_11, i32 addrspace(3)* %tmp_14, align 4
+  %tmp_15 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_16 = getelementptr inbounds i32 addrspace(3)* %tmp_15, i32 0
+  %tmp_17 = load i32 addrspace(3)* %tmp_16, align 4
+  store i32 %tmp_17, i32* %cache, align 4
   store i32 1, i32* %stride, align 4
-  br label %18
+  br label %tmp_18
 
-; <label>:18                                      ; preds = %43, %0
-  %19 = load i32* %stride, align 4
-  %20 = load i32* %4, align 4
-  %21 = icmp ult i32 %19, %20
-  br i1 %21, label %22, label %46
+tmp_18:                                      ; preds = %tmp_43, %tmp_0
+  %tmp_19 = load i32* %stride, align 4
+  %tmp_20 = load i32* %tmp_4, align 4
+  %tmp_21 = icmp ult i32 %tmp_19, %tmp_20
+  br i1 %tmp_21, label %tmp_22, label %tmp_46
 
-; <label>:22                                      ; preds = %18
-  %23 = load i32* %tid, align 4
-  %24 = load i32* %stride, align 4
-  %25 = icmp sge i32 %23, %24
-  br i1 %25, label %26, label %38
+tmp_22:                                      ; preds = %tmp_18
+  %tmp_23 = load i32* %tid, align 4
+  %tmp_24 = load i32* %stride, align 4
+  %tmp_25 = icmp sge i32 %tmp_23, %tmp_24
+  br i1 %tmp_25, label %tmp_26, label %tmp_38
 
-; <label>:26                                      ; preds = %22
-  %27 = load i32* %tid, align 4
-  %28 = load i32* %stride, align 4
-  %29 = sub nsw i32 %27, %28
-  %30 = load i32 addrspace(3)** %3, align 4
-  %31 = getelementptr inbounds i32 addrspace(3)* %30, i32 %29
-  %32 = load i32 addrspace(3)* %31, align 4
-  %33 = load i32* %tid, align 4
-  %34 = load i32 addrspace(3)** %3, align 4
-  %35 = getelementptr inbounds i32 addrspace(3)* %34, i32 %33
-  %36 = load i32 addrspace(3)* %35, align 4
-  %37 = add i32 %32, %36
-  store i32 %37, i32* %cache, align 4
-  br label %38
+tmp_26:                                      ; preds = %tmp_22
+  %tmp_27 = load i32* %tid, align 4
+  %tmp_28 = load i32* %stride, align 4
+  %tmp_29 = sub nsw i32 %tmp_27, %tmp_28
+  %tmp_30 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_31 = getelementptr inbounds i32 addrspace(3)* %tmp_30, i32 %tmp_29
+  %tmp_32 = load i32 addrspace(3)* %tmp_31, align 4
+  %tmp_33 = load i32* %tid, align 4
+  %tmp_34 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_35 = getelementptr inbounds i32 addrspace(3)* %tmp_34, i32 %tmp_33
+  %tmp_36 = load i32 addrspace(3)* %tmp_35, align 4
+  %tmp_37 = add i32 %tmp_32, %tmp_36
+  store i32 %tmp_37, i32* %cache, align 4
+  br label %tmp_38
 
-; <label>:38                                      ; preds = %26, %22
+tmp_38:                                      ; preds = %tmp_26, %tmp_22
   call void @barrier(i32 1)
-  %39 = load i32* %cache, align 4
-  %40 = load i32* %tid, align 4
-  %41 = load i32 addrspace(3)** %3, align 4
-  %42 = getelementptr inbounds i32 addrspace(3)* %41, i32 %40
-  store i32 %39, i32 addrspace(3)* %42, align 4
+  %tmp_39 = load i32* %cache, align 4
+  %tmp_40 = load i32* %tid, align 4
+  %tmp_41 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_42 = getelementptr inbounds i32 addrspace(3)* %tmp_41, i32 %tmp_40
+  store i32 %tmp_39, i32 addrspace(3)* %tmp_42, align 4
   call void @barrier(i32 1)
-  br label %43
+  br label %tmp_43
 
-; <label>:43                                      ; preds = %38
-  %44 = load i32* %stride, align 4
-  %45 = mul nsw i32 %44, 2
-  store i32 %45, i32* %stride, align 4
-  br label %18
+tmp_43:                                      ; preds = %tmp_38
+  %tmp_44 = load i32* %stride, align 4
+  %tmp_45 = mul nsw i32 %tmp_44, 2
+  store i32 %tmp_45, i32* %stride, align 4
+  br label %tmp_18
 
-; <label>:46                                      ; preds = %18
-  %47 = load i32* %tid, align 4
-  %48 = icmp eq i32 %47, 0
-  br i1 %48, label %49, label %53
+tmp_46:                                      ; preds = %tmp_18
+  %tmp_47 = load i32* %tid, align 4
+  %tmp_48 = icmp eq i32 %tmp_47, 0
+  br i1 %tmp_48, label %tmp_49, label %tmp_53
 
-; <label>:49                                      ; preds = %46
-  %50 = load i32* %gid, align 4
-  %51 = load i32 addrspace(1)** %1, align 4
-  %52 = getelementptr inbounds i32 addrspace(1)* %51, i32 %50
-  store i32 0, i32 addrspace(1)* %52, align 4
-  br label %62
+tmp_49:                                      ; preds = %tmp_46
+  %tmp_50 = load i32* %gid, align 4
+  %tmp_51 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_52 = getelementptr inbounds i32 addrspace(1)* %tmp_51, i32 %tmp_50
+  store i32 0, i32 addrspace(1)* %tmp_52, align 4
+  br label %tmp_62
 
-; <label>:53                                      ; preds = %46
-  %54 = load i32* %tid, align 4
-  %55 = sub nsw i32 %54, 1
-  %56 = load i32 addrspace(3)** %3, align 4
-  %57 = getelementptr inbounds i32 addrspace(3)* %56, i32 %55
-  %58 = load i32 addrspace(3)* %57, align 4
-  %59 = load i32* %gid, align 4
-  %60 = load i32 addrspace(1)** %1, align 4
-  %61 = getelementptr inbounds i32 addrspace(1)* %60, i32 %59
-  store i32 %58, i32 addrspace(1)* %61, align 4
-  br label %62
+tmp_53:                                      ; preds = %tmp_46
+  %tmp_54 = load i32* %tid, align 4
+  %tmp_55 = sub nsw i32 %tmp_54, 1
+  %tmp_56 = load i32 addrspace(3)** %tmp_3, align 4
+  %tmp_57 = getelementptr inbounds i32 addrspace(3)* %tmp_56, i32 %tmp_55
+  %tmp_58 = load i32 addrspace(3)* %tmp_57, align 4
+  %tmp_59 = load i32* %gid, align 4
+  %tmp_60 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_61 = getelementptr inbounds i32 addrspace(1)* %tmp_60, i32 %tmp_59
+  store i32 %tmp_58, i32 addrspace(1)* %tmp_61, align 4
+  br label %tmp_62
 
-; <label>:62                                      ; preds = %53, %49
+tmp_62:                                      ; preds = %tmp_53, %tmp_49
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @prefixSum(i32 addrspace(1)* %output, i32 addrspace(1)* %input, i32 addrspace(1)* %summary, i32 %stride) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
-  %3 = alloca i32 addrspace(1)*, align 4
-  %4 = alloca i32, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
+  %tmp_3 = alloca i32 addrspace(1)*, align 4
+  %tmp_4 = alloca i32, align 4
   %gidx = alloca i32, align 4
   %gidy = alloca i32, align 4
   %Index = alloca i32, align 4
   %i = alloca i32, align 4
-  store i32 addrspace(1)* %output, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %input, i32 addrspace(1)** %2, align 4
-  store i32 addrspace(1)* %summary, i32 addrspace(1)** %3, align 4
-  store i32 %stride, i32* %4, align 4
-  %5 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %5, i32* %gidx, align 4
-  %6 = call i32 @__get_global_id_u32(i32 1)
-  store i32 %6, i32* %gidy, align 4
-  %7 = load i32* %gidy, align 4
-  %8 = load i32* %4, align 4
-  %9 = mul nsw i32 %7, %8
-  %10 = load i32* %gidx, align 4
-  %11 = add nsw i32 %9, %10
-  store i32 %11, i32* %Index, align 4
-  %12 = load i32* %Index, align 4
-  %13 = load i32 addrspace(1)** %1, align 4
-  %14 = getelementptr inbounds i32 addrspace(1)* %13, i32 %12
-  store i32 0, i32 addrspace(1)* %14, align 4
-  %15 = load i32* %gidx, align 4
-  %16 = icmp sgt i32 %15, 0
-  br i1 %16, label %17, label %40
+  store i32 addrspace(1)* %output, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %input, i32 addrspace(1)** %tmp_2, align 4
+  store i32 addrspace(1)* %summary, i32 addrspace(1)** %tmp_3, align 4
+  store i32 %stride, i32* %tmp_4, align 4
+  %tmp_5 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_5, i32* %gidx, align 4
+  %tmp_6 = call i32 @__get_global_id_u32(i32 1)
+  store i32 %tmp_6, i32* %gidy, align 4
+  %tmp_7 = load i32* %gidy, align 4
+  %tmp_8 = load i32* %tmp_4, align 4
+  %tmp_9 = mul nsw i32 %tmp_7, %tmp_8
+  %tmp_10 = load i32* %gidx, align 4
+  %tmp_11 = add nsw i32 %tmp_9, %tmp_10
+  store i32 %tmp_11, i32* %Index, align 4
+  %tmp_12 = load i32* %Index, align 4
+  %tmp_13 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_14 = getelementptr inbounds i32 addrspace(1)* %tmp_13, i32 %tmp_12
+  store i32 0, i32 addrspace(1)* %tmp_14, align 4
+  %tmp_15 = load i32* %gidx, align 4
+  %tmp_16 = icmp sgt i32 %tmp_15, 0
+  br i1 %tmp_16, label %tmp_17, label %tmp_40
 
-; <label>:17                                      ; preds = %0
+tmp_17:                                      ; preds = %tmp_0
   store i32 0, i32* %i, align 4
-  br label %18
+  br label %tmp_18
 
-; <label>:18                                      ; preds = %36, %17
-  %19 = load i32* %i, align 4
-  %20 = load i32* %gidx, align 4
-  %21 = icmp slt i32 %19, %20
-  br i1 %21, label %22, label %39
+tmp_18:                                      ; preds = %tmp_36, %tmp_17
+  %tmp_19 = load i32* %i, align 4
+  %tmp_20 = load i32* %gidx, align 4
+  %tmp_21 = icmp slt i32 %tmp_19, %tmp_20
+  br i1 %tmp_21, label %tmp_22, label %tmp_39
 
-; <label>:22                                      ; preds = %18
-  %23 = load i32* %gidy, align 4
-  %24 = load i32* %4, align 4
-  %25 = mul nsw i32 %23, %24
-  %26 = load i32* %i, align 4
-  %27 = add nsw i32 %25, %26
-  %28 = load i32 addrspace(1)** %2, align 4
-  %29 = getelementptr inbounds i32 addrspace(1)* %28, i32 %27
-  %30 = load i32 addrspace(1)* %29, align 4
-  %31 = load i32* %Index, align 4
-  %32 = load i32 addrspace(1)** %1, align 4
-  %33 = getelementptr inbounds i32 addrspace(1)* %32, i32 %31
-  %34 = load i32 addrspace(1)* %33, align 4
-  %35 = add i32 %34, %30
-  store i32 %35, i32 addrspace(1)* %33, align 4
-  br label %36
+tmp_22:                                      ; preds = %tmp_18
+  %tmp_23 = load i32* %gidy, align 4
+  %tmp_24 = load i32* %tmp_4, align 4
+  %tmp_25 = mul nsw i32 %tmp_23, %tmp_24
+  %tmp_26 = load i32* %i, align 4
+  %tmp_27 = add nsw i32 %tmp_25, %tmp_26
+  %tmp_28 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_29 = getelementptr inbounds i32 addrspace(1)* %tmp_28, i32 %tmp_27
+  %tmp_30 = load i32 addrspace(1)* %tmp_29, align 4
+  %tmp_31 = load i32* %Index, align 4
+  %tmp_32 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_33 = getelementptr inbounds i32 addrspace(1)* %tmp_32, i32 %tmp_31
+  %tmp_34 = load i32 addrspace(1)* %tmp_33, align 4
+  %tmp_35 = add i32 %tmp_34, %tmp_30
+  store i32 %tmp_35, i32 addrspace(1)* %tmp_33, align 4
+  br label %tmp_36
 
-; <label>:36                                      ; preds = %22
-  %37 = load i32* %i, align 4
-  %38 = add nsw i32 %37, 1
-  store i32 %38, i32* %i, align 4
-  br label %18
+tmp_36:                                      ; preds = %tmp_22
+  %tmp_37 = load i32* %i, align 4
+  %tmp_38 = add nsw i32 %tmp_37, 1
+  store i32 %tmp_38, i32* %i, align 4
+  br label %tmp_18
 
-; <label>:39                                      ; preds = %18
-  br label %40
+tmp_39:                                      ; preds = %tmp_18
+  br label %tmp_40
 
-; <label>:40                                      ; preds = %39, %0
-  %41 = load i32* %gidx, align 4
-  %42 = load i32* %4, align 4
-  %43 = sub nsw i32 %42, 1
-  %44 = icmp eq i32 %41, %43
-  br i1 %44, label %45, label %63
+tmp_40:                                      ; preds = %tmp_39, %tmp_0
+  %tmp_41 = load i32* %gidx, align 4
+  %tmp_42 = load i32* %tmp_4, align 4
+  %tmp_43 = sub nsw i32 %tmp_42, 1
+  %tmp_44 = icmp eq i32 %tmp_41, %tmp_43
+  br i1 %tmp_44, label %tmp_45, label %tmp_63
 
-; <label>:45                                      ; preds = %40
-  %46 = load i32* %Index, align 4
-  %47 = load i32 addrspace(1)** %1, align 4
-  %48 = getelementptr inbounds i32 addrspace(1)* %47, i32 %46
-  %49 = load i32 addrspace(1)* %48, align 4
-  %50 = load i32* %gidy, align 4
-  %51 = load i32* %4, align 4
-  %52 = mul nsw i32 %50, %51
-  %53 = load i32* %4, align 4
-  %54 = sub nsw i32 %53, 1
-  %55 = add nsw i32 %52, %54
-  %56 = load i32 addrspace(1)** %2, align 4
-  %57 = getelementptr inbounds i32 addrspace(1)* %56, i32 %55
-  %58 = load i32 addrspace(1)* %57, align 4
-  %59 = add i32 %49, %58
-  %60 = load i32* %gidy, align 4
-  %61 = load i32 addrspace(1)** %3, align 4
-  %62 = getelementptr inbounds i32 addrspace(1)* %61, i32 %60
-  store i32 %59, i32 addrspace(1)* %62, align 4
-  br label %63
+tmp_45:                                      ; preds = %tmp_40
+  %tmp_46 = load i32* %Index, align 4
+  %tmp_47 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_48 = getelementptr inbounds i32 addrspace(1)* %tmp_47, i32 %tmp_46
+  %tmp_49 = load i32 addrspace(1)* %tmp_48, align 4
+  %tmp_50 = load i32* %gidy, align 4
+  %tmp_51 = load i32* %tmp_4, align 4
+  %tmp_52 = mul nsw i32 %tmp_50, %tmp_51
+  %tmp_53 = load i32* %tmp_4, align 4
+  %tmp_54 = sub nsw i32 %tmp_53, 1
+  %tmp_55 = add nsw i32 %tmp_52, %tmp_54
+  %tmp_56 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_57 = getelementptr inbounds i32 addrspace(1)* %tmp_56, i32 %tmp_55
+  %tmp_58 = load i32 addrspace(1)* %tmp_57, align 4
+  %tmp_59 = add i32 %tmp_49, %tmp_58
+  %tmp_60 = load i32* %gidy, align 4
+  %tmp_61 = load i32 addrspace(1)** %tmp_3, align 4
+  %tmp_62 = getelementptr inbounds i32 addrspace(1)* %tmp_61, i32 %tmp_60
+  store i32 %tmp_59, i32 addrspace(1)* %tmp_62, align 4
+  br label %tmp_63
 
-; <label>:63                                      ; preds = %45, %40
+tmp_63:                                      ; preds = %tmp_45, %tmp_40
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @blockAddition(i32 addrspace(1)* %input, i32 addrspace(1)* %output, i32 %stride) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
-  %3 = alloca i32, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
+  %tmp_3 = alloca i32, align 4
   %gidx = alloca i32, align 4
   %gidy = alloca i32, align 4
   %bidx = alloca i32, align 4
@@ -590,71 +590,71 @@ define void @blockAddition(i32 addrspace(1)* %input, i32 addrspace(1)* %output, 
   %gpos = alloca i32, align 4
   %groupIndex = alloca i32, align 4
   %temp = alloca i32, align 4
-  store i32 addrspace(1)* %input, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %output, i32 addrspace(1)** %2, align 4
-  store i32 %stride, i32* %3, align 4
-  %4 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %4, i32* %gidx, align 4
-  %5 = call i32 @__get_global_id_u32(i32 1)
-  store i32 %5, i32* %gidy, align 4
-  %6 = call i32 @__get_group_id_u32(i32 0)
-  store i32 %6, i32* %bidx, align 4
-  %7 = call i32 @__get_group_id_u32(i32 1)
-  store i32 %7, i32* %bidy, align 4
-  %8 = load i32* %gidy, align 4
-  %9 = load i32* %gidx, align 4
-  %10 = shl i32 %9, 8
-  %11 = add nsw i32 %8, %10
-  store i32 %11, i32* %gpos, align 4
-  %12 = load i32* %bidy, align 4
-  %13 = load i32* %3, align 4
-  %14 = mul i32 %12, %13
-  %15 = load i32* %bidx, align 4
-  %16 = add i32 %14, %15
-  store i32 %16, i32* %groupIndex, align 4
-  %17 = load i32* %groupIndex, align 4
-  %18 = load i32 addrspace(1)** %1, align 4
-  %19 = getelementptr inbounds i32 addrspace(1)* %18, i32 %17
-  %20 = load i32 addrspace(1)* %19, align 4
-  store i32 %20, i32* %temp, align 4
-  %21 = load i32* %temp, align 4
-  %22 = load i32* %gpos, align 4
-  %23 = load i32 addrspace(1)** %2, align 4
-  %24 = getelementptr inbounds i32 addrspace(1)* %23, i32 %22
-  %25 = load i32 addrspace(1)* %24, align 4
-  %26 = add i32 %25, %21
-  store i32 %26, i32 addrspace(1)* %24, align 4
+  store i32 addrspace(1)* %input, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %output, i32 addrspace(1)** %tmp_2, align 4
+  store i32 %stride, i32* %tmp_3, align 4
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_4, i32* %gidx, align 4
+  %tmp_5 = call i32 @__get_global_id_u32(i32 1)
+  store i32 %tmp_5, i32* %gidy, align 4
+  %tmp_6 = call i32 @__get_group_id_u32(i32 0)
+  store i32 %tmp_6, i32* %bidx, align 4
+  %tmp_7 = call i32 @__get_group_id_u32(i32 1)
+  store i32 %tmp_7, i32* %bidy, align 4
+  %tmp_8 = load i32* %gidy, align 4
+  %tmp_9 = load i32* %gidx, align 4
+  %tmp_10 = shl i32 %tmp_9, 8
+  %tmp_11 = add nsw i32 %tmp_8, %tmp_10
+  store i32 %tmp_11, i32* %gpos, align 4
+  %tmp_12 = load i32* %bidy, align 4
+  %tmp_13 = load i32* %tmp_3, align 4
+  %tmp_14 = mul i32 %tmp_12, %tmp_13
+  %tmp_15 = load i32* %bidx, align 4
+  %tmp_16 = add i32 %tmp_14, %tmp_15
+  store i32 %tmp_16, i32* %groupIndex, align 4
+  %tmp_17 = load i32* %groupIndex, align 4
+  %tmp_18 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_19 = getelementptr inbounds i32 addrspace(1)* %tmp_18, i32 %tmp_17
+  %tmp_20 = load i32 addrspace(1)* %tmp_19, align 4
+  store i32 %tmp_20, i32* %temp, align 4
+  %tmp_21 = load i32* %temp, align 4
+  %tmp_22 = load i32* %gpos, align 4
+  %tmp_23 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_24 = getelementptr inbounds i32 addrspace(1)* %tmp_23, i32 %tmp_22
+  %tmp_25 = load i32 addrspace(1)* %tmp_24, align 4
+  %tmp_26 = add i32 %tmp_25, %tmp_21
+  store i32 %tmp_26, i32 addrspace(1)* %tmp_24, align 4
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @FixOffset(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
   %gidx = alloca i32, align 4
   %gidy = alloca i32, align 4
   %gpos = alloca i32, align 4
-  store i32 addrspace(1)* %input, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %output, i32 addrspace(1)** %2, align 4
-  %3 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %3, i32* %gidx, align 4
-  %4 = call i32 @__get_global_id_u32(i32 1)
-  store i32 %4, i32* %gidy, align 4
-  %5 = load i32* %gidy, align 4
-  %6 = load i32* %gidx, align 4
-  %7 = shl i32 %6, 8
-  %8 = add nsw i32 %5, %7
-  store i32 %8, i32* %gpos, align 4
-  %9 = load i32* %gidy, align 4
-  %10 = load i32 addrspace(1)** %1, align 4
-  %11 = getelementptr inbounds i32 addrspace(1)* %10, i32 %9
-  %12 = load i32 addrspace(1)* %11, align 4
-  %13 = load i32* %gpos, align 4
-  %14 = load i32 addrspace(1)** %2, align 4
-  %15 = getelementptr inbounds i32 addrspace(1)* %14, i32 %13
-  %16 = load i32 addrspace(1)* %15, align 4
-  %17 = add i32 %16, %12
-  store i32 %17, i32 addrspace(1)* %15, align 4
+  store i32 addrspace(1)* %input, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %output, i32 addrspace(1)** %tmp_2, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_3, i32* %gidx, align 4
+  %tmp_4 = call i32 @__get_global_id_u32(i32 1)
+  store i32 %tmp_4, i32* %gidy, align 4
+  %tmp_5 = load i32* %gidy, align 4
+  %tmp_6 = load i32* %gidx, align 4
+  %tmp_7 = shl i32 %tmp_6, 8
+  %tmp_8 = add nsw i32 %tmp_5, %tmp_7
+  store i32 %tmp_8, i32* %gpos, align 4
+  %tmp_9 = load i32* %gidy, align 4
+  %tmp_10 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_11 = getelementptr inbounds i32 addrspace(1)* %tmp_10, i32 %tmp_9
+  %tmp_12 = load i32 addrspace(1)* %tmp_11, align 4
+  %tmp_13 = load i32* %gpos, align 4
+  %tmp_14 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_15 = getelementptr inbounds i32 addrspace(1)* %tmp_14, i32 %tmp_13
+  %tmp_16 = load i32 addrspace(1)* %tmp_15, align 4
+  %tmp_17 = add i32 %tmp_16, %tmp_12
+  store i32 %tmp_17, i32 addrspace(1)* %tmp_15, align 4
   ret void
 }
 

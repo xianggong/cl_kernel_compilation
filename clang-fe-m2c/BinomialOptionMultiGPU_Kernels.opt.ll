@@ -4,177 +4,177 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @binomial_options(i32 %numSteps, <4 x float> addrspace(1)* %randArray, <4 x float> addrspace(1)* %output, <4 x float> addrspace(3)* %callA, <4 x float> addrspace(3)* %callB) #0 {
-  %1 = call i32 @__get_local_id_u32(i32 0)
-  %2 = call i32 @__get_group_id_u32(i32 0)
-  %3 = getelementptr inbounds <4 x float> addrspace(1)* %randArray, i32 %2
-  %4 = load <4 x float> addrspace(1)* %3, align 16
-  %5 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %4
-  %6 = fmul <4 x float> %4, <float 3.000000e+01, float 3.000000e+01, float 3.000000e+01, float 3.000000e+01>
-  %7 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %5, <4 x float> <float 5.000000e+00, float 5.000000e+00, float 5.000000e+00, float 5.000000e+00>, <4 x float> %6)
-  %8 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %4
-  %9 = fmul <4 x float> %4, <float 1.000000e+02, float 1.000000e+02, float 1.000000e+02, float 1.000000e+02>
-  %10 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %8, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, <4 x float> %9)
-  %11 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %4
-  %12 = fmul <4 x float> %4, <float 1.000000e+01, float 1.000000e+01, float 1.000000e+01, float 1.000000e+01>
-  %13 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %11, <4 x float> <float 2.500000e-01, float 2.500000e-01, float 2.500000e-01, float 2.500000e-01>, <4 x float> %12)
-  %14 = sitofp i32 %numSteps to float
-  %15 = fdiv float 1.000000e+00, %14, !fpmath !2
-  %16 = insertelement <4 x float> undef, float %15, i32 0
-  %17 = shufflevector <4 x float> %16, <4 x float> undef, <4 x i32> zeroinitializer
-  %18 = fmul <4 x float> %13, %17
-  %19 = call <4 x float> @llvm.sqrt.v4f32(<4 x float> %18)
-  %20 = fmul <4 x float> <float 0x3FD3333340000000, float 0x3FD3333340000000, float 0x3FD3333340000000, float 0x3FD3333340000000>, %19
-  %21 = fmul <4 x float> <float 0x3F947AE140000000, float 0x3F947AE140000000, float 0x3F947AE140000000, float 0x3F947AE140000000>, %18
-  %22 = call <4 x float> @_Z3expDv4_f(<4 x float> %21)
-  %23 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %22, !fpmath !2
-  %24 = call <4 x float> @_Z3expDv4_f(<4 x float> %20)
-  %25 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %24, !fpmath !2
-  %26 = fsub <4 x float> %22, %25
-  %27 = fsub <4 x float> %24, %25
-  %28 = fdiv <4 x float> %26, %27, !fpmath !2
-  %29 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %28
-  %30 = fmul <4 x float> %28, %23
-  %31 = fmul <4 x float> %29, %23
-  %32 = uitofp i32 %1 to float
-  %33 = sitofp i32 %numSteps to float
-  %34 = fsub float -0.000000e+00, %33
-  %35 = call float @llvm.fmuladd.f32(float 2.000000e+00, float %32, float %34)
-  %36 = insertelement <4 x float> undef, float %35, i32 0
-  %37 = shufflevector <4 x float> %36, <4 x float> undef, <4 x i32> zeroinitializer
-  %38 = fmul <4 x float> %20, %37
-  %39 = call <4 x float> @_Z3expDv4_f(<4 x float> %38)
-  %40 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %10
-  %41 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %7, <4 x float> %39, <4 x float> %40)
-  %42 = extractelement <4 x float> %41, i32 0
-  %43 = fcmp ogt float %42, 0.000000e+00
-  br i1 %43, label %44, label %46
+  %tmp_6 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_7 = call i32 @__get_group_id_u32(i32 0)
+  %tmp_10 = getelementptr inbounds <4 x float> addrspace(1)* %randArray, i32 %tmp_7
+  %tmp_11 = load <4 x float> addrspace(1)* %tmp_10, align 16
+  %tmp_13 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %tmp_11
+  %tmp_15 = fmul <4 x float> %tmp_11, <float 3.000000e+01, float 3.000000e+01, float 3.000000e+01, float 3.000000e+01>
+  %tmp_16 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_13, <4 x float> <float 5.000000e+00, float 5.000000e+00, float 5.000000e+00, float 5.000000e+00>, <4 x float> %tmp_15)
+  %tmp_18 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %tmp_11
+  %tmp_20 = fmul <4 x float> %tmp_11, <float 1.000000e+02, float 1.000000e+02, float 1.000000e+02, float 1.000000e+02>
+  %tmp_21 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_18, <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, <4 x float> %tmp_20)
+  %tmp_23 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %tmp_11
+  %tmp_25 = fmul <4 x float> %tmp_11, <float 1.000000e+01, float 1.000000e+01, float 1.000000e+01, float 1.000000e+01>
+  %tmp_26 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_23, <4 x float> <float 2.500000e-01, float 2.500000e-01, float 2.500000e-01, float 2.500000e-01>, <4 x float> %tmp_25)
+  %tmp_29 = sitofp i32 %numSteps to float
+  %tmp_30 = fdiv float 1.000000e+00, %tmp_29, !fpmath !2
+  %tmp_31 = insertelement <4 x float> undef, float %tmp_30, i32 0
+  %tmp_32 = shufflevector <4 x float> %tmp_31, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_33 = fmul <4 x float> %tmp_26, %tmp_32
+  %tmp_35 = call <4 x float> @llvm.sqrt.v4f32(<4 x float> %tmp_33)
+  %tmp_36 = fmul <4 x float> <float 0x3FD3333340000000, float 0x3FD3333340000000, float 0x3FD3333340000000, float 0x3FD3333340000000>, %tmp_35
+  %tmp_38 = fmul <4 x float> <float 0x3F947AE140000000, float 0x3F947AE140000000, float 0x3F947AE140000000, float 0x3F947AE140000000>, %tmp_33
+  %tmp_40 = call <4 x float> @_Z3expDv4_f(<4 x float> %tmp_38)
+  %tmp_42 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %tmp_40, !fpmath !2
+  %tmp_44 = call <4 x float> @_Z3expDv4_f(<4 x float> %tmp_36)
+  %tmp_46 = fdiv <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %tmp_44, !fpmath !2
+  %tmp_49 = fsub <4 x float> %tmp_40, %tmp_46
+  %tmp_52 = fsub <4 x float> %tmp_44, %tmp_46
+  %tmp_53 = fdiv <4 x float> %tmp_49, %tmp_52, !fpmath !2
+  %tmp_55 = fsub <4 x float> <float 1.000000e+00, float 1.000000e+00, float 1.000000e+00, float 1.000000e+00>, %tmp_53
+  %tmp_58 = fmul <4 x float> %tmp_53, %tmp_42
+  %tmp_61 = fmul <4 x float> %tmp_55, %tmp_42
+  %tmp_65 = uitofp i32 %tmp_6 to float
+  %tmp_67 = sitofp i32 %numSteps to float
+  %tmp_68 = fsub float -0.000000e+00, %tmp_67
+  %tmp_69 = call float @llvm.fmuladd.f32(float 2.000000e+00, float %tmp_65, float %tmp_68)
+  %tmp_70 = insertelement <4 x float> undef, float %tmp_69, i32 0
+  %tmp_71 = shufflevector <4 x float> %tmp_70, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_72 = fmul <4 x float> %tmp_36, %tmp_71
+  %tmp_73 = call <4 x float> @_Z3expDv4_f(<4 x float> %tmp_72)
+  %tmp_75 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %tmp_21
+  %tmp_76 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_16, <4 x float> %tmp_73, <4 x float> %tmp_75)
+  %tmp_78 = extractelement <4 x float> %tmp_76, i32 0
+  %tmp_79 = fcmp ogt float %tmp_78, 0.000000e+00
+  br i1 %tmp_79, label %tmp_80, label %tmp_83
 
-; <label>:44                                      ; preds = %0
-  %45 = extractelement <4 x float> %41, i32 0
-  br label %47
+tmp_80:                                           ; preds = %0
+  %tmp_82 = extractelement <4 x float> %tmp_76, i32 0
+  br label %tmp_84
 
-; <label>:46                                      ; preds = %0
-  br label %47
+tmp_83:                                           ; preds = %0
+  br label %tmp_84
 
-; <label>:47                                      ; preds = %46, %44
-  %48 = phi float [ %45, %44 ], [ 0.000000e+00, %46 ]
-  %49 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %1
-  %50 = load <4 x float> addrspace(3)* %49, align 16
-  %51 = insertelement <4 x float> %50, float %48, i32 0
-  store <4 x float> %51, <4 x float> addrspace(3)* %49, align 16
-  %52 = extractelement <4 x float> %41, i32 1
-  %53 = fcmp ogt float %52, 0.000000e+00
-  br i1 %53, label %54, label %56
+tmp_84:                                           ; preds = %tmp_83, %tmp_80
+  %tmp_85 = phi float [ %tmp_82, %tmp_80 ], [ 0.000000e+00, %tmp_83 ]
+  %tmp_88 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %tmp_6
+  %tmp_89 = load <4 x float> addrspace(3)* %tmp_88, align 16
+  %tmp_90 = insertelement <4 x float> %tmp_89, float %tmp_85, i32 0
+  store <4 x float> %tmp_90, <4 x float> addrspace(3)* %tmp_88, align 16
+  %tmp_92 = extractelement <4 x float> %tmp_76, i32 1
+  %tmp_93 = fcmp ogt float %tmp_92, 0.000000e+00
+  br i1 %tmp_93, label %tmp_94, label %tmp_97
 
-; <label>:54                                      ; preds = %47
-  %55 = extractelement <4 x float> %41, i32 1
-  br label %57
+tmp_94:                                           ; preds = %tmp_84
+  %tmp_96 = extractelement <4 x float> %tmp_76, i32 1
+  br label %tmp_98
 
-; <label>:56                                      ; preds = %47
-  br label %57
+tmp_97:                                           ; preds = %tmp_84
+  br label %tmp_98
 
-; <label>:57                                      ; preds = %56, %54
-  %58 = phi float [ %55, %54 ], [ 0.000000e+00, %56 ]
-  %59 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %1
-  %60 = load <4 x float> addrspace(3)* %59, align 16
-  %61 = insertelement <4 x float> %60, float %58, i32 1
-  store <4 x float> %61, <4 x float> addrspace(3)* %59, align 16
-  %62 = extractelement <4 x float> %41, i32 2
-  %63 = fcmp ogt float %62, 0.000000e+00
-  br i1 %63, label %64, label %66
+tmp_98:                                           ; preds = %tmp_97, %tmp_94
+  %tmp_99 = phi float [ %tmp_96, %tmp_94 ], [ 0.000000e+00, %tmp_97 ]
+  %tmp_102 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %tmp_6
+  %tmp_103 = load <4 x float> addrspace(3)* %tmp_102, align 16
+  %tmp_104 = insertelement <4 x float> %tmp_103, float %tmp_99, i32 1
+  store <4 x float> %tmp_104, <4 x float> addrspace(3)* %tmp_102, align 16
+  %tmp_106 = extractelement <4 x float> %tmp_76, i32 2
+  %tmp_107 = fcmp ogt float %tmp_106, 0.000000e+00
+  br i1 %tmp_107, label %tmp_108, label %tmp_111
 
-; <label>:64                                      ; preds = %57
-  %65 = extractelement <4 x float> %41, i32 2
-  br label %67
+tmp_108:                                          ; preds = %tmp_98
+  %tmp_110 = extractelement <4 x float> %tmp_76, i32 2
+  br label %tmp_112
 
-; <label>:66                                      ; preds = %57
-  br label %67
+tmp_111:                                          ; preds = %tmp_98
+  br label %tmp_112
 
-; <label>:67                                      ; preds = %66, %64
-  %68 = phi float [ %65, %64 ], [ 0.000000e+00, %66 ]
-  %69 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %1
-  %70 = load <4 x float> addrspace(3)* %69, align 16
-  %71 = insertelement <4 x float> %70, float %68, i32 2
-  store <4 x float> %71, <4 x float> addrspace(3)* %69, align 16
-  %72 = extractelement <4 x float> %41, i32 3
-  %73 = fcmp ogt float %72, 0.000000e+00
-  br i1 %73, label %74, label %76
+tmp_112:                                          ; preds = %tmp_111, %tmp_108
+  %tmp_113 = phi float [ %tmp_110, %tmp_108 ], [ 0.000000e+00, %tmp_111 ]
+  %tmp_116 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %tmp_6
+  %tmp_117 = load <4 x float> addrspace(3)* %tmp_116, align 16
+  %tmp_118 = insertelement <4 x float> %tmp_117, float %tmp_113, i32 2
+  store <4 x float> %tmp_118, <4 x float> addrspace(3)* %tmp_116, align 16
+  %tmp_120 = extractelement <4 x float> %tmp_76, i32 3
+  %tmp_121 = fcmp ogt float %tmp_120, 0.000000e+00
+  br i1 %tmp_121, label %tmp_122, label %tmp_125
 
-; <label>:74                                      ; preds = %67
-  %75 = extractelement <4 x float> %41, i32 3
-  br label %77
+tmp_122:                                          ; preds = %tmp_112
+  %tmp_124 = extractelement <4 x float> %tmp_76, i32 3
+  br label %tmp_126
 
-; <label>:76                                      ; preds = %67
-  br label %77
+tmp_125:                                          ; preds = %tmp_112
+  br label %tmp_126
 
-; <label>:77                                      ; preds = %76, %74
-  %78 = phi float [ %75, %74 ], [ 0.000000e+00, %76 ]
-  %79 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %1
-  %80 = load <4 x float> addrspace(3)* %79, align 16
-  %81 = insertelement <4 x float> %80, float %78, i32 3
-  store <4 x float> %81, <4 x float> addrspace(3)* %79, align 16
+tmp_126:                                          ; preds = %tmp_125, %tmp_122
+  %tmp_127 = phi float [ %tmp_124, %tmp_122 ], [ 0.000000e+00, %tmp_125 ]
+  %tmp_130 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %tmp_6
+  %tmp_131 = load <4 x float> addrspace(3)* %tmp_130, align 16
+  %tmp_132 = insertelement <4 x float> %tmp_131, float %tmp_127, i32 3
+  store <4 x float> %tmp_132, <4 x float> addrspace(3)* %tmp_130, align 16
   call void @barrier(i32 1)
-  br label %82
+  br label %tmp_134
 
-; <label>:82                                      ; preds = %108, %77
-  %j.0 = phi i32 [ %numSteps, %77 ], [ %109, %108 ]
-  %83 = icmp sgt i32 %j.0, 0
-  br i1 %83, label %84, label %110
+tmp_134:                                          ; preds = %tmp_181, %tmp_126
+  %j.0 = phi i32 [ %numSteps, %tmp_126 ], [ %tmp_183, %tmp_181 ]
+  %tmp_136 = icmp sgt i32 %j.0, 0
+  br i1 %tmp_136, label %tmp_137, label %tmp_184
 
-; <label>:84                                      ; preds = %82
-  %85 = icmp ult i32 %1, %j.0
-  br i1 %85, label %86, label %95
+tmp_137:                                          ; preds = %tmp_134
+  %tmp_140 = icmp ult i32 %tmp_6, %j.0
+  br i1 %tmp_140, label %tmp_141, label %tmp_158
 
-; <label>:86                                      ; preds = %84
-  %87 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %1
-  %88 = load <4 x float> addrspace(3)* %87, align 16
-  %89 = add i32 %1, 1
-  %90 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %89
-  %91 = load <4 x float> addrspace(3)* %90, align 16
-  %92 = fmul <4 x float> %31, %91
-  %93 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %30, <4 x float> %88, <4 x float> %92)
-  %94 = getelementptr inbounds <4 x float> addrspace(3)* %callB, i32 %1
-  store <4 x float> %93, <4 x float> addrspace(3)* %94, align 16
-  br label %95
+tmp_141:                                          ; preds = %tmp_137
+  %tmp_145 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %tmp_6
+  %tmp_146 = load <4 x float> addrspace(3)* %tmp_145, align 16
+  %tmp_149 = add i32 %tmp_6, 1
+  %tmp_151 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %tmp_149
+  %tmp_152 = load <4 x float> addrspace(3)* %tmp_151, align 16
+  %tmp_153 = fmul <4 x float> %tmp_61, %tmp_152
+  %tmp_154 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_58, <4 x float> %tmp_146, <4 x float> %tmp_153)
+  %tmp_157 = getelementptr inbounds <4 x float> addrspace(3)* %callB, i32 %tmp_6
+  store <4 x float> %tmp_154, <4 x float> addrspace(3)* %tmp_157, align 16
+  br label %tmp_158
 
-; <label>:95                                      ; preds = %86, %84
+tmp_158:                                          ; preds = %tmp_141, %tmp_137
   call void @barrier(i32 1)
-  %96 = sub nsw i32 %j.0, 1
-  %97 = icmp ult i32 %1, %96
-  br i1 %97, label %98, label %107
+  %tmp_161 = sub nsw i32 %j.0, 1
+  %tmp_162 = icmp ult i32 %tmp_6, %tmp_161
+  br i1 %tmp_162, label %tmp_163, label %tmp_180
 
-; <label>:98                                      ; preds = %95
-  %99 = getelementptr inbounds <4 x float> addrspace(3)* %callB, i32 %1
-  %100 = load <4 x float> addrspace(3)* %99, align 16
-  %101 = add i32 %1, 1
-  %102 = getelementptr inbounds <4 x float> addrspace(3)* %callB, i32 %101
-  %103 = load <4 x float> addrspace(3)* %102, align 16
-  %104 = fmul <4 x float> %31, %103
-  %105 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %30, <4 x float> %100, <4 x float> %104)
-  %106 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %1
-  store <4 x float> %105, <4 x float> addrspace(3)* %106, align 16
-  br label %107
+tmp_163:                                          ; preds = %tmp_158
+  %tmp_167 = getelementptr inbounds <4 x float> addrspace(3)* %callB, i32 %tmp_6
+  %tmp_168 = load <4 x float> addrspace(3)* %tmp_167, align 16
+  %tmp_171 = add i32 %tmp_6, 1
+  %tmp_173 = getelementptr inbounds <4 x float> addrspace(3)* %callB, i32 %tmp_171
+  %tmp_174 = load <4 x float> addrspace(3)* %tmp_173, align 16
+  %tmp_175 = fmul <4 x float> %tmp_61, %tmp_174
+  %tmp_176 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_58, <4 x float> %tmp_168, <4 x float> %tmp_175)
+  %tmp_179 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 %tmp_6
+  store <4 x float> %tmp_176, <4 x float> addrspace(3)* %tmp_179, align 16
+  br label %tmp_180
 
-; <label>:107                                     ; preds = %98, %95
+tmp_180:                                          ; preds = %tmp_163, %tmp_158
   call void @barrier(i32 1)
-  br label %108
+  br label %tmp_181
 
-; <label>:108                                     ; preds = %107
-  %109 = sub nsw i32 %j.0, 2
-  br label %82
+tmp_181:                                          ; preds = %tmp_180
+  %tmp_183 = sub nsw i32 %j.0, 2
+  br label %tmp_134
 
-; <label>:110                                     ; preds = %82
-  %111 = icmp eq i32 %1, 0
-  br i1 %111, label %112, label %116
+tmp_184:                                          ; preds = %tmp_134
+  %tmp_186 = icmp eq i32 %tmp_6, 0
+  br i1 %tmp_186, label %tmp_187, label %tmp_194
 
-; <label>:112                                     ; preds = %110
-  %113 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 0
-  %114 = load <4 x float> addrspace(3)* %113, align 16
-  %115 = getelementptr inbounds <4 x float> addrspace(1)* %output, i32 %2
-  store <4 x float> %114, <4 x float> addrspace(1)* %115, align 16
-  br label %116
+tmp_187:                                          ; preds = %tmp_184
+  %tmp_189 = getelementptr inbounds <4 x float> addrspace(3)* %callA, i32 0
+  %tmp_190 = load <4 x float> addrspace(3)* %tmp_189, align 16
+  %tmp_193 = getelementptr inbounds <4 x float> addrspace(1)* %output, i32 %tmp_7
+  store <4 x float> %tmp_190, <4 x float> addrspace(1)* %tmp_193, align 16
+  br label %tmp_194
 
-; <label>:116                                     ; preds = %112, %110
+tmp_194:                                          ; preds = %tmp_187, %tmp_184
   ret void
 }
 

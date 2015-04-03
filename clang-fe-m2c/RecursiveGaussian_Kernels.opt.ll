@@ -4,27 +4,27 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @transpose_kernel(<4 x i8> addrspace(1)* %output, <4 x i8> addrspace(1)* %input, <4 x i8> addrspace(3)* %block, i32 %width, i32 %height, i32 %blockSize) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = call i32 @__get_local_id_u32(i32 0)
-  %4 = call i32 @__get_local_id_u32(i32 1)
-  %5 = mul i32 %2, %width
-  %6 = add i32 %5, %1
-  %7 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %6
-  %8 = load <4 x i8> addrspace(1)* %7, align 4
-  %9 = mul i32 %4, %blockSize
-  %10 = add i32 %9, %3
-  %11 = getelementptr inbounds <4 x i8> addrspace(3)* %block, i32 %10
-  store <4 x i8> %8, <4 x i8> addrspace(3)* %11, align 4
+  %tmp_7 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_8 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_9 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_10 = call i32 @__get_local_id_u32(i32 1)
+  %tmp_13 = mul i32 %tmp_8, %width
+  %tmp_15 = add i32 %tmp_13, %tmp_7
+  %tmp_17 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %tmp_15
+  %tmp_18 = load <4 x i8> addrspace(1)* %tmp_17, align 4
+  %tmp_21 = mul i32 %tmp_10, %blockSize
+  %tmp_23 = add i32 %tmp_21, %tmp_9
+  %tmp_25 = getelementptr inbounds <4 x i8> addrspace(3)* %block, i32 %tmp_23
+  store <4 x i8> %tmp_18, <4 x i8> addrspace(3)* %tmp_25, align 4
   call void @barrier(i32 1)
-  %12 = mul i32 %4, %blockSize
-  %13 = add i32 %12, %3
-  %14 = mul i32 %1, %height
-  %15 = add i32 %2, %14
-  %16 = getelementptr inbounds <4 x i8> addrspace(3)* %block, i32 %13
-  %17 = load <4 x i8> addrspace(3)* %16, align 4
-  %18 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %15
-  store <4 x i8> %17, <4 x i8> addrspace(1)* %18, align 4
+  %tmp_28 = mul i32 %tmp_10, %blockSize
+  %tmp_30 = add i32 %tmp_28, %tmp_9
+  %tmp_34 = mul i32 %tmp_7, %height
+  %tmp_35 = add i32 %tmp_8, %tmp_34
+  %tmp_38 = getelementptr inbounds <4 x i8> addrspace(3)* %block, i32 %tmp_30
+  %tmp_39 = load <4 x i8> addrspace(3)* %tmp_38, align 4
+  %tmp_42 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %tmp_35
+  store <4 x i8> %tmp_39, <4 x i8> addrspace(1)* %tmp_42, align 4
   ret void
 }
 
@@ -36,174 +36,174 @@ declare void @barrier(i32) #1
 
 ; Function Attrs: nounwind
 define void @RecursiveGaussian_kernel(<4 x i8> addrspace(1)* %input, <4 x i8> addrspace(1)* %output, i32 %width, i32 %height, float %a0, float %a1, float %a2, float %a3, float %b1, float %b2, float %coefp, float %coefn) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = icmp uge i32 %1, %width
-  br i1 %2, label %3, label %4
+  %tmp_18 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_21 = icmp uge i32 %tmp_18, %width
+  br i1 %tmp_21, label %tmp_22, label %tmp_23
 
-; <label>:3                                       ; preds = %0
-  br label %136
+tmp_22:                                           ; preds = %0
+  br label %tmp_232
 
-; <label>:4                                       ; preds = %0
-  br label %5
+tmp_23:                                           ; preds = %0
+  br label %tmp_24
 
-; <label>:5                                       ; preds = %57, %4
-  %xp.0 = phi <4 x float> [ zeroinitializer, %4 ], [ %29, %57 ]
-  %yp.0 = phi <4 x float> [ zeroinitializer, %4 ], [ %43, %57 ]
-  %yb.0 = phi <4 x float> [ zeroinitializer, %4 ], [ %yp.0, %57 ]
-  %y.0 = phi i32 [ 0, %4 ], [ %58, %57 ]
-  %6 = icmp slt i32 %y.0, %height
-  br i1 %6, label %7, label %59
+tmp_24:                                           ; preds = %tmp_108, %tmp_23
+  %xp.0 = phi <4 x float> [ zeroinitializer, %tmp_23 ], [ %tmp_61, %tmp_108 ]
+  %yp.0 = phi <4 x float> [ zeroinitializer, %tmp_23 ], [ %tmp_84, %tmp_108 ]
+  %yb.0 = phi <4 x float> [ zeroinitializer, %tmp_23 ], [ %yp.0, %tmp_108 ]
+  %y.0 = phi i32 [ 0, %tmp_23 ], [ %tmp_110, %tmp_108 ]
+  %tmp_27 = icmp slt i32 %y.0, %height
+  br i1 %tmp_27, label %tmp_28, label %tmp_111
 
-; <label>:7                                       ; preds = %5
-  %8 = mul nsw i32 %y.0, %width
-  %9 = add i32 %1, %8
-  %10 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %9
-  %11 = load <4 x i8> addrspace(1)* %10, align 4
-  %12 = extractelement <4 x i8> %11, i32 0
-  %13 = uitofp i8 %12 to float
-  %14 = insertelement <4 x float> undef, float %13, i32 0
-  %15 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %9
-  %16 = load <4 x i8> addrspace(1)* %15, align 4
-  %17 = extractelement <4 x i8> %16, i32 1
-  %18 = uitofp i8 %17 to float
-  %19 = insertelement <4 x float> %14, float %18, i32 1
-  %20 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %9
-  %21 = load <4 x i8> addrspace(1)* %20, align 4
-  %22 = extractelement <4 x i8> %21, i32 2
-  %23 = uitofp i8 %22 to float
-  %24 = insertelement <4 x float> %19, float %23, i32 2
-  %25 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %9
-  %26 = load <4 x i8> addrspace(1)* %25, align 4
-  %27 = extractelement <4 x i8> %26, i32 3
-  %28 = uitofp i8 %27 to float
-  %29 = insertelement <4 x float> %24, float %28, i32 3
-  %30 = insertelement <4 x float> undef, float %a0, i32 0
-  %31 = shufflevector <4 x float> %30, <4 x float> undef, <4 x i32> zeroinitializer
-  %32 = insertelement <4 x float> undef, float %a1, i32 0
-  %33 = shufflevector <4 x float> %32, <4 x float> undef, <4 x i32> zeroinitializer
-  %34 = fmul <4 x float> %33, %xp.0
-  %35 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %31, <4 x float> %29, <4 x float> %34)
-  %36 = insertelement <4 x float> undef, float %b1, i32 0
-  %37 = shufflevector <4 x float> %36, <4 x float> undef, <4 x i32> zeroinitializer
-  %38 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %37
-  %39 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %38, <4 x float> %yp.0, <4 x float> %35)
-  %40 = insertelement <4 x float> undef, float %b2, i32 0
-  %41 = shufflevector <4 x float> %40, <4 x float> undef, <4 x i32> zeroinitializer
-  %42 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %41
-  %43 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %42, <4 x float> %yb.0, <4 x float> %39)
-  %44 = extractelement <4 x float> %43, i32 0
-  %45 = fptoui float %44 to i8
-  %46 = insertelement <4 x i8> undef, i8 %45, i32 0
-  %47 = extractelement <4 x float> %43, i32 1
-  %48 = fptoui float %47 to i8
-  %49 = insertelement <4 x i8> %46, i8 %48, i32 1
-  %50 = extractelement <4 x float> %43, i32 2
-  %51 = fptoui float %50 to i8
-  %52 = insertelement <4 x i8> %49, i8 %51, i32 2
-  %53 = extractelement <4 x float> %43, i32 3
-  %54 = fptoui float %53 to i8
-  %55 = insertelement <4 x i8> %52, i8 %54, i32 3
-  %56 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %9
-  store <4 x i8> %55, <4 x i8> addrspace(1)* %56, align 4
-  br label %57
+tmp_28:                                           ; preds = %tmp_24
+  %tmp_32 = mul nsw i32 %y.0, %width
+  %tmp_33 = add i32 %tmp_18, %tmp_32
+  %tmp_36 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %tmp_33
+  %tmp_37 = load <4 x i8> addrspace(1)* %tmp_36, align 4
+  %tmp_38 = extractelement <4 x i8> %tmp_37, i32 0
+  %tmp_39 = uitofp i8 %tmp_38 to float
+  %tmp_40 = insertelement <4 x float> undef, float %tmp_39, i32 0
+  %tmp_43 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %tmp_33
+  %tmp_44 = load <4 x i8> addrspace(1)* %tmp_43, align 4
+  %tmp_45 = extractelement <4 x i8> %tmp_44, i32 1
+  %tmp_46 = uitofp i8 %tmp_45 to float
+  %tmp_47 = insertelement <4 x float> %tmp_40, float %tmp_46, i32 1
+  %tmp_50 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %tmp_33
+  %tmp_51 = load <4 x i8> addrspace(1)* %tmp_50, align 4
+  %tmp_52 = extractelement <4 x i8> %tmp_51, i32 2
+  %tmp_53 = uitofp i8 %tmp_52 to float
+  %tmp_54 = insertelement <4 x float> %tmp_47, float %tmp_53, i32 2
+  %tmp_57 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %tmp_33
+  %tmp_58 = load <4 x i8> addrspace(1)* %tmp_57, align 4
+  %tmp_59 = extractelement <4 x i8> %tmp_58, i32 3
+  %tmp_60 = uitofp i8 %tmp_59 to float
+  %tmp_61 = insertelement <4 x float> %tmp_54, float %tmp_60, i32 3
+  %tmp_64 = insertelement <4 x float> undef, float %a0, i32 0
+  %tmp_65 = shufflevector <4 x float> %tmp_64, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_68 = insertelement <4 x float> undef, float %a1, i32 0
+  %tmp_69 = shufflevector <4 x float> %tmp_68, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_71 = fmul <4 x float> %tmp_69, %xp.0
+  %tmp_72 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_65, <4 x float> %tmp_61, <4 x float> %tmp_71)
+  %tmp_74 = insertelement <4 x float> undef, float %b1, i32 0
+  %tmp_75 = shufflevector <4 x float> %tmp_74, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_77 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %tmp_75
+  %tmp_78 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_77, <4 x float> %yp.0, <4 x float> %tmp_72)
+  %tmp_80 = insertelement <4 x float> undef, float %b2, i32 0
+  %tmp_81 = shufflevector <4 x float> %tmp_80, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_83 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %tmp_81
+  %tmp_84 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_83, <4 x float> %yb.0, <4 x float> %tmp_78)
+  %tmp_86 = extractelement <4 x float> %tmp_84, i32 0
+  %tmp_87 = fptoui float %tmp_86 to i8
+  %tmp_88 = insertelement <4 x i8> undef, i8 %tmp_87, i32 0
+  %tmp_90 = extractelement <4 x float> %tmp_84, i32 1
+  %tmp_91 = fptoui float %tmp_90 to i8
+  %tmp_92 = insertelement <4 x i8> %tmp_88, i8 %tmp_91, i32 1
+  %tmp_94 = extractelement <4 x float> %tmp_84, i32 2
+  %tmp_95 = fptoui float %tmp_94 to i8
+  %tmp_96 = insertelement <4 x i8> %tmp_92, i8 %tmp_95, i32 2
+  %tmp_98 = extractelement <4 x float> %tmp_84, i32 3
+  %tmp_99 = fptoui float %tmp_98 to i8
+  %tmp_100 = insertelement <4 x i8> %tmp_96, i8 %tmp_99, i32 3
+  %tmp_104 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %tmp_33
+  store <4 x i8> %tmp_100, <4 x i8> addrspace(1)* %tmp_104, align 4
+  br label %tmp_108
 
-; <label>:57                                      ; preds = %7
-  %58 = add nsw i32 %y.0, 1
-  br label %5
+tmp_108:                                          ; preds = %tmp_28
+  %tmp_110 = add nsw i32 %y.0, 1
+  br label %tmp_24
 
-; <label>:59                                      ; preds = %5
+tmp_111:                                          ; preds = %tmp_24
   call void @barrier(i32 2)
-  %60 = sub nsw i32 %height, 1
-  br label %61
+  %tmp_113 = sub nsw i32 %height, 1
+  br label %tmp_114
 
-; <label>:61                                      ; preds = %134, %59
-  %xn.0 = phi <4 x float> [ zeroinitializer, %59 ], [ %85, %134 ]
-  %xa.0 = phi <4 x float> [ zeroinitializer, %59 ], [ %xn.0, %134 ]
-  %yn.0 = phi <4 x float> [ zeroinitializer, %59 ], [ %99, %134 ]
-  %ya.0 = phi <4 x float> [ zeroinitializer, %59 ], [ %yn.0, %134 ]
-  %y1.0 = phi i32 [ %60, %59 ], [ %135, %134 ]
-  %62 = icmp sgt i32 %y1.0, -1
-  br i1 %62, label %63, label %136
+tmp_114:                                          ; preds = %tmp_229, %tmp_111
+  %xn.0 = phi <4 x float> [ zeroinitializer, %tmp_111 ], [ %tmp_150, %tmp_229 ]
+  %xa.0 = phi <4 x float> [ zeroinitializer, %tmp_111 ], [ %xn.0, %tmp_229 ]
+  %yn.0 = phi <4 x float> [ zeroinitializer, %tmp_111 ], [ %tmp_173, %tmp_229 ]
+  %ya.0 = phi <4 x float> [ zeroinitializer, %tmp_111 ], [ %yn.0, %tmp_229 ]
+  %y1.0 = phi i32 [ %tmp_113, %tmp_111 ], [ %tmp_231, %tmp_229 ]
+  %tmp_116 = icmp sgt i32 %y1.0, -1
+  br i1 %tmp_116, label %tmp_117, label %tmp_232
 
-; <label>:63                                      ; preds = %61
-  %64 = mul nsw i32 %y1.0, %width
-  %65 = add i32 %1, %64
-  %66 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %65
-  %67 = load <4 x i8> addrspace(1)* %66, align 4
-  %68 = extractelement <4 x i8> %67, i32 0
-  %69 = uitofp i8 %68 to float
-  %70 = insertelement <4 x float> undef, float %69, i32 0
-  %71 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %65
-  %72 = load <4 x i8> addrspace(1)* %71, align 4
-  %73 = extractelement <4 x i8> %72, i32 1
-  %74 = uitofp i8 %73 to float
-  %75 = insertelement <4 x float> %70, float %74, i32 1
-  %76 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %65
-  %77 = load <4 x i8> addrspace(1)* %76, align 4
-  %78 = extractelement <4 x i8> %77, i32 2
-  %79 = uitofp i8 %78 to float
-  %80 = insertelement <4 x float> %75, float %79, i32 2
-  %81 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %65
-  %82 = load <4 x i8> addrspace(1)* %81, align 4
-  %83 = extractelement <4 x i8> %82, i32 3
-  %84 = uitofp i8 %83 to float
-  %85 = insertelement <4 x float> %80, float %84, i32 3
-  %86 = insertelement <4 x float> undef, float %a2, i32 0
-  %87 = shufflevector <4 x float> %86, <4 x float> undef, <4 x i32> zeroinitializer
-  %88 = insertelement <4 x float> undef, float %a3, i32 0
-  %89 = shufflevector <4 x float> %88, <4 x float> undef, <4 x i32> zeroinitializer
-  %90 = fmul <4 x float> %89, %xa.0
-  %91 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %87, <4 x float> %xn.0, <4 x float> %90)
-  %92 = insertelement <4 x float> undef, float %b1, i32 0
-  %93 = shufflevector <4 x float> %92, <4 x float> undef, <4 x i32> zeroinitializer
-  %94 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %93
-  %95 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %94, <4 x float> %yn.0, <4 x float> %91)
-  %96 = insertelement <4 x float> undef, float %b2, i32 0
-  %97 = shufflevector <4 x float> %96, <4 x float> undef, <4 x i32> zeroinitializer
-  %98 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %97
-  %99 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %98, <4 x float> %ya.0, <4 x float> %95)
-  %100 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %65
-  %101 = load <4 x i8> addrspace(1)* %100, align 4
-  %102 = extractelement <4 x i8> %101, i32 0
-  %103 = uitofp i8 %102 to float
-  %104 = insertelement <4 x float> undef, float %103, i32 0
-  %105 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %65
-  %106 = load <4 x i8> addrspace(1)* %105, align 4
-  %107 = extractelement <4 x i8> %106, i32 1
-  %108 = uitofp i8 %107 to float
-  %109 = insertelement <4 x float> %104, float %108, i32 1
-  %110 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %65
-  %111 = load <4 x i8> addrspace(1)* %110, align 4
-  %112 = extractelement <4 x i8> %111, i32 2
-  %113 = uitofp i8 %112 to float
-  %114 = insertelement <4 x float> %109, float %113, i32 2
-  %115 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %65
-  %116 = load <4 x i8> addrspace(1)* %115, align 4
-  %117 = extractelement <4 x i8> %116, i32 3
-  %118 = uitofp i8 %117 to float
-  %119 = insertelement <4 x float> %114, float %118, i32 3
-  %120 = fadd <4 x float> %119, %99
-  %121 = extractelement <4 x float> %120, i32 0
-  %122 = fptoui float %121 to i8
-  %123 = insertelement <4 x i8> undef, i8 %122, i32 0
-  %124 = extractelement <4 x float> %120, i32 1
-  %125 = fptoui float %124 to i8
-  %126 = insertelement <4 x i8> %123, i8 %125, i32 1
-  %127 = extractelement <4 x float> %120, i32 2
-  %128 = fptoui float %127 to i8
-  %129 = insertelement <4 x i8> %126, i8 %128, i32 2
-  %130 = extractelement <4 x float> %120, i32 3
-  %131 = fptoui float %130 to i8
-  %132 = insertelement <4 x i8> %129, i8 %131, i32 3
-  %133 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %65
-  store <4 x i8> %132, <4 x i8> addrspace(1)* %133, align 4
-  br label %134
+tmp_117:                                          ; preds = %tmp_114
+  %tmp_121 = mul nsw i32 %y1.0, %width
+  %tmp_122 = add i32 %tmp_18, %tmp_121
+  %tmp_125 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %tmp_122
+  %tmp_126 = load <4 x i8> addrspace(1)* %tmp_125, align 4
+  %tmp_127 = extractelement <4 x i8> %tmp_126, i32 0
+  %tmp_128 = uitofp i8 %tmp_127 to float
+  %tmp_129 = insertelement <4 x float> undef, float %tmp_128, i32 0
+  %tmp_132 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %tmp_122
+  %tmp_133 = load <4 x i8> addrspace(1)* %tmp_132, align 4
+  %tmp_134 = extractelement <4 x i8> %tmp_133, i32 1
+  %tmp_135 = uitofp i8 %tmp_134 to float
+  %tmp_136 = insertelement <4 x float> %tmp_129, float %tmp_135, i32 1
+  %tmp_139 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %tmp_122
+  %tmp_140 = load <4 x i8> addrspace(1)* %tmp_139, align 4
+  %tmp_141 = extractelement <4 x i8> %tmp_140, i32 2
+  %tmp_142 = uitofp i8 %tmp_141 to float
+  %tmp_143 = insertelement <4 x float> %tmp_136, float %tmp_142, i32 2
+  %tmp_146 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %tmp_122
+  %tmp_147 = load <4 x i8> addrspace(1)* %tmp_146, align 4
+  %tmp_148 = extractelement <4 x i8> %tmp_147, i32 3
+  %tmp_149 = uitofp i8 %tmp_148 to float
+  %tmp_150 = insertelement <4 x float> %tmp_143, float %tmp_149, i32 3
+  %tmp_153 = insertelement <4 x float> undef, float %a2, i32 0
+  %tmp_154 = shufflevector <4 x float> %tmp_153, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_157 = insertelement <4 x float> undef, float %a3, i32 0
+  %tmp_158 = shufflevector <4 x float> %tmp_157, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_160 = fmul <4 x float> %tmp_158, %xa.0
+  %tmp_161 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_154, <4 x float> %xn.0, <4 x float> %tmp_160)
+  %tmp_163 = insertelement <4 x float> undef, float %b1, i32 0
+  %tmp_164 = shufflevector <4 x float> %tmp_163, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_166 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %tmp_164
+  %tmp_167 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_166, <4 x float> %yn.0, <4 x float> %tmp_161)
+  %tmp_169 = insertelement <4 x float> undef, float %b2, i32 0
+  %tmp_170 = shufflevector <4 x float> %tmp_169, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_172 = fsub <4 x float> <float -0.000000e+00, float -0.000000e+00, float -0.000000e+00, float -0.000000e+00>, %tmp_170
+  %tmp_173 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> %tmp_172, <4 x float> %ya.0, <4 x float> %tmp_167)
+  %tmp_180 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %tmp_122
+  %tmp_181 = load <4 x i8> addrspace(1)* %tmp_180, align 4
+  %tmp_182 = extractelement <4 x i8> %tmp_181, i32 0
+  %tmp_183 = uitofp i8 %tmp_182 to float
+  %tmp_184 = insertelement <4 x float> undef, float %tmp_183, i32 0
+  %tmp_187 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %tmp_122
+  %tmp_188 = load <4 x i8> addrspace(1)* %tmp_187, align 4
+  %tmp_189 = extractelement <4 x i8> %tmp_188, i32 1
+  %tmp_190 = uitofp i8 %tmp_189 to float
+  %tmp_191 = insertelement <4 x float> %tmp_184, float %tmp_190, i32 1
+  %tmp_194 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %tmp_122
+  %tmp_195 = load <4 x i8> addrspace(1)* %tmp_194, align 4
+  %tmp_196 = extractelement <4 x i8> %tmp_195, i32 2
+  %tmp_197 = uitofp i8 %tmp_196 to float
+  %tmp_198 = insertelement <4 x float> %tmp_191, float %tmp_197, i32 2
+  %tmp_201 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %tmp_122
+  %tmp_202 = load <4 x i8> addrspace(1)* %tmp_201, align 4
+  %tmp_203 = extractelement <4 x i8> %tmp_202, i32 3
+  %tmp_204 = uitofp i8 %tmp_203 to float
+  %tmp_205 = insertelement <4 x float> %tmp_198, float %tmp_204, i32 3
+  %tmp_208 = fadd <4 x float> %tmp_205, %tmp_173
+  %tmp_210 = extractelement <4 x float> %tmp_208, i32 0
+  %tmp_211 = fptoui float %tmp_210 to i8
+  %tmp_212 = insertelement <4 x i8> undef, i8 %tmp_211, i32 0
+  %tmp_214 = extractelement <4 x float> %tmp_208, i32 1
+  %tmp_215 = fptoui float %tmp_214 to i8
+  %tmp_216 = insertelement <4 x i8> %tmp_212, i8 %tmp_215, i32 1
+  %tmp_218 = extractelement <4 x float> %tmp_208, i32 2
+  %tmp_219 = fptoui float %tmp_218 to i8
+  %tmp_220 = insertelement <4 x i8> %tmp_216, i8 %tmp_219, i32 2
+  %tmp_222 = extractelement <4 x float> %tmp_208, i32 3
+  %tmp_223 = fptoui float %tmp_222 to i8
+  %tmp_224 = insertelement <4 x i8> %tmp_220, i8 %tmp_223, i32 3
+  %tmp_228 = getelementptr inbounds <4 x i8> addrspace(1)* %output, i32 %tmp_122
+  store <4 x i8> %tmp_224, <4 x i8> addrspace(1)* %tmp_228, align 4
+  br label %tmp_229
 
-; <label>:134                                     ; preds = %63
-  %135 = add nsw i32 %y1.0, -1
-  br label %61
+tmp_229:                                          ; preds = %tmp_117
+  %tmp_231 = add nsw i32 %y1.0, -1
+  br label %tmp_114
 
-; <label>:136                                     ; preds = %61, %3
+tmp_232:                                          ; preds = %tmp_114, %tmp_22
   ret void
 }
 

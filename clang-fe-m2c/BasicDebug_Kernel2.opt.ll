@@ -4,13 +4,13 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @debugKernel(float addrspace(1)* %inputbuffer, float addrspace(1)* %outputbuffer) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = getelementptr inbounds float addrspace(1)* %inputbuffer, i32 %1
-  %3 = load float addrspace(1)* %2, align 4
-  %4 = fptoui float %3 to i32
-  %5 = uitofp i32 %4 to float
-  %6 = getelementptr inbounds float addrspace(1)* %outputbuffer, i32 %1
-  store float %5, float addrspace(1)* %6, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_6 = getelementptr inbounds float addrspace(1)* %inputbuffer, i32 %tmp_3
+  %tmp_7 = load float addrspace(1)* %tmp_6, align 4
+  %tmp_8 = fptoui float %tmp_7 to i32
+  %tmp_10 = uitofp i32 %tmp_8 to float
+  %tmp_13 = getelementptr inbounds float addrspace(1)* %outputbuffer, i32 %tmp_3
+  store float %tmp_10, float addrspace(1)* %tmp_13, align 4
   ret void
 }
 

@@ -7,41 +7,41 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @MemoryModel(i32 addrspace(1)* %outputbuffer, i32 addrspace(1)* %inputbuffer) #0 {
-  %1 = call i32 @__get_group_id_u32(i32 0)
-  %2 = call i32 @__get_local_id_u32(i32 0)
-  %3 = call i32 @__get_global_id_u32(i32 0)
-  %4 = getelementptr inbounds i32 addrspace(1)* %inputbuffer, i32 %3
-  %5 = load i32 addrspace(1)* %4, align 4
-  %6 = getelementptr inbounds [64 x i32] addrspace(3)* @MemoryModel.localBuffer, i32 0, i32 %2
-  store i32 %5, i32 addrspace(3)* %6, align 4
+  %tmp_3 = call i32 @__get_group_id_u32(i32 0)
+  %tmp_4 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_5 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_8 = getelementptr inbounds i32 addrspace(1)* %inputbuffer, i32 %tmp_5
+  %tmp_9 = load i32 addrspace(1)* %tmp_8, align 4
+  %tmp_11 = getelementptr inbounds [64 x i32] addrspace(3)* @MemoryModel.localBuffer, i32 0, i32 %tmp_4
+  store i32 %tmp_9, i32 addrspace(3)* %tmp_11, align 4
   call void @barrier(i32 1)
-  br label %7
+  br label %tmp_12
 
-; <label>:7                                       ; preds = %15, %0
-  %result.0 = phi i32 [ 0, %0 ], [ %14, %15 ]
-  %i.0 = phi i32 [ 0, %0 ], [ %16, %15 ]
-  %8 = icmp slt i32 %i.0, 4
-  br i1 %8, label %9, label %17
+tmp_12:                                           ; preds = %tmp_24, %0
+  %result.0 = phi i32 [ 0, %0 ], [ %tmp_23, %tmp_24 ]
+  %i.0 = phi i32 [ 0, %0 ], [ %tmp_26, %tmp_24 ]
+  %tmp_14 = icmp slt i32 %i.0, 4
+  br i1 %tmp_14, label %tmp_15, label %tmp_27
 
-; <label>:9                                       ; preds = %7
-  %10 = add i32 %2, %i.0
-  %11 = urem i32 %10, 64
-  %12 = getelementptr inbounds [64 x i32] addrspace(3)* @MemoryModel.localBuffer, i32 0, i32 %11
-  %13 = load i32 addrspace(3)* %12, align 4
-  %14 = add nsw i32 %result.0, %13
-  br label %15
+tmp_15:                                           ; preds = %tmp_12
+  %tmp_18 = add i32 %tmp_4, %i.0
+  %tmp_19 = urem i32 %tmp_18, 64
+  %tmp_20 = getelementptr inbounds [64 x i32] addrspace(3)* @MemoryModel.localBuffer, i32 0, i32 %tmp_19
+  %tmp_21 = load i32 addrspace(3)* %tmp_20, align 4
+  %tmp_23 = add nsw i32 %result.0, %tmp_21
+  br label %tmp_24
 
-; <label>:15                                      ; preds = %9
-  %16 = add nsw i32 %i.0, 1
-  br label %7
+tmp_24:                                           ; preds = %tmp_15
+  %tmp_26 = add nsw i32 %i.0, 1
+  br label %tmp_12
 
-; <label>:17                                      ; preds = %7
-  %18 = urem i32 %1, 4
-  %19 = getelementptr inbounds [4 x i32] addrspace(2)* @mask, i32 0, i32 %18
-  %20 = load i32 addrspace(2)* %19, align 4
-  %21 = mul nsw i32 %result.0, %20
-  %22 = getelementptr inbounds i32 addrspace(1)* %outputbuffer, i32 %3
-  store i32 %21, i32 addrspace(1)* %22, align 4
+tmp_27:                                           ; preds = %tmp_12
+  %tmp_29 = urem i32 %tmp_3, 4
+  %tmp_30 = getelementptr inbounds [4 x i32] addrspace(2)* @mask, i32 0, i32 %tmp_29
+  %tmp_31 = load i32 addrspace(2)* %tmp_30, align 4
+  %tmp_33 = mul nsw i32 %result.0, %tmp_31
+  %tmp_37 = getelementptr inbounds i32 addrspace(1)* %outputbuffer, i32 %tmp_5
+  store i32 %tmp_33, i32 addrspace(1)* %tmp_37, align 4
   ret void
 }
 

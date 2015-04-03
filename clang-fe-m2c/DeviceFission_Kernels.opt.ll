@@ -4,12 +4,12 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @Add(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = getelementptr inbounds i32 addrspace(1)* %input, i32 %1
-  %3 = load i32 addrspace(1)* %2, align 4
-  %4 = add nsw i32 %3, 1
-  %5 = getelementptr inbounds i32 addrspace(1)* %output, i32 %1
-  store i32 %4, i32 addrspace(1)* %5, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_6 = getelementptr inbounds i32 addrspace(1)* %input, i32 %tmp_3
+  %tmp_7 = load i32 addrspace(1)* %tmp_6, align 4
+  %tmp_8 = add nsw i32 %tmp_7, 1
+  %tmp_11 = getelementptr inbounds i32 addrspace(1)* %output, i32 %tmp_3
+  store i32 %tmp_8, i32 addrspace(1)* %tmp_11, align 4
   ret void
 }
 
@@ -17,12 +17,12 @@ declare i32 @__get_global_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define void @Sub(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = getelementptr inbounds i32 addrspace(1)* %input, i32 %1
-  %3 = load i32 addrspace(1)* %2, align 4
-  %4 = sub nsw i32 %3, 1
-  %5 = getelementptr inbounds i32 addrspace(1)* %output, i32 %1
-  store i32 %4, i32 addrspace(1)* %5, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_6 = getelementptr inbounds i32 addrspace(1)* %input, i32 %tmp_3
+  %tmp_7 = load i32 addrspace(1)* %tmp_6, align 4
+  %tmp_8 = sub nsw i32 %tmp_7, 1
+  %tmp_11 = getelementptr inbounds i32 addrspace(1)* %output, i32 %tmp_3
+  store i32 %tmp_8, i32 addrspace(1)* %tmp_11, align 4
   ret void
 }
 

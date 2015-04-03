@@ -4,90 +4,90 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @sobel_filter(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = call i32 @__get_global_size_u32(i32 0)
-  %4 = call i32 @__get_global_size_u32(i32 1)
-  %5 = mul i32 %2, %3
-  %6 = add i32 %1, %5
-  %7 = icmp uge i32 %1, 1
-  br i1 %7, label %8, label %73
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_4 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_5 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_6 = call i32 @__get_global_size_u32(i32 1)
+  %tmp_11 = mul i32 %tmp_4, %tmp_5
+  %tmp_12 = add i32 %tmp_3, %tmp_11
+  %tmp_14 = icmp uge i32 %tmp_3, 1
+  br i1 %tmp_14, label %tmp_15, label %tmp_125
 
-; <label>:8                                       ; preds = %0
-  %9 = sub i32 %3, 1
-  %10 = icmp ult i32 %1, %9
-  br i1 %10, label %11, label %73
+tmp_15:                                           ; preds = %0
+  %tmp_18 = sub i32 %tmp_5, 1
+  %tmp_19 = icmp ult i32 %tmp_3, %tmp_18
+  br i1 %tmp_19, label %tmp_20, label %tmp_125
 
-; <label>:11                                      ; preds = %8
-  %12 = icmp uge i32 %2, 1
-  br i1 %12, label %13, label %73
+tmp_20:                                           ; preds = %tmp_15
+  %tmp_22 = icmp uge i32 %tmp_4, 1
+  br i1 %tmp_22, label %tmp_23, label %tmp_125
 
-; <label>:13                                      ; preds = %11
-  %14 = sub i32 %4, 1
-  %15 = icmp ult i32 %2, %14
-  br i1 %15, label %16, label %73
+tmp_23:                                           ; preds = %tmp_20
+  %tmp_26 = sub i32 %tmp_6, 1
+  %tmp_27 = icmp ult i32 %tmp_4, %tmp_26
+  br i1 %tmp_27, label %tmp_28, label %tmp_125
 
-; <label>:16                                      ; preds = %13
-  %17 = sub nsw i32 %6, 1
-  %18 = sub i32 %17, %3
-  %19 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %18
-  %20 = load <4 x i8> addrspace(1)* %19, align 4
-  %21 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %20)
-  %22 = sub i32 %6, %3
-  %23 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %22
-  %24 = load <4 x i8> addrspace(1)* %23, align 4
-  %25 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %24)
-  %26 = add nsw i32 %6, 1
-  %27 = sub i32 %26, %3
-  %28 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %27
-  %29 = load <4 x i8> addrspace(1)* %28, align 4
-  %30 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %29)
-  %31 = sub nsw i32 %6, 1
-  %32 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %31
-  %33 = load <4 x i8> addrspace(1)* %32, align 4
-  %34 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %33)
-  %35 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %6
-  %36 = load <4 x i8> addrspace(1)* %35, align 4
-  %37 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %36)
-  %38 = add nsw i32 %6, 1
-  %39 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %38
-  %40 = load <4 x i8> addrspace(1)* %39, align 4
-  %41 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %40)
-  %42 = sub nsw i32 %6, 1
-  %43 = add i32 %42, %3
-  %44 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %43
-  %45 = load <4 x i8> addrspace(1)* %44, align 4
-  %46 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %45)
-  %47 = add i32 %6, %3
-  %48 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %47
-  %49 = load <4 x i8> addrspace(1)* %48, align 4
-  %50 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %49)
-  %51 = add nsw i32 %6, 1
-  %52 = add i32 %51, %3
-  %53 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %52
-  %54 = load <4 x i8> addrspace(1)* %53, align 4
-  %55 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %54)
-  %56 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, <4 x float> %25, <4 x float> %21)
-  %57 = fadd <4 x float> %56, %30
-  %58 = fsub <4 x float> %57, %46
-  %59 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %50
-  %60 = fsub <4 x float> %58, %59
-  %61 = fsub <4 x float> %60, %55
-  %62 = fsub <4 x float> %21, %30
-  %63 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %34
-  %64 = fadd <4 x float> %62, %63
-  %65 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %41
-  %66 = fsub <4 x float> %64, %65
-  %67 = fadd <4 x float> %66, %46
-  %68 = fsub <4 x float> %67, %55
-  %69 = call <4 x float> @_Z5hypotDv4_fS_(<4 x float> %61, <4 x float> %68)
-  %70 = fdiv <4 x float> %69, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !2
-  %71 = call <4 x i8> @_Z14convert_uchar4Dv4_f(<4 x float> %70)
-  %72 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %6
-  store <4 x i8> %71, <4 x i8> addrspace(1)* %72, align 4
-  br label %73
+tmp_28:                                           ; preds = %tmp_23
+  %tmp_30 = sub nsw i32 %tmp_12, 1
+  %tmp_32 = sub i32 %tmp_30, %tmp_5
+  %tmp_34 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_32
+  %tmp_35 = load <4 x i8> addrspace(1)* %tmp_34, align 4
+  %tmp_36 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_35)
+  %tmp_39 = sub i32 %tmp_12, %tmp_5
+  %tmp_41 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_39
+  %tmp_42 = load <4 x i8> addrspace(1)* %tmp_41, align 4
+  %tmp_43 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_42)
+  %tmp_45 = add nsw i32 %tmp_12, 1
+  %tmp_47 = sub i32 %tmp_45, %tmp_5
+  %tmp_49 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_47
+  %tmp_50 = load <4 x i8> addrspace(1)* %tmp_49, align 4
+  %tmp_51 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_50)
+  %tmp_53 = sub nsw i32 %tmp_12, 1
+  %tmp_55 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_53
+  %tmp_56 = load <4 x i8> addrspace(1)* %tmp_55, align 4
+  %tmp_57 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_56)
+  %tmp_60 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_12
+  %tmp_61 = load <4 x i8> addrspace(1)* %tmp_60, align 4
+  %tmp_62 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_61)
+  %tmp_64 = add nsw i32 %tmp_12, 1
+  %tmp_66 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_64
+  %tmp_67 = load <4 x i8> addrspace(1)* %tmp_66, align 4
+  %tmp_68 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_67)
+  %tmp_70 = sub nsw i32 %tmp_12, 1
+  %tmp_72 = add i32 %tmp_70, %tmp_5
+  %tmp_74 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_72
+  %tmp_75 = load <4 x i8> addrspace(1)* %tmp_74, align 4
+  %tmp_76 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_75)
+  %tmp_79 = add i32 %tmp_12, %tmp_5
+  %tmp_81 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_79
+  %tmp_82 = load <4 x i8> addrspace(1)* %tmp_81, align 4
+  %tmp_83 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_82)
+  %tmp_85 = add nsw i32 %tmp_12, 1
+  %tmp_87 = add i32 %tmp_85, %tmp_5
+  %tmp_89 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_87
+  %tmp_90 = load <4 x i8> addrspace(1)* %tmp_89, align 4
+  %tmp_91 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_90)
+  %tmp_94 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, <4 x float> %tmp_43, <4 x float> %tmp_36)
+  %tmp_96 = fadd <4 x float> %tmp_94, %tmp_51
+  %tmp_98 = fsub <4 x float> %tmp_96, %tmp_76
+  %tmp_100 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %tmp_83
+  %tmp_101 = fsub <4 x float> %tmp_98, %tmp_100
+  %tmp_103 = fsub <4 x float> %tmp_101, %tmp_91
+  %tmp_106 = fsub <4 x float> %tmp_36, %tmp_51
+  %tmp_108 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %tmp_57
+  %tmp_109 = fadd <4 x float> %tmp_106, %tmp_108
+  %tmp_111 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %tmp_68
+  %tmp_112 = fsub <4 x float> %tmp_109, %tmp_111
+  %tmp_114 = fadd <4 x float> %tmp_112, %tmp_76
+  %tmp_116 = fsub <4 x float> %tmp_114, %tmp_91
+  %tmp_119 = call <4 x float> @_Z5hypotDv4_fS_(<4 x float> %tmp_103, <4 x float> %tmp_116)
+  %tmp_120 = fdiv <4 x float> %tmp_119, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !2
+  %tmp_121 = call <4 x i8> @_Z14convert_uchar4Dv4_f(<4 x float> %tmp_120)
+  %tmp_124 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_12
+  store <4 x i8> %tmp_121, <4 x i8> addrspace(1)* %tmp_124, align 4
+  br label %tmp_125
 
-; <label>:73                                      ; preds = %16, %13, %11, %8, %0
+tmp_125:                                          ; preds = %tmp_28, %tmp_23, %tmp_20, %tmp_15, %0
   ret void
 }
 

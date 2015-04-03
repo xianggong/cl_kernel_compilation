@@ -4,62 +4,62 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @reduce(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1)* %output, <4 x i32> addrspace(3)* %sdata) #0 {
-  %1 = call i32 @__get_local_id_u32(i32 0)
-  %2 = call i32 @__get_group_id_u32(i32 0)
-  %3 = call i32 @__get_global_id_u32(i32 0)
-  %4 = call i32 @__get_local_size_u32(i32 0)
-  %5 = mul i32 %3, 2
-  %6 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i32 %5
-  %7 = load <4 x i32> addrspace(1)* %6, align 16
-  %8 = add i32 %5, 1
-  %9 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i32 %8
-  %10 = load <4 x i32> addrspace(1)* %9, align 16
-  %11 = add <4 x i32> %7, %10
-  %12 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 %1
-  store <4 x i32> %11, <4 x i32> addrspace(3)* %12, align 16
+  %tmp_4 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_5 = call i32 @__get_group_id_u32(i32 0)
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_7 = call i32 @__get_local_size_u32(i32 0)
+  %tmp_9 = mul i32 %tmp_6, 2
+  %tmp_12 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i32 %tmp_9
+  %tmp_13 = load <4 x i32> addrspace(1)* %tmp_12, align 16
+  %tmp_15 = add i32 %tmp_9, 1
+  %tmp_17 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i32 %tmp_15
+  %tmp_18 = load <4 x i32> addrspace(1)* %tmp_17, align 16
+  %tmp_19 = add <4 x i32> %tmp_13, %tmp_18
+  %tmp_22 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 %tmp_4
+  store <4 x i32> %tmp_19, <4 x i32> addrspace(3)* %tmp_22, align 16
   call void @barrier(i32 1)
-  %13 = lshr i32 %4, 1
-  br label %14
+  %tmp_24 = lshr i32 %tmp_7, 1
+  br label %tmp_25
 
-; <label>:14                                      ; preds = %26, %0
-  %s.0 = phi i32 [ %13, %0 ], [ %27, %26 ]
-  %15 = icmp ugt i32 %s.0, 0
-  br i1 %15, label %16, label %28
+tmp_25:                                           ; preds = %tmp_45, %0
+  %s.0 = phi i32 [ %tmp_24, %0 ], [ %tmp_47, %tmp_45 ]
+  %tmp_27 = icmp ugt i32 %s.0, 0
+  br i1 %tmp_27, label %tmp_28, label %tmp_48
 
-; <label>:16                                      ; preds = %14
-  %17 = icmp ult i32 %1, %s.0
-  br i1 %17, label %18, label %25
+tmp_28:                                           ; preds = %tmp_25
+  %tmp_31 = icmp ult i32 %tmp_4, %s.0
+  br i1 %tmp_31, label %tmp_32, label %tmp_44
 
-; <label>:18                                      ; preds = %16
-  %19 = add i32 %1, %s.0
-  %20 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 %19
-  %21 = load <4 x i32> addrspace(3)* %20, align 16
-  %22 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 %1
-  %23 = load <4 x i32> addrspace(3)* %22, align 16
-  %24 = add <4 x i32> %23, %21
-  store <4 x i32> %24, <4 x i32> addrspace(3)* %22, align 16
-  br label %25
+tmp_32:                                           ; preds = %tmp_28
+  %tmp_35 = add i32 %tmp_4, %s.0
+  %tmp_37 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 %tmp_35
+  %tmp_38 = load <4 x i32> addrspace(3)* %tmp_37, align 16
+  %tmp_41 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 %tmp_4
+  %tmp_42 = load <4 x i32> addrspace(3)* %tmp_41, align 16
+  %tmp_43 = add <4 x i32> %tmp_42, %tmp_38
+  store <4 x i32> %tmp_43, <4 x i32> addrspace(3)* %tmp_41, align 16
+  br label %tmp_44
 
-; <label>:25                                      ; preds = %18, %16
+tmp_44:                                           ; preds = %tmp_32, %tmp_28
   call void @barrier(i32 1)
-  br label %26
+  br label %tmp_45
 
-; <label>:26                                      ; preds = %25
-  %27 = lshr i32 %s.0, 1
-  br label %14
+tmp_45:                                           ; preds = %tmp_44
+  %tmp_47 = lshr i32 %s.0, 1
+  br label %tmp_25
 
-; <label>:28                                      ; preds = %14
-  %29 = icmp eq i32 %1, 0
-  br i1 %29, label %30, label %34
+tmp_48:                                           ; preds = %tmp_25
+  %tmp_50 = icmp eq i32 %tmp_4, 0
+  br i1 %tmp_50, label %tmp_51, label %tmp_58
 
-; <label>:30                                      ; preds = %28
-  %31 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 0
-  %32 = load <4 x i32> addrspace(3)* %31, align 16
-  %33 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %2
-  store <4 x i32> %32, <4 x i32> addrspace(1)* %33, align 16
-  br label %34
+tmp_51:                                           ; preds = %tmp_48
+  %tmp_53 = getelementptr inbounds <4 x i32> addrspace(3)* %sdata, i32 0
+  %tmp_54 = load <4 x i32> addrspace(3)* %tmp_53, align 16
+  %tmp_57 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %tmp_5
+  store <4 x i32> %tmp_54, <4 x i32> addrspace(1)* %tmp_57, align 16
+  br label %tmp_58
 
-; <label>:34                                      ; preds = %30, %28
+tmp_58:                                           ; preds = %tmp_51, %tmp_48
   ret void
 }
 

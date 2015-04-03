@@ -7,69 +7,69 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @MemoryModel(i32 addrspace(1)* %outputbuffer, i32 addrspace(1)* %inputbuffer) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
   %result = alloca i32, align 4
   %group_id = alloca i32, align 4
   %item_id = alloca i32, align 4
   %gid = alloca i32, align 4
   %i = alloca i32, align 4
-  store i32 addrspace(1)* %outputbuffer, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %inputbuffer, i32 addrspace(1)** %2, align 4
+  store i32 addrspace(1)* %outputbuffer, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %inputbuffer, i32 addrspace(1)** %tmp_2, align 4
   store i32 0, i32* %result, align 4
-  %3 = call i32 @__get_group_id_u32(i32 0)
-  store i32 %3, i32* %group_id, align 4
-  %4 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %4, i32* %item_id, align 4
-  %5 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %5, i32* %gid, align 4
-  %6 = load i32* %gid, align 4
-  %7 = load i32 addrspace(1)** %2, align 4
-  %8 = getelementptr inbounds i32 addrspace(1)* %7, i32 %6
-  %9 = load i32 addrspace(1)* %8, align 4
-  %10 = load i32* %item_id, align 4
-  %11 = getelementptr inbounds [64 x i32] addrspace(3)* @MemoryModel.localBuffer, i32 0, i32 %10
-  store i32 %9, i32 addrspace(3)* %11, align 4
+  %tmp_3 = call i32 @__get_group_id_u32(i32 0)
+  store i32 %tmp_3, i32* %group_id, align 4
+  %tmp_4 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_4, i32* %item_id, align 4
+  %tmp_5 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_5, i32* %gid, align 4
+  %tmp_6 = load i32* %gid, align 4
+  %tmp_7 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_8 = getelementptr inbounds i32 addrspace(1)* %tmp_7, i32 %tmp_6
+  %tmp_9 = load i32 addrspace(1)* %tmp_8, align 4
+  %tmp_10 = load i32* %item_id, align 4
+  %tmp_11 = getelementptr inbounds [64 x i32] addrspace(3)* @MemoryModel.localBuffer, i32 0, i32 %tmp_10
+  store i32 %tmp_9, i32 addrspace(3)* %tmp_11, align 4
   call void @barrier(i32 1)
   store i32 0, i32* %i, align 4
-  br label %12
+  br label %tmp_12
 
-; <label>:12                                      ; preds = %24, %0
-  %13 = load i32* %i, align 4
-  %14 = icmp slt i32 %13, 4
-  br i1 %14, label %15, label %27
+tmp_12:                                      ; preds = %tmp_24, %tmp_0
+  %tmp_13 = load i32* %i, align 4
+  %tmp_14 = icmp slt i32 %tmp_13, 4
+  br i1 %tmp_14, label %tmp_15, label %tmp_27
 
-; <label>:15                                      ; preds = %12
-  %16 = load i32* %item_id, align 4
-  %17 = load i32* %i, align 4
-  %18 = add i32 %16, %17
-  %19 = urem i32 %18, 64
-  %20 = getelementptr inbounds [64 x i32] addrspace(3)* @MemoryModel.localBuffer, i32 0, i32 %19
-  %21 = load i32 addrspace(3)* %20, align 4
-  %22 = load i32* %result, align 4
-  %23 = add nsw i32 %22, %21
-  store i32 %23, i32* %result, align 4
-  br label %24
+tmp_15:                                      ; preds = %tmp_12
+  %tmp_16 = load i32* %item_id, align 4
+  %tmp_17 = load i32* %i, align 4
+  %tmp_18 = add i32 %tmp_16, %tmp_17
+  %tmp_19 = urem i32 %tmp_18, 64
+  %tmp_20 = getelementptr inbounds [64 x i32] addrspace(3)* @MemoryModel.localBuffer, i32 0, i32 %tmp_19
+  %tmp_21 = load i32 addrspace(3)* %tmp_20, align 4
+  %tmp_22 = load i32* %result, align 4
+  %tmp_23 = add nsw i32 %tmp_22, %tmp_21
+  store i32 %tmp_23, i32* %result, align 4
+  br label %tmp_24
 
-; <label>:24                                      ; preds = %15
-  %25 = load i32* %i, align 4
-  %26 = add nsw i32 %25, 1
-  store i32 %26, i32* %i, align 4
-  br label %12
+tmp_24:                                      ; preds = %tmp_15
+  %tmp_25 = load i32* %i, align 4
+  %tmp_26 = add nsw i32 %tmp_25, 1
+  store i32 %tmp_26, i32* %i, align 4
+  br label %tmp_12
 
-; <label>:27                                      ; preds = %12
-  %28 = load i32* %group_id, align 4
-  %29 = urem i32 %28, 4
-  %30 = getelementptr inbounds [4 x i32] addrspace(2)* @mask, i32 0, i32 %29
-  %31 = load i32 addrspace(2)* %30, align 4
-  %32 = load i32* %result, align 4
-  %33 = mul nsw i32 %32, %31
-  store i32 %33, i32* %result, align 4
-  %34 = load i32* %result, align 4
-  %35 = load i32* %gid, align 4
-  %36 = load i32 addrspace(1)** %1, align 4
-  %37 = getelementptr inbounds i32 addrspace(1)* %36, i32 %35
-  store i32 %34, i32 addrspace(1)* %37, align 4
+tmp_27:                                      ; preds = %tmp_12
+  %tmp_28 = load i32* %group_id, align 4
+  %tmp_29 = urem i32 %tmp_28, 4
+  %tmp_30 = getelementptr inbounds [4 x i32] addrspace(2)* @mask, i32 0, i32 %tmp_29
+  %tmp_31 = load i32 addrspace(2)* %tmp_30, align 4
+  %tmp_32 = load i32* %result, align 4
+  %tmp_33 = mul nsw i32 %tmp_32, %tmp_31
+  store i32 %tmp_33, i32* %result, align 4
+  %tmp_34 = load i32* %result, align 4
+  %tmp_35 = load i32* %gid, align 4
+  %tmp_36 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_37 = getelementptr inbounds i32 addrspace(1)* %tmp_36, i32 %tmp_35
+  store i32 %tmp_34, i32 addrspace(1)* %tmp_37, align 4
   ret void
 }
 

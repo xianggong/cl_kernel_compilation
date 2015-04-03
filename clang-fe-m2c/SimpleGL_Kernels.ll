@@ -4,74 +4,74 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @sineWave(<4 x float> addrspace(1)* %pos, i32 %width, i32 %height, float %time) #0 {
-  %1 = alloca <4 x float> addrspace(1)*, align 4
-  %2 = alloca i32, align 4
-  %3 = alloca i32, align 4
-  %4 = alloca float, align 4
+  %tmp_1 = alloca <4 x float> addrspace(1)*, align 4
+  %tmp_2 = alloca i32, align 4
+  %tmp_3 = alloca i32, align 4
+  %tmp_4 = alloca float, align 4
   %x = alloca i32, align 4
   %y = alloca i32, align 4
   %u = alloca float, align 4
   %v = alloca float, align 4
   %freq = alloca float, align 4
   %w = alloca float, align 4
-  %5 = alloca <4 x float>, align 16
-  store <4 x float> addrspace(1)* %pos, <4 x float> addrspace(1)** %1, align 4
-  store i32 %width, i32* %2, align 4
-  store i32 %height, i32* %3, align 4
-  store float %time, float* %4, align 4
-  %6 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %6, i32* %x, align 4
-  %7 = call i32 @__get_global_id_u32(i32 1)
-  store i32 %7, i32* %y, align 4
-  %8 = load i32* %x, align 4
-  %9 = uitofp i32 %8 to float
-  %10 = load i32* %2, align 4
-  %11 = uitofp i32 %10 to float
-  %12 = fdiv float %9, %11, !fpmath !2
-  store float %12, float* %u, align 4
-  %13 = load i32* %y, align 4
-  %14 = uitofp i32 %13 to float
-  %15 = load i32* %3, align 4
-  %16 = uitofp i32 %15 to float
-  %17 = fdiv float %14, %16, !fpmath !2
-  store float %17, float* %v, align 4
-  %18 = load float* %u, align 4
-  %19 = call float @llvm.fmuladd.f32(float %18, float 2.000000e+00, float -1.000000e+00)
-  store float %19, float* %u, align 4
-  %20 = load float* %v, align 4
-  %21 = call float @llvm.fmuladd.f32(float %20, float 2.000000e+00, float -1.000000e+00)
-  store float %21, float* %v, align 4
+  %tmp_5 = alloca <4 x float>, align 16
+  store <4 x float> addrspace(1)* %pos, <4 x float> addrspace(1)** %tmp_1, align 4
+  store i32 %width, i32* %tmp_2, align 4
+  store i32 %height, i32* %tmp_3, align 4
+  store float %time, float* %tmp_4, align 4
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_6, i32* %x, align 4
+  %tmp_7 = call i32 @__get_global_id_u32(i32 1)
+  store i32 %tmp_7, i32* %y, align 4
+  %tmp_8 = load i32* %x, align 4
+  %tmp_9 = uitofp i32 %tmp_8 to float
+  %tmp_10 = load i32* %tmp_2, align 4
+  %tmp_11 = uitofp i32 %tmp_10 to float
+  %tmp_12 = fdiv float %tmp_9, %tmp_11, !fpmath !2
+  store float %tmp_12, float* %u, align 4
+  %tmp_13 = load i32* %y, align 4
+  %tmp_14 = uitofp i32 %tmp_13 to float
+  %tmp_15 = load i32* %tmp_3, align 4
+  %tmp_16 = uitofp i32 %tmp_15 to float
+  %tmp_17 = fdiv float %tmp_14, %tmp_16, !fpmath !2
+  store float %tmp_17, float* %v, align 4
+  %tmp_18 = load float* %u, align 4
+  %tmp_19 = call float @llvm.fmuladd.f32(float %tmp_18, float 2.000000e+00, float -1.000000e+00)
+  store float %tmp_19, float* %u, align 4
+  %tmp_20 = load float* %v, align 4
+  %tmp_21 = call float @llvm.fmuladd.f32(float %tmp_20, float 2.000000e+00, float -1.000000e+00)
+  store float %tmp_21, float* %v, align 4
   store float 4.000000e+00, float* %freq, align 4
-  %22 = load float* %u, align 4
-  %23 = load float* %freq, align 4
-  %24 = load float* %4, align 4
-  %25 = call float @llvm.fmuladd.f32(float %22, float %23, float %24)
-  %26 = call float @_Z3sinf(float %25)
-  %27 = load float* %v, align 4
-  %28 = load float* %freq, align 4
-  %29 = load float* %4, align 4
-  %30 = call float @llvm.fmuladd.f32(float %27, float %28, float %29)
-  %31 = call float @_Z3cosf(float %30)
-  %32 = fmul float %26, %31
-  %33 = fmul float %32, 5.000000e-01
-  store float %33, float* %w, align 4
-  %34 = load float* %u, align 4
-  %35 = insertelement <4 x float> undef, float %34, i32 0
-  %36 = load float* %w, align 4
-  %37 = insertelement <4 x float> %35, float %36, i32 1
-  %38 = load float* %v, align 4
-  %39 = insertelement <4 x float> %37, float %38, i32 2
-  %40 = insertelement <4 x float> %39, float 1.000000e+00, i32 3
-  store <4 x float> %40, <4 x float>* %5
-  %41 = load <4 x float>* %5
-  %42 = load i32* %y, align 4
-  %43 = load i32* %2, align 4
-  %44 = mul i32 %42, %43
-  %45 = load i32* %x, align 4
-  %46 = add i32 %44, %45
-  %47 = load <4 x float> addrspace(1)** %1, align 4
-  %48 = getelementptr inbounds <4 x float> addrspace(1)* %47, i32 %46
-  store <4 x float> %41, <4 x float> addrspace(1)* %48, align 16
+  %tmp_22 = load float* %u, align 4
+  %tmp_23 = load float* %freq, align 4
+  %tmp_24 = load float* %tmp_4, align 4
+  %tmp_25 = call float @llvm.fmuladd.f32(float %tmp_22, float %tmp_23, float %tmp_24)
+  %tmp_26 = call float @_Z3sinf(float %tmp_25)
+  %tmp_27 = load float* %v, align 4
+  %tmp_28 = load float* %freq, align 4
+  %tmp_29 = load float* %tmp_4, align 4
+  %tmp_30 = call float @llvm.fmuladd.f32(float %tmp_27, float %tmp_28, float %tmp_29)
+  %tmp_31 = call float @_Z3cosf(float %tmp_30)
+  %tmp_32 = fmul float %tmp_26, %tmp_31
+  %tmp_33 = fmul float %tmp_32, 5.000000e-01
+  store float %tmp_33, float* %w, align 4
+  %tmp_34 = load float* %u, align 4
+  %tmp_35 = insertelement <4 x float> undef, float %tmp_34, i32 0
+  %tmp_36 = load float* %w, align 4
+  %tmp_37 = insertelement <4 x float> %tmp_35, float %tmp_36, i32 1
+  %tmp_38 = load float* %v, align 4
+  %tmp_39 = insertelement <4 x float> %tmp_37, float %tmp_38, i32 2
+  %tmp_40 = insertelement <4 x float> %tmp_39, float 1.000000e+00, i32 3
+  store <4 x float> %tmp_40, <4 x float>* %tmp_5
+  %tmp_41 = load <4 x float>* %tmp_5
+  %tmp_42 = load i32* %y, align 4
+  %tmp_43 = load i32* %tmp_2, align 4
+  %tmp_44 = mul i32 %tmp_42, %tmp_43
+  %tmp_45 = load i32* %x, align 4
+  %tmp_46 = add i32 %tmp_44, %tmp_45
+  %tmp_47 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_48 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_47, i32 %tmp_46
+  store <4 x float> %tmp_41, <4 x float> addrspace(1)* %tmp_48, align 16
   ret void
 }
 

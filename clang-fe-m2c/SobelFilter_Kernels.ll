@@ -4,8 +4,8 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @sobel_filter(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage) #0 {
-  %1 = alloca <4 x i8> addrspace(1)*, align 4
-  %2 = alloca <4 x i8> addrspace(1)*, align 4
+  %tmp_1 = alloca <4 x i8> addrspace(1)*, align 4
+  %tmp_2 = alloca <4 x i8> addrspace(1)*, align 4
   %x = alloca i32, align 4
   %y = alloca i32, align 4
   %width = alloca i32, align 4
@@ -22,160 +22,160 @@ define void @sobel_filter(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace
   %i02 = alloca <4 x float>, align 16
   %i12 = alloca <4 x float>, align 16
   %i22 = alloca <4 x float>, align 16
-  store <4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)** %1, align 4
-  store <4 x i8> addrspace(1)* %outputImage, <4 x i8> addrspace(1)** %2, align 4
-  %3 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %3, i32* %x, align 4
-  %4 = call i32 @__get_global_id_u32(i32 1)
-  store i32 %4, i32* %y, align 4
-  %5 = call i32 @__get_global_size_u32(i32 0)
-  store i32 %5, i32* %width, align 4
-  %6 = call i32 @__get_global_size_u32(i32 1)
-  store i32 %6, i32* %height, align 4
+  store <4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)** %tmp_1, align 4
+  store <4 x i8> addrspace(1)* %outputImage, <4 x i8> addrspace(1)** %tmp_2, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_3, i32* %x, align 4
+  %tmp_4 = call i32 @__get_global_id_u32(i32 1)
+  store i32 %tmp_4, i32* %y, align 4
+  %tmp_5 = call i32 @__get_global_size_u32(i32 0)
+  store i32 %tmp_5, i32* %width, align 4
+  %tmp_6 = call i32 @__get_global_size_u32(i32 1)
+  store i32 %tmp_6, i32* %height, align 4
   store <4 x float> zeroinitializer, <4 x float>* %Gx, align 16
-  %7 = load <4 x float>* %Gx, align 16
-  store <4 x float> %7, <4 x float>* %Gy, align 16
-  %8 = load i32* %x, align 4
-  %9 = load i32* %y, align 4
-  %10 = load i32* %width, align 4
-  %11 = mul i32 %9, %10
-  %12 = add i32 %8, %11
-  store i32 %12, i32* %c, align 4
-  %13 = load i32* %x, align 4
-  %14 = icmp uge i32 %13, 1
-  br i1 %14, label %15, label %125
+  %tmp_7 = load <4 x float>* %Gx, align 16
+  store <4 x float> %tmp_7, <4 x float>* %Gy, align 16
+  %tmp_8 = load i32* %x, align 4
+  %tmp_9 = load i32* %y, align 4
+  %tmp_10 = load i32* %width, align 4
+  %tmp_11 = mul i32 %tmp_9, %tmp_10
+  %tmp_12 = add i32 %tmp_8, %tmp_11
+  store i32 %tmp_12, i32* %c, align 4
+  %tmp_13 = load i32* %x, align 4
+  %tmp_14 = icmp uge i32 %tmp_13, 1
+  br i1 %tmp_14, label %tmp_15, label %tmp_125
 
-; <label>:15                                      ; preds = %0
-  %16 = load i32* %x, align 4
-  %17 = load i32* %width, align 4
-  %18 = sub i32 %17, 1
-  %19 = icmp ult i32 %16, %18
-  br i1 %19, label %20, label %125
+tmp_15:                                      ; preds = %tmp_0
+  %tmp_16 = load i32* %x, align 4
+  %tmp_17 = load i32* %width, align 4
+  %tmp_18 = sub i32 %tmp_17, 1
+  %tmp_19 = icmp ult i32 %tmp_16, %tmp_18
+  br i1 %tmp_19, label %tmp_20, label %tmp_125
 
-; <label>:20                                      ; preds = %15
-  %21 = load i32* %y, align 4
-  %22 = icmp uge i32 %21, 1
-  br i1 %22, label %23, label %125
+tmp_20:                                      ; preds = %tmp_15
+  %tmp_21 = load i32* %y, align 4
+  %tmp_22 = icmp uge i32 %tmp_21, 1
+  br i1 %tmp_22, label %tmp_23, label %tmp_125
 
-; <label>:23                                      ; preds = %20
-  %24 = load i32* %y, align 4
-  %25 = load i32* %height, align 4
-  %26 = sub i32 %25, 1
-  %27 = icmp ult i32 %24, %26
-  br i1 %27, label %28, label %125
+tmp_23:                                      ; preds = %tmp_20
+  %tmp_24 = load i32* %y, align 4
+  %tmp_25 = load i32* %height, align 4
+  %tmp_26 = sub i32 %tmp_25, 1
+  %tmp_27 = icmp ult i32 %tmp_24, %tmp_26
+  br i1 %tmp_27, label %tmp_28, label %tmp_125
 
-; <label>:28                                      ; preds = %23
-  %29 = load i32* %c, align 4
-  %30 = sub nsw i32 %29, 1
-  %31 = load i32* %width, align 4
-  %32 = sub i32 %30, %31
-  %33 = load <4 x i8> addrspace(1)** %1, align 4
-  %34 = getelementptr inbounds <4 x i8> addrspace(1)* %33, i32 %32
-  %35 = load <4 x i8> addrspace(1)* %34, align 4
-  %36 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %35)
-  store <4 x float> %36, <4 x float>* %i00, align 16
-  %37 = load i32* %c, align 4
-  %38 = load i32* %width, align 4
-  %39 = sub i32 %37, %38
-  %40 = load <4 x i8> addrspace(1)** %1, align 4
-  %41 = getelementptr inbounds <4 x i8> addrspace(1)* %40, i32 %39
-  %42 = load <4 x i8> addrspace(1)* %41, align 4
-  %43 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %42)
-  store <4 x float> %43, <4 x float>* %i10, align 16
-  %44 = load i32* %c, align 4
-  %45 = add nsw i32 %44, 1
-  %46 = load i32* %width, align 4
-  %47 = sub i32 %45, %46
-  %48 = load <4 x i8> addrspace(1)** %1, align 4
-  %49 = getelementptr inbounds <4 x i8> addrspace(1)* %48, i32 %47
-  %50 = load <4 x i8> addrspace(1)* %49, align 4
-  %51 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %50)
-  store <4 x float> %51, <4 x float>* %i20, align 16
-  %52 = load i32* %c, align 4
-  %53 = sub nsw i32 %52, 1
-  %54 = load <4 x i8> addrspace(1)** %1, align 4
-  %55 = getelementptr inbounds <4 x i8> addrspace(1)* %54, i32 %53
-  %56 = load <4 x i8> addrspace(1)* %55, align 4
-  %57 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %56)
-  store <4 x float> %57, <4 x float>* %i01, align 16
-  %58 = load i32* %c, align 4
-  %59 = load <4 x i8> addrspace(1)** %1, align 4
-  %60 = getelementptr inbounds <4 x i8> addrspace(1)* %59, i32 %58
-  %61 = load <4 x i8> addrspace(1)* %60, align 4
-  %62 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %61)
-  store <4 x float> %62, <4 x float>* %i11, align 16
-  %63 = load i32* %c, align 4
-  %64 = add nsw i32 %63, 1
-  %65 = load <4 x i8> addrspace(1)** %1, align 4
-  %66 = getelementptr inbounds <4 x i8> addrspace(1)* %65, i32 %64
-  %67 = load <4 x i8> addrspace(1)* %66, align 4
-  %68 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %67)
-  store <4 x float> %68, <4 x float>* %i21, align 16
-  %69 = load i32* %c, align 4
-  %70 = sub nsw i32 %69, 1
-  %71 = load i32* %width, align 4
-  %72 = add i32 %70, %71
-  %73 = load <4 x i8> addrspace(1)** %1, align 4
-  %74 = getelementptr inbounds <4 x i8> addrspace(1)* %73, i32 %72
-  %75 = load <4 x i8> addrspace(1)* %74, align 4
-  %76 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %75)
-  store <4 x float> %76, <4 x float>* %i02, align 16
-  %77 = load i32* %c, align 4
-  %78 = load i32* %width, align 4
-  %79 = add i32 %77, %78
-  %80 = load <4 x i8> addrspace(1)** %1, align 4
-  %81 = getelementptr inbounds <4 x i8> addrspace(1)* %80, i32 %79
-  %82 = load <4 x i8> addrspace(1)* %81, align 4
-  %83 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %82)
-  store <4 x float> %83, <4 x float>* %i12, align 16
-  %84 = load i32* %c, align 4
-  %85 = add nsw i32 %84, 1
-  %86 = load i32* %width, align 4
-  %87 = add i32 %85, %86
-  %88 = load <4 x i8> addrspace(1)** %1, align 4
-  %89 = getelementptr inbounds <4 x i8> addrspace(1)* %88, i32 %87
-  %90 = load <4 x i8> addrspace(1)* %89, align 4
-  %91 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %90)
-  store <4 x float> %91, <4 x float>* %i22, align 16
-  %92 = load <4 x float>* %i00, align 16
-  %93 = load <4 x float>* %i10, align 16
-  %94 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, <4 x float> %93, <4 x float> %92)
-  %95 = load <4 x float>* %i20, align 16
-  %96 = fadd <4 x float> %94, %95
-  %97 = load <4 x float>* %i02, align 16
-  %98 = fsub <4 x float> %96, %97
-  %99 = load <4 x float>* %i12, align 16
-  %100 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %99
-  %101 = fsub <4 x float> %98, %100
-  %102 = load <4 x float>* %i22, align 16
-  %103 = fsub <4 x float> %101, %102
-  store <4 x float> %103, <4 x float>* %Gx, align 16
-  %104 = load <4 x float>* %i00, align 16
-  %105 = load <4 x float>* %i20, align 16
-  %106 = fsub <4 x float> %104, %105
-  %107 = load <4 x float>* %i01, align 16
-  %108 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %107
-  %109 = fadd <4 x float> %106, %108
-  %110 = load <4 x float>* %i21, align 16
-  %111 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %110
-  %112 = fsub <4 x float> %109, %111
-  %113 = load <4 x float>* %i02, align 16
-  %114 = fadd <4 x float> %112, %113
-  %115 = load <4 x float>* %i22, align 16
-  %116 = fsub <4 x float> %114, %115
-  store <4 x float> %116, <4 x float>* %Gy, align 16
-  %117 = load <4 x float>* %Gx, align 16
-  %118 = load <4 x float>* %Gy, align 16
-  %119 = call <4 x float> @_Z5hypotDv4_fS_(<4 x float> %117, <4 x float> %118)
-  %120 = fdiv <4 x float> %119, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !2
-  %121 = call <4 x i8> @_Z14convert_uchar4Dv4_f(<4 x float> %120)
-  %122 = load i32* %c, align 4
-  %123 = load <4 x i8> addrspace(1)** %2, align 4
-  %124 = getelementptr inbounds <4 x i8> addrspace(1)* %123, i32 %122
-  store <4 x i8> %121, <4 x i8> addrspace(1)* %124, align 4
-  br label %125
+tmp_28:                                      ; preds = %tmp_23
+  %tmp_29 = load i32* %c, align 4
+  %tmp_30 = sub nsw i32 %tmp_29, 1
+  %tmp_31 = load i32* %width, align 4
+  %tmp_32 = sub i32 %tmp_30, %tmp_31
+  %tmp_33 = load <4 x i8> addrspace(1)** %tmp_1, align 4
+  %tmp_34 = getelementptr inbounds <4 x i8> addrspace(1)* %tmp_33, i32 %tmp_32
+  %tmp_35 = load <4 x i8> addrspace(1)* %tmp_34, align 4
+  %tmp_36 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_35)
+  store <4 x float> %tmp_36, <4 x float>* %i00, align 16
+  %tmp_37 = load i32* %c, align 4
+  %tmp_38 = load i32* %width, align 4
+  %tmp_39 = sub i32 %tmp_37, %tmp_38
+  %tmp_40 = load <4 x i8> addrspace(1)** %tmp_1, align 4
+  %tmp_41 = getelementptr inbounds <4 x i8> addrspace(1)* %tmp_40, i32 %tmp_39
+  %tmp_42 = load <4 x i8> addrspace(1)* %tmp_41, align 4
+  %tmp_43 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_42)
+  store <4 x float> %tmp_43, <4 x float>* %i10, align 16
+  %tmp_44 = load i32* %c, align 4
+  %tmp_45 = add nsw i32 %tmp_44, 1
+  %tmp_46 = load i32* %width, align 4
+  %tmp_47 = sub i32 %tmp_45, %tmp_46
+  %tmp_48 = load <4 x i8> addrspace(1)** %tmp_1, align 4
+  %tmp_49 = getelementptr inbounds <4 x i8> addrspace(1)* %tmp_48, i32 %tmp_47
+  %tmp_50 = load <4 x i8> addrspace(1)* %tmp_49, align 4
+  %tmp_51 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_50)
+  store <4 x float> %tmp_51, <4 x float>* %i20, align 16
+  %tmp_52 = load i32* %c, align 4
+  %tmp_53 = sub nsw i32 %tmp_52, 1
+  %tmp_54 = load <4 x i8> addrspace(1)** %tmp_1, align 4
+  %tmp_55 = getelementptr inbounds <4 x i8> addrspace(1)* %tmp_54, i32 %tmp_53
+  %tmp_56 = load <4 x i8> addrspace(1)* %tmp_55, align 4
+  %tmp_57 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_56)
+  store <4 x float> %tmp_57, <4 x float>* %i01, align 16
+  %tmp_58 = load i32* %c, align 4
+  %tmp_59 = load <4 x i8> addrspace(1)** %tmp_1, align 4
+  %tmp_60 = getelementptr inbounds <4 x i8> addrspace(1)* %tmp_59, i32 %tmp_58
+  %tmp_61 = load <4 x i8> addrspace(1)* %tmp_60, align 4
+  %tmp_62 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_61)
+  store <4 x float> %tmp_62, <4 x float>* %i11, align 16
+  %tmp_63 = load i32* %c, align 4
+  %tmp_64 = add nsw i32 %tmp_63, 1
+  %tmp_65 = load <4 x i8> addrspace(1)** %tmp_1, align 4
+  %tmp_66 = getelementptr inbounds <4 x i8> addrspace(1)* %tmp_65, i32 %tmp_64
+  %tmp_67 = load <4 x i8> addrspace(1)* %tmp_66, align 4
+  %tmp_68 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_67)
+  store <4 x float> %tmp_68, <4 x float>* %i21, align 16
+  %tmp_69 = load i32* %c, align 4
+  %tmp_70 = sub nsw i32 %tmp_69, 1
+  %tmp_71 = load i32* %width, align 4
+  %tmp_72 = add i32 %tmp_70, %tmp_71
+  %tmp_73 = load <4 x i8> addrspace(1)** %tmp_1, align 4
+  %tmp_74 = getelementptr inbounds <4 x i8> addrspace(1)* %tmp_73, i32 %tmp_72
+  %tmp_75 = load <4 x i8> addrspace(1)* %tmp_74, align 4
+  %tmp_76 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_75)
+  store <4 x float> %tmp_76, <4 x float>* %i02, align 16
+  %tmp_77 = load i32* %c, align 4
+  %tmp_78 = load i32* %width, align 4
+  %tmp_79 = add i32 %tmp_77, %tmp_78
+  %tmp_80 = load <4 x i8> addrspace(1)** %tmp_1, align 4
+  %tmp_81 = getelementptr inbounds <4 x i8> addrspace(1)* %tmp_80, i32 %tmp_79
+  %tmp_82 = load <4 x i8> addrspace(1)* %tmp_81, align 4
+  %tmp_83 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_82)
+  store <4 x float> %tmp_83, <4 x float>* %i12, align 16
+  %tmp_84 = load i32* %c, align 4
+  %tmp_85 = add nsw i32 %tmp_84, 1
+  %tmp_86 = load i32* %width, align 4
+  %tmp_87 = add i32 %tmp_85, %tmp_86
+  %tmp_88 = load <4 x i8> addrspace(1)** %tmp_1, align 4
+  %tmp_89 = getelementptr inbounds <4 x i8> addrspace(1)* %tmp_88, i32 %tmp_87
+  %tmp_90 = load <4 x i8> addrspace(1)* %tmp_89, align 4
+  %tmp_91 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_90)
+  store <4 x float> %tmp_91, <4 x float>* %i22, align 16
+  %tmp_92 = load <4 x float>* %i00, align 16
+  %tmp_93 = load <4 x float>* %i10, align 16
+  %tmp_94 = call <4 x float> @llvm.fmuladd.v4f32(<4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, <4 x float> %tmp_93, <4 x float> %tmp_92)
+  %tmp_95 = load <4 x float>* %i20, align 16
+  %tmp_96 = fadd <4 x float> %tmp_94, %tmp_95
+  %tmp_97 = load <4 x float>* %i02, align 16
+  %tmp_98 = fsub <4 x float> %tmp_96, %tmp_97
+  %tmp_99 = load <4 x float>* %i12, align 16
+  %tmp_100 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %tmp_99
+  %tmp_101 = fsub <4 x float> %tmp_98, %tmp_100
+  %tmp_102 = load <4 x float>* %i22, align 16
+  %tmp_103 = fsub <4 x float> %tmp_101, %tmp_102
+  store <4 x float> %tmp_103, <4 x float>* %Gx, align 16
+  %tmp_104 = load <4 x float>* %i00, align 16
+  %tmp_105 = load <4 x float>* %i20, align 16
+  %tmp_106 = fsub <4 x float> %tmp_104, %tmp_105
+  %tmp_107 = load <4 x float>* %i01, align 16
+  %tmp_108 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %tmp_107
+  %tmp_109 = fadd <4 x float> %tmp_106, %tmp_108
+  %tmp_110 = load <4 x float>* %i21, align 16
+  %tmp_111 = fmul <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, %tmp_110
+  %tmp_112 = fsub <4 x float> %tmp_109, %tmp_111
+  %tmp_113 = load <4 x float>* %i02, align 16
+  %tmp_114 = fadd <4 x float> %tmp_112, %tmp_113
+  %tmp_115 = load <4 x float>* %i22, align 16
+  %tmp_116 = fsub <4 x float> %tmp_114, %tmp_115
+  store <4 x float> %tmp_116, <4 x float>* %Gy, align 16
+  %tmp_117 = load <4 x float>* %Gx, align 16
+  %tmp_118 = load <4 x float>* %Gy, align 16
+  %tmp_119 = call <4 x float> @_Z5hypotDv4_fS_(<4 x float> %tmp_117, <4 x float> %tmp_118)
+  %tmp_120 = fdiv <4 x float> %tmp_119, <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, !fpmath !2
+  %tmp_121 = call <4 x i8> @_Z14convert_uchar4Dv4_f(<4 x float> %tmp_120)
+  %tmp_122 = load i32* %c, align 4
+  %tmp_123 = load <4 x i8> addrspace(1)** %tmp_2, align 4
+  %tmp_124 = getelementptr inbounds <4 x i8> addrspace(1)* %tmp_123, i32 %tmp_122
+  store <4 x i8> %tmp_121, <4 x i8> addrspace(1)* %tmp_124, align 4
+  br label %tmp_125
 
-; <label>:125                                     ; preds = %28, %23, %20, %15, %0
+tmp_125:                                     ; preds = %tmp_28, %tmp_23, %tmp_20, %tmp_15, %tmp_0
   ret void
 }
 

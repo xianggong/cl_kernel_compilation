@@ -7,9 +7,9 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @histogramKernel_Vector(<4 x i32> addrspace(1)* %Image, i32 addrspace(1)* %Histogram, i32 %n4VectorsPerThread) #0 {
-  %1 = alloca <4 x i32> addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
-  %3 = alloca i32, align 4
+  %tmp_1 = alloca <4 x i32> addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
+  %tmp_3 = alloca i32, align 4
   %tid = alloca i32, align 4
   %ltid = alloca i32, align 4
   %Stride = alloca i32, align 4
@@ -25,247 +25,247 @@ define void @histogramKernel_Vector(<4 x i32> addrspace(1)* %Image, i32 addrspac
   %bin = alloca i32, align 4
   %off = alloca i32, align 4
   %j = alloca i32, align 4
-  store <4 x i32> addrspace(1)* %Image, <4 x i32> addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %Histogram, i32 addrspace(1)** %2, align 4
-  store i32 %n4VectorsPerThread, i32* %3, align 4
-  %4 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %4, i32* %tid, align 4
-  %5 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %5, i32* %ltid, align 4
-  %6 = call i32 @__get_global_size_u32(i32 0)
-  store i32 %6, i32* %Stride, align 4
-  %7 = call i32 @__get_local_size_u32(i32 0)
-  store i32 %7, i32* %groupSize, align 4
+  store <4 x i32> addrspace(1)* %Image, <4 x i32> addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %Histogram, i32 addrspace(1)** %tmp_2, align 4
+  store i32 %n4VectorsPerThread, i32* %tmp_3, align 4
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_4, i32* %tid, align 4
+  %tmp_5 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_5, i32* %ltid, align 4
+  %tmp_6 = call i32 @__get_global_size_u32(i32 0)
+  store i32 %tmp_6, i32* %Stride, align 4
+  %tmp_7 = call i32 @__get_local_size_u32(i32 0)
+  store i32 %tmp_7, i32* %groupSize, align 4
   store i32 8, i32* %shft, align 4
   store i32 255, i32* %msk, align 4
-  %8 = load i32* %ltid, align 4
-  %9 = urem i32 %8, 16
-  store i32 %9, i32* %offset, align 4
+  %tmp_8 = load i32* %ltid, align 4
+  %tmp_9 = urem i32 %tmp_8, 16
+  store i32 %tmp_9, i32* %offset, align 4
   store i32 4096, i32* %lmem_items, align 4
   store <4 x i32> addrspace(3)* bitcast ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists to <4 x i32> addrspace(3)*), <4 x i32> addrspace(3)** %p, align 4
-  %10 = load i32* %ltid, align 4
-  store i32 %10, i32* %i, align 4
-  br label %11
+  %tmp_10 = load i32* %ltid, align 4
+  store i32 %tmp_10, i32* %i, align 4
+  br label %tmp_11
 
-; <label>:11                                      ; preds = %20, %0
-  %12 = load i32* %i, align 4
-  %13 = load i32* %lmem_items, align 4
-  %14 = udiv i32 %13, 4
-  %15 = icmp ult i32 %12, %14
-  br i1 %15, label %16, label %24
+tmp_11:                                      ; preds = %tmp_20, %tmp_0
+  %tmp_12 = load i32* %i, align 4
+  %tmp_13 = load i32* %lmem_items, align 4
+  %tmp_14 = udiv i32 %tmp_13, 4
+  %tmp_15 = icmp ult i32 %tmp_12, %tmp_14
+  br i1 %tmp_15, label %tmp_16, label %tmp_24
 
-; <label>:16                                      ; preds = %11
-  %17 = load i32* %i, align 4
-  %18 = load <4 x i32> addrspace(3)** %p, align 4
-  %19 = getelementptr inbounds <4 x i32> addrspace(3)* %18, i32 %17
-  store <4 x i32> zeroinitializer, <4 x i32> addrspace(3)* %19, align 16
-  br label %20
+tmp_16:                                      ; preds = %tmp_11
+  %tmp_17 = load i32* %i, align 4
+  %tmp_18 = load <4 x i32> addrspace(3)** %p, align 4
+  %tmp_19 = getelementptr inbounds <4 x i32> addrspace(3)* %tmp_18, i32 %tmp_17
+  store <4 x i32> zeroinitializer, <4 x i32> addrspace(3)* %tmp_19, align 16
+  br label %tmp_20
 
-; <label>:20                                      ; preds = %16
-  %21 = load i32* %groupSize, align 4
-  %22 = load i32* %i, align 4
-  %23 = add i32 %22, %21
-  store i32 %23, i32* %i, align 4
-  br label %11
+tmp_20:                                      ; preds = %tmp_16
+  %tmp_21 = load i32* %groupSize, align 4
+  %tmp_22 = load i32* %i, align 4
+  %tmp_23 = add i32 %tmp_22, %tmp_21
+  store i32 %tmp_23, i32* %i, align 4
+  br label %tmp_11
 
-; <label>:24                                      ; preds = %11
+tmp_24:                                      ; preds = %tmp_11
   call void @barrier(i32 1)
   store i32 0, i32* %i, align 4
-  br label %25
+  br label %tmp_25
 
-; <label>:25                                      ; preds = %136, %24
-  %26 = load i32* %i, align 4
-  %27 = load i32* %3, align 4
-  %28 = icmp ult i32 %26, %27
-  br i1 %28, label %29, label %139
+tmp_25:                                      ; preds = %tmp_136, %tmp_24
+  %tmp_26 = load i32* %i, align 4
+  %tmp_27 = load i32* %tmp_3, align 4
+  %tmp_28 = icmp ult i32 %tmp_26, %tmp_27
+  br i1 %tmp_28, label %tmp_29, label %tmp_139
 
-; <label>:29                                      ; preds = %25
-  %30 = load i32* %tid, align 4
-  %31 = load i32* %i, align 4
-  %32 = load i32* %Stride, align 4
-  %33 = mul i32 %31, %32
-  %34 = add i32 %30, %33
-  %35 = load <4 x i32> addrspace(1)** %1, align 4
-  %36 = getelementptr inbounds <4 x i32> addrspace(1)* %35, i32 %34
-  %37 = load <4 x i32> addrspace(1)* %36, align 16
-  store <4 x i32> %37, <4 x i32>* %temp, align 16
-  %38 = load <4 x i32>* %temp, align 16
-  %39 = and <4 x i32> %38, <i32 255, i32 255, i32 255, i32 255>
-  %40 = mul <4 x i32> %39, <i32 16, i32 16, i32 16, i32 16>
-  %41 = load i32* %offset, align 4
-  %42 = insertelement <4 x i32> undef, i32 %41, i32 0
-  %43 = shufflevector <4 x i32> %42, <4 x i32> undef, <4 x i32> zeroinitializer
-  %44 = add <4 x i32> %40, %43
-  store <4 x i32> %44, <4 x i32>* %temp2, align 16
-  %45 = load <4 x i32>* %temp2, align 16
-  %46 = extractelement <4 x i32> %45, i32 0
-  %47 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %46
-  %48 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %47)
-  %49 = load <4 x i32>* %temp2, align 16
-  %50 = extractelement <4 x i32> %49, i32 1
-  %51 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %50
-  %52 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %51)
-  %53 = load <4 x i32>* %temp2, align 16
-  %54 = extractelement <4 x i32> %53, i32 2
-  %55 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %54
-  %56 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %55)
-  %57 = load <4 x i32>* %temp2, align 16
-  %58 = extractelement <4 x i32> %57, i32 3
-  %59 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %58
-  %60 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %59)
-  %61 = load <4 x i32>* %temp, align 16
-  %62 = lshr <4 x i32> %61, <i32 8, i32 8, i32 8, i32 8>
-  store <4 x i32> %62, <4 x i32>* %temp, align 16
-  %63 = load <4 x i32>* %temp, align 16
-  %64 = and <4 x i32> %63, <i32 255, i32 255, i32 255, i32 255>
-  %65 = mul <4 x i32> %64, <i32 16, i32 16, i32 16, i32 16>
-  %66 = load i32* %offset, align 4
-  %67 = insertelement <4 x i32> undef, i32 %66, i32 0
-  %68 = shufflevector <4 x i32> %67, <4 x i32> undef, <4 x i32> zeroinitializer
-  %69 = add <4 x i32> %65, %68
-  store <4 x i32> %69, <4 x i32>* %temp2, align 16
-  %70 = load <4 x i32>* %temp2, align 16
-  %71 = extractelement <4 x i32> %70, i32 0
-  %72 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %71
-  %73 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %72)
-  %74 = load <4 x i32>* %temp2, align 16
-  %75 = extractelement <4 x i32> %74, i32 1
-  %76 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %75
-  %77 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %76)
-  %78 = load <4 x i32>* %temp2, align 16
-  %79 = extractelement <4 x i32> %78, i32 2
-  %80 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %79
-  %81 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %80)
-  %82 = load <4 x i32>* %temp2, align 16
-  %83 = extractelement <4 x i32> %82, i32 3
-  %84 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %83
-  %85 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %84)
-  %86 = load <4 x i32>* %temp, align 16
-  %87 = lshr <4 x i32> %86, <i32 8, i32 8, i32 8, i32 8>
-  store <4 x i32> %87, <4 x i32>* %temp, align 16
-  %88 = load <4 x i32>* %temp, align 16
-  %89 = and <4 x i32> %88, <i32 255, i32 255, i32 255, i32 255>
-  %90 = mul <4 x i32> %89, <i32 16, i32 16, i32 16, i32 16>
-  %91 = load i32* %offset, align 4
-  %92 = insertelement <4 x i32> undef, i32 %91, i32 0
-  %93 = shufflevector <4 x i32> %92, <4 x i32> undef, <4 x i32> zeroinitializer
-  %94 = add <4 x i32> %90, %93
-  store <4 x i32> %94, <4 x i32>* %temp2, align 16
-  %95 = load <4 x i32>* %temp2, align 16
-  %96 = extractelement <4 x i32> %95, i32 0
-  %97 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %96
-  %98 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %97)
-  %99 = load <4 x i32>* %temp2, align 16
-  %100 = extractelement <4 x i32> %99, i32 1
-  %101 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %100
-  %102 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %101)
-  %103 = load <4 x i32>* %temp2, align 16
-  %104 = extractelement <4 x i32> %103, i32 2
-  %105 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %104
-  %106 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %105)
-  %107 = load <4 x i32>* %temp2, align 16
-  %108 = extractelement <4 x i32> %107, i32 3
-  %109 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %108
-  %110 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %109)
-  %111 = load <4 x i32>* %temp, align 16
-  %112 = lshr <4 x i32> %111, <i32 8, i32 8, i32 8, i32 8>
-  store <4 x i32> %112, <4 x i32>* %temp, align 16
-  %113 = load <4 x i32>* %temp, align 16
-  %114 = and <4 x i32> %113, <i32 255, i32 255, i32 255, i32 255>
-  %115 = mul <4 x i32> %114, <i32 16, i32 16, i32 16, i32 16>
-  %116 = load i32* %offset, align 4
-  %117 = insertelement <4 x i32> undef, i32 %116, i32 0
-  %118 = shufflevector <4 x i32> %117, <4 x i32> undef, <4 x i32> zeroinitializer
-  %119 = add <4 x i32> %115, %118
-  store <4 x i32> %119, <4 x i32>* %temp2, align 16
-  %120 = load <4 x i32>* %temp2, align 16
-  %121 = extractelement <4 x i32> %120, i32 0
-  %122 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %121
-  %123 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %122)
-  %124 = load <4 x i32>* %temp2, align 16
-  %125 = extractelement <4 x i32> %124, i32 1
-  %126 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %125
-  %127 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %126)
-  %128 = load <4 x i32>* %temp2, align 16
-  %129 = extractelement <4 x i32> %128, i32 2
-  %130 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %129
-  %131 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %130)
-  %132 = load <4 x i32>* %temp2, align 16
-  %133 = extractelement <4 x i32> %132, i32 3
-  %134 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %133
-  %135 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %134)
-  br label %136
+tmp_29:                                      ; preds = %tmp_25
+  %tmp_30 = load i32* %tid, align 4
+  %tmp_31 = load i32* %i, align 4
+  %tmp_32 = load i32* %Stride, align 4
+  %tmp_33 = mul i32 %tmp_31, %tmp_32
+  %tmp_34 = add i32 %tmp_30, %tmp_33
+  %tmp_35 = load <4 x i32> addrspace(1)** %tmp_1, align 4
+  %tmp_36 = getelementptr inbounds <4 x i32> addrspace(1)* %tmp_35, i32 %tmp_34
+  %tmp_37 = load <4 x i32> addrspace(1)* %tmp_36, align 16
+  store <4 x i32> %tmp_37, <4 x i32>* %temp, align 16
+  %tmp_38 = load <4 x i32>* %temp, align 16
+  %tmp_39 = and <4 x i32> %tmp_38, <i32 255, i32 255, i32 255, i32 255>
+  %tmp_40 = mul <4 x i32> %tmp_39, <i32 16, i32 16, i32 16, i32 16>
+  %tmp_41 = load i32* %offset, align 4
+  %tmp_42 = insertelement <4 x i32> undef, i32 %tmp_41, i32 0
+  %tmp_43 = shufflevector <4 x i32> %tmp_42, <4 x i32> undef, <4 x i32> zeroinitializer
+  %tmp_44 = add <4 x i32> %tmp_40, %tmp_43
+  store <4 x i32> %tmp_44, <4 x i32>* %temp2, align 16
+  %tmp_45 = load <4 x i32>* %temp2, align 16
+  %tmp_46 = extractelement <4 x i32> %tmp_45, i32 0
+  %tmp_47 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_46
+  %tmp_48 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_47)
+  %tmp_49 = load <4 x i32>* %temp2, align 16
+  %tmp_50 = extractelement <4 x i32> %tmp_49, i32 1
+  %tmp_51 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_50
+  %tmp_52 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_51)
+  %tmp_53 = load <4 x i32>* %temp2, align 16
+  %tmp_54 = extractelement <4 x i32> %tmp_53, i32 2
+  %tmp_55 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_54
+  %tmp_56 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_55)
+  %tmp_57 = load <4 x i32>* %temp2, align 16
+  %tmp_58 = extractelement <4 x i32> %tmp_57, i32 3
+  %tmp_59 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_58
+  %tmp_60 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_59)
+  %tmp_61 = load <4 x i32>* %temp, align 16
+  %tmp_62 = lshr <4 x i32> %tmp_61, <i32 8, i32 8, i32 8, i32 8>
+  store <4 x i32> %tmp_62, <4 x i32>* %temp, align 16
+  %tmp_63 = load <4 x i32>* %temp, align 16
+  %tmp_64 = and <4 x i32> %tmp_63, <i32 255, i32 255, i32 255, i32 255>
+  %tmp_65 = mul <4 x i32> %tmp_64, <i32 16, i32 16, i32 16, i32 16>
+  %tmp_66 = load i32* %offset, align 4
+  %tmp_67 = insertelement <4 x i32> undef, i32 %tmp_66, i32 0
+  %tmp_68 = shufflevector <4 x i32> %tmp_67, <4 x i32> undef, <4 x i32> zeroinitializer
+  %tmp_69 = add <4 x i32> %tmp_65, %tmp_68
+  store <4 x i32> %tmp_69, <4 x i32>* %temp2, align 16
+  %tmp_70 = load <4 x i32>* %temp2, align 16
+  %tmp_71 = extractelement <4 x i32> %tmp_70, i32 0
+  %tmp_72 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_71
+  %tmp_73 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_72)
+  %tmp_74 = load <4 x i32>* %temp2, align 16
+  %tmp_75 = extractelement <4 x i32> %tmp_74, i32 1
+  %tmp_76 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_75
+  %tmp_77 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_76)
+  %tmp_78 = load <4 x i32>* %temp2, align 16
+  %tmp_79 = extractelement <4 x i32> %tmp_78, i32 2
+  %tmp_80 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_79
+  %tmp_81 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_80)
+  %tmp_82 = load <4 x i32>* %temp2, align 16
+  %tmp_83 = extractelement <4 x i32> %tmp_82, i32 3
+  %tmp_84 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_83
+  %tmp_85 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_84)
+  %tmp_86 = load <4 x i32>* %temp, align 16
+  %tmp_87 = lshr <4 x i32> %tmp_86, <i32 8, i32 8, i32 8, i32 8>
+  store <4 x i32> %tmp_87, <4 x i32>* %temp, align 16
+  %tmp_88 = load <4 x i32>* %temp, align 16
+  %tmp_89 = and <4 x i32> %tmp_88, <i32 255, i32 255, i32 255, i32 255>
+  %tmp_90 = mul <4 x i32> %tmp_89, <i32 16, i32 16, i32 16, i32 16>
+  %tmp_91 = load i32* %offset, align 4
+  %tmp_92 = insertelement <4 x i32> undef, i32 %tmp_91, i32 0
+  %tmp_93 = shufflevector <4 x i32> %tmp_92, <4 x i32> undef, <4 x i32> zeroinitializer
+  %tmp_94 = add <4 x i32> %tmp_90, %tmp_93
+  store <4 x i32> %tmp_94, <4 x i32>* %temp2, align 16
+  %tmp_95 = load <4 x i32>* %temp2, align 16
+  %tmp_96 = extractelement <4 x i32> %tmp_95, i32 0
+  %tmp_97 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_96
+  %tmp_98 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_97)
+  %tmp_99 = load <4 x i32>* %temp2, align 16
+  %tmp_100 = extractelement <4 x i32> %tmp_99, i32 1
+  %tmp_101 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_100
+  %tmp_102 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_101)
+  %tmp_103 = load <4 x i32>* %temp2, align 16
+  %tmp_104 = extractelement <4 x i32> %tmp_103, i32 2
+  %tmp_105 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_104
+  %tmp_106 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_105)
+  %tmp_107 = load <4 x i32>* %temp2, align 16
+  %tmp_108 = extractelement <4 x i32> %tmp_107, i32 3
+  %tmp_109 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_108
+  %tmp_110 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_109)
+  %tmp_111 = load <4 x i32>* %temp, align 16
+  %tmp_112 = lshr <4 x i32> %tmp_111, <i32 8, i32 8, i32 8, i32 8>
+  store <4 x i32> %tmp_112, <4 x i32>* %temp, align 16
+  %tmp_113 = load <4 x i32>* %temp, align 16
+  %tmp_114 = and <4 x i32> %tmp_113, <i32 255, i32 255, i32 255, i32 255>
+  %tmp_115 = mul <4 x i32> %tmp_114, <i32 16, i32 16, i32 16, i32 16>
+  %tmp_116 = load i32* %offset, align 4
+  %tmp_117 = insertelement <4 x i32> undef, i32 %tmp_116, i32 0
+  %tmp_118 = shufflevector <4 x i32> %tmp_117, <4 x i32> undef, <4 x i32> zeroinitializer
+  %tmp_119 = add <4 x i32> %tmp_115, %tmp_118
+  store <4 x i32> %tmp_119, <4 x i32>* %temp2, align 16
+  %tmp_120 = load <4 x i32>* %temp2, align 16
+  %tmp_121 = extractelement <4 x i32> %tmp_120, i32 0
+  %tmp_122 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_121
+  %tmp_123 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_122)
+  %tmp_124 = load <4 x i32>* %temp2, align 16
+  %tmp_125 = extractelement <4 x i32> %tmp_124, i32 1
+  %tmp_126 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_125
+  %tmp_127 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_126)
+  %tmp_128 = load <4 x i32>* %temp2, align 16
+  %tmp_129 = extractelement <4 x i32> %tmp_128, i32 2
+  %tmp_130 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_129
+  %tmp_131 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_130)
+  %tmp_132 = load <4 x i32>* %temp2, align 16
+  %tmp_133 = extractelement <4 x i32> %tmp_132, i32 3
+  %tmp_134 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 0), i32 %tmp_133
+  %tmp_135 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_134)
+  br label %tmp_136
 
-; <label>:136                                     ; preds = %29
-  %137 = load i32* %i, align 4
-  %138 = add i32 %137, 1
-  store i32 %138, i32* %i, align 4
-  br label %25
+tmp_136:                                     ; preds = %tmp_29
+  %tmp_137 = load i32* %i, align 4
+  %tmp_138 = add i32 %tmp_137, 1
+  store i32 %tmp_138, i32* %i, align 4
+  br label %tmp_25
 
-; <label>:139                                     ; preds = %25
+tmp_139:                                     ; preds = %tmp_25
   call void @barrier(i32 1)
-  %140 = load i32* %ltid, align 4
-  store i32 %140, i32* %i, align 4
-  br label %141
+  %tmp_140 = load i32* %ltid, align 4
+  store i32 %tmp_140, i32* %i, align 4
+  br label %tmp_141
 
-; <label>:141                                     ; preds = %172, %139
-  %142 = load i32* %i, align 4
-  %143 = icmp ult i32 %142, 256
-  br i1 %143, label %144, label %176
+tmp_141:                                     ; preds = %tmp_172, %tmp_139
+  %tmp_142 = load i32* %i, align 4
+  %tmp_143 = icmp ult i32 %tmp_142, 256
+  br i1 %tmp_143, label %tmp_144, label %tmp_176
 
-; <label>:144                                     ; preds = %141
+tmp_144:                                     ; preds = %tmp_141
   store i32 0, i32* %bin, align 4
-  %145 = load i32* %offset, align 4
-  store i32 %145, i32* %off, align 4
+  %tmp_145 = load i32* %offset, align 4
+  store i32 %tmp_145, i32* %off, align 4
   store i32 0, i32* %j, align 4
-  br label %146
+  br label %tmp_146
 
-; <label>:146                                     ; preds = %159, %144
-  %147 = load i32* %j, align 4
-  %148 = icmp slt i32 %147, 16
-  br i1 %148, label %149, label %164
+tmp_146:                                     ; preds = %tmp_159, %tmp_144
+  %tmp_147 = load i32* %j, align 4
+  %tmp_148 = icmp slt i32 %tmp_147, 16
+  br i1 %tmp_148, label %tmp_149, label %tmp_164
 
-; <label>:149                                     ; preds = %146
-  %150 = load i32* %i, align 4
-  %151 = mul i32 %150, 16
-  %152 = load i32* %off, align 4
-  %153 = urem i32 %152, 16
-  %154 = add i32 %151, %153
-  %155 = getelementptr inbounds [4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 %154
-  %156 = load i32 addrspace(3)* %155, align 4
-  %157 = load i32* %bin, align 4
-  %158 = add i32 %157, %156
-  store i32 %158, i32* %bin, align 4
-  br label %159
+tmp_149:                                     ; preds = %tmp_146
+  %tmp_150 = load i32* %i, align 4
+  %tmp_151 = mul i32 %tmp_150, 16
+  %tmp_152 = load i32* %off, align 4
+  %tmp_153 = urem i32 %tmp_152, 16
+  %tmp_154 = add i32 %tmp_151, %tmp_153
+  %tmp_155 = getelementptr inbounds [4096 x i32] addrspace(3)* @histogramKernel_Vector.subhists, i32 0, i32 %tmp_154
+  %tmp_156 = load i32 addrspace(3)* %tmp_155, align 4
+  %tmp_157 = load i32* %bin, align 4
+  %tmp_158 = add i32 %tmp_157, %tmp_156
+  store i32 %tmp_158, i32* %bin, align 4
+  br label %tmp_159
 
-; <label>:159                                     ; preds = %149
-  %160 = load i32* %j, align 4
-  %161 = add nsw i32 %160, 1
-  store i32 %161, i32* %j, align 4
-  %162 = load i32* %off, align 4
-  %163 = add i32 %162, 1
-  store i32 %163, i32* %off, align 4
-  br label %146
+tmp_159:                                     ; preds = %tmp_149
+  %tmp_160 = load i32* %j, align 4
+  %tmp_161 = add nsw i32 %tmp_160, 1
+  store i32 %tmp_161, i32* %j, align 4
+  %tmp_162 = load i32* %off, align 4
+  %tmp_163 = add i32 %tmp_162, 1
+  store i32 %tmp_163, i32* %off, align 4
+  br label %tmp_146
 
-; <label>:164                                     ; preds = %146
-  %165 = load i32* %bin, align 4
-  %166 = call i32 @__get_group_id_u32(i32 0)
-  %167 = mul i32 %166, 256
-  %168 = load i32* %i, align 4
-  %169 = add i32 %167, %168
-  %170 = load i32 addrspace(1)** %2, align 4
-  %171 = getelementptr inbounds i32 addrspace(1)* %170, i32 %169
-  store i32 %165, i32 addrspace(1)* %171, align 4
-  br label %172
+tmp_164:                                     ; preds = %tmp_146
+  %tmp_165 = load i32* %bin, align 4
+  %tmp_166 = call i32 @__get_group_id_u32(i32 0)
+  %tmp_167 = mul i32 %tmp_166, 256
+  %tmp_168 = load i32* %i, align 4
+  %tmp_169 = add i32 %tmp_167, %tmp_168
+  %tmp_170 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_171 = getelementptr inbounds i32 addrspace(1)* %tmp_170, i32 %tmp_169
+  store i32 %tmp_165, i32 addrspace(1)* %tmp_171, align 4
+  br label %tmp_172
 
-; <label>:172                                     ; preds = %164
-  %173 = load i32* %groupSize, align 4
-  %174 = load i32* %i, align 4
-  %175 = add i32 %174, %173
-  store i32 %175, i32* %i, align 4
-  br label %141
+tmp_172:                                     ; preds = %tmp_164
+  %tmp_173 = load i32* %groupSize, align 4
+  %tmp_174 = load i32* %i, align 4
+  %tmp_175 = add i32 %tmp_174, %tmp_173
+  store i32 %tmp_175, i32* %i, align 4
+  br label %tmp_141
 
-; <label>:176                                     ; preds = %141
+tmp_176:                                     ; preds = %tmp_141
   ret void
 }
 
@@ -285,9 +285,9 @@ declare i32 @__get_group_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define void @histogramKernel_Scalar(i32 addrspace(1)* %Image, i32 addrspace(1)* %Histogram, i32 %nVectorsPerThread) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
-  %3 = alloca i32, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
+  %tmp_3 = alloca i32, align 4
   %tid = alloca i32, align 4
   %ltid = alloca i32, align 4
   %Stride = alloca i32, align 4
@@ -305,262 +305,262 @@ define void @histogramKernel_Scalar(i32 addrspace(1)* %Image, i32 addrspace(1)* 
   %bin = alloca i32, align 4
   %off = alloca i32, align 4
   %j1 = alloca i32, align 4
-  store i32 addrspace(1)* %Image, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %Histogram, i32 addrspace(1)** %2, align 4
-  store i32 %nVectorsPerThread, i32* %3, align 4
-  %4 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %4, i32* %tid, align 4
-  %5 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %5, i32* %ltid, align 4
-  %6 = call i32 @__get_global_size_u32(i32 0)
-  store i32 %6, i32* %Stride, align 4
-  %7 = call i32 @__get_local_size_u32(i32 0)
-  store i32 %7, i32* %groupSize, align 4
+  store i32 addrspace(1)* %Image, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %Histogram, i32 addrspace(1)** %tmp_2, align 4
+  store i32 %nVectorsPerThread, i32* %tmp_3, align 4
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_4, i32* %tid, align 4
+  %tmp_5 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_5, i32* %ltid, align 4
+  %tmp_6 = call i32 @__get_global_size_u32(i32 0)
+  store i32 %tmp_6, i32* %Stride, align 4
+  %tmp_7 = call i32 @__get_local_size_u32(i32 0)
+  store i32 %tmp_7, i32* %groupSize, align 4
   store i32 8, i32* %shft, align 4
   store i32 255, i32* %msk, align 4
-  %8 = load i32* %ltid, align 4
-  %9 = urem i32 %8, 4
-  store i32 %9, i32* %offset, align 4
+  %tmp_8 = load i32* %ltid, align 4
+  %tmp_9 = urem i32 %tmp_8, 4
+  store i32 %tmp_9, i32* %offset, align 4
   store i32 1024, i32* %lmem_items, align 4
   store i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 0), i32 addrspace(3)** %p, align 4
-  %10 = load i32* %ltid, align 4
-  store i32 %10, i32* %i, align 4
-  br label %11
+  %tmp_10 = load i32* %ltid, align 4
+  store i32 %tmp_10, i32* %i, align 4
+  br label %tmp_11
 
-; <label>:11                                      ; preds = %19, %0
-  %12 = load i32* %i, align 4
-  %13 = load i32* %lmem_items, align 4
-  %14 = icmp ult i32 %12, %13
-  br i1 %14, label %15, label %23
+tmp_11:                                      ; preds = %tmp_19, %tmp_0
+  %tmp_12 = load i32* %i, align 4
+  %tmp_13 = load i32* %lmem_items, align 4
+  %tmp_14 = icmp ult i32 %tmp_12, %tmp_13
+  br i1 %tmp_14, label %tmp_15, label %tmp_23
 
-; <label>:15                                      ; preds = %11
-  %16 = load i32* %i, align 4
-  %17 = load i32 addrspace(3)** %p, align 4
-  %18 = getelementptr inbounds i32 addrspace(3)* %17, i32 %16
-  store i32 0, i32 addrspace(3)* %18, align 4
-  br label %19
+tmp_15:                                      ; preds = %tmp_11
+  %tmp_16 = load i32* %i, align 4
+  %tmp_17 = load i32 addrspace(3)** %p, align 4
+  %tmp_18 = getelementptr inbounds i32 addrspace(3)* %tmp_17, i32 %tmp_16
+  store i32 0, i32 addrspace(3)* %tmp_18, align 4
+  br label %tmp_19
 
-; <label>:19                                      ; preds = %15
-  %20 = load i32* %groupSize, align 4
-  %21 = load i32* %i, align 4
-  %22 = add i32 %21, %20
-  store i32 %22, i32* %i, align 4
-  br label %11
+tmp_19:                                      ; preds = %tmp_15
+  %tmp_20 = load i32* %groupSize, align 4
+  %tmp_21 = load i32* %i, align 4
+  %tmp_22 = add i32 %tmp_21, %tmp_20
+  store i32 %tmp_22, i32* %i, align 4
+  br label %tmp_11
 
-; <label>:23                                      ; preds = %11
+tmp_23:                                      ; preds = %tmp_11
   call void @barrier(i32 1)
   store i32 0, i32* %i, align 4
-  br label %24
+  br label %tmp_24
 
-; <label>:24                                      ; preds = %75, %23
-  %25 = load i32* %i, align 4
-  %26 = load i32* %3, align 4
-  %27 = icmp ult i32 %25, %26
-  br i1 %27, label %28, label %78
+tmp_24:                                      ; preds = %tmp_75, %tmp_23
+  %tmp_25 = load i32* %i, align 4
+  %tmp_26 = load i32* %tmp_3, align 4
+  %tmp_27 = icmp ult i32 %tmp_25, %tmp_26
+  br i1 %tmp_27, label %tmp_28, label %tmp_78
 
-; <label>:28                                      ; preds = %24
-  %29 = load i32* %tid, align 4
-  %30 = load i32* %i, align 4
-  %31 = load i32* %Stride, align 4
-  %32 = mul i32 %30, %31
-  %33 = add i32 %29, %32
-  %34 = load i32 addrspace(1)** %1, align 4
-  %35 = getelementptr inbounds i32 addrspace(1)* %34, i32 %33
-  %36 = load i32 addrspace(1)* %35, align 4
-  store i32 %36, i32* %temp, align 4
-  %37 = load i32* %temp, align 4
-  %38 = and i32 %37, 255
-  %39 = mul i32 %38, 4
-  %40 = load i32* %offset, align 4
-  %41 = add i32 %39, %40
-  store i32 %41, i32* %temp2, align 4
-  %42 = load i32* %temp2, align 4
-  %43 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 0), i32 %42
-  %44 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %43)
-  %45 = load i32* %temp, align 4
-  %46 = lshr i32 %45, 8
-  store i32 %46, i32* %temp, align 4
-  %47 = load i32* %temp, align 4
-  %48 = and i32 %47, 255
-  %49 = mul i32 %48, 4
-  %50 = load i32* %offset, align 4
-  %51 = add i32 %49, %50
-  store i32 %51, i32* %temp2, align 4
-  %52 = load i32* %temp2, align 4
-  %53 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 0), i32 %52
-  %54 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %53)
-  %55 = load i32* %temp, align 4
-  %56 = lshr i32 %55, 8
-  store i32 %56, i32* %temp, align 4
-  %57 = load i32* %temp, align 4
-  %58 = and i32 %57, 255
-  %59 = mul i32 %58, 4
-  %60 = load i32* %offset, align 4
-  %61 = add i32 %59, %60
-  store i32 %61, i32* %temp2, align 4
-  %62 = load i32* %temp2, align 4
-  %63 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 0), i32 %62
-  %64 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %63)
-  %65 = load i32* %temp, align 4
-  %66 = lshr i32 %65, 8
-  store i32 %66, i32* %temp, align 4
-  %67 = load i32* %temp, align 4
-  %68 = and i32 %67, 255
-  %69 = mul i32 %68, 4
-  %70 = load i32* %offset, align 4
-  %71 = add i32 %69, %70
-  store i32 %71, i32* %temp2, align 4
-  %72 = load i32* %temp2, align 4
-  %73 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 0), i32 %72
-  %74 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %73)
-  br label %75
+tmp_28:                                      ; preds = %tmp_24
+  %tmp_29 = load i32* %tid, align 4
+  %tmp_30 = load i32* %i, align 4
+  %tmp_31 = load i32* %Stride, align 4
+  %tmp_32 = mul i32 %tmp_30, %tmp_31
+  %tmp_33 = add i32 %tmp_29, %tmp_32
+  %tmp_34 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_35 = getelementptr inbounds i32 addrspace(1)* %tmp_34, i32 %tmp_33
+  %tmp_36 = load i32 addrspace(1)* %tmp_35, align 4
+  store i32 %tmp_36, i32* %temp, align 4
+  %tmp_37 = load i32* %temp, align 4
+  %tmp_38 = and i32 %tmp_37, 255
+  %tmp_39 = mul i32 %tmp_38, 4
+  %tmp_40 = load i32* %offset, align 4
+  %tmp_41 = add i32 %tmp_39, %tmp_40
+  store i32 %tmp_41, i32* %temp2, align 4
+  %tmp_42 = load i32* %temp2, align 4
+  %tmp_43 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 0), i32 %tmp_42
+  %tmp_44 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_43)
+  %tmp_45 = load i32* %temp, align 4
+  %tmp_46 = lshr i32 %tmp_45, 8
+  store i32 %tmp_46, i32* %temp, align 4
+  %tmp_47 = load i32* %temp, align 4
+  %tmp_48 = and i32 %tmp_47, 255
+  %tmp_49 = mul i32 %tmp_48, 4
+  %tmp_50 = load i32* %offset, align 4
+  %tmp_51 = add i32 %tmp_49, %tmp_50
+  store i32 %tmp_51, i32* %temp2, align 4
+  %tmp_52 = load i32* %temp2, align 4
+  %tmp_53 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 0), i32 %tmp_52
+  %tmp_54 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_53)
+  %tmp_55 = load i32* %temp, align 4
+  %tmp_56 = lshr i32 %tmp_55, 8
+  store i32 %tmp_56, i32* %temp, align 4
+  %tmp_57 = load i32* %temp, align 4
+  %tmp_58 = and i32 %tmp_57, 255
+  %tmp_59 = mul i32 %tmp_58, 4
+  %tmp_60 = load i32* %offset, align 4
+  %tmp_61 = add i32 %tmp_59, %tmp_60
+  store i32 %tmp_61, i32* %temp2, align 4
+  %tmp_62 = load i32* %temp2, align 4
+  %tmp_63 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 0), i32 %tmp_62
+  %tmp_64 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_63)
+  %tmp_65 = load i32* %temp, align 4
+  %tmp_66 = lshr i32 %tmp_65, 8
+  store i32 %tmp_66, i32* %temp, align 4
+  %tmp_67 = load i32* %temp, align 4
+  %tmp_68 = and i32 %tmp_67, 255
+  %tmp_69 = mul i32 %tmp_68, 4
+  %tmp_70 = load i32* %offset, align 4
+  %tmp_71 = add i32 %tmp_69, %tmp_70
+  store i32 %tmp_71, i32* %temp2, align 4
+  %tmp_72 = load i32* %temp2, align 4
+  %tmp_73 = getelementptr inbounds i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 0), i32 %tmp_72
+  %tmp_74 = call i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)* %tmp_73)
+  br label %tmp_75
 
-; <label>:75                                      ; preds = %28
-  %76 = load i32* %i, align 4
-  %77 = add i32 %76, 1
-  store i32 %77, i32* %i, align 4
-  br label %24
+tmp_75:                                      ; preds = %tmp_28
+  %tmp_76 = load i32* %i, align 4
+  %tmp_77 = add i32 %tmp_76, 1
+  store i32 %tmp_77, i32* %i, align 4
+  br label %tmp_24
 
-; <label>:78                                      ; preds = %24
+tmp_78:                                      ; preds = %tmp_24
   call void @barrier(i32 1)
-  %79 = load i32* %ltid, align 4
-  store i32 %79, i32* %i, align 4
-  br label %80
+  %tmp_79 = load i32* %ltid, align 4
+  store i32 %tmp_79, i32* %i, align 4
+  br label %tmp_80
 
-; <label>:80                                      ; preds = %111, %78
-  %81 = load i32* %i, align 4
-  %82 = icmp ult i32 %81, 256
-  br i1 %82, label %83, label %115
+tmp_80:                                      ; preds = %tmp_111, %tmp_78
+  %tmp_81 = load i32* %i, align 4
+  %tmp_82 = icmp ult i32 %tmp_81, 256
+  br i1 %tmp_82, label %tmp_83, label %tmp_115
 
-; <label>:83                                      ; preds = %80
+tmp_83:                                      ; preds = %tmp_80
   store i32 0, i32* %bin, align 4
-  %84 = load i32* %offset, align 4
-  store i32 %84, i32* %off, align 4
+  %tmp_84 = load i32* %offset, align 4
+  store i32 %tmp_84, i32* %off, align 4
   store i32 0, i32* %j1, align 4
-  br label %85
+  br label %tmp_85
 
-; <label>:85                                      ; preds = %98, %83
-  %86 = load i32* %j1, align 4
-  %87 = icmp slt i32 %86, 4
-  br i1 %87, label %88, label %103
+tmp_85:                                      ; preds = %tmp_98, %tmp_83
+  %tmp_86 = load i32* %j1, align 4
+  %tmp_87 = icmp slt i32 %tmp_86, 4
+  br i1 %tmp_87, label %tmp_88, label %tmp_103
 
-; <label>:88                                      ; preds = %85
-  %89 = load i32* %i, align 4
-  %90 = mul i32 %89, 4
-  %91 = load i32* %off, align 4
-  %92 = urem i32 %91, 4
-  %93 = add i32 %90, %92
-  %94 = getelementptr inbounds [1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 %93
-  %95 = load i32 addrspace(3)* %94, align 4
-  %96 = load i32* %bin, align 4
-  %97 = add i32 %96, %95
-  store i32 %97, i32* %bin, align 4
-  br label %98
+tmp_88:                                      ; preds = %tmp_85
+  %tmp_89 = load i32* %i, align 4
+  %tmp_90 = mul i32 %tmp_89, 4
+  %tmp_91 = load i32* %off, align 4
+  %tmp_92 = urem i32 %tmp_91, 4
+  %tmp_93 = add i32 %tmp_90, %tmp_92
+  %tmp_94 = getelementptr inbounds [1024 x i32] addrspace(3)* @histogramKernel_Scalar.subhists, i32 0, i32 %tmp_93
+  %tmp_95 = load i32 addrspace(3)* %tmp_94, align 4
+  %tmp_96 = load i32* %bin, align 4
+  %tmp_97 = add i32 %tmp_96, %tmp_95
+  store i32 %tmp_97, i32* %bin, align 4
+  br label %tmp_98
 
-; <label>:98                                      ; preds = %88
-  %99 = load i32* %j1, align 4
-  %100 = add nsw i32 %99, 1
-  store i32 %100, i32* %j1, align 4
-  %101 = load i32* %off, align 4
-  %102 = add i32 %101, 1
-  store i32 %102, i32* %off, align 4
-  br label %85
+tmp_98:                                      ; preds = %tmp_88
+  %tmp_99 = load i32* %j1, align 4
+  %tmp_100 = add nsw i32 %tmp_99, 1
+  store i32 %tmp_100, i32* %j1, align 4
+  %tmp_101 = load i32* %off, align 4
+  %tmp_102 = add i32 %tmp_101, 1
+  store i32 %tmp_102, i32* %off, align 4
+  br label %tmp_85
 
-; <label>:103                                     ; preds = %85
-  %104 = load i32* %bin, align 4
-  %105 = call i32 @__get_group_id_u32(i32 0)
-  %106 = mul i32 %105, 256
-  %107 = load i32* %i, align 4
-  %108 = add i32 %106, %107
-  %109 = load i32 addrspace(1)** %2, align 4
-  %110 = getelementptr inbounds i32 addrspace(1)* %109, i32 %108
-  store i32 %104, i32 addrspace(1)* %110, align 4
-  br label %111
+tmp_103:                                     ; preds = %tmp_85
+  %tmp_104 = load i32* %bin, align 4
+  %tmp_105 = call i32 @__get_group_id_u32(i32 0)
+  %tmp_106 = mul i32 %tmp_105, 256
+  %tmp_107 = load i32* %i, align 4
+  %tmp_108 = add i32 %tmp_106, %tmp_107
+  %tmp_109 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_110 = getelementptr inbounds i32 addrspace(1)* %tmp_109, i32 %tmp_108
+  store i32 %tmp_104, i32 addrspace(1)* %tmp_110, align 4
+  br label %tmp_111
 
-; <label>:111                                     ; preds = %103
-  %112 = load i32* %groupSize, align 4
-  %113 = load i32* %i, align 4
-  %114 = add i32 %113, %112
-  store i32 %114, i32* %i, align 4
-  br label %80
+tmp_111:                                     ; preds = %tmp_103
+  %tmp_112 = load i32* %groupSize, align 4
+  %tmp_113 = load i32* %i, align 4
+  %tmp_114 = add i32 %tmp_113, %tmp_112
+  store i32 %tmp_114, i32* %i, align 4
+  br label %tmp_80
 
-; <label>:115                                     ; preds = %80
+tmp_115:                                     ; preds = %tmp_80
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @reduceKernel(i32 addrspace(1)* %Histogram, i32 %nSubHists) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32, align 4
   %tid = alloca i32, align 4
   %bin = alloca i32, align 4
   %i = alloca i32, align 4
-  store i32 addrspace(1)* %Histogram, i32 addrspace(1)** %1, align 4
-  store i32 %nSubHists, i32* %2, align 4
-  %3 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %3, i32* %tid, align 4
+  store i32 addrspace(1)* %Histogram, i32 addrspace(1)** %tmp_1, align 4
+  store i32 %nSubHists, i32* %tmp_2, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_3, i32* %tid, align 4
   store i32 0, i32* %bin, align 4
   store i32 0, i32* %i, align 4
-  br label %4
+  br label %tmp_4
 
-; <label>:4                                       ; preds = %45, %0
-  %5 = load i32* %i, align 4
-  %6 = load i32* %2, align 4
-  %7 = icmp ult i32 %5, %6
-  br i1 %7, label %8, label %48
+tmp_4:                                       ; preds = %tmp_45, %tmp_0
+  %tmp_5 = load i32* %i, align 4
+  %tmp_6 = load i32* %tmp_2, align 4
+  %tmp_7 = icmp ult i32 %tmp_5, %tmp_6
+  br i1 %tmp_7, label %tmp_8, label %tmp_48
 
-; <label>:8                                       ; preds = %4
-  %9 = load i32* %i, align 4
-  %10 = mul nsw i32 %9, 256
-  %11 = load i32* %tid, align 4
-  %12 = add i32 %10, %11
-  %13 = load i32 addrspace(1)** %1, align 4
-  %14 = getelementptr inbounds i32 addrspace(1)* %13, i32 %12
-  %15 = load i32 addrspace(1)* %14, align 4
-  %16 = load i32* %i, align 4
-  %17 = mul nsw i32 %16, 256
-  %18 = load i32* %tid, align 4
-  %19 = add i32 %17, %18
-  %20 = add i32 %19, 256
-  %21 = load i32 addrspace(1)** %1, align 4
-  %22 = getelementptr inbounds i32 addrspace(1)* %21, i32 %20
-  %23 = load i32 addrspace(1)* %22, align 4
-  %24 = add i32 %15, %23
-  %25 = load i32* %i, align 4
-  %26 = mul nsw i32 %25, 256
-  %27 = load i32* %tid, align 4
-  %28 = add i32 %26, %27
-  %29 = add i32 %28, 512
-  %30 = load i32 addrspace(1)** %1, align 4
-  %31 = getelementptr inbounds i32 addrspace(1)* %30, i32 %29
-  %32 = load i32 addrspace(1)* %31, align 4
-  %33 = add i32 %24, %32
-  %34 = load i32* %i, align 4
-  %35 = mul nsw i32 %34, 256
-  %36 = load i32* %tid, align 4
-  %37 = add i32 %35, %36
-  %38 = add i32 %37, 768
-  %39 = load i32 addrspace(1)** %1, align 4
-  %40 = getelementptr inbounds i32 addrspace(1)* %39, i32 %38
-  %41 = load i32 addrspace(1)* %40, align 4
-  %42 = add i32 %33, %41
-  %43 = load i32* %bin, align 4
-  %44 = add i32 %43, %42
-  store i32 %44, i32* %bin, align 4
-  br label %45
+tmp_8:                                       ; preds = %tmp_4
+  %tmp_9 = load i32* %i, align 4
+  %tmp_10 = mul nsw i32 %tmp_9, 256
+  %tmp_11 = load i32* %tid, align 4
+  %tmp_12 = add i32 %tmp_10, %tmp_11
+  %tmp_13 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_14 = getelementptr inbounds i32 addrspace(1)* %tmp_13, i32 %tmp_12
+  %tmp_15 = load i32 addrspace(1)* %tmp_14, align 4
+  %tmp_16 = load i32* %i, align 4
+  %tmp_17 = mul nsw i32 %tmp_16, 256
+  %tmp_18 = load i32* %tid, align 4
+  %tmp_19 = add i32 %tmp_17, %tmp_18
+  %tmp_20 = add i32 %tmp_19, 256
+  %tmp_21 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_22 = getelementptr inbounds i32 addrspace(1)* %tmp_21, i32 %tmp_20
+  %tmp_23 = load i32 addrspace(1)* %tmp_22, align 4
+  %tmp_24 = add i32 %tmp_15, %tmp_23
+  %tmp_25 = load i32* %i, align 4
+  %tmp_26 = mul nsw i32 %tmp_25, 256
+  %tmp_27 = load i32* %tid, align 4
+  %tmp_28 = add i32 %tmp_26, %tmp_27
+  %tmp_29 = add i32 %tmp_28, 512
+  %tmp_30 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_31 = getelementptr inbounds i32 addrspace(1)* %tmp_30, i32 %tmp_29
+  %tmp_32 = load i32 addrspace(1)* %tmp_31, align 4
+  %tmp_33 = add i32 %tmp_24, %tmp_32
+  %tmp_34 = load i32* %i, align 4
+  %tmp_35 = mul nsw i32 %tmp_34, 256
+  %tmp_36 = load i32* %tid, align 4
+  %tmp_37 = add i32 %tmp_35, %tmp_36
+  %tmp_38 = add i32 %tmp_37, 768
+  %tmp_39 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_40 = getelementptr inbounds i32 addrspace(1)* %tmp_39, i32 %tmp_38
+  %tmp_41 = load i32 addrspace(1)* %tmp_40, align 4
+  %tmp_42 = add i32 %tmp_33, %tmp_41
+  %tmp_43 = load i32* %bin, align 4
+  %tmp_44 = add i32 %tmp_43, %tmp_42
+  store i32 %tmp_44, i32* %bin, align 4
+  br label %tmp_45
 
-; <label>:45                                      ; preds = %8
-  %46 = load i32* %i, align 4
-  %47 = add nsw i32 %46, 4
-  store i32 %47, i32* %i, align 4
-  br label %4
+tmp_45:                                      ; preds = %tmp_8
+  %tmp_46 = load i32* %i, align 4
+  %tmp_47 = add nsw i32 %tmp_46, 4
+  store i32 %tmp_47, i32* %i, align 4
+  br label %tmp_4
 
-; <label>:48                                      ; preds = %4
-  %49 = load i32* %bin, align 4
-  %50 = load i32* %tid, align 4
-  %51 = load i32 addrspace(1)** %1, align 4
-  %52 = getelementptr inbounds i32 addrspace(1)* %51, i32 %50
-  store i32 %49, i32 addrspace(1)* %52, align 4
+tmp_48:                                      ; preds = %tmp_4
+  %tmp_49 = load i32* %bin, align 4
+  %tmp_50 = load i32* %tid, align 4
+  %tmp_51 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_52 = getelementptr inbounds i32 addrspace(1)* %tmp_51, i32 %tmp_50
+  store i32 %tmp_49, i32 addrspace(1)* %tmp_52, align 4
   ret void
 }
 

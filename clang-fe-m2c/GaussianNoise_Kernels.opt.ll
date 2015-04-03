@@ -7,93 +7,93 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
-  %1 = call i32 @__get_local_id_u32(i32 0)
-  br label %2
+  %tmp_3 = call i32 @__get_local_id_u32(i32 0)
+  br label %tmp_4
 
-; <label>:2                                       ; preds = %21, %0
-  %j.0 = phi i32 [ 4, %0 ], [ %22, %21 ]
-  %.0 = phi i32 [ %idum, %0 ], [ %.1, %21 ]
-  %3 = icmp sge i32 %j.0, 0
-  br i1 %3, label %4, label %23
+tmp_4:                                            ; preds = %tmp_35, %0
+  %j.0 = phi i32 [ 4, %0 ], [ %tmp_37, %tmp_35 ]
+  %tmp_1.0 = phi i32 [ %idum, %0 ], [ %tmp_1.1, %tmp_35 ]
+  %tmp_6 = icmp sge i32 %j.0, 0
+  br i1 %tmp_6, label %tmp_7, label %tmp_38
 
-; <label>:4                                       ; preds = %2
-  %5 = sdiv i32 %.0, 127773
-  %6 = mul nsw i32 %5, 127773
-  %7 = sub nsw i32 %.0, %6
-  %8 = mul nsw i32 16807, %7
-  %9 = mul nsw i32 2836, %5
-  %10 = sub nsw i32 %8, %9
-  %11 = icmp slt i32 %10, 0
-  br i1 %11, label %12, label %14
+tmp_7:                                            ; preds = %tmp_4
+  %tmp_9 = sdiv i32 %tmp_1.0, 127773
+  %tmp_12 = mul nsw i32 %tmp_9, 127773
+  %tmp_13 = sub nsw i32 %tmp_1.0, %tmp_12
+  %tmp_14 = mul nsw i32 16807, %tmp_13
+  %tmp_16 = mul nsw i32 2836, %tmp_9
+  %tmp_17 = sub nsw i32 %tmp_14, %tmp_16
+  %tmp_19 = icmp slt i32 %tmp_17, 0
+  br i1 %tmp_19, label %tmp_20, label %tmp_23
 
-; <label>:12                                      ; preds = %4
-  %13 = add nsw i32 %10, 2147483647
-  br label %14
+tmp_20:                                           ; preds = %tmp_7
+  %tmp_22 = add nsw i32 %tmp_17, 2147483647
+  br label %tmp_23
 
-; <label>:14                                      ; preds = %12, %4
-  %.1 = phi i32 [ %13, %12 ], [ %10, %4 ]
-  %15 = icmp slt i32 %j.0, 4
-  br i1 %15, label %16, label %20
+tmp_23:                                           ; preds = %tmp_20, %tmp_7
+  %tmp_1.1 = phi i32 [ %tmp_22, %tmp_20 ], [ %tmp_17, %tmp_7 ]
+  %tmp_25 = icmp slt i32 %j.0, 4
+  br i1 %tmp_25, label %tmp_26, label %tmp_34
 
-; <label>:16                                      ; preds = %14
-  %17 = mul nsw i32 4, %1
-  %18 = add nsw i32 %17, %j.0
-  %19 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %18
-  store i32 %.1, i32 addrspace(3)* %19, align 4
-  br label %20
+tmp_26:                                           ; preds = %tmp_23
+  %tmp_29 = mul nsw i32 4, %tmp_3
+  %tmp_31 = add nsw i32 %tmp_29, %j.0
+  %tmp_33 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %tmp_31
+  store i32 %tmp_1.1, i32 addrspace(3)* %tmp_33, align 4
+  br label %tmp_34
 
-; <label>:20                                      ; preds = %16, %14
-  br label %21
+tmp_34:                                           ; preds = %tmp_26, %tmp_23
+  br label %tmp_35
 
-; <label>:21                                      ; preds = %20
-  %22 = add nsw i32 %j.0, -1
-  br label %2
+tmp_35:                                           ; preds = %tmp_34
+  %tmp_37 = add nsw i32 %j.0, -1
+  br label %tmp_4
 
-; <label>:23                                      ; preds = %2
-  %24 = getelementptr inbounds i32 addrspace(3)* %iv, i32 0
-  %25 = load i32 addrspace(3)* %24, align 4
-  %26 = sdiv i32 %.0, 127773
-  %27 = mul nsw i32 %26, 127773
-  %28 = sub nsw i32 %.0, %27
-  %29 = mul nsw i32 16807, %28
-  %30 = mul nsw i32 2836, %26
-  %31 = sub nsw i32 %29, %30
-  %32 = icmp slt i32 %31, 0
-  br i1 %32, label %33, label %35
+tmp_38:                                           ; preds = %tmp_4
+  %tmp_40 = getelementptr inbounds i32 addrspace(3)* %iv, i32 0
+  %tmp_41 = load i32 addrspace(3)* %tmp_40, align 4
+  %tmp_43 = sdiv i32 %tmp_1.0, 127773
+  %tmp_46 = mul nsw i32 %tmp_43, 127773
+  %tmp_47 = sub nsw i32 %tmp_1.0, %tmp_46
+  %tmp_48 = mul nsw i32 16807, %tmp_47
+  %tmp_50 = mul nsw i32 2836, %tmp_43
+  %tmp_51 = sub nsw i32 %tmp_48, %tmp_50
+  %tmp_53 = icmp slt i32 %tmp_51, 0
+  br i1 %tmp_53, label %tmp_54, label %tmp_57
 
-; <label>:33                                      ; preds = %23
-  %34 = add nsw i32 %31, 2147483647
-  br label %35
+tmp_54:                                           ; preds = %tmp_38
+  %tmp_56 = add nsw i32 %tmp_51, 2147483647
+  br label %tmp_57
 
-; <label>:35                                      ; preds = %33, %23
-  %36 = sdiv i32 %25, 536870912
-  %37 = mul nsw i32 4, %1
-  %38 = add nsw i32 %37, %36
-  %39 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %38
-  %40 = load i32 addrspace(3)* %39, align 4
-  %41 = sitofp i32 %40 to float
-  %42 = fmul float 0x3E00000000000000, %41
-  ret float %42
+tmp_57:                                           ; preds = %tmp_54, %tmp_38
+  %tmp_59 = sdiv i32 %tmp_41, 536870912
+  %tmp_61 = mul nsw i32 4, %tmp_3
+  %tmp_63 = add nsw i32 %tmp_61, %tmp_59
+  %tmp_65 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %tmp_63
+  %tmp_66 = load i32 addrspace(3)* %tmp_65, align 4
+  %tmp_68 = sitofp i32 %tmp_66 to float
+  %tmp_69 = fmul float 0x3E00000000000000, %tmp_68
+  ret float %tmp_69
 }
 
 declare i32 @__get_local_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define <2 x float> @BoxMuller(<2 x float> %uniform) #0 {
-  %1 = extractelement <2 x float> %uniform, i32 0
-  %2 = call float @llvm.log2.f32(float %1)
-  %3 = fmul float %2, 0x3FE62E4300000000
-  %4 = fmul float -2.000000e+00, %3
-  %5 = call float @llvm.sqrt.f32(float %4)
-  %6 = extractelement <2 x float> %uniform, i32 1
-  %7 = fmul float 0x40191EB860000000, %6
-  %8 = call float @_Z3sinf(float %7)
-  %9 = fmul float %5, %8
-  %10 = insertelement <2 x float> undef, float %9, i32 0
-  %11 = call float @_Z3cosf(float %7)
-  %12 = fmul float %5, %11
-  %13 = insertelement <2 x float> %10, float %12, i32 1
-  ret <2 x float> %13
+  %tmp_4 = extractelement <2 x float> %uniform, i32 0
+  %tmp_5 = call float @llvm.log2.f32(float %tmp_4)
+  %tmp_6 = fmul float %tmp_5, 0x3FE62E4300000000
+  %tmp_7 = fmul float -2.000000e+00, %tmp_6
+  %tmp_8 = call float @llvm.sqrt.f32(float %tmp_7)
+  %tmp_10 = extractelement <2 x float> %uniform, i32 1
+  %tmp_11 = fmul float 0x40191EB860000000, %tmp_10
+  %tmp_14 = call float @_Z3sinf(float %tmp_11)
+  %tmp_15 = fmul float %tmp_8, %tmp_14
+  %tmp_16 = insertelement <2 x float> undef, float %tmp_15, i32 0
+  %tmp_19 = call float @_Z3cosf(float %tmp_11)
+  %tmp_20 = fmul float %tmp_8, %tmp_19
+  %tmp_21 = insertelement <2 x float> %tmp_16, float %tmp_20, i32 1
+  ret <2 x float> %tmp_21
 }
 
 ; Function Attrs: nounwind readonly
@@ -108,65 +108,65 @@ declare float @_Z3cosf(float) #1
 
 ; Function Attrs: nounwind
 define void @gaussian_transform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %factor) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_size_u32(i32 0)
-  %3 = mul i32 2, %2
-  %4 = call i32 @__get_global_id_u32(i32 1)
-  %5 = mul i32 %3, %4
-  %6 = add i32 %1, %5
-  %7 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %6
-  %8 = load <4 x i8> addrspace(1)* %7, align 4
-  %9 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %8)
-  %10 = call i32 @__get_global_size_u32(i32 0)
-  %11 = add i32 %6, %10
-  %12 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %11
-  %13 = load <4 x i8> addrspace(1)* %12, align 4
-  %14 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %13)
-  %15 = extractelement <4 x float> %9, i32 0
-  %16 = extractelement <4 x float> %9, i32 1
-  %17 = fadd float %15, %16
-  %18 = extractelement <4 x float> %9, i32 2
-  %19 = fadd float %17, %18
-  %20 = extractelement <4 x float> %9, i32 3
-  %21 = fadd float %19, %20
-  %22 = fdiv float %21, 4.000000e+00, !fpmath !2
-  %23 = extractelement <4 x float> %14, i32 0
-  %24 = extractelement <4 x float> %14, i32 1
-  %25 = fadd float %23, %24
-  %26 = extractelement <4 x float> %14, i32 2
-  %27 = fadd float %25, %26
-  %28 = extractelement <4 x float> %14, i32 3
-  %29 = fadd float %27, %28
-  %30 = fdiv float %29, 4.000000e+00, !fpmath !2
-  %31 = fsub float -0.000000e+00, %22
-  %32 = fptosi float %31 to i32
-  %33 = call float @ran1(i32 %32, i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @gaussian_transform.iv0, i32 0, i32 0))
-  %34 = fsub float -0.000000e+00, %30
-  %35 = fptosi float %34 to i32
-  %36 = call float @ran1(i32 %35, i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @gaussian_transform.iv1, i32 0, i32 0))
-  %37 = insertelement <2 x float> undef, float %33, i32 0
-  %38 = insertelement <2 x float> %37, float %36, i32 1
-  %39 = call <2 x float> @BoxMuller(<2 x float> %38)
-  %40 = extractelement <2 x float> %39, i32 0
-  %41 = sitofp i32 %factor to float
-  %42 = fmul float %40, %41
-  %43 = insertelement <4 x float> undef, float %42, i32 0
-  %44 = shufflevector <4 x float> %43, <4 x float> undef, <4 x i32> zeroinitializer
-  %45 = fadd <4 x float> %9, %44
-  %46 = call <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float> %45)
-  %47 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %6
-  store <4 x i8> %46, <4 x i8> addrspace(1)* %47, align 4
-  %48 = extractelement <2 x float> %39, i32 1
-  %49 = sitofp i32 %factor to float
-  %50 = fmul float %48, %49
-  %51 = insertelement <4 x float> undef, float %50, i32 0
-  %52 = shufflevector <4 x float> %51, <4 x float> undef, <4 x i32> zeroinitializer
-  %53 = fadd <4 x float> %14, %52
-  %54 = call <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float> %53)
-  %55 = call i32 @__get_global_size_u32(i32 0)
-  %56 = add i32 %6, %55
-  %57 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %56
-  store <4 x i8> %54, <4 x i8> addrspace(1)* %57, align 4
+  %tmp_5 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_6 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_7 = mul i32 2, %tmp_6
+  %tmp_8 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_9 = mul i32 %tmp_7, %tmp_8
+  %tmp_10 = add i32 %tmp_5, %tmp_9
+  %tmp_13 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_10
+  %tmp_14 = load <4 x i8> addrspace(1)* %tmp_13, align 4
+  %tmp_15 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_14)
+  %tmp_17 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_18 = add i32 %tmp_10, %tmp_17
+  %tmp_20 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_18
+  %tmp_21 = load <4 x i8> addrspace(1)* %tmp_20, align 4
+  %tmp_22 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_21)
+  %tmp_24 = extractelement <4 x float> %tmp_15, i32 0
+  %tmp_26 = extractelement <4 x float> %tmp_15, i32 1
+  %tmp_27 = fadd float %tmp_24, %tmp_26
+  %tmp_29 = extractelement <4 x float> %tmp_15, i32 2
+  %tmp_30 = fadd float %tmp_27, %tmp_29
+  %tmp_32 = extractelement <4 x float> %tmp_15, i32 3
+  %tmp_33 = fadd float %tmp_30, %tmp_32
+  %tmp_34 = fdiv float %tmp_33, 4.000000e+00, !fpmath !2
+  %tmp_36 = extractelement <4 x float> %tmp_22, i32 0
+  %tmp_38 = extractelement <4 x float> %tmp_22, i32 1
+  %tmp_39 = fadd float %tmp_36, %tmp_38
+  %tmp_41 = extractelement <4 x float> %tmp_22, i32 2
+  %tmp_42 = fadd float %tmp_39, %tmp_41
+  %tmp_44 = extractelement <4 x float> %tmp_22, i32 3
+  %tmp_45 = fadd float %tmp_42, %tmp_44
+  %tmp_46 = fdiv float %tmp_45, 4.000000e+00, !fpmath !2
+  %tmp_48 = fsub float -0.000000e+00, %tmp_34
+  %tmp_49 = fptosi float %tmp_48 to i32
+  %tmp_50 = call float @ran1(i32 %tmp_49, i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @gaussian_transform.iv0, i32 0, i32 0))
+  %tmp_52 = fsub float -0.000000e+00, %tmp_46
+  %tmp_53 = fptosi float %tmp_52 to i32
+  %tmp_54 = call float @ran1(i32 %tmp_53, i32 addrspace(3)* getelementptr inbounds ([1024 x i32] addrspace(3)* @gaussian_transform.iv1, i32 0, i32 0))
+  %tmp_56 = insertelement <2 x float> undef, float %tmp_50, i32 0
+  %tmp_58 = insertelement <2 x float> %tmp_56, float %tmp_54, i32 1
+  %tmp_60 = call <2 x float> @BoxMuller(<2 x float> %tmp_58)
+  %tmp_63 = extractelement <2 x float> %tmp_60, i32 0
+  %tmp_65 = sitofp i32 %factor to float
+  %tmp_66 = fmul float %tmp_63, %tmp_65
+  %tmp_67 = insertelement <4 x float> undef, float %tmp_66, i32 0
+  %tmp_68 = shufflevector <4 x float> %tmp_67, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_69 = fadd <4 x float> %tmp_15, %tmp_68
+  %tmp_70 = call <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float> %tmp_69)
+  %tmp_73 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_10
+  store <4 x i8> %tmp_70, <4 x i8> addrspace(1)* %tmp_73, align 4
+  %tmp_76 = extractelement <2 x float> %tmp_60, i32 1
+  %tmp_78 = sitofp i32 %factor to float
+  %tmp_79 = fmul float %tmp_76, %tmp_78
+  %tmp_80 = insertelement <4 x float> undef, float %tmp_79, i32 0
+  %tmp_81 = shufflevector <4 x float> %tmp_80, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_82 = fadd <4 x float> %tmp_22, %tmp_81
+  %tmp_83 = call <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float> %tmp_82)
+  %tmp_85 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_86 = add i32 %tmp_10, %tmp_85
+  %tmp_88 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_86
+  store <4 x i8> %tmp_83, <4 x i8> addrspace(1)* %tmp_88, align 4
   ret void
 }
 

@@ -4,11 +4,11 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @copy1DFastPath(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = getelementptr inbounds float addrspace(1)* %input, i32 %1
-  %3 = load float addrspace(1)* %2, align 4
-  %4 = getelementptr inbounds float addrspace(1)* %output, i32 %1
-  store float %3, float addrspace(1)* %4, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_6 = getelementptr inbounds float addrspace(1)* %input, i32 %tmp_3
+  %tmp_7 = load float addrspace(1)* %tmp_6, align 4
+  %tmp_10 = getelementptr inbounds float addrspace(1)* %output, i32 %tmp_3
+  store float %tmp_7, float addrspace(1)* %tmp_10, align 4
   ret void
 }
 
@@ -16,20 +16,20 @@ declare i32 @__get_global_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define void @copy1DCompletePath(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = icmp slt i32 %1, 0
-  br i1 %2, label %3, label %6
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_5 = icmp slt i32 %tmp_3, 0
+  br i1 %tmp_5, label %tmp_6, label %tmp_10
 
-; <label>:3                                       ; preds = %0
-  %4 = bitcast float addrspace(1)* %output to i32 addrspace(1)*
-  %5 = call i32 @_Z8atom_addPU3AS1ii(i32 addrspace(1)* %4, i32 1)
-  br label %6
+tmp_6:                                            ; preds = %0
+  %tmp_8 = bitcast float addrspace(1)* %output to i32 addrspace(1)*
+  %tmp_9 = call i32 @_Z8atom_addPU3AS1ii(i32 addrspace(1)* %tmp_8, i32 1)
+  br label %tmp_10
 
-; <label>:6                                       ; preds = %3, %0
-  %7 = getelementptr inbounds float addrspace(1)* %input, i32 %1
-  %8 = load float addrspace(1)* %7, align 4
-  %9 = getelementptr inbounds float addrspace(1)* %output, i32 %1
-  store float %8, float addrspace(1)* %9, align 4
+tmp_10:                                           ; preds = %tmp_6, %0
+  %tmp_13 = getelementptr inbounds float addrspace(1)* %input, i32 %tmp_3
+  %tmp_14 = load float addrspace(1)* %tmp_13, align 4
+  %tmp_17 = getelementptr inbounds float addrspace(1)* %output, i32 %tmp_3
+  store float %tmp_14, float addrspace(1)* %tmp_17, align 4
   ret void
 }
 
@@ -37,63 +37,63 @@ declare i32 @_Z8atom_addPU3AS1ii(i32 addrspace(1)*, i32) #1
 
 ; Function Attrs: nounwind
 define void @copy2Dfloat(float addrspace(1)* %A, float addrspace(1)* %C) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = mul nsw i32 %2, 1024
-  %4 = add nsw i32 %3, %1
-  %5 = getelementptr inbounds float addrspace(1)* %A, i32 %4
-  %6 = load float addrspace(1)* %5, align 4
-  %7 = mul nsw i32 %2, 1024
-  %8 = add nsw i32 %7, %1
-  %9 = getelementptr inbounds float addrspace(1)* %C, i32 %8
-  store float %6, float addrspace(1)* %9, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_4 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_6 = mul nsw i32 %tmp_4, 1024
+  %tmp_8 = add nsw i32 %tmp_6, %tmp_3
+  %tmp_10 = getelementptr inbounds float addrspace(1)* %A, i32 %tmp_8
+  %tmp_11 = load float addrspace(1)* %tmp_10, align 4
+  %tmp_13 = mul nsw i32 %tmp_4, 1024
+  %tmp_15 = add nsw i32 %tmp_13, %tmp_3
+  %tmp_17 = getelementptr inbounds float addrspace(1)* %C, i32 %tmp_15
+  store float %tmp_11, float addrspace(1)* %tmp_17, align 4
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @copy2Dfloat4(<4 x float> addrspace(1)* %A, <4 x float> addrspace(1)* %C) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = mul nsw i32 %2, 1024
-  %4 = add nsw i32 %3, %1
-  %5 = getelementptr inbounds <4 x float> addrspace(1)* %A, i32 %4
-  %6 = load <4 x float> addrspace(1)* %5, align 16
-  %7 = mul nsw i32 %2, 1024
-  %8 = add nsw i32 %7, %1
-  %9 = getelementptr inbounds <4 x float> addrspace(1)* %C, i32 %8
-  store <4 x float> %6, <4 x float> addrspace(1)* %9, align 16
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_4 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_6 = mul nsw i32 %tmp_4, 1024
+  %tmp_8 = add nsw i32 %tmp_6, %tmp_3
+  %tmp_10 = getelementptr inbounds <4 x float> addrspace(1)* %A, i32 %tmp_8
+  %tmp_11 = load <4 x float> addrspace(1)* %tmp_10, align 16
+  %tmp_13 = mul nsw i32 %tmp_4, 1024
+  %tmp_15 = add nsw i32 %tmp_13, %tmp_3
+  %tmp_17 = getelementptr inbounds <4 x float> addrspace(1)* %C, i32 %tmp_15
+  store <4 x float> %tmp_11, <4 x float> addrspace(1)* %tmp_17, align 16
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @copy1Dfloat4(<4 x float> addrspace(1)* %input, <4 x float> addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = getelementptr inbounds <4 x float> addrspace(1)* %input, i32 %1
-  %3 = load <4 x float> addrspace(1)* %2, align 16
-  %4 = getelementptr inbounds <4 x float> addrspace(1)* %output, i32 %1
-  store <4 x float> %3, <4 x float> addrspace(1)* %4, align 16
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_6 = getelementptr inbounds <4 x float> addrspace(1)* %input, i32 %tmp_3
+  %tmp_7 = load <4 x float> addrspace(1)* %tmp_6, align 16
+  %tmp_10 = getelementptr inbounds <4 x float> addrspace(1)* %output, i32 %tmp_3
+  store <4 x float> %tmp_7, <4 x float> addrspace(1)* %tmp_10, align 16
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @NoCoal(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = sub i32 %1, 1
-  %3 = call i32 @__get_local_id_u32(i32 0)
-  %4 = and i32 %3, 15
-  %5 = icmp eq i32 %4, 0
-  br i1 %5, label %6, label %8
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_4 = sub i32 %tmp_3, 1
+  %tmp_5 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_6 = and i32 %tmp_5, 15
+  %tmp_7 = icmp eq i32 %tmp_6, 0
+  br i1 %tmp_7, label %tmp_8, label %tmp_11
 
-; <label>:6                                       ; preds = %0
-  %7 = add nsw i32 %2, 16
-  br label %8
+tmp_8:                                            ; preds = %0
+  %tmp_10 = add nsw i32 %tmp_4, 16
+  br label %tmp_11
 
-; <label>:8                                       ; preds = %6, %0
-  %gid.0 = phi i32 [ %7, %6 ], [ %2, %0 ]
-  %9 = getelementptr inbounds float addrspace(1)* %input, i32 %gid.0
-  %10 = load float addrspace(1)* %9, align 4
-  %11 = getelementptr inbounds float addrspace(1)* %output, i32 %gid.0
-  store float %10, float addrspace(1)* %11, align 4
+tmp_11:                                           ; preds = %tmp_8, %0
+  %gid.0 = phi i32 [ %tmp_10, %tmp_8 ], [ %tmp_4, %0 ]
+  %tmp_14 = getelementptr inbounds float addrspace(1)* %input, i32 %gid.0
+  %tmp_15 = load float addrspace(1)* %tmp_14, align 4
+  %tmp_18 = getelementptr inbounds float addrspace(1)* %output, i32 %gid.0
+  store float %tmp_15, float addrspace(1)* %tmp_18, align 4
   ret void
 }
 
@@ -101,108 +101,108 @@ declare i32 @__get_local_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define void @Split(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = and i32 %1, 1
-  %3 = icmp eq i32 %2, 0
-  br i1 %3, label %4, label %9
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_5 = and i32 %tmp_3, 1
+  %tmp_6 = icmp eq i32 %tmp_5, 0
+  br i1 %tmp_6, label %tmp_7, label %tmp_13
 
-; <label>:4                                       ; preds = %0
-  %5 = and i32 %1, 0
-  %6 = add nsw i32 %5, 62
-  %7 = call i32 @__get_local_id_u32(i32 0)
-  %8 = sub i32 %6, %7
-  br label %9
+tmp_7:                                            ; preds = %0
+  %tmp_9 = and i32 %tmp_3, 0
+  %tmp_10 = add nsw i32 %tmp_9, 62
+  %tmp_11 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_12 = sub i32 %tmp_10, %tmp_11
+  br label %tmp_13
 
-; <label>:9                                       ; preds = %4, %0
-  %gid.0 = phi i32 [ %8, %4 ], [ %1, %0 ]
-  %10 = getelementptr inbounds float addrspace(1)* %input, i32 %gid.0
-  %11 = load float addrspace(1)* %10, align 4
-  %12 = getelementptr inbounds float addrspace(1)* %output, i32 %gid.0
-  store float %11, float addrspace(1)* %12, align 4
+tmp_13:                                           ; preds = %tmp_7, %0
+  %gid.0 = phi i32 [ %tmp_12, %tmp_7 ], [ %tmp_3, %0 ]
+  %tmp_16 = getelementptr inbounds float addrspace(1)* %input, i32 %gid.0
+  %tmp_17 = load float addrspace(1)* %tmp_16, align 4
+  %tmp_20 = getelementptr inbounds float addrspace(1)* %output, i32 %gid.0
+  store float %tmp_17, float addrspace(1)* %tmp_20, align 4
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @localBankConflicts(float addrspace(3)* %share, float addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_local_id_u32(i32 0)
-  br label %3
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_4 = call i32 @__get_local_id_u32(i32 0)
+  br label %tmp_5
 
-; <label>:3                                       ; preds = %21, %0
-  %resulta.0 = phi i32 [ 0, %0 ], [ %12, %21 ]
-  %resultb.0 = phi i32 [ 0, %0 ], [ %20, %21 ]
-  %i.0 = phi i32 [ 0, %0 ], [ %22, %21 ]
-  %4 = icmp slt i32 %i.0, 128
-  br i1 %4, label %5, label %23
+tmp_5:                                            ; preds = %tmp_32, %0
+  %resulta.0 = phi i32 [ 0, %0 ], [ %tmp_19, %tmp_32 ]
+  %resultb.0 = phi i32 [ 0, %0 ], [ %tmp_31, %tmp_32 ]
+  %i.0 = phi i32 [ 0, %0 ], [ %tmp_34, %tmp_32 ]
+  %tmp_7 = icmp slt i32 %i.0, 128
+  br i1 %tmp_7, label %tmp_8, label %tmp_35
 
-; <label>:5                                       ; preds = %3
-  %6 = mul nsw i32 %2, 32
-  %7 = add nsw i32 %6, %i.0
-  %8 = getelementptr inbounds float addrspace(3)* %share, i32 %7
-  %9 = load float addrspace(3)* %8, align 4
-  %10 = sitofp i32 %resulta.0 to float
-  %11 = fadd float %10, %9
-  %12 = fptosi float %11 to i32
-  %13 = mul nsw i32 %2, 32
-  %14 = add nsw i32 %13, %i.0
-  %15 = add nsw i32 %14, 1
-  %16 = getelementptr inbounds float addrspace(3)* %share, i32 %15
-  %17 = load float addrspace(3)* %16, align 4
-  %18 = sitofp i32 %resultb.0 to float
-  %19 = fadd float %18, %17
-  %20 = fptosi float %19 to i32
-  br label %21
+tmp_8:                                            ; preds = %tmp_5
+  %tmp_10 = mul nsw i32 %tmp_4, 32
+  %tmp_12 = add nsw i32 %tmp_10, %i.0
+  %tmp_14 = getelementptr inbounds float addrspace(3)* %share, i32 %tmp_12
+  %tmp_15 = load float addrspace(3)* %tmp_14, align 4
+  %tmp_17 = sitofp i32 %resulta.0 to float
+  %tmp_18 = fadd float %tmp_17, %tmp_15
+  %tmp_19 = fptosi float %tmp_18 to i32
+  %tmp_21 = mul nsw i32 %tmp_4, 32
+  %tmp_23 = add nsw i32 %tmp_21, %i.0
+  %tmp_24 = add nsw i32 %tmp_23, 1
+  %tmp_26 = getelementptr inbounds float addrspace(3)* %share, i32 %tmp_24
+  %tmp_27 = load float addrspace(3)* %tmp_26, align 4
+  %tmp_29 = sitofp i32 %resultb.0 to float
+  %tmp_30 = fadd float %tmp_29, %tmp_27
+  %tmp_31 = fptosi float %tmp_30 to i32
+  br label %tmp_32
 
-; <label>:21                                      ; preds = %5
-  %22 = add nsw i32 %i.0, 2
-  br label %3
+tmp_32:                                           ; preds = %tmp_8
+  %tmp_34 = add nsw i32 %i.0, 2
+  br label %tmp_5
 
-; <label>:23                                      ; preds = %3
-  %24 = add nsw i32 %resulta.0, %resultb.0
-  %25 = sitofp i32 %24 to float
-  %26 = getelementptr inbounds float addrspace(1)* %output, i32 %1
-  store float %25, float addrspace(1)* %26, align 4
+tmp_35:                                           ; preds = %tmp_5
+  %tmp_38 = add nsw i32 %resulta.0, %resultb.0
+  %tmp_39 = sitofp i32 %tmp_38 to float
+  %tmp_42 = getelementptr inbounds float addrspace(1)* %output, i32 %tmp_3
+  store float %tmp_39, float addrspace(1)* %tmp_42, align 4
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @noLocalBankConflicts(float addrspace(3)* %share, float addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_local_id_u32(i32 0)
-  br label %3
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_4 = call i32 @__get_local_id_u32(i32 0)
+  br label %tmp_5
 
-; <label>:3                                       ; preds = %19, %0
-  %resulta.0 = phi i32 [ 0, %0 ], [ %11, %19 ]
-  %resultb.0 = phi i32 [ 0, %0 ], [ %18, %19 ]
-  %i.0 = phi i32 [ 0, %0 ], [ %20, %19 ]
-  %4 = icmp slt i32 %i.0, 128
-  br i1 %4, label %5, label %21
+tmp_5:                                            ; preds = %tmp_30, %0
+  %resulta.0 = phi i32 [ 0, %0 ], [ %tmp_18, %tmp_30 ]
+  %resultb.0 = phi i32 [ 0, %0 ], [ %tmp_29, %tmp_30 ]
+  %i.0 = phi i32 [ 0, %0 ], [ %tmp_32, %tmp_30 ]
+  %tmp_7 = icmp slt i32 %i.0, 128
+  br i1 %tmp_7, label %tmp_8, label %tmp_33
 
-; <label>:5                                       ; preds = %3
-  %6 = add nsw i32 %i.0, %2
-  %7 = getelementptr inbounds float addrspace(3)* %share, i32 %6
-  %8 = load float addrspace(3)* %7, align 4
-  %9 = sitofp i32 %resulta.0 to float
-  %10 = fadd float %9, %8
-  %11 = fptosi float %10 to i32
-  %12 = add nsw i32 %i.0, 1
-  %13 = add nsw i32 %12, %2
-  %14 = getelementptr inbounds float addrspace(3)* %share, i32 %13
-  %15 = load float addrspace(3)* %14, align 4
-  %16 = sitofp i32 %resultb.0 to float
-  %17 = fadd float %16, %15
-  %18 = fptosi float %17 to i32
-  br label %19
+tmp_8:                                            ; preds = %tmp_5
+  %tmp_11 = add nsw i32 %i.0, %tmp_4
+  %tmp_13 = getelementptr inbounds float addrspace(3)* %share, i32 %tmp_11
+  %tmp_14 = load float addrspace(3)* %tmp_13, align 4
+  %tmp_16 = sitofp i32 %resulta.0 to float
+  %tmp_17 = fadd float %tmp_16, %tmp_14
+  %tmp_18 = fptosi float %tmp_17 to i32
+  %tmp_20 = add nsw i32 %i.0, 1
+  %tmp_22 = add nsw i32 %tmp_20, %tmp_4
+  %tmp_24 = getelementptr inbounds float addrspace(3)* %share, i32 %tmp_22
+  %tmp_25 = load float addrspace(3)* %tmp_24, align 4
+  %tmp_27 = sitofp i32 %resultb.0 to float
+  %tmp_28 = fadd float %tmp_27, %tmp_25
+  %tmp_29 = fptosi float %tmp_28 to i32
+  br label %tmp_30
 
-; <label>:19                                      ; preds = %5
-  %20 = add nsw i32 %i.0, 2
-  br label %3
+tmp_30:                                           ; preds = %tmp_8
+  %tmp_32 = add nsw i32 %i.0, 2
+  br label %tmp_5
 
-; <label>:21                                      ; preds = %3
-  %22 = add nsw i32 %resulta.0, %resultb.0
-  %23 = sitofp i32 %22 to float
-  %24 = getelementptr inbounds float addrspace(1)* %output, i32 %1
-  store float %23, float addrspace(1)* %24, align 4
+tmp_33:                                           ; preds = %tmp_5
+  %tmp_36 = add nsw i32 %resulta.0, %resultb.0
+  %tmp_37 = sitofp i32 %tmp_36 to float
+  %tmp_40 = getelementptr inbounds float addrspace(1)* %output, i32 %tmp_3
+  store float %tmp_37, float addrspace(1)* %tmp_40, align 4
   ret void
 }
 

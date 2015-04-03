@@ -4,39 +4,39 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @binarySearch(<4 x i32> addrspace(1)* %outputArray, i32 addrspace(1)* %sortedArray, i32 %subdivSize, i32 %globalLowerIndex, i32 %findMe) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = mul i32 %1, %subdivSize
-  %3 = add i32 %globalLowerIndex, %2
-  %4 = getelementptr inbounds i32 addrspace(1)* %sortedArray, i32 %3
-  %5 = load i32 addrspace(1)* %4, align 4
-  %6 = add i32 %1, 1
-  %7 = mul i32 %6, %subdivSize
-  %8 = add i32 %globalLowerIndex, %7
-  %9 = sub i32 %8, 1
-  %10 = getelementptr inbounds i32 addrspace(1)* %sortedArray, i32 %9
-  %11 = load i32 addrspace(1)* %10, align 4
-  %12 = icmp ugt i32 %5, %findMe
-  br i1 %12, label %15, label %13
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_10 = mul i32 %tmp_6, %subdivSize
+  %tmp_11 = add i32 %globalLowerIndex, %tmp_10
+  %tmp_13 = getelementptr inbounds i32 addrspace(1)* %sortedArray, i32 %tmp_11
+  %tmp_14 = load i32 addrspace(1)* %tmp_13, align 4
+  %tmp_17 = add i32 %tmp_6, 1
+  %tmp_19 = mul i32 %tmp_17, %subdivSize
+  %tmp_20 = add i32 %globalLowerIndex, %tmp_19
+  %tmp_21 = sub i32 %tmp_20, 1
+  %tmp_23 = getelementptr inbounds i32 addrspace(1)* %sortedArray, i32 %tmp_21
+  %tmp_24 = load i32 addrspace(1)* %tmp_23, align 4
+  %tmp_27 = icmp ugt i32 %tmp_14, %findMe
+  br i1 %tmp_27, label %tmp_32, label %tmp_28
 
-; <label>:13                                      ; preds = %0
-  %14 = icmp ult i32 %11, %findMe
-  br i1 %14, label %15, label %16
+tmp_28:                                           ; preds = %0
+  %tmp_31 = icmp ult i32 %tmp_24, %findMe
+  br i1 %tmp_31, label %tmp_32, label %tmp_33
 
-; <label>:15                                      ; preds = %13, %0
-  br label %23
+tmp_32:                                           ; preds = %tmp_28, %0
+  br label %tmp_43
 
-; <label>:16                                      ; preds = %13
-  %17 = getelementptr inbounds <4 x i32> addrspace(1)* %outputArray, i32 0
-  %18 = load <4 x i32> addrspace(1)* %17, align 16
-  %19 = insertelement <4 x i32> %18, i32 %1, i32 0
-  store <4 x i32> %19, <4 x i32> addrspace(1)* %17, align 16
-  %20 = getelementptr inbounds <4 x i32> addrspace(1)* %outputArray, i32 0
-  %21 = load <4 x i32> addrspace(1)* %20, align 16
-  %22 = insertelement <4 x i32> %21, i32 1, i32 3
-  store <4 x i32> %22, <4 x i32> addrspace(1)* %20, align 16
-  br label %23
+tmp_33:                                           ; preds = %tmp_28
+  %tmp_36 = getelementptr inbounds <4 x i32> addrspace(1)* %outputArray, i32 0
+  %tmp_37 = load <4 x i32> addrspace(1)* %tmp_36, align 16
+  %tmp_38 = insertelement <4 x i32> %tmp_37, i32 %tmp_6, i32 0
+  store <4 x i32> %tmp_38, <4 x i32> addrspace(1)* %tmp_36, align 16
+  %tmp_40 = getelementptr inbounds <4 x i32> addrspace(1)* %outputArray, i32 0
+  %tmp_41 = load <4 x i32> addrspace(1)* %tmp_40, align 16
+  %tmp_42 = insertelement <4 x i32> %tmp_41, i32 1, i32 3
+  store <4 x i32> %tmp_42, <4 x i32> addrspace(1)* %tmp_40, align 16
+  br label %tmp_43
 
-; <label>:23                                      ; preds = %16, %15
+tmp_43:                                           ; preds = %tmp_33, %tmp_32
   ret void
 }
 
@@ -44,106 +44,106 @@ declare i32 @__get_global_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define void @binarySearch_mulkeys(i32 addrspace(1)* %keys, i32 addrspace(1)* %input, i32 %numKeys, i32 addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = mul nsw i32 %1, 256
-  %3 = add nsw i32 %2, 255
-  br label %4
+  %tmp_5 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_7 = mul nsw i32 %tmp_5, 256
+  %tmp_9 = add nsw i32 %tmp_7, 255
+  br label %tmp_10
 
-; <label>:4                                       ; preds = %21, %0
-  %i.0 = phi i32 [ 0, %0 ], [ %22, %21 ]
-  %5 = icmp ult i32 %i.0, %numKeys
-  br i1 %5, label %6, label %23
+tmp_10:                                           ; preds = %tmp_40, %0
+  %i.0 = phi i32 [ 0, %0 ], [ %tmp_42, %tmp_40 ]
+  %tmp_13 = icmp ult i32 %i.0, %numKeys
+  br i1 %tmp_13, label %tmp_14, label %tmp_43
 
-; <label>:6                                       ; preds = %4
-  %7 = getelementptr inbounds i32 addrspace(1)* %keys, i32 %i.0
-  %8 = load i32 addrspace(1)* %7, align 4
-  %9 = getelementptr inbounds i32 addrspace(1)* %input, i32 %2
-  %10 = load i32 addrspace(1)* %9, align 4
-  %11 = icmp uge i32 %8, %10
-  br i1 %11, label %12, label %20
+tmp_14:                                           ; preds = %tmp_10
+  %tmp_17 = getelementptr inbounds i32 addrspace(1)* %keys, i32 %i.0
+  %tmp_18 = load i32 addrspace(1)* %tmp_17, align 4
+  %tmp_21 = getelementptr inbounds i32 addrspace(1)* %input, i32 %tmp_7
+  %tmp_22 = load i32 addrspace(1)* %tmp_21, align 4
+  %tmp_23 = icmp uge i32 %tmp_18, %tmp_22
+  br i1 %tmp_23, label %tmp_24, label %tmp_39
 
-; <label>:12                                      ; preds = %6
-  %13 = getelementptr inbounds i32 addrspace(1)* %keys, i32 %i.0
-  %14 = load i32 addrspace(1)* %13, align 4
-  %15 = getelementptr inbounds i32 addrspace(1)* %input, i32 %3
-  %16 = load i32 addrspace(1)* %15, align 4
-  %17 = icmp ule i32 %14, %16
-  br i1 %17, label %18, label %20
+tmp_24:                                           ; preds = %tmp_14
+  %tmp_27 = getelementptr inbounds i32 addrspace(1)* %keys, i32 %i.0
+  %tmp_28 = load i32 addrspace(1)* %tmp_27, align 4
+  %tmp_31 = getelementptr inbounds i32 addrspace(1)* %input, i32 %tmp_9
+  %tmp_32 = load i32 addrspace(1)* %tmp_31, align 4
+  %tmp_33 = icmp ule i32 %tmp_28, %tmp_32
+  br i1 %tmp_33, label %tmp_34, label %tmp_39
 
-; <label>:18                                      ; preds = %12
-  %19 = getelementptr inbounds i32 addrspace(1)* %output, i32 %i.0
-  store i32 %2, i32 addrspace(1)* %19, align 4
-  br label %20
+tmp_34:                                           ; preds = %tmp_24
+  %tmp_38 = getelementptr inbounds i32 addrspace(1)* %output, i32 %i.0
+  store i32 %tmp_7, i32 addrspace(1)* %tmp_38, align 4
+  br label %tmp_39
 
-; <label>:20                                      ; preds = %18, %12, %6
-  br label %21
+tmp_39:                                           ; preds = %tmp_34, %tmp_24, %tmp_14
+  br label %tmp_40
 
-; <label>:21                                      ; preds = %20
-  %22 = add nsw i32 %i.0, 1
-  br label %4
+tmp_40:                                           ; preds = %tmp_39
+  %tmp_42 = add nsw i32 %i.0, 1
+  br label %tmp_10
 
-; <label>:23                                      ; preds = %4
+tmp_43:                                           ; preds = %tmp_10
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @binarySearch_mulkeysConcurrent(i32 addrspace(1)* %keys, i32 addrspace(1)* %input, i32 %inputSize, i32 %numSubdivisions, i32 addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = urem i32 %1, %numSubdivisions
-  %3 = udiv i32 %inputSize, %numSubdivisions
-  %4 = mul i32 %2, %3
-  %5 = udiv i32 %inputSize, %numSubdivisions
-  %6 = add i32 %4, %5
-  %7 = call i32 @__get_global_id_u32(i32 0)
-  %8 = udiv i32 %7, %numSubdivisions
-  %9 = getelementptr inbounds i32 addrspace(1)* %keys, i32 %8
-  %10 = load i32 addrspace(1)* %9, align 4
-  br label %11
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_8 = urem i32 %tmp_6, %numSubdivisions
+  %tmp_11 = udiv i32 %inputSize, %numSubdivisions
+  %tmp_12 = mul i32 %tmp_8, %tmp_11
+  %tmp_16 = udiv i32 %inputSize, %numSubdivisions
+  %tmp_17 = add i32 %tmp_12, %tmp_16
+  %tmp_18 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_20 = udiv i32 %tmp_18, %numSubdivisions
+  %tmp_22 = getelementptr inbounds i32 addrspace(1)* %keys, i32 %tmp_20
+  %tmp_23 = load i32 addrspace(1)* %tmp_22, align 4
+  br label %tmp_24
 
-; <label>:11                                      ; preds = %32, %0
-  %lBound.0 = phi i32 [ %4, %0 ], [ %lBound.1, %32 ]
-  %uBound.0 = phi i32 [ %6, %0 ], [ %uBound.1, %32 ]
-  %12 = icmp sge i32 %uBound.0, %lBound.0
-  br i1 %12, label %13, label %33
+tmp_24:                                           ; preds = %tmp_60, %0
+  %lBound.0 = phi i32 [ %tmp_12, %0 ], [ %lBound.1, %tmp_60 ]
+  %uBound.0 = phi i32 [ %tmp_17, %0 ], [ %uBound.1, %tmp_60 ]
+  %tmp_27 = icmp sge i32 %uBound.0, %lBound.0
+  br i1 %tmp_27, label %tmp_28, label %tmp_61
 
-; <label>:13                                      ; preds = %11
-  %14 = add nsw i32 %lBound.0, %uBound.0
-  %15 = sdiv i32 %14, 2
-  %16 = getelementptr inbounds i32 addrspace(1)* %input, i32 %15
-  %17 = load i32 addrspace(1)* %16, align 4
-  %18 = icmp eq i32 %17, %10
-  br i1 %18, label %19, label %23
+tmp_28:                                           ; preds = %tmp_24
+  %tmp_31 = add nsw i32 %lBound.0, %uBound.0
+  %tmp_32 = sdiv i32 %tmp_31, 2
+  %tmp_35 = getelementptr inbounds i32 addrspace(1)* %input, i32 %tmp_32
+  %tmp_36 = load i32 addrspace(1)* %tmp_35, align 4
+  %tmp_38 = icmp eq i32 %tmp_36, %tmp_23
+  br i1 %tmp_38, label %tmp_39, label %tmp_46
 
-; <label>:19                                      ; preds = %13
-  %20 = call i32 @__get_global_id_u32(i32 0)
-  %21 = udiv i32 %20, %numSubdivisions
-  %22 = getelementptr inbounds i32 addrspace(1)* %output, i32 %21
-  store i32 %15, i32 addrspace(1)* %22, align 4
-  br label %33
+tmp_39:                                           ; preds = %tmp_28
+  %tmp_41 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_43 = udiv i32 %tmp_41, %numSubdivisions
+  %tmp_45 = getelementptr inbounds i32 addrspace(1)* %output, i32 %tmp_43
+  store i32 %tmp_32, i32 addrspace(1)* %tmp_45, align 4
+  br label %tmp_61
 
-; <label>:23                                      ; preds = %13
-  %24 = getelementptr inbounds i32 addrspace(1)* %input, i32 %15
-  %25 = load i32 addrspace(1)* %24, align 4
-  %26 = icmp ugt i32 %25, %10
-  br i1 %26, label %27, label %29
+tmp_46:                                           ; preds = %tmp_28
+  %tmp_49 = getelementptr inbounds i32 addrspace(1)* %input, i32 %tmp_32
+  %tmp_50 = load i32 addrspace(1)* %tmp_49, align 4
+  %tmp_52 = icmp ugt i32 %tmp_50, %tmp_23
+  br i1 %tmp_52, label %tmp_53, label %tmp_56
 
-; <label>:27                                      ; preds = %23
-  %28 = sub nsw i32 %15, 1
-  br label %31
+tmp_53:                                           ; preds = %tmp_46
+  %tmp_55 = sub nsw i32 %tmp_32, 1
+  br label %tmp_59
 
-; <label>:29                                      ; preds = %23
-  %30 = add nsw i32 %15, 1
-  br label %31
+tmp_56:                                           ; preds = %tmp_46
+  %tmp_58 = add nsw i32 %tmp_32, 1
+  br label %tmp_59
 
-; <label>:31                                      ; preds = %29, %27
-  %lBound.1 = phi i32 [ %lBound.0, %27 ], [ %30, %29 ]
-  %uBound.1 = phi i32 [ %28, %27 ], [ %uBound.0, %29 ]
-  br label %32
+tmp_59:                                           ; preds = %tmp_56, %tmp_53
+  %lBound.1 = phi i32 [ %lBound.0, %tmp_53 ], [ %tmp_58, %tmp_56 ]
+  %uBound.1 = phi i32 [ %tmp_55, %tmp_53 ], [ %uBound.0, %tmp_56 ]
+  br label %tmp_60
 
-; <label>:32                                      ; preds = %31
-  br label %11
+tmp_60:                                           ; preds = %tmp_59
+  br label %tmp_24
 
-; <label>:33                                      ; preds = %19, %11
+tmp_61:                                           ; preds = %tmp_39, %tmp_24
   ret void
 }
 

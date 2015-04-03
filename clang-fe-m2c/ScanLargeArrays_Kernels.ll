@@ -6,40 +6,40 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @blockAddition(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = alloca float addrspace(1)*, align 4
-  %2 = alloca float addrspace(1)*, align 4
+  %tmp_1 = alloca float addrspace(1)*, align 4
+  %tmp_2 = alloca float addrspace(1)*, align 4
   %globalId = alloca i32, align 4
   %groupId = alloca i32, align 4
   %localId = alloca i32, align 4
-  store float addrspace(1)* %input, float addrspace(1)** %1, align 4
-  store float addrspace(1)* %output, float addrspace(1)** %2, align 4
-  %3 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %3, i32* %globalId, align 4
-  %4 = call i32 @__get_group_id_u32(i32 0)
-  store i32 %4, i32* %groupId, align 4
-  %5 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %5, i32* %localId, align 4
-  %6 = load i32* %localId, align 4
-  %7 = icmp eq i32 %6, 0
-  br i1 %7, label %8, label %13
+  store float addrspace(1)* %input, float addrspace(1)** %tmp_1, align 4
+  store float addrspace(1)* %output, float addrspace(1)** %tmp_2, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_3, i32* %globalId, align 4
+  %tmp_4 = call i32 @__get_group_id_u32(i32 0)
+  store i32 %tmp_4, i32* %groupId, align 4
+  %tmp_5 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_5, i32* %localId, align 4
+  %tmp_6 = load i32* %localId, align 4
+  %tmp_7 = icmp eq i32 %tmp_6, 0
+  br i1 %tmp_7, label %tmp_8, label %tmp_13
 
-; <label>:8                                       ; preds = %0
-  %9 = load i32* %groupId, align 4
-  %10 = load float addrspace(1)** %1, align 4
-  %11 = getelementptr inbounds float addrspace(1)* %10, i32 %9
-  %12 = load float addrspace(1)* %11, align 4
-  store float %12, float addrspace(3)* getelementptr inbounds ([1 x float] addrspace(3)* @blockAddition.value, i32 0, i32 0), align 4
-  br label %13
+tmp_8:                                       ; preds = %tmp_0
+  %tmp_9 = load i32* %groupId, align 4
+  %tmp_10 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_11 = getelementptr inbounds float addrspace(1)* %tmp_10, i32 %tmp_9
+  %tmp_12 = load float addrspace(1)* %tmp_11, align 4
+  store float %tmp_12, float addrspace(3)* getelementptr inbounds ([1 x float] addrspace(3)* @blockAddition.value, i32 0, i32 0), align 4
+  br label %tmp_13
 
-; <label>:13                                      ; preds = %8, %0
+tmp_13:                                      ; preds = %tmp_8, %tmp_0
   call void @barrier(i32 1)
-  %14 = load float addrspace(3)* getelementptr inbounds ([1 x float] addrspace(3)* @blockAddition.value, i32 0, i32 0), align 4
-  %15 = load i32* %globalId, align 4
-  %16 = load float addrspace(1)** %2, align 4
-  %17 = getelementptr inbounds float addrspace(1)* %16, i32 %15
-  %18 = load float addrspace(1)* %17, align 4
-  %19 = fadd float %18, %14
-  store float %19, float addrspace(1)* %17, align 4
+  %tmp_14 = load float addrspace(3)* getelementptr inbounds ([1 x float] addrspace(3)* @blockAddition.value, i32 0, i32 0), align 4
+  %tmp_15 = load i32* %globalId, align 4
+  %tmp_16 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_17 = getelementptr inbounds float addrspace(1)* %tmp_16, i32 %tmp_15
+  %tmp_18 = load float addrspace(1)* %tmp_17, align 4
+  %tmp_19 = fadd float %tmp_18, %tmp_14
+  store float %tmp_19, float addrspace(1)* %tmp_17, align 4
   ret void
 }
 
@@ -53,374 +53,374 @@ declare void @barrier(i32) #1
 
 ; Function Attrs: nounwind
 define void @ScanLargeArrays(float addrspace(1)* %output, float addrspace(1)* %input, float addrspace(3)* %block, i32 %block_size, float addrspace(1)* %sumBuffer) #0 {
-  %1 = alloca float addrspace(1)*, align 4
-  %2 = alloca float addrspace(1)*, align 4
-  %3 = alloca float addrspace(3)*, align 4
-  %4 = alloca i32, align 4
-  %5 = alloca float addrspace(1)*, align 4
+  %tmp_1 = alloca float addrspace(1)*, align 4
+  %tmp_2 = alloca float addrspace(1)*, align 4
+  %tmp_3 = alloca float addrspace(3)*, align 4
+  %tmp_4 = alloca i32, align 4
+  %tmp_5 = alloca float addrspace(1)*, align 4
   %tid = alloca i32, align 4
   %gid = alloca i32, align 4
   %bid = alloca i32, align 4
   %cache0 = alloca float, align 4
   %cache1 = alloca float, align 4
   %stride = alloca i32, align 4
-  store float addrspace(1)* %output, float addrspace(1)** %1, align 4
-  store float addrspace(1)* %input, float addrspace(1)** %2, align 4
-  store float addrspace(3)* %block, float addrspace(3)** %3, align 4
-  store i32 %block_size, i32* %4, align 4
-  store float addrspace(1)* %sumBuffer, float addrspace(1)** %5, align 4
-  %6 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %6, i32* %tid, align 4
-  %7 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %7, i32* %gid, align 4
-  %8 = call i32 @__get_group_id_u32(i32 0)
-  store i32 %8, i32* %bid, align 4
-  %9 = load i32* %gid, align 4
-  %10 = mul nsw i32 2, %9
-  %11 = load float addrspace(1)** %2, align 4
-  %12 = getelementptr inbounds float addrspace(1)* %11, i32 %10
-  %13 = load float addrspace(1)* %12, align 4
-  %14 = load i32* %tid, align 4
-  %15 = mul nsw i32 2, %14
-  %16 = load float addrspace(3)** %3, align 4
-  %17 = getelementptr inbounds float addrspace(3)* %16, i32 %15
-  store float %13, float addrspace(3)* %17, align 4
-  %18 = load i32* %gid, align 4
-  %19 = mul nsw i32 2, %18
-  %20 = add nsw i32 %19, 1
-  %21 = load float addrspace(1)** %2, align 4
-  %22 = getelementptr inbounds float addrspace(1)* %21, i32 %20
-  %23 = load float addrspace(1)* %22, align 4
-  %24 = load i32* %tid, align 4
-  %25 = mul nsw i32 2, %24
-  %26 = add nsw i32 %25, 1
-  %27 = load float addrspace(3)** %3, align 4
-  %28 = getelementptr inbounds float addrspace(3)* %27, i32 %26
-  store float %23, float addrspace(3)* %28, align 4
+  store float addrspace(1)* %output, float addrspace(1)** %tmp_1, align 4
+  store float addrspace(1)* %input, float addrspace(1)** %tmp_2, align 4
+  store float addrspace(3)* %block, float addrspace(3)** %tmp_3, align 4
+  store i32 %block_size, i32* %tmp_4, align 4
+  store float addrspace(1)* %sumBuffer, float addrspace(1)** %tmp_5, align 4
+  %tmp_6 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_6, i32* %tid, align 4
+  %tmp_7 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_7, i32* %gid, align 4
+  %tmp_8 = call i32 @__get_group_id_u32(i32 0)
+  store i32 %tmp_8, i32* %bid, align 4
+  %tmp_9 = load i32* %gid, align 4
+  %tmp_10 = mul nsw i32 2, %tmp_9
+  %tmp_11 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_12 = getelementptr inbounds float addrspace(1)* %tmp_11, i32 %tmp_10
+  %tmp_13 = load float addrspace(1)* %tmp_12, align 4
+  %tmp_14 = load i32* %tid, align 4
+  %tmp_15 = mul nsw i32 2, %tmp_14
+  %tmp_16 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_17 = getelementptr inbounds float addrspace(3)* %tmp_16, i32 %tmp_15
+  store float %tmp_13, float addrspace(3)* %tmp_17, align 4
+  %tmp_18 = load i32* %gid, align 4
+  %tmp_19 = mul nsw i32 2, %tmp_18
+  %tmp_20 = add nsw i32 %tmp_19, 1
+  %tmp_21 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_22 = getelementptr inbounds float addrspace(1)* %tmp_21, i32 %tmp_20
+  %tmp_23 = load float addrspace(1)* %tmp_22, align 4
+  %tmp_24 = load i32* %tid, align 4
+  %tmp_25 = mul nsw i32 2, %tmp_24
+  %tmp_26 = add nsw i32 %tmp_25, 1
+  %tmp_27 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_28 = getelementptr inbounds float addrspace(3)* %tmp_27, i32 %tmp_26
+  store float %tmp_23, float addrspace(3)* %tmp_28, align 4
   call void @barrier(i32 1)
-  %29 = load float addrspace(3)** %3, align 4
-  %30 = getelementptr inbounds float addrspace(3)* %29, i32 0
-  %31 = load float addrspace(3)* %30, align 4
-  store float %31, float* %cache0, align 4
-  %32 = load float* %cache0, align 4
-  %33 = load float addrspace(3)** %3, align 4
-  %34 = getelementptr inbounds float addrspace(3)* %33, i32 1
-  %35 = load float addrspace(3)* %34, align 4
-  %36 = fadd float %32, %35
-  store float %36, float* %cache1, align 4
+  %tmp_29 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_30 = getelementptr inbounds float addrspace(3)* %tmp_29, i32 0
+  %tmp_31 = load float addrspace(3)* %tmp_30, align 4
+  store float %tmp_31, float* %cache0, align 4
+  %tmp_32 = load float* %cache0, align 4
+  %tmp_33 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_34 = getelementptr inbounds float addrspace(3)* %tmp_33, i32 1
+  %tmp_35 = load float addrspace(3)* %tmp_34, align 4
+  %tmp_36 = fadd float %tmp_32, %tmp_35
+  store float %tmp_36, float* %cache1, align 4
   store i32 1, i32* %stride, align 4
-  br label %37
+  br label %tmp_37
 
-; <label>:37                                      ; preds = %87, %0
-  %38 = load i32* %stride, align 4
-  %39 = load i32* %4, align 4
-  %40 = icmp ult i32 %38, %39
-  br i1 %40, label %41, label %90
+tmp_37:                                      ; preds = %tmp_87, %tmp_0
+  %tmp_38 = load i32* %stride, align 4
+  %tmp_39 = load i32* %tmp_4, align 4
+  %tmp_40 = icmp ult i32 %tmp_38, %tmp_39
+  br i1 %tmp_40, label %tmp_41, label %tmp_90
 
-; <label>:41                                      ; preds = %37
-  %42 = load i32* %tid, align 4
-  %43 = mul nsw i32 2, %42
-  %44 = load i32* %stride, align 4
-  %45 = icmp sge i32 %43, %44
-  br i1 %45, label %46, label %75
+tmp_41:                                      ; preds = %tmp_37
+  %tmp_42 = load i32* %tid, align 4
+  %tmp_43 = mul nsw i32 2, %tmp_42
+  %tmp_44 = load i32* %stride, align 4
+  %tmp_45 = icmp sge i32 %tmp_43, %tmp_44
+  br i1 %tmp_45, label %tmp_46, label %tmp_75
 
-; <label>:46                                      ; preds = %41
-  %47 = load i32* %tid, align 4
-  %48 = mul nsw i32 2, %47
-  %49 = load i32* %stride, align 4
-  %50 = sub nsw i32 %48, %49
-  %51 = load float addrspace(3)** %3, align 4
-  %52 = getelementptr inbounds float addrspace(3)* %51, i32 %50
-  %53 = load float addrspace(3)* %52, align 4
-  %54 = load i32* %tid, align 4
-  %55 = mul nsw i32 2, %54
-  %56 = load float addrspace(3)** %3, align 4
-  %57 = getelementptr inbounds float addrspace(3)* %56, i32 %55
-  %58 = load float addrspace(3)* %57, align 4
-  %59 = fadd float %53, %58
-  store float %59, float* %cache0, align 4
-  %60 = load i32* %tid, align 4
-  %61 = mul nsw i32 2, %60
-  %62 = add nsw i32 %61, 1
-  %63 = load i32* %stride, align 4
-  %64 = sub nsw i32 %62, %63
-  %65 = load float addrspace(3)** %3, align 4
-  %66 = getelementptr inbounds float addrspace(3)* %65, i32 %64
-  %67 = load float addrspace(3)* %66, align 4
-  %68 = load i32* %tid, align 4
-  %69 = mul nsw i32 2, %68
-  %70 = add nsw i32 %69, 1
-  %71 = load float addrspace(3)** %3, align 4
-  %72 = getelementptr inbounds float addrspace(3)* %71, i32 %70
-  %73 = load float addrspace(3)* %72, align 4
-  %74 = fadd float %67, %73
-  store float %74, float* %cache1, align 4
-  br label %75
+tmp_46:                                      ; preds = %tmp_41
+  %tmp_47 = load i32* %tid, align 4
+  %tmp_48 = mul nsw i32 2, %tmp_47
+  %tmp_49 = load i32* %stride, align 4
+  %tmp_50 = sub nsw i32 %tmp_48, %tmp_49
+  %tmp_51 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_52 = getelementptr inbounds float addrspace(3)* %tmp_51, i32 %tmp_50
+  %tmp_53 = load float addrspace(3)* %tmp_52, align 4
+  %tmp_54 = load i32* %tid, align 4
+  %tmp_55 = mul nsw i32 2, %tmp_54
+  %tmp_56 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_57 = getelementptr inbounds float addrspace(3)* %tmp_56, i32 %tmp_55
+  %tmp_58 = load float addrspace(3)* %tmp_57, align 4
+  %tmp_59 = fadd float %tmp_53, %tmp_58
+  store float %tmp_59, float* %cache0, align 4
+  %tmp_60 = load i32* %tid, align 4
+  %tmp_61 = mul nsw i32 2, %tmp_60
+  %tmp_62 = add nsw i32 %tmp_61, 1
+  %tmp_63 = load i32* %stride, align 4
+  %tmp_64 = sub nsw i32 %tmp_62, %tmp_63
+  %tmp_65 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_66 = getelementptr inbounds float addrspace(3)* %tmp_65, i32 %tmp_64
+  %tmp_67 = load float addrspace(3)* %tmp_66, align 4
+  %tmp_68 = load i32* %tid, align 4
+  %tmp_69 = mul nsw i32 2, %tmp_68
+  %tmp_70 = add nsw i32 %tmp_69, 1
+  %tmp_71 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_72 = getelementptr inbounds float addrspace(3)* %tmp_71, i32 %tmp_70
+  %tmp_73 = load float addrspace(3)* %tmp_72, align 4
+  %tmp_74 = fadd float %tmp_67, %tmp_73
+  store float %tmp_74, float* %cache1, align 4
+  br label %tmp_75
 
-; <label>:75                                      ; preds = %46, %41
+tmp_75:                                      ; preds = %tmp_46, %tmp_41
   call void @barrier(i32 1)
-  %76 = load float* %cache0, align 4
-  %77 = load i32* %tid, align 4
-  %78 = mul nsw i32 2, %77
-  %79 = load float addrspace(3)** %3, align 4
-  %80 = getelementptr inbounds float addrspace(3)* %79, i32 %78
-  store float %76, float addrspace(3)* %80, align 4
-  %81 = load float* %cache1, align 4
-  %82 = load i32* %tid, align 4
-  %83 = mul nsw i32 2, %82
-  %84 = add nsw i32 %83, 1
-  %85 = load float addrspace(3)** %3, align 4
-  %86 = getelementptr inbounds float addrspace(3)* %85, i32 %84
-  store float %81, float addrspace(3)* %86, align 4
+  %tmp_76 = load float* %cache0, align 4
+  %tmp_77 = load i32* %tid, align 4
+  %tmp_78 = mul nsw i32 2, %tmp_77
+  %tmp_79 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_80 = getelementptr inbounds float addrspace(3)* %tmp_79, i32 %tmp_78
+  store float %tmp_76, float addrspace(3)* %tmp_80, align 4
+  %tmp_81 = load float* %cache1, align 4
+  %tmp_82 = load i32* %tid, align 4
+  %tmp_83 = mul nsw i32 2, %tmp_82
+  %tmp_84 = add nsw i32 %tmp_83, 1
+  %tmp_85 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_86 = getelementptr inbounds float addrspace(3)* %tmp_85, i32 %tmp_84
+  store float %tmp_81, float addrspace(3)* %tmp_86, align 4
   call void @barrier(i32 1)
-  br label %87
+  br label %tmp_87
 
-; <label>:87                                      ; preds = %75
-  %88 = load i32* %stride, align 4
-  %89 = mul nsw i32 %88, 2
-  store i32 %89, i32* %stride, align 4
-  br label %37
+tmp_87:                                      ; preds = %tmp_75
+  %tmp_88 = load i32* %stride, align 4
+  %tmp_89 = mul nsw i32 %tmp_88, 2
+  store i32 %tmp_89, i32* %stride, align 4
+  br label %tmp_37
 
-; <label>:90                                      ; preds = %37
-  %91 = load i32* %4, align 4
-  %92 = sub i32 %91, 1
-  %93 = load float addrspace(3)** %3, align 4
-  %94 = getelementptr inbounds float addrspace(3)* %93, i32 %92
-  %95 = load float addrspace(3)* %94, align 4
-  %96 = load i32* %bid, align 4
-  %97 = load float addrspace(1)** %5, align 4
-  %98 = getelementptr inbounds float addrspace(1)* %97, i32 %96
-  store float %95, float addrspace(1)* %98, align 4
-  %99 = load i32* %tid, align 4
-  %100 = icmp eq i32 %99, 0
-  br i1 %100, label %101, label %116
+tmp_90:                                      ; preds = %tmp_37
+  %tmp_91 = load i32* %tmp_4, align 4
+  %tmp_92 = sub i32 %tmp_91, 1
+  %tmp_93 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_94 = getelementptr inbounds float addrspace(3)* %tmp_93, i32 %tmp_92
+  %tmp_95 = load float addrspace(3)* %tmp_94, align 4
+  %tmp_96 = load i32* %bid, align 4
+  %tmp_97 = load float addrspace(1)** %tmp_5, align 4
+  %tmp_98 = getelementptr inbounds float addrspace(1)* %tmp_97, i32 %tmp_96
+  store float %tmp_95, float addrspace(1)* %tmp_98, align 4
+  %tmp_99 = load i32* %tid, align 4
+  %tmp_100 = icmp eq i32 %tmp_99, 0
+  br i1 %tmp_100, label %tmp_101, label %tmp_116
 
-; <label>:101                                     ; preds = %90
-  %102 = load i32* %gid, align 4
-  %103 = mul nsw i32 2, %102
-  %104 = load float addrspace(1)** %1, align 4
-  %105 = getelementptr inbounds float addrspace(1)* %104, i32 %103
-  store float 0.000000e+00, float addrspace(1)* %105, align 4
-  %106 = load i32* %tid, align 4
-  %107 = mul nsw i32 2, %106
-  %108 = load float addrspace(3)** %3, align 4
-  %109 = getelementptr inbounds float addrspace(3)* %108, i32 %107
-  %110 = load float addrspace(3)* %109, align 4
-  %111 = load i32* %gid, align 4
-  %112 = mul nsw i32 2, %111
-  %113 = add nsw i32 %112, 1
-  %114 = load float addrspace(1)** %1, align 4
-  %115 = getelementptr inbounds float addrspace(1)* %114, i32 %113
-  store float %110, float addrspace(1)* %115, align 4
-  br label %137
+tmp_101:                                     ; preds = %tmp_90
+  %tmp_102 = load i32* %gid, align 4
+  %tmp_103 = mul nsw i32 2, %tmp_102
+  %tmp_104 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_105 = getelementptr inbounds float addrspace(1)* %tmp_104, i32 %tmp_103
+  store float 0.000000e+00, float addrspace(1)* %tmp_105, align 4
+  %tmp_106 = load i32* %tid, align 4
+  %tmp_107 = mul nsw i32 2, %tmp_106
+  %tmp_108 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_109 = getelementptr inbounds float addrspace(3)* %tmp_108, i32 %tmp_107
+  %tmp_110 = load float addrspace(3)* %tmp_109, align 4
+  %tmp_111 = load i32* %gid, align 4
+  %tmp_112 = mul nsw i32 2, %tmp_111
+  %tmp_113 = add nsw i32 %tmp_112, 1
+  %tmp_114 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_115 = getelementptr inbounds float addrspace(1)* %tmp_114, i32 %tmp_113
+  store float %tmp_110, float addrspace(1)* %tmp_115, align 4
+  br label %tmp_137
 
-; <label>:116                                     ; preds = %90
-  %117 = load i32* %tid, align 4
-  %118 = mul nsw i32 2, %117
-  %119 = sub nsw i32 %118, 1
-  %120 = load float addrspace(3)** %3, align 4
-  %121 = getelementptr inbounds float addrspace(3)* %120, i32 %119
-  %122 = load float addrspace(3)* %121, align 4
-  %123 = load i32* %gid, align 4
-  %124 = mul nsw i32 2, %123
-  %125 = load float addrspace(1)** %1, align 4
-  %126 = getelementptr inbounds float addrspace(1)* %125, i32 %124
-  store float %122, float addrspace(1)* %126, align 4
-  %127 = load i32* %tid, align 4
-  %128 = mul nsw i32 2, %127
-  %129 = load float addrspace(3)** %3, align 4
-  %130 = getelementptr inbounds float addrspace(3)* %129, i32 %128
-  %131 = load float addrspace(3)* %130, align 4
-  %132 = load i32* %gid, align 4
-  %133 = mul nsw i32 2, %132
-  %134 = add nsw i32 %133, 1
-  %135 = load float addrspace(1)** %1, align 4
-  %136 = getelementptr inbounds float addrspace(1)* %135, i32 %134
-  store float %131, float addrspace(1)* %136, align 4
-  br label %137
+tmp_116:                                     ; preds = %tmp_90
+  %tmp_117 = load i32* %tid, align 4
+  %tmp_118 = mul nsw i32 2, %tmp_117
+  %tmp_119 = sub nsw i32 %tmp_118, 1
+  %tmp_120 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_121 = getelementptr inbounds float addrspace(3)* %tmp_120, i32 %tmp_119
+  %tmp_122 = load float addrspace(3)* %tmp_121, align 4
+  %tmp_123 = load i32* %gid, align 4
+  %tmp_124 = mul nsw i32 2, %tmp_123
+  %tmp_125 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_126 = getelementptr inbounds float addrspace(1)* %tmp_125, i32 %tmp_124
+  store float %tmp_122, float addrspace(1)* %tmp_126, align 4
+  %tmp_127 = load i32* %tid, align 4
+  %tmp_128 = mul nsw i32 2, %tmp_127
+  %tmp_129 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_130 = getelementptr inbounds float addrspace(3)* %tmp_129, i32 %tmp_128
+  %tmp_131 = load float addrspace(3)* %tmp_130, align 4
+  %tmp_132 = load i32* %gid, align 4
+  %tmp_133 = mul nsw i32 2, %tmp_132
+  %tmp_134 = add nsw i32 %tmp_133, 1
+  %tmp_135 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_136 = getelementptr inbounds float addrspace(1)* %tmp_135, i32 %tmp_134
+  store float %tmp_131, float addrspace(1)* %tmp_136, align 4
+  br label %tmp_137
 
-; <label>:137                                     ; preds = %116, %101
+tmp_137:                                     ; preds = %tmp_116, %tmp_101
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @prefixSum(float addrspace(1)* %output, float addrspace(1)* %input, float addrspace(3)* %block, i32 %block_size) #0 {
-  %1 = alloca float addrspace(1)*, align 4
-  %2 = alloca float addrspace(1)*, align 4
-  %3 = alloca float addrspace(3)*, align 4
-  %4 = alloca i32, align 4
+  %tmp_1 = alloca float addrspace(1)*, align 4
+  %tmp_2 = alloca float addrspace(1)*, align 4
+  %tmp_3 = alloca float addrspace(3)*, align 4
+  %tmp_4 = alloca i32, align 4
   %tid = alloca i32, align 4
   %gid = alloca i32, align 4
   %bid = alloca i32, align 4
   %cache0 = alloca float, align 4
   %cache1 = alloca float, align 4
   %stride = alloca i32, align 4
-  store float addrspace(1)* %output, float addrspace(1)** %1, align 4
-  store float addrspace(1)* %input, float addrspace(1)** %2, align 4
-  store float addrspace(3)* %block, float addrspace(3)** %3, align 4
-  store i32 %block_size, i32* %4, align 4
-  %5 = call i32 @__get_local_id_u32(i32 0)
-  store i32 %5, i32* %tid, align 4
-  %6 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %6, i32* %gid, align 4
-  %7 = call i32 @__get_group_id_u32(i32 0)
-  store i32 %7, i32* %bid, align 4
-  %8 = load i32* %gid, align 4
-  %9 = mul nsw i32 2, %8
-  %10 = load float addrspace(1)** %2, align 4
-  %11 = getelementptr inbounds float addrspace(1)* %10, i32 %9
-  %12 = load float addrspace(1)* %11, align 4
-  %13 = load i32* %tid, align 4
-  %14 = mul nsw i32 2, %13
-  %15 = load float addrspace(3)** %3, align 4
-  %16 = getelementptr inbounds float addrspace(3)* %15, i32 %14
-  store float %12, float addrspace(3)* %16, align 4
-  %17 = load i32* %gid, align 4
-  %18 = mul nsw i32 2, %17
-  %19 = add nsw i32 %18, 1
-  %20 = load float addrspace(1)** %2, align 4
-  %21 = getelementptr inbounds float addrspace(1)* %20, i32 %19
-  %22 = load float addrspace(1)* %21, align 4
-  %23 = load i32* %tid, align 4
-  %24 = mul nsw i32 2, %23
-  %25 = add nsw i32 %24, 1
-  %26 = load float addrspace(3)** %3, align 4
-  %27 = getelementptr inbounds float addrspace(3)* %26, i32 %25
-  store float %22, float addrspace(3)* %27, align 4
+  store float addrspace(1)* %output, float addrspace(1)** %tmp_1, align 4
+  store float addrspace(1)* %input, float addrspace(1)** %tmp_2, align 4
+  store float addrspace(3)* %block, float addrspace(3)** %tmp_3, align 4
+  store i32 %block_size, i32* %tmp_4, align 4
+  %tmp_5 = call i32 @__get_local_id_u32(i32 0)
+  store i32 %tmp_5, i32* %tid, align 4
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_6, i32* %gid, align 4
+  %tmp_7 = call i32 @__get_group_id_u32(i32 0)
+  store i32 %tmp_7, i32* %bid, align 4
+  %tmp_8 = load i32* %gid, align 4
+  %tmp_9 = mul nsw i32 2, %tmp_8
+  %tmp_10 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_11 = getelementptr inbounds float addrspace(1)* %tmp_10, i32 %tmp_9
+  %tmp_12 = load float addrspace(1)* %tmp_11, align 4
+  %tmp_13 = load i32* %tid, align 4
+  %tmp_14 = mul nsw i32 2, %tmp_13
+  %tmp_15 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_16 = getelementptr inbounds float addrspace(3)* %tmp_15, i32 %tmp_14
+  store float %tmp_12, float addrspace(3)* %tmp_16, align 4
+  %tmp_17 = load i32* %gid, align 4
+  %tmp_18 = mul nsw i32 2, %tmp_17
+  %tmp_19 = add nsw i32 %tmp_18, 1
+  %tmp_20 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_21 = getelementptr inbounds float addrspace(1)* %tmp_20, i32 %tmp_19
+  %tmp_22 = load float addrspace(1)* %tmp_21, align 4
+  %tmp_23 = load i32* %tid, align 4
+  %tmp_24 = mul nsw i32 2, %tmp_23
+  %tmp_25 = add nsw i32 %tmp_24, 1
+  %tmp_26 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_27 = getelementptr inbounds float addrspace(3)* %tmp_26, i32 %tmp_25
+  store float %tmp_22, float addrspace(3)* %tmp_27, align 4
   call void @barrier(i32 1)
-  %28 = load float addrspace(3)** %3, align 4
-  %29 = getelementptr inbounds float addrspace(3)* %28, i32 0
-  %30 = load float addrspace(3)* %29, align 4
-  store float %30, float* %cache0, align 4
-  %31 = load float* %cache0, align 4
-  %32 = load float addrspace(3)** %3, align 4
-  %33 = getelementptr inbounds float addrspace(3)* %32, i32 1
-  %34 = load float addrspace(3)* %33, align 4
-  %35 = fadd float %31, %34
-  store float %35, float* %cache1, align 4
+  %tmp_28 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_29 = getelementptr inbounds float addrspace(3)* %tmp_28, i32 0
+  %tmp_30 = load float addrspace(3)* %tmp_29, align 4
+  store float %tmp_30, float* %cache0, align 4
+  %tmp_31 = load float* %cache0, align 4
+  %tmp_32 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_33 = getelementptr inbounds float addrspace(3)* %tmp_32, i32 1
+  %tmp_34 = load float addrspace(3)* %tmp_33, align 4
+  %tmp_35 = fadd float %tmp_31, %tmp_34
+  store float %tmp_35, float* %cache1, align 4
   store i32 1, i32* %stride, align 4
-  br label %36
+  br label %tmp_36
 
-; <label>:36                                      ; preds = %86, %0
-  %37 = load i32* %stride, align 4
-  %38 = load i32* %4, align 4
-  %39 = icmp ult i32 %37, %38
-  br i1 %39, label %40, label %89
+tmp_36:                                      ; preds = %tmp_86, %tmp_0
+  %tmp_37 = load i32* %stride, align 4
+  %tmp_38 = load i32* %tmp_4, align 4
+  %tmp_39 = icmp ult i32 %tmp_37, %tmp_38
+  br i1 %tmp_39, label %tmp_40, label %tmp_89
 
-; <label>:40                                      ; preds = %36
-  %41 = load i32* %tid, align 4
-  %42 = mul nsw i32 2, %41
-  %43 = load i32* %stride, align 4
-  %44 = icmp sge i32 %42, %43
-  br i1 %44, label %45, label %74
+tmp_40:                                      ; preds = %tmp_36
+  %tmp_41 = load i32* %tid, align 4
+  %tmp_42 = mul nsw i32 2, %tmp_41
+  %tmp_43 = load i32* %stride, align 4
+  %tmp_44 = icmp sge i32 %tmp_42, %tmp_43
+  br i1 %tmp_44, label %tmp_45, label %tmp_74
 
-; <label>:45                                      ; preds = %40
-  %46 = load i32* %tid, align 4
-  %47 = mul nsw i32 2, %46
-  %48 = load i32* %stride, align 4
-  %49 = sub nsw i32 %47, %48
-  %50 = load float addrspace(3)** %3, align 4
-  %51 = getelementptr inbounds float addrspace(3)* %50, i32 %49
-  %52 = load float addrspace(3)* %51, align 4
-  %53 = load i32* %tid, align 4
-  %54 = mul nsw i32 2, %53
-  %55 = load float addrspace(3)** %3, align 4
-  %56 = getelementptr inbounds float addrspace(3)* %55, i32 %54
-  %57 = load float addrspace(3)* %56, align 4
-  %58 = fadd float %52, %57
-  store float %58, float* %cache0, align 4
-  %59 = load i32* %tid, align 4
-  %60 = mul nsw i32 2, %59
-  %61 = add nsw i32 %60, 1
-  %62 = load i32* %stride, align 4
-  %63 = sub nsw i32 %61, %62
-  %64 = load float addrspace(3)** %3, align 4
-  %65 = getelementptr inbounds float addrspace(3)* %64, i32 %63
-  %66 = load float addrspace(3)* %65, align 4
-  %67 = load i32* %tid, align 4
-  %68 = mul nsw i32 2, %67
-  %69 = add nsw i32 %68, 1
-  %70 = load float addrspace(3)** %3, align 4
-  %71 = getelementptr inbounds float addrspace(3)* %70, i32 %69
-  %72 = load float addrspace(3)* %71, align 4
-  %73 = fadd float %66, %72
-  store float %73, float* %cache1, align 4
-  br label %74
+tmp_45:                                      ; preds = %tmp_40
+  %tmp_46 = load i32* %tid, align 4
+  %tmp_47 = mul nsw i32 2, %tmp_46
+  %tmp_48 = load i32* %stride, align 4
+  %tmp_49 = sub nsw i32 %tmp_47, %tmp_48
+  %tmp_50 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_51 = getelementptr inbounds float addrspace(3)* %tmp_50, i32 %tmp_49
+  %tmp_52 = load float addrspace(3)* %tmp_51, align 4
+  %tmp_53 = load i32* %tid, align 4
+  %tmp_54 = mul nsw i32 2, %tmp_53
+  %tmp_55 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_56 = getelementptr inbounds float addrspace(3)* %tmp_55, i32 %tmp_54
+  %tmp_57 = load float addrspace(3)* %tmp_56, align 4
+  %tmp_58 = fadd float %tmp_52, %tmp_57
+  store float %tmp_58, float* %cache0, align 4
+  %tmp_59 = load i32* %tid, align 4
+  %tmp_60 = mul nsw i32 2, %tmp_59
+  %tmp_61 = add nsw i32 %tmp_60, 1
+  %tmp_62 = load i32* %stride, align 4
+  %tmp_63 = sub nsw i32 %tmp_61, %tmp_62
+  %tmp_64 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_65 = getelementptr inbounds float addrspace(3)* %tmp_64, i32 %tmp_63
+  %tmp_66 = load float addrspace(3)* %tmp_65, align 4
+  %tmp_67 = load i32* %tid, align 4
+  %tmp_68 = mul nsw i32 2, %tmp_67
+  %tmp_69 = add nsw i32 %tmp_68, 1
+  %tmp_70 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_71 = getelementptr inbounds float addrspace(3)* %tmp_70, i32 %tmp_69
+  %tmp_72 = load float addrspace(3)* %tmp_71, align 4
+  %tmp_73 = fadd float %tmp_66, %tmp_72
+  store float %tmp_73, float* %cache1, align 4
+  br label %tmp_74
 
-; <label>:74                                      ; preds = %45, %40
+tmp_74:                                      ; preds = %tmp_45, %tmp_40
   call void @barrier(i32 1)
-  %75 = load float* %cache0, align 4
-  %76 = load i32* %tid, align 4
-  %77 = mul nsw i32 2, %76
-  %78 = load float addrspace(3)** %3, align 4
-  %79 = getelementptr inbounds float addrspace(3)* %78, i32 %77
-  store float %75, float addrspace(3)* %79, align 4
-  %80 = load float* %cache1, align 4
-  %81 = load i32* %tid, align 4
-  %82 = mul nsw i32 2, %81
-  %83 = add nsw i32 %82, 1
-  %84 = load float addrspace(3)** %3, align 4
-  %85 = getelementptr inbounds float addrspace(3)* %84, i32 %83
-  store float %80, float addrspace(3)* %85, align 4
+  %tmp_75 = load float* %cache0, align 4
+  %tmp_76 = load i32* %tid, align 4
+  %tmp_77 = mul nsw i32 2, %tmp_76
+  %tmp_78 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_79 = getelementptr inbounds float addrspace(3)* %tmp_78, i32 %tmp_77
+  store float %tmp_75, float addrspace(3)* %tmp_79, align 4
+  %tmp_80 = load float* %cache1, align 4
+  %tmp_81 = load i32* %tid, align 4
+  %tmp_82 = mul nsw i32 2, %tmp_81
+  %tmp_83 = add nsw i32 %tmp_82, 1
+  %tmp_84 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_85 = getelementptr inbounds float addrspace(3)* %tmp_84, i32 %tmp_83
+  store float %tmp_80, float addrspace(3)* %tmp_85, align 4
   call void @barrier(i32 1)
-  br label %86
+  br label %tmp_86
 
-; <label>:86                                      ; preds = %74
-  %87 = load i32* %stride, align 4
-  %88 = mul nsw i32 %87, 2
-  store i32 %88, i32* %stride, align 4
-  br label %36
+tmp_86:                                      ; preds = %tmp_74
+  %tmp_87 = load i32* %stride, align 4
+  %tmp_88 = mul nsw i32 %tmp_87, 2
+  store i32 %tmp_88, i32* %stride, align 4
+  br label %tmp_36
 
-; <label>:89                                      ; preds = %36
-  %90 = load i32* %tid, align 4
-  %91 = icmp eq i32 %90, 0
-  br i1 %91, label %92, label %107
+tmp_89:                                      ; preds = %tmp_36
+  %tmp_90 = load i32* %tid, align 4
+  %tmp_91 = icmp eq i32 %tmp_90, 0
+  br i1 %tmp_91, label %tmp_92, label %tmp_107
 
-; <label>:92                                      ; preds = %89
-  %93 = load i32* %gid, align 4
-  %94 = mul nsw i32 2, %93
-  %95 = load float addrspace(1)** %1, align 4
-  %96 = getelementptr inbounds float addrspace(1)* %95, i32 %94
-  store float 0.000000e+00, float addrspace(1)* %96, align 4
-  %97 = load i32* %tid, align 4
-  %98 = mul nsw i32 2, %97
-  %99 = load float addrspace(3)** %3, align 4
-  %100 = getelementptr inbounds float addrspace(3)* %99, i32 %98
-  %101 = load float addrspace(3)* %100, align 4
-  %102 = load i32* %gid, align 4
-  %103 = mul nsw i32 2, %102
-  %104 = add nsw i32 %103, 1
-  %105 = load float addrspace(1)** %1, align 4
-  %106 = getelementptr inbounds float addrspace(1)* %105, i32 %104
-  store float %101, float addrspace(1)* %106, align 4
-  br label %128
+tmp_92:                                      ; preds = %tmp_89
+  %tmp_93 = load i32* %gid, align 4
+  %tmp_94 = mul nsw i32 2, %tmp_93
+  %tmp_95 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_96 = getelementptr inbounds float addrspace(1)* %tmp_95, i32 %tmp_94
+  store float 0.000000e+00, float addrspace(1)* %tmp_96, align 4
+  %tmp_97 = load i32* %tid, align 4
+  %tmp_98 = mul nsw i32 2, %tmp_97
+  %tmp_99 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_100 = getelementptr inbounds float addrspace(3)* %tmp_99, i32 %tmp_98
+  %tmp_101 = load float addrspace(3)* %tmp_100, align 4
+  %tmp_102 = load i32* %gid, align 4
+  %tmp_103 = mul nsw i32 2, %tmp_102
+  %tmp_104 = add nsw i32 %tmp_103, 1
+  %tmp_105 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_106 = getelementptr inbounds float addrspace(1)* %tmp_105, i32 %tmp_104
+  store float %tmp_101, float addrspace(1)* %tmp_106, align 4
+  br label %tmp_128
 
-; <label>:107                                     ; preds = %89
-  %108 = load i32* %tid, align 4
-  %109 = mul nsw i32 2, %108
-  %110 = sub nsw i32 %109, 1
-  %111 = load float addrspace(3)** %3, align 4
-  %112 = getelementptr inbounds float addrspace(3)* %111, i32 %110
-  %113 = load float addrspace(3)* %112, align 4
-  %114 = load i32* %gid, align 4
-  %115 = mul nsw i32 2, %114
-  %116 = load float addrspace(1)** %1, align 4
-  %117 = getelementptr inbounds float addrspace(1)* %116, i32 %115
-  store float %113, float addrspace(1)* %117, align 4
-  %118 = load i32* %tid, align 4
-  %119 = mul nsw i32 2, %118
-  %120 = load float addrspace(3)** %3, align 4
-  %121 = getelementptr inbounds float addrspace(3)* %120, i32 %119
-  %122 = load float addrspace(3)* %121, align 4
-  %123 = load i32* %gid, align 4
-  %124 = mul nsw i32 2, %123
-  %125 = add nsw i32 %124, 1
-  %126 = load float addrspace(1)** %1, align 4
-  %127 = getelementptr inbounds float addrspace(1)* %126, i32 %125
-  store float %122, float addrspace(1)* %127, align 4
-  br label %128
+tmp_107:                                     ; preds = %tmp_89
+  %tmp_108 = load i32* %tid, align 4
+  %tmp_109 = mul nsw i32 2, %tmp_108
+  %tmp_110 = sub nsw i32 %tmp_109, 1
+  %tmp_111 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_112 = getelementptr inbounds float addrspace(3)* %tmp_111, i32 %tmp_110
+  %tmp_113 = load float addrspace(3)* %tmp_112, align 4
+  %tmp_114 = load i32* %gid, align 4
+  %tmp_115 = mul nsw i32 2, %tmp_114
+  %tmp_116 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_117 = getelementptr inbounds float addrspace(1)* %tmp_116, i32 %tmp_115
+  store float %tmp_113, float addrspace(1)* %tmp_117, align 4
+  %tmp_118 = load i32* %tid, align 4
+  %tmp_119 = mul nsw i32 2, %tmp_118
+  %tmp_120 = load float addrspace(3)** %tmp_3, align 4
+  %tmp_121 = getelementptr inbounds float addrspace(3)* %tmp_120, i32 %tmp_119
+  %tmp_122 = load float addrspace(3)* %tmp_121, align 4
+  %tmp_123 = load i32* %gid, align 4
+  %tmp_124 = mul nsw i32 2, %tmp_123
+  %tmp_125 = add nsw i32 %tmp_124, 1
+  %tmp_126 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_127 = getelementptr inbounds float addrspace(1)* %tmp_126, i32 %tmp_125
+  store float %tmp_122, float addrspace(1)* %tmp_127, align 4
+  br label %tmp_128
 
-; <label>:128                                     ; preds = %107, %92
+tmp_128:                                     ; preds = %tmp_107, %tmp_92
   ret void
 }
 

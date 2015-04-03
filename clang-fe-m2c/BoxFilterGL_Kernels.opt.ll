@@ -4,152 +4,152 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @box_filter(<4 x i32> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %N) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = call i32 @__get_global_size_u32(i32 0)
-  %4 = call i32 @__get_global_size_u32(i32 1)
-  %5 = sub nsw i32 %N, 1
-  %6 = sdiv i32 %5, 2
-  %7 = icmp slt i32 %1, %6
-  br i1 %7, label %18, label %8
+  %tmp_8 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_9 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_10 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_11 = call i32 @__get_global_size_u32(i32 1)
+  %tmp_13 = sub nsw i32 %N, 1
+  %tmp_14 = sdiv i32 %tmp_13, 2
+  %tmp_17 = icmp slt i32 %tmp_8, %tmp_14
+  br i1 %tmp_17, label %tmp_36, label %tmp_18
 
-; <label>:8                                       ; preds = %0
-  %9 = icmp slt i32 %2, %6
-  br i1 %9, label %18, label %10
+tmp_18:                                           ; preds = %0
+  %tmp_21 = icmp slt i32 %tmp_9, %tmp_14
+  br i1 %tmp_21, label %tmp_36, label %tmp_22
 
-; <label>:10                                      ; preds = %8
-  %11 = sub nsw i32 %3, %6
-  %12 = sub nsw i32 %11, 1
-  %13 = icmp sgt i32 %1, %12
-  br i1 %13, label %18, label %14
+tmp_22:                                           ; preds = %tmp_18
+  %tmp_26 = sub nsw i32 %tmp_10, %tmp_14
+  %tmp_27 = sub nsw i32 %tmp_26, 1
+  %tmp_28 = icmp sgt i32 %tmp_8, %tmp_27
+  br i1 %tmp_28, label %tmp_36, label %tmp_29
 
-; <label>:14                                      ; preds = %10
-  %15 = sub nsw i32 %4, %6
-  %16 = sub nsw i32 %15, 1
-  %17 = icmp sgt i32 %2, %16
-  br i1 %17, label %18, label %22
+tmp_29:                                           ; preds = %tmp_22
+  %tmp_33 = sub nsw i32 %tmp_11, %tmp_14
+  %tmp_34 = sub nsw i32 %tmp_33, 1
+  %tmp_35 = icmp sgt i32 %tmp_9, %tmp_34
+  br i1 %tmp_35, label %tmp_36, label %tmp_44
 
-; <label>:18                                      ; preds = %14, %10, %8, %0
-  %19 = mul nsw i32 %2, %3
-  %20 = add nsw i32 %1, %19
-  %21 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %20
-  store <4 x i8> zeroinitializer, <4 x i8> addrspace(1)* %21, align 4
-  br label %111
+tmp_36:                                           ; preds = %tmp_29, %tmp_22, %tmp_18, %0
+  %tmp_40 = mul nsw i32 %tmp_9, %tmp_10
+  %tmp_41 = add nsw i32 %tmp_8, %tmp_40
+  %tmp_43 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_41
+  store <4 x i8> zeroinitializer, <4 x i8> addrspace(1)* %tmp_43, align 4
+  br label %tmp_194
 
-; <label>:22                                      ; preds = %14
-  %23 = mul nsw i32 %N, %N
-  %24 = insertelement <4 x i32> undef, i32 %23, i32 0
-  %25 = shufflevector <4 x i32> %24, <4 x i32> undef, <4 x i32> zeroinitializer
-  %26 = sub nsw i32 %1, %6
-  %27 = insertelement <2 x i32> undef, i32 %26, i32 0
-  %28 = sub nsw i32 %2, %6
-  %29 = insertelement <2 x i32> %27, i32 %28, i32 1
-  %30 = add nsw i32 %1, %6
-  %31 = insertelement <2 x i32> undef, i32 %30, i32 0
-  %32 = sub nsw i32 %2, %6
-  %33 = insertelement <2 x i32> %31, i32 %32, i32 1
-  %34 = add nsw i32 %1, %6
-  %35 = insertelement <2 x i32> undef, i32 %34, i32 0
-  %36 = add nsw i32 %2, %6
-  %37 = insertelement <2 x i32> %35, i32 %36, i32 1
-  %38 = sub nsw i32 %1, %6
-  %39 = insertelement <2 x i32> undef, i32 %38, i32 0
-  %40 = add nsw i32 %2, %6
-  %41 = insertelement <2 x i32> %39, i32 %40, i32 1
-  %42 = extractelement <2 x i32> %29, i32 0
-  %43 = sub nsw i32 %42, 1
-  %44 = insertelement <2 x i32> %29, i32 %43, i32 0
-  %45 = extractelement <2 x i32> %44, i32 1
-  %46 = sub nsw i32 %45, 1
-  %47 = insertelement <2 x i32> %44, i32 %46, i32 1
-  %48 = extractelement <2 x i32> %33, i32 1
-  %49 = sub nsw i32 %48, 1
-  %50 = insertelement <2 x i32> %33, i32 %49, i32 1
-  %51 = extractelement <2 x i32> %41, i32 0
-  %52 = sub nsw i32 %51, 1
-  %53 = insertelement <2 x i32> %41, i32 %52, i32 0
-  %54 = extractelement <2 x i32> %47, i32 0
-  %55 = icmp sge i32 %54, 0
-  br i1 %55, label %56, label %67
+tmp_44:                                           ; preds = %tmp_29
+  %tmp_47 = mul nsw i32 %N, %N
+  %tmp_48 = insertelement <4 x i32> undef, i32 %tmp_47, i32 0
+  %tmp_49 = shufflevector <4 x i32> %tmp_48, <4 x i32> undef, <4 x i32> zeroinitializer
+  %tmp_52 = sub nsw i32 %tmp_8, %tmp_14
+  %tmp_53 = insertelement <2 x i32> undef, i32 %tmp_52, i32 0
+  %tmp_56 = sub nsw i32 %tmp_9, %tmp_14
+  %tmp_57 = insertelement <2 x i32> %tmp_53, i32 %tmp_56, i32 1
+  %tmp_61 = add nsw i32 %tmp_8, %tmp_14
+  %tmp_62 = insertelement <2 x i32> undef, i32 %tmp_61, i32 0
+  %tmp_65 = sub nsw i32 %tmp_9, %tmp_14
+  %tmp_66 = insertelement <2 x i32> %tmp_62, i32 %tmp_65, i32 1
+  %tmp_70 = add nsw i32 %tmp_8, %tmp_14
+  %tmp_71 = insertelement <2 x i32> undef, i32 %tmp_70, i32 0
+  %tmp_74 = add nsw i32 %tmp_9, %tmp_14
+  %tmp_75 = insertelement <2 x i32> %tmp_71, i32 %tmp_74, i32 1
+  %tmp_79 = sub nsw i32 %tmp_8, %tmp_14
+  %tmp_80 = insertelement <2 x i32> undef, i32 %tmp_79, i32 0
+  %tmp_83 = add nsw i32 %tmp_9, %tmp_14
+  %tmp_84 = insertelement <2 x i32> %tmp_80, i32 %tmp_83, i32 1
+  %tmp_87 = extractelement <2 x i32> %tmp_57, i32 0
+  %tmp_88 = sub nsw i32 %tmp_87, 1
+  %tmp_90 = insertelement <2 x i32> %tmp_57, i32 %tmp_88, i32 0
+  %tmp_92 = extractelement <2 x i32> %tmp_90, i32 1
+  %tmp_93 = sub nsw i32 %tmp_92, 1
+  %tmp_95 = insertelement <2 x i32> %tmp_90, i32 %tmp_93, i32 1
+  %tmp_97 = extractelement <2 x i32> %tmp_66, i32 1
+  %tmp_98 = sub nsw i32 %tmp_97, 1
+  %tmp_100 = insertelement <2 x i32> %tmp_66, i32 %tmp_98, i32 1
+  %tmp_102 = extractelement <2 x i32> %tmp_84, i32 0
+  %tmp_103 = sub nsw i32 %tmp_102, 1
+  %tmp_105 = insertelement <2 x i32> %tmp_84, i32 %tmp_103, i32 0
+  %tmp_107 = extractelement <2 x i32> %tmp_95, i32 0
+  %tmp_108 = icmp sge i32 %tmp_107, 0
+  br i1 %tmp_108, label %tmp_109, label %tmp_125
 
-; <label>:56                                      ; preds = %22
-  %57 = extractelement <2 x i32> %47, i32 1
-  %58 = icmp sge i32 %57, 0
-  br i1 %58, label %59, label %67
+tmp_109:                                          ; preds = %tmp_44
+  %tmp_111 = extractelement <2 x i32> %tmp_95, i32 1
+  %tmp_112 = icmp sge i32 %tmp_111, 0
+  br i1 %tmp_112, label %tmp_113, label %tmp_125
 
-; <label>:59                                      ; preds = %56
-  %60 = extractelement <2 x i32> %47, i32 0
-  %61 = extractelement <2 x i32> %47, i32 1
-  %62 = mul nsw i32 %61, %3
-  %63 = add nsw i32 %60, %62
-  %64 = getelementptr inbounds <4 x i32> addrspace(1)* %inputImage, i32 %63
-  %65 = load <4 x i32> addrspace(1)* %64, align 16
-  %66 = call <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32> %65)
-  br label %67
+tmp_113:                                          ; preds = %tmp_109
+  %tmp_115 = extractelement <2 x i32> %tmp_95, i32 0
+  %tmp_117 = extractelement <2 x i32> %tmp_95, i32 1
+  %tmp_119 = mul nsw i32 %tmp_117, %tmp_10
+  %tmp_120 = add nsw i32 %tmp_115, %tmp_119
+  %tmp_122 = getelementptr inbounds <4 x i32> addrspace(1)* %inputImage, i32 %tmp_120
+  %tmp_123 = load <4 x i32> addrspace(1)* %tmp_122, align 16
+  %tmp_124 = call <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32> %tmp_123)
+  br label %tmp_125
 
-; <label>:67                                      ; preds = %59, %56, %22
-  %sumA.0 = phi <4 x i32> [ %66, %59 ], [ zeroinitializer, %56 ], [ zeroinitializer, %22 ]
-  %68 = extractelement <2 x i32> %50, i32 0
-  %69 = icmp sge i32 %68, 0
-  br i1 %69, label %70, label %81
+tmp_125:                                          ; preds = %tmp_113, %tmp_109, %tmp_44
+  %sumA.0 = phi <4 x i32> [ %tmp_124, %tmp_113 ], [ zeroinitializer, %tmp_109 ], [ zeroinitializer, %tmp_44 ]
+  %tmp_127 = extractelement <2 x i32> %tmp_100, i32 0
+  %tmp_128 = icmp sge i32 %tmp_127, 0
+  br i1 %tmp_128, label %tmp_129, label %tmp_145
 
-; <label>:70                                      ; preds = %67
-  %71 = extractelement <2 x i32> %50, i32 1
-  %72 = icmp sge i32 %71, 0
-  br i1 %72, label %73, label %81
+tmp_129:                                          ; preds = %tmp_125
+  %tmp_131 = extractelement <2 x i32> %tmp_100, i32 1
+  %tmp_132 = icmp sge i32 %tmp_131, 0
+  br i1 %tmp_132, label %tmp_133, label %tmp_145
 
-; <label>:73                                      ; preds = %70
-  %74 = extractelement <2 x i32> %50, i32 0
-  %75 = extractelement <2 x i32> %50, i32 1
-  %76 = mul nsw i32 %75, %3
-  %77 = add nsw i32 %74, %76
-  %78 = getelementptr inbounds <4 x i32> addrspace(1)* %inputImage, i32 %77
-  %79 = load <4 x i32> addrspace(1)* %78, align 16
-  %80 = call <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32> %79)
-  br label %81
+tmp_133:                                          ; preds = %tmp_129
+  %tmp_135 = extractelement <2 x i32> %tmp_100, i32 0
+  %tmp_137 = extractelement <2 x i32> %tmp_100, i32 1
+  %tmp_139 = mul nsw i32 %tmp_137, %tmp_10
+  %tmp_140 = add nsw i32 %tmp_135, %tmp_139
+  %tmp_142 = getelementptr inbounds <4 x i32> addrspace(1)* %inputImage, i32 %tmp_140
+  %tmp_143 = load <4 x i32> addrspace(1)* %tmp_142, align 16
+  %tmp_144 = call <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32> %tmp_143)
+  br label %tmp_145
 
-; <label>:81                                      ; preds = %73, %70, %67
-  %sumB.0 = phi <4 x i32> [ %80, %73 ], [ zeroinitializer, %70 ], [ zeroinitializer, %67 ]
-  %82 = extractelement <2 x i32> %53, i32 0
-  %83 = icmp sge i32 %82, 0
-  br i1 %83, label %84, label %95
+tmp_145:                                          ; preds = %tmp_133, %tmp_129, %tmp_125
+  %sumB.0 = phi <4 x i32> [ %tmp_144, %tmp_133 ], [ zeroinitializer, %tmp_129 ], [ zeroinitializer, %tmp_125 ]
+  %tmp_147 = extractelement <2 x i32> %tmp_105, i32 0
+  %tmp_148 = icmp sge i32 %tmp_147, 0
+  br i1 %tmp_148, label %tmp_149, label %tmp_165
 
-; <label>:84                                      ; preds = %81
-  %85 = extractelement <2 x i32> %53, i32 1
-  %86 = icmp sge i32 %85, 0
-  br i1 %86, label %87, label %95
+tmp_149:                                          ; preds = %tmp_145
+  %tmp_151 = extractelement <2 x i32> %tmp_105, i32 1
+  %tmp_152 = icmp sge i32 %tmp_151, 0
+  br i1 %tmp_152, label %tmp_153, label %tmp_165
 
-; <label>:87                                      ; preds = %84
-  %88 = extractelement <2 x i32> %53, i32 0
-  %89 = extractelement <2 x i32> %53, i32 1
-  %90 = mul nsw i32 %89, %3
-  %91 = add nsw i32 %88, %90
-  %92 = getelementptr inbounds <4 x i32> addrspace(1)* %inputImage, i32 %91
-  %93 = load <4 x i32> addrspace(1)* %92, align 16
-  %94 = call <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32> %93)
-  br label %95
+tmp_153:                                          ; preds = %tmp_149
+  %tmp_155 = extractelement <2 x i32> %tmp_105, i32 0
+  %tmp_157 = extractelement <2 x i32> %tmp_105, i32 1
+  %tmp_159 = mul nsw i32 %tmp_157, %tmp_10
+  %tmp_160 = add nsw i32 %tmp_155, %tmp_159
+  %tmp_162 = getelementptr inbounds <4 x i32> addrspace(1)* %inputImage, i32 %tmp_160
+  %tmp_163 = load <4 x i32> addrspace(1)* %tmp_162, align 16
+  %tmp_164 = call <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32> %tmp_163)
+  br label %tmp_165
 
-; <label>:95                                      ; preds = %87, %84, %81
-  %sumD.0 = phi <4 x i32> [ %94, %87 ], [ zeroinitializer, %84 ], [ zeroinitializer, %81 ]
-  %96 = extractelement <2 x i32> %37, i32 0
-  %97 = extractelement <2 x i32> %37, i32 1
-  %98 = mul nsw i32 %97, %3
-  %99 = add nsw i32 %96, %98
-  %100 = getelementptr inbounds <4 x i32> addrspace(1)* %inputImage, i32 %99
-  %101 = load <4 x i32> addrspace(1)* %100, align 16
-  %102 = call <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32> %101)
-  %103 = add <4 x i32> %sumA.0, %102
-  %104 = sub <4 x i32> %103, %sumB.0
-  %105 = sub <4 x i32> %104, %sumD.0
-  %106 = sdiv <4 x i32> %105, %25
-  %107 = call <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32> %106)
-  %108 = mul nsw i32 %2, %3
-  %109 = add nsw i32 %1, %108
-  %110 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %109
-  store <4 x i8> %107, <4 x i8> addrspace(1)* %110, align 4
-  br label %111
+tmp_165:                                          ; preds = %tmp_153, %tmp_149, %tmp_145
+  %sumD.0 = phi <4 x i32> [ %tmp_164, %tmp_153 ], [ zeroinitializer, %tmp_149 ], [ zeroinitializer, %tmp_145 ]
+  %tmp_167 = extractelement <2 x i32> %tmp_75, i32 0
+  %tmp_169 = extractelement <2 x i32> %tmp_75, i32 1
+  %tmp_171 = mul nsw i32 %tmp_169, %tmp_10
+  %tmp_172 = add nsw i32 %tmp_167, %tmp_171
+  %tmp_174 = getelementptr inbounds <4 x i32> addrspace(1)* %inputImage, i32 %tmp_172
+  %tmp_175 = load <4 x i32> addrspace(1)* %tmp_174, align 16
+  %tmp_176 = call <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32> %tmp_175)
+  %tmp_179 = add <4 x i32> %sumA.0, %tmp_176
+  %tmp_181 = sub <4 x i32> %tmp_179, %sumB.0
+  %tmp_183 = sub <4 x i32> %tmp_181, %sumD.0
+  %tmp_185 = sdiv <4 x i32> %tmp_183, %tmp_49
+  %tmp_186 = call <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32> %tmp_185)
+  %tmp_190 = mul nsw i32 %tmp_9, %tmp_10
+  %tmp_191 = add nsw i32 %tmp_8, %tmp_190
+  %tmp_193 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_191
+  store <4 x i8> %tmp_186, <4 x i8> addrspace(1)* %tmp_193, align 4
+  br label %tmp_194
 
-; <label>:111                                     ; preds = %95, %18
+tmp_194:                                          ; preds = %tmp_165, %tmp_36
   ret void
 }
 
@@ -163,52 +163,52 @@ declare <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32>) #1
 
 ; Function Attrs: nounwind
 define void @horizontalSAT0(<4 x i8> addrspace(1)* %input, <4 x i32> addrspace(1)* %output, i32 %i, i32 %r, i32 %width) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = mul nsw i32 %2, %width
-  %4 = add nsw i32 %1, %3
-  %5 = sitofp i32 %r to float
-  %6 = sitofp i32 %i to float
-  %7 = call float @llvm.pow.f32(float %5, float %6)
-  %8 = fptosi float %7 to i32
-  br label %9
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_7 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_11 = mul nsw i32 %tmp_7, %width
+  %tmp_12 = add nsw i32 %tmp_6, %tmp_11
+  %tmp_14 = sitofp i32 %r to float
+  %tmp_16 = sitofp i32 %i to float
+  %tmp_17 = call float @llvm.pow.f32(float %tmp_14, float %tmp_16)
+  %tmp_18 = fptosi float %tmp_17 to i32
+  br label %tmp_19
 
-; <label>:9                                       ; preds = %24, %0
-  %sum.0 = phi <4 x i32> [ zeroinitializer, %0 ], [ %23, %24 ]
-  %j.0 = phi i32 [ 0, %0 ], [ %25, %24 ]
-  %10 = icmp slt i32 %j.0, %r
-  br i1 %10, label %11, label %26
+tmp_19:                                           ; preds = %tmp_47, %0
+  %sum.0 = phi <4 x i32> [ zeroinitializer, %0 ], [ %tmp_46, %tmp_47 ]
+  %j.0 = phi i32 [ 0, %0 ], [ %tmp_49, %tmp_47 ]
+  %tmp_22 = icmp slt i32 %j.0, %r
+  br i1 %tmp_22, label %tmp_23, label %tmp_50
 
-; <label>:11                                      ; preds = %9
-  %12 = mul nsw i32 %j.0, %8
-  %13 = sub nsw i32 %1, %12
-  %14 = icmp slt i32 %13, 0
-  br i1 %14, label %15, label %17
+tmp_23:                                           ; preds = %tmp_19
+  %tmp_27 = mul nsw i32 %j.0, %tmp_18
+  %tmp_28 = sub nsw i32 %tmp_6, %tmp_27
+  %tmp_29 = icmp slt i32 %tmp_28, 0
+  br i1 %tmp_29, label %tmp_30, label %tmp_35
 
-; <label>:15                                      ; preds = %11
-  %16 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %4
-  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %16, align 16
-  br label %28
+tmp_30:                                           ; preds = %tmp_23
+  %tmp_34 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %tmp_12
+  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %tmp_34, align 16
+  br label %tmp_55
 
-; <label>:17                                      ; preds = %11
-  %18 = mul nsw i32 %j.0, %8
-  %19 = sub nsw i32 %4, %18
-  %20 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %19
-  %21 = load <4 x i8> addrspace(1)* %20, align 4
-  %22 = call <4 x i32> @_Z13convert_uint4Dv4_h(<4 x i8> %21)
-  %23 = add <4 x i32> %sum.0, %22
-  br label %24
+tmp_35:                                           ; preds = %tmp_23
+  %tmp_39 = mul nsw i32 %j.0, %tmp_18
+  %tmp_40 = sub nsw i32 %tmp_12, %tmp_39
+  %tmp_42 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %tmp_40
+  %tmp_43 = load <4 x i8> addrspace(1)* %tmp_42, align 4
+  %tmp_44 = call <4 x i32> @_Z13convert_uint4Dv4_h(<4 x i8> %tmp_43)
+  %tmp_46 = add <4 x i32> %sum.0, %tmp_44
+  br label %tmp_47
 
-; <label>:24                                      ; preds = %17
-  %25 = add nsw i32 %j.0, 1
-  br label %9
+tmp_47:                                           ; preds = %tmp_35
+  %tmp_49 = add nsw i32 %j.0, 1
+  br label %tmp_19
 
-; <label>:26                                      ; preds = %9
-  %27 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %4
-  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %27, align 16
-  br label %28
+tmp_50:                                           ; preds = %tmp_19
+  %tmp_54 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %tmp_12
+  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %tmp_54, align 16
+  br label %tmp_55
 
-; <label>:28                                      ; preds = %26, %15
+tmp_55:                                           ; preds = %tmp_50, %tmp_30
   ret void
 }
 
@@ -219,174 +219,174 @@ declare <4 x i32> @_Z13convert_uint4Dv4_h(<4 x i8>) #1
 
 ; Function Attrs: nounwind
 define void @horizontalSAT(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1)* %output, i32 %i, i32 %r, i32 %width) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = mul nsw i32 %2, %width
-  %4 = add nsw i32 %1, %3
-  %5 = sitofp i32 %r to float
-  %6 = sitofp i32 %i to float
-  %7 = call float @llvm.pow.f32(float %5, float %6)
-  %8 = fptosi float %7 to i32
-  br label %9
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_7 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_11 = mul nsw i32 %tmp_7, %width
+  %tmp_12 = add nsw i32 %tmp_6, %tmp_11
+  %tmp_14 = sitofp i32 %r to float
+  %tmp_16 = sitofp i32 %i to float
+  %tmp_17 = call float @llvm.pow.f32(float %tmp_14, float %tmp_16)
+  %tmp_18 = fptosi float %tmp_17 to i32
+  br label %tmp_19
 
-; <label>:9                                       ; preds = %23, %0
-  %sum.0 = phi <4 x i32> [ zeroinitializer, %0 ], [ %22, %23 ]
-  %j.0 = phi i32 [ 0, %0 ], [ %24, %23 ]
-  %10 = icmp slt i32 %j.0, %r
-  br i1 %10, label %11, label %25
+tmp_19:                                           ; preds = %tmp_46, %0
+  %sum.0 = phi <4 x i32> [ zeroinitializer, %0 ], [ %tmp_45, %tmp_46 ]
+  %j.0 = phi i32 [ 0, %0 ], [ %tmp_48, %tmp_46 ]
+  %tmp_22 = icmp slt i32 %j.0, %r
+  br i1 %tmp_22, label %tmp_23, label %tmp_49
 
-; <label>:11                                      ; preds = %9
-  %12 = mul nsw i32 %j.0, %8
-  %13 = sub nsw i32 %1, %12
-  %14 = icmp slt i32 %13, 0
-  br i1 %14, label %15, label %17
+tmp_23:                                           ; preds = %tmp_19
+  %tmp_27 = mul nsw i32 %j.0, %tmp_18
+  %tmp_28 = sub nsw i32 %tmp_6, %tmp_27
+  %tmp_29 = icmp slt i32 %tmp_28, 0
+  br i1 %tmp_29, label %tmp_30, label %tmp_35
 
-; <label>:15                                      ; preds = %11
-  %16 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %4
-  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %16, align 16
-  br label %27
+tmp_30:                                           ; preds = %tmp_23
+  %tmp_34 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %tmp_12
+  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %tmp_34, align 16
+  br label %tmp_54
 
-; <label>:17                                      ; preds = %11
-  %18 = mul nsw i32 %j.0, %8
-  %19 = sub nsw i32 %4, %18
-  %20 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i32 %19
-  %21 = load <4 x i32> addrspace(1)* %20, align 16
-  %22 = add <4 x i32> %sum.0, %21
-  br label %23
+tmp_35:                                           ; preds = %tmp_23
+  %tmp_39 = mul nsw i32 %j.0, %tmp_18
+  %tmp_40 = sub nsw i32 %tmp_12, %tmp_39
+  %tmp_42 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i32 %tmp_40
+  %tmp_43 = load <4 x i32> addrspace(1)* %tmp_42, align 16
+  %tmp_45 = add <4 x i32> %sum.0, %tmp_43
+  br label %tmp_46
 
-; <label>:23                                      ; preds = %17
-  %24 = add nsw i32 %j.0, 1
-  br label %9
+tmp_46:                                           ; preds = %tmp_35
+  %tmp_48 = add nsw i32 %j.0, 1
+  br label %tmp_19
 
-; <label>:25                                      ; preds = %9
-  %26 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %4
-  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %26, align 16
-  br label %27
+tmp_49:                                           ; preds = %tmp_19
+  %tmp_53 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %tmp_12
+  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %tmp_53, align 16
+  br label %tmp_54
 
-; <label>:27                                      ; preds = %25, %15
+tmp_54:                                           ; preds = %tmp_49, %tmp_30
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @verticalSAT(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1)* %output, i32 %i, i32 %r, i32 %width) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = sitofp i32 %r to float
-  %4 = sitofp i32 %i to float
-  %5 = call float @llvm.pow.f32(float %3, float %4)
-  %6 = fptosi float %5 to i32
-  br label %7
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_7 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_9 = sitofp i32 %r to float
+  %tmp_11 = sitofp i32 %i to float
+  %tmp_12 = call float @llvm.pow.f32(float %tmp_9, float %tmp_11)
+  %tmp_13 = fptosi float %tmp_12 to i32
+  br label %tmp_14
 
-; <label>:7                                       ; preds = %25, %0
-  %sum.0 = phi <4 x i32> [ zeroinitializer, %0 ], [ %24, %25 ]
-  %j.0 = phi i32 [ 0, %0 ], [ %26, %25 ]
-  %8 = icmp slt i32 %j.0, %r
-  br i1 %8, label %9, label %27
+tmp_14:                                           ; preds = %tmp_49, %0
+  %sum.0 = phi <4 x i32> [ zeroinitializer, %0 ], [ %tmp_48, %tmp_49 ]
+  %j.0 = phi i32 [ 0, %0 ], [ %tmp_51, %tmp_49 ]
+  %tmp_17 = icmp slt i32 %j.0, %r
+  br i1 %tmp_17, label %tmp_18, label %tmp_52
 
-; <label>:9                                       ; preds = %7
-  %10 = mul nsw i32 %j.0, %6
-  %11 = sub nsw i32 %2, %10
-  %12 = icmp slt i32 %11, 0
-  br i1 %12, label %13, label %17
+tmp_18:                                           ; preds = %tmp_14
+  %tmp_22 = mul nsw i32 %j.0, %tmp_13
+  %tmp_23 = sub nsw i32 %tmp_7, %tmp_22
+  %tmp_24 = icmp slt i32 %tmp_23, 0
+  br i1 %tmp_24, label %tmp_25, label %tmp_34
 
-; <label>:13                                      ; preds = %9
-  %14 = mul nsw i32 %2, %width
-  %15 = add nsw i32 %1, %14
-  %16 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %15
-  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %16, align 16
-  br label %31
+tmp_25:                                           ; preds = %tmp_18
+  %tmp_30 = mul nsw i32 %tmp_7, %width
+  %tmp_31 = add nsw i32 %tmp_6, %tmp_30
+  %tmp_33 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %tmp_31
+  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %tmp_33, align 16
+  br label %tmp_61
 
-; <label>:17                                      ; preds = %9
-  %18 = mul nsw i32 %j.0, %6
-  %19 = sub nsw i32 %2, %18
-  %20 = mul nsw i32 %width, %19
-  %21 = add nsw i32 %1, %20
-  %22 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i32 %21
-  %23 = load <4 x i32> addrspace(1)* %22, align 16
-  %24 = add <4 x i32> %sum.0, %23
-  br label %25
+tmp_34:                                           ; preds = %tmp_18
+  %tmp_40 = mul nsw i32 %j.0, %tmp_13
+  %tmp_41 = sub nsw i32 %tmp_7, %tmp_40
+  %tmp_42 = mul nsw i32 %width, %tmp_41
+  %tmp_43 = add nsw i32 %tmp_6, %tmp_42
+  %tmp_45 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i32 %tmp_43
+  %tmp_46 = load <4 x i32> addrspace(1)* %tmp_45, align 16
+  %tmp_48 = add <4 x i32> %sum.0, %tmp_46
+  br label %tmp_49
 
-; <label>:25                                      ; preds = %17
-  %26 = add nsw i32 %j.0, 1
-  br label %7
+tmp_49:                                           ; preds = %tmp_34
+  %tmp_51 = add nsw i32 %j.0, 1
+  br label %tmp_14
 
-; <label>:27                                      ; preds = %7
-  %28 = mul nsw i32 %2, %width
-  %29 = add nsw i32 %1, %28
-  %30 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %29
-  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %30, align 16
-  br label %31
+tmp_52:                                           ; preds = %tmp_14
+  %tmp_57 = mul nsw i32 %tmp_7, %width
+  %tmp_58 = add nsw i32 %tmp_6, %tmp_57
+  %tmp_60 = getelementptr inbounds <4 x i32> addrspace(1)* %output, i32 %tmp_58
+  store <4 x i32> %sum.0, <4 x i32> addrspace(1)* %tmp_60, align 16
+  br label %tmp_61
 
-; <label>:31                                      ; preds = %27, %13
+tmp_61:                                           ; preds = %tmp_52, %tmp_25
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @box_filter_horizontal(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %filterWidth) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = call i32 @__get_global_size_u32(i32 0)
-  %4 = call i32 @__get_global_size_u32(i32 1)
-  %5 = mul nsw i32 %2, %3
-  %6 = add nsw i32 %1, %5
-  %7 = sub nsw i32 %filterWidth, 1
-  %8 = sdiv i32 %7, 2
-  %9 = icmp slt i32 %1, %8
-  br i1 %9, label %13, label %10
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_5 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_6 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_7 = call i32 @__get_global_size_u32(i32 1)
+  %tmp_11 = mul nsw i32 %tmp_5, %tmp_6
+  %tmp_12 = add nsw i32 %tmp_4, %tmp_11
+  %tmp_14 = sub nsw i32 %filterWidth, 1
+  %tmp_15 = sdiv i32 %tmp_14, 2
+  %tmp_18 = icmp slt i32 %tmp_4, %tmp_15
+  br i1 %tmp_18, label %tmp_25, label %tmp_19
 
-; <label>:10                                      ; preds = %0
-  %11 = sub nsw i32 %3, %8
-  %12 = icmp sge i32 %1, %11
-  br i1 %12, label %13, label %15
+tmp_19:                                           ; preds = %0
+  %tmp_23 = sub nsw i32 %tmp_6, %tmp_15
+  %tmp_24 = icmp sge i32 %tmp_4, %tmp_23
+  br i1 %tmp_24, label %tmp_25, label %tmp_29
 
-; <label>:13                                      ; preds = %10, %0
-  %14 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %6
-  store <4 x i8> zeroinitializer, <4 x i8> addrspace(1)* %14, align 4
-  br label %44
+tmp_25:                                           ; preds = %tmp_19, %0
+  %tmp_28 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_12
+  store <4 x i8> zeroinitializer, <4 x i8> addrspace(1)* %tmp_28, align 4
+  br label %tmp_79
 
-; <label>:15                                      ; preds = %10
-  %16 = insertelement <4 x i32> undef, i32 %filterWidth, i32 0
-  %17 = shufflevector <4 x i32> %16, <4 x i32> undef, <4 x i32> zeroinitializer
-  %18 = sub nsw i32 0, %8
-  br label %19
+tmp_29:                                           ; preds = %tmp_19
+  %tmp_31 = insertelement <4 x i32> undef, i32 %filterWidth, i32 0
+  %tmp_32 = shufflevector <4 x i32> %tmp_31, <4 x i32> undef, <4 x i32> zeroinitializer
+  %tmp_34 = sub nsw i32 0, %tmp_15
+  br label %tmp_35
 
-; <label>:19                                      ; preds = %33, %15
-  %sum.0 = phi <4 x i32> [ zeroinitializer, %15 ], [ %32, %33 ]
-  %X.0 = phi i32 [ %18, %15 ], [ %34, %33 ]
-  %20 = icmp slt i32 %X.0, %8
-  br i1 %20, label %21, label %35
+tmp_35:                                           ; preds = %tmp_59, %tmp_29
+  %sum.0 = phi <4 x i32> [ zeroinitializer, %tmp_29 ], [ %tmp_58, %tmp_59 ]
+  %X.0 = phi i32 [ %tmp_34, %tmp_29 ], [ %tmp_61, %tmp_59 ]
+  %tmp_38 = icmp slt i32 %X.0, %tmp_15
+  br i1 %tmp_38, label %tmp_39, label %tmp_62
 
-; <label>:21                                      ; preds = %19
-  %22 = add nsw i32 %6, %X.0
-  %23 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %22
-  %24 = load <4 x i8> addrspace(1)* %23, align 4
-  %25 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %24)
-  %26 = add <4 x i32> %sum.0, %25
-  %27 = add nsw i32 %6, %X.0
-  %28 = add nsw i32 %27, 1
-  %29 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %28
-  %30 = load <4 x i8> addrspace(1)* %29, align 4
-  %31 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %30)
-  %32 = add <4 x i32> %26, %31
-  br label %33
+tmp_39:                                           ; preds = %tmp_35
+  %tmp_42 = add nsw i32 %tmp_12, %X.0
+  %tmp_44 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_42
+  %tmp_45 = load <4 x i8> addrspace(1)* %tmp_44, align 4
+  %tmp_46 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %tmp_45)
+  %tmp_48 = add <4 x i32> %sum.0, %tmp_46
+  %tmp_51 = add nsw i32 %tmp_12, %X.0
+  %tmp_52 = add nsw i32 %tmp_51, 1
+  %tmp_54 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_52
+  %tmp_55 = load <4 x i8> addrspace(1)* %tmp_54, align 4
+  %tmp_56 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %tmp_55)
+  %tmp_58 = add <4 x i32> %tmp_48, %tmp_56
+  br label %tmp_59
 
-; <label>:33                                      ; preds = %21
-  %34 = add nsw i32 %X.0, 2
-  br label %19
+tmp_59:                                           ; preds = %tmp_39
+  %tmp_61 = add nsw i32 %X.0, 2
+  br label %tmp_35
 
-; <label>:35                                      ; preds = %19
-  %36 = add nsw i32 %6, %8
-  %37 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %36
-  %38 = load <4 x i8> addrspace(1)* %37, align 4
-  %39 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %38)
-  %40 = add <4 x i32> %sum.0, %39
-  %41 = sdiv <4 x i32> %40, %17
-  %42 = call <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32> %41)
-  %43 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %6
-  store <4 x i8> %42, <4 x i8> addrspace(1)* %43, align 4
-  br label %44
+tmp_62:                                           ; preds = %tmp_35
+  %tmp_65 = add nsw i32 %tmp_12, %tmp_15
+  %tmp_67 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_65
+  %tmp_68 = load <4 x i8> addrspace(1)* %tmp_67, align 4
+  %tmp_69 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %tmp_68)
+  %tmp_71 = add <4 x i32> %sum.0, %tmp_69
+  %tmp_74 = sdiv <4 x i32> %tmp_71, %tmp_32
+  %tmp_75 = call <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32> %tmp_74)
+  %tmp_78 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_12
+  store <4 x i8> %tmp_75, <4 x i8> addrspace(1)* %tmp_78, align 4
+  br label %tmp_79
 
-; <label>:44                                      ; preds = %35, %13
+tmp_79:                                           ; preds = %tmp_62, %tmp_25
   ret void
 }
 
@@ -394,167 +394,167 @@ declare <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8>) #1
 
 ; Function Attrs: nounwind
 define void @box_filter_vertical(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %filterWidth) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = call i32 @__get_global_size_u32(i32 0)
-  %4 = call i32 @__get_global_size_u32(i32 1)
-  %5 = mul nsw i32 %2, %3
-  %6 = add nsw i32 %1, %5
-  %7 = sub nsw i32 %filterWidth, 1
-  %8 = sdiv i32 %7, 2
-  %9 = icmp slt i32 %2, %8
-  br i1 %9, label %13, label %10
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_5 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_6 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_7 = call i32 @__get_global_size_u32(i32 1)
+  %tmp_11 = mul nsw i32 %tmp_5, %tmp_6
+  %tmp_12 = add nsw i32 %tmp_4, %tmp_11
+  %tmp_14 = sub nsw i32 %filterWidth, 1
+  %tmp_15 = sdiv i32 %tmp_14, 2
+  %tmp_18 = icmp slt i32 %tmp_5, %tmp_15
+  br i1 %tmp_18, label %tmp_25, label %tmp_19
 
-; <label>:10                                      ; preds = %0
-  %11 = sub nsw i32 %4, %8
-  %12 = icmp sge i32 %2, %11
-  br i1 %12, label %13, label %15
+tmp_19:                                           ; preds = %0
+  %tmp_23 = sub nsw i32 %tmp_7, %tmp_15
+  %tmp_24 = icmp sge i32 %tmp_5, %tmp_23
+  br i1 %tmp_24, label %tmp_25, label %tmp_29
 
-; <label>:13                                      ; preds = %10, %0
-  %14 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %6
-  store <4 x i8> zeroinitializer, <4 x i8> addrspace(1)* %14, align 4
-  br label %47
+tmp_25:                                           ; preds = %tmp_19, %0
+  %tmp_28 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_12
+  store <4 x i8> zeroinitializer, <4 x i8> addrspace(1)* %tmp_28, align 4
+  br label %tmp_85
 
-; <label>:15                                      ; preds = %10
-  %16 = insertelement <4 x i32> undef, i32 %filterWidth, i32 0
-  %17 = shufflevector <4 x i32> %16, <4 x i32> undef, <4 x i32> zeroinitializer
-  %18 = sub nsw i32 0, %8
-  br label %19
+tmp_29:                                           ; preds = %tmp_19
+  %tmp_31 = insertelement <4 x i32> undef, i32 %filterWidth, i32 0
+  %tmp_32 = shufflevector <4 x i32> %tmp_31, <4 x i32> undef, <4 x i32> zeroinitializer
+  %tmp_34 = sub nsw i32 0, %tmp_15
+  br label %tmp_35
 
-; <label>:19                                      ; preds = %35, %15
-  %sum.0 = phi <4 x i32> [ zeroinitializer, %15 ], [ %34, %35 ]
-  %Y.0 = phi i32 [ %18, %15 ], [ %36, %35 ]
-  %20 = icmp slt i32 %Y.0, %8
-  br i1 %20, label %21, label %37
+tmp_35:                                           ; preds = %tmp_63, %tmp_29
+  %sum.0 = phi <4 x i32> [ zeroinitializer, %tmp_29 ], [ %tmp_62, %tmp_63 ]
+  %Y.0 = phi i32 [ %tmp_34, %tmp_29 ], [ %tmp_65, %tmp_63 ]
+  %tmp_38 = icmp slt i32 %Y.0, %tmp_15
+  br i1 %tmp_38, label %tmp_39, label %tmp_66
 
-; <label>:21                                      ; preds = %19
-  %22 = mul nsw i32 %Y.0, %3
-  %23 = add nsw i32 %6, %22
-  %24 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %23
-  %25 = load <4 x i8> addrspace(1)* %24, align 4
-  %26 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %25)
-  %27 = add <4 x i32> %sum.0, %26
-  %28 = add nsw i32 %Y.0, 1
-  %29 = mul nsw i32 %28, %3
-  %30 = add nsw i32 %6, %29
-  %31 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %30
-  %32 = load <4 x i8> addrspace(1)* %31, align 4
-  %33 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %32)
-  %34 = add <4 x i32> %27, %33
-  br label %35
+tmp_39:                                           ; preds = %tmp_35
+  %tmp_43 = mul nsw i32 %Y.0, %tmp_6
+  %tmp_44 = add nsw i32 %tmp_12, %tmp_43
+  %tmp_46 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_44
+  %tmp_47 = load <4 x i8> addrspace(1)* %tmp_46, align 4
+  %tmp_48 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %tmp_47)
+  %tmp_50 = add <4 x i32> %sum.0, %tmp_48
+  %tmp_53 = add nsw i32 %Y.0, 1
+  %tmp_55 = mul nsw i32 %tmp_53, %tmp_6
+  %tmp_56 = add nsw i32 %tmp_12, %tmp_55
+  %tmp_58 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_56
+  %tmp_59 = load <4 x i8> addrspace(1)* %tmp_58, align 4
+  %tmp_60 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %tmp_59)
+  %tmp_62 = add <4 x i32> %tmp_50, %tmp_60
+  br label %tmp_63
 
-; <label>:35                                      ; preds = %21
-  %36 = add nsw i32 %Y.0, 2
-  br label %19
+tmp_63:                                           ; preds = %tmp_39
+  %tmp_65 = add nsw i32 %Y.0, 2
+  br label %tmp_35
 
-; <label>:37                                      ; preds = %19
-  %38 = mul nsw i32 %8, %3
-  %39 = add nsw i32 %6, %38
-  %40 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %39
-  %41 = load <4 x i8> addrspace(1)* %40, align 4
-  %42 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %41)
-  %43 = add <4 x i32> %sum.0, %42
-  %44 = sdiv <4 x i32> %43, %17
-  %45 = call <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32> %44)
-  %46 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %6
-  store <4 x i8> %45, <4 x i8> addrspace(1)* %46, align 4
-  br label %47
+tmp_66:                                           ; preds = %tmp_35
+  %tmp_70 = mul nsw i32 %tmp_15, %tmp_6
+  %tmp_71 = add nsw i32 %tmp_12, %tmp_70
+  %tmp_73 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_71
+  %tmp_74 = load <4 x i8> addrspace(1)* %tmp_73, align 4
+  %tmp_75 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %tmp_74)
+  %tmp_77 = add <4 x i32> %sum.0, %tmp_75
+  %tmp_80 = sdiv <4 x i32> %tmp_77, %tmp_32
+  %tmp_81 = call <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32> %tmp_80)
+  %tmp_84 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_12
+  store <4 x i8> %tmp_81, <4 x i8> addrspace(1)* %tmp_84, align 4
+  br label %tmp_85
 
-; <label>:47                                      ; preds = %37, %13
+tmp_85:                                           ; preds = %tmp_66, %tmp_25
   ret void
 }
 
 ; Function Attrs: nounwind
 define void @box_filter_horizontal_local(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %filterWidth, <4 x i8> addrspace(3)* %lds) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = call i32 @__get_global_size_u32(i32 0)
-  %4 = call i32 @__get_global_size_u32(i32 1)
-  %5 = mul nsw i32 %2, %3
-  %6 = add nsw i32 %1, %5
-  %7 = sub nsw i32 %filterWidth, 1
-  %8 = sdiv i32 %7, 2
-  %9 = call i32 @__get_local_id_u32(i32 0)
-  %10 = call i32 @__get_group_id_u32(i32 0)
-  %11 = call i32 @__get_group_id_u32(i32 1)
-  %12 = call i32 @__get_local_size_u32(i32 0)
-  %13 = call i32 @__get_local_size_u32(i32 1)
-  %14 = mul nsw i32 %12, %10
-  %15 = mul nsw i32 %3, %11
-  %16 = mul nsw i32 %15, %13
-  %17 = add nsw i32 %14, %16
-  %18 = icmp slt i32 %9, %8
-  br i1 %18, label %19, label %32
+  %tmp_5 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_6 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_7 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_8 = call i32 @__get_global_size_u32(i32 1)
+  %tmp_12 = mul nsw i32 %tmp_6, %tmp_7
+  %tmp_13 = add nsw i32 %tmp_5, %tmp_12
+  %tmp_15 = sub nsw i32 %filterWidth, 1
+  %tmp_16 = sdiv i32 %tmp_15, 2
+  %tmp_17 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_18 = call i32 @__get_group_id_u32(i32 0)
+  %tmp_19 = call i32 @__get_group_id_u32(i32 1)
+  %tmp_20 = call i32 @__get_local_size_u32(i32 0)
+  %tmp_21 = call i32 @__get_local_size_u32(i32 1)
+  %tmp_24 = mul nsw i32 %tmp_20, %tmp_18
+  %tmp_27 = mul nsw i32 %tmp_7, %tmp_19
+  %tmp_29 = mul nsw i32 %tmp_27, %tmp_21
+  %tmp_30 = add nsw i32 %tmp_24, %tmp_29
+  %tmp_33 = icmp slt i32 %tmp_17, %tmp_16
+  br i1 %tmp_33, label %tmp_34, label %tmp_59
 
-; <label>:19                                      ; preds = %0
-  %20 = sub nsw i32 %17, %8
-  %21 = add nsw i32 %20, %9
-  %22 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %21
-  %23 = load <4 x i8> addrspace(1)* %22, align 4
-  %24 = getelementptr inbounds <4 x i8> addrspace(3)* %lds, i32 %9
-  store <4 x i8> %23, <4 x i8> addrspace(3)* %24, align 4
-  %25 = add nsw i32 %17, %9
-  %26 = add nsw i32 %25, 256
-  %27 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %26
-  %28 = load <4 x i8> addrspace(1)* %27, align 4
-  %29 = add nsw i32 256, %8
-  %30 = add nsw i32 %29, %9
-  %31 = getelementptr inbounds <4 x i8> addrspace(3)* %lds, i32 %30
-  store <4 x i8> %28, <4 x i8> addrspace(3)* %31, align 4
-  br label %32
+tmp_34:                                           ; preds = %0
+  %tmp_37 = sub nsw i32 %tmp_30, %tmp_16
+  %tmp_39 = add nsw i32 %tmp_37, %tmp_17
+  %tmp_41 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_39
+  %tmp_42 = load <4 x i8> addrspace(1)* %tmp_41, align 4
+  %tmp_45 = getelementptr inbounds <4 x i8> addrspace(3)* %lds, i32 %tmp_17
+  store <4 x i8> %tmp_42, <4 x i8> addrspace(3)* %tmp_45, align 4
+  %tmp_48 = add nsw i32 %tmp_30, %tmp_17
+  %tmp_49 = add nsw i32 %tmp_48, 256
+  %tmp_51 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_49
+  %tmp_52 = load <4 x i8> addrspace(1)* %tmp_51, align 4
+  %tmp_54 = add nsw i32 256, %tmp_16
+  %tmp_56 = add nsw i32 %tmp_54, %tmp_17
+  %tmp_58 = getelementptr inbounds <4 x i8> addrspace(3)* %lds, i32 %tmp_56
+  store <4 x i8> %tmp_52, <4 x i8> addrspace(3)* %tmp_58, align 4
+  br label %tmp_59
 
-; <label>:32                                      ; preds = %19, %0
-  %33 = add nsw i32 %17, %9
-  %34 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %33
-  %35 = load <4 x i8> addrspace(1)* %34, align 4
-  %36 = add nsw i32 %9, %8
-  %37 = getelementptr inbounds <4 x i8> addrspace(3)* %lds, i32 %36
-  store <4 x i8> %35, <4 x i8> addrspace(3)* %37, align 4
+tmp_59:                                           ; preds = %tmp_34, %0
+  %tmp_62 = add nsw i32 %tmp_30, %tmp_17
+  %tmp_64 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_62
+  %tmp_65 = load <4 x i8> addrspace(1)* %tmp_64, align 4
+  %tmp_68 = add nsw i32 %tmp_17, %tmp_16
+  %tmp_70 = getelementptr inbounds <4 x i8> addrspace(3)* %lds, i32 %tmp_68
+  store <4 x i8> %tmp_65, <4 x i8> addrspace(3)* %tmp_70, align 4
   call void @barrier(i32 1)
-  %38 = icmp slt i32 %1, %8
-  br i1 %38, label %42, label %39
+  %tmp_73 = icmp slt i32 %tmp_5, %tmp_16
+  br i1 %tmp_73, label %tmp_80, label %tmp_74
 
-; <label>:39                                      ; preds = %32
-  %40 = sub nsw i32 %3, %8
-  %41 = icmp sge i32 %1, %40
-  br i1 %41, label %42, label %43
+tmp_74:                                           ; preds = %tmp_59
+  %tmp_78 = sub nsw i32 %tmp_7, %tmp_16
+  %tmp_79 = icmp sge i32 %tmp_5, %tmp_78
+  br i1 %tmp_79, label %tmp_80, label %tmp_81
 
-; <label>:42                                      ; preds = %39, %32
-  br label %62
+tmp_80:                                           ; preds = %tmp_74, %tmp_59
+  br label %tmp_114
 
-; <label>:43                                      ; preds = %39
-  %44 = insertelement <4 x i32> undef, i32 %filterWidth, i32 0
-  %45 = shufflevector <4 x i32> %44, <4 x i32> undef, <4 x i32> zeroinitializer
-  %46 = sub nsw i32 0, %8
-  br label %47
+tmp_81:                                           ; preds = %tmp_74
+  %tmp_83 = insertelement <4 x i32> undef, i32 %filterWidth, i32 0
+  %tmp_84 = shufflevector <4 x i32> %tmp_83, <4 x i32> undef, <4 x i32> zeroinitializer
+  %tmp_86 = sub nsw i32 0, %tmp_16
+  br label %tmp_87
 
-; <label>:47                                      ; preds = %56, %43
-  %sum.0 = phi <4 x i32> [ zeroinitializer, %43 ], [ %55, %56 ]
-  %X.0 = phi i32 [ %46, %43 ], [ %57, %56 ]
-  %48 = icmp sle i32 %X.0, %8
-  br i1 %48, label %49, label %58
+tmp_87:                                           ; preds = %tmp_103, %tmp_81
+  %sum.0 = phi <4 x i32> [ zeroinitializer, %tmp_81 ], [ %tmp_102, %tmp_103 ]
+  %X.0 = phi i32 [ %tmp_86, %tmp_81 ], [ %tmp_105, %tmp_103 ]
+  %tmp_90 = icmp sle i32 %X.0, %tmp_16
+  br i1 %tmp_90, label %tmp_91, label %tmp_106
 
-; <label>:49                                      ; preds = %47
-  %50 = add nsw i32 %9, %X.0
-  %51 = add nsw i32 %50, %8
-  %52 = getelementptr inbounds <4 x i8> addrspace(3)* %lds, i32 %51
-  %53 = load <4 x i8> addrspace(3)* %52, align 4
-  %54 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %53)
-  %55 = add <4 x i32> %sum.0, %54
-  br label %56
+tmp_91:                                           ; preds = %tmp_87
+  %tmp_94 = add nsw i32 %tmp_17, %X.0
+  %tmp_96 = add nsw i32 %tmp_94, %tmp_16
+  %tmp_98 = getelementptr inbounds <4 x i8> addrspace(3)* %lds, i32 %tmp_96
+  %tmp_99 = load <4 x i8> addrspace(3)* %tmp_98, align 4
+  %tmp_100 = call <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8> %tmp_99)
+  %tmp_102 = add <4 x i32> %sum.0, %tmp_100
+  br label %tmp_103
 
-; <label>:56                                      ; preds = %49
-  %57 = add nsw i32 %X.0, 1
-  br label %47
+tmp_103:                                          ; preds = %tmp_91
+  %tmp_105 = add nsw i32 %X.0, 1
+  br label %tmp_87
 
-; <label>:58                                      ; preds = %47
-  %59 = sdiv <4 x i32> %sum.0, %45
-  %60 = call <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32> %59)
-  %61 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %6
-  store <4 x i8> %60, <4 x i8> addrspace(1)* %61, align 4
-  br label %62
+tmp_106:                                          ; preds = %tmp_87
+  %tmp_109 = sdiv <4 x i32> %sum.0, %tmp_84
+  %tmp_110 = call <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32> %tmp_109)
+  %tmp_113 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_13
+  store <4 x i8> %tmp_110, <4 x i8> addrspace(1)* %tmp_113, align 4
+  br label %tmp_114
 
-; <label>:62                                      ; preds = %58, %42
+tmp_114:                                          ; preds = %tmp_106, %tmp_80
   ret void
 }
 

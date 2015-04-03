@@ -4,19 +4,19 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define float @luminance(float %r, float %g, float %b) #0 {
-  %1 = alloca float, align 4
-  %2 = alloca float, align 4
-  %3 = alloca float, align 4
-  store float %r, float* %1, align 4
-  store float %g, float* %2, align 4
-  store float %b, float* %3, align 4
-  %4 = load float* %1, align 4
-  %5 = load float* %2, align 4
-  %6 = fmul float 0x3FE6E2EB20000000, %5
-  %7 = call float @llvm.fmuladd.f32(float 0x3FCB367A00000000, float %4, float %6)
-  %8 = load float* %3, align 4
-  %9 = call float @llvm.fmuladd.f32(float 0x3FB27BB300000000, float %8, float %7)
-  ret float %9
+  %tmp_1 = alloca float, align 4
+  %tmp_2 = alloca float, align 4
+  %tmp_3 = alloca float, align 4
+  store float %r, float* %tmp_1, align 4
+  store float %g, float* %tmp_2, align 4
+  store float %b, float* %tmp_3, align 4
+  %tmp_4 = load float* %tmp_1, align 4
+  %tmp_5 = load float* %tmp_2, align 4
+  %tmp_6 = fmul float 0x3FE6E2EB20000000, %tmp_5
+  %tmp_7 = call float @llvm.fmuladd.f32(float 0x3FCB367A00000000, float %tmp_4, float %tmp_6)
+  %tmp_8 = load float* %tmp_3, align 4
+  %tmp_9 = call float @llvm.fmuladd.f32(float 0x3FB27BB300000000, float %tmp_8, float %tmp_7)
+  ret float %tmp_9
 }
 
 ; Function Attrs: nounwind readnone
@@ -24,15 +24,15 @@ declare float @llvm.fmuladd.f32(float, float, float) #1
 
 ; Function Attrs: nounwind
 define void @toneMappingPattanaik1(float addrspace(1)* %input, float addrspace(1)* %output, float %averageLuminance, float %gamma, float %c, float %delta, i32 %width, i32 %numChannels, i32 %height) #0 {
-  %1 = alloca float addrspace(1)*, align 4
-  %2 = alloca float addrspace(1)*, align 4
-  %3 = alloca float, align 4
-  %4 = alloca float, align 4
-  %5 = alloca float, align 4
-  %6 = alloca float, align 4
-  %7 = alloca i32, align 4
-  %8 = alloca i32, align 4
-  %9 = alloca i32, align 4
+  %tmp_1 = alloca float addrspace(1)*, align 4
+  %tmp_2 = alloca float addrspace(1)*, align 4
+  %tmp_3 = alloca float, align 4
+  %tmp_4 = alloca float, align 4
+  %tmp_5 = alloca float, align 4
+  %tmp_6 = alloca float, align 4
+  %tmp_7 = alloca i32, align 4
+  %tmp_8 = alloca i32, align 4
+  %tmp_9 = alloca i32, align 4
   %globalIdX = alloca i32, align 4
   %globalIdY = alloca i32, align 4
   %r = alloca float, align 4
@@ -54,97 +54,97 @@ define void @toneMappingPattanaik1(float addrspace(1)* %input, float addrspace(1
   %down = alloca float, align 4
   %rightDown = alloca float, align 4
   %yDPattanaik = alloca float, align 4
-  store float addrspace(1)* %input, float addrspace(1)** %1, align 4
-  store float addrspace(1)* %output, float addrspace(1)** %2, align 4
-  store float %averageLuminance, float* %3, align 4
-  store float %gamma, float* %4, align 4
-  store float %c, float* %5, align 4
-  store float %delta, float* %6, align 4
-  store i32 %width, i32* %7, align 4
-  store i32 %numChannels, i32* %8, align 4
-  store i32 %height, i32* %9, align 4
-  %10 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %10, i32* %globalIdX, align 4
-  %11 = call i32 @__get_global_id_u32(i32 1)
-  store i32 %11, i32* %globalIdY, align 4
+  store float addrspace(1)* %input, float addrspace(1)** %tmp_1, align 4
+  store float addrspace(1)* %output, float addrspace(1)** %tmp_2, align 4
+  store float %averageLuminance, float* %tmp_3, align 4
+  store float %gamma, float* %tmp_4, align 4
+  store float %c, float* %tmp_5, align 4
+  store float %delta, float* %tmp_6, align 4
+  store i32 %width, i32* %tmp_7, align 4
+  store i32 %numChannels, i32* %tmp_8, align 4
+  store i32 %height, i32* %tmp_9, align 4
+  %tmp_10 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_10, i32* %globalIdX, align 4
+  %tmp_11 = call i32 @__get_global_id_u32(i32 1)
+  store i32 %tmp_11, i32* %globalIdY, align 4
   store float 0.000000e+00, float* %yLuminance, align 4
   store float 0.000000e+00, float* %cLPattanaik, align 4
   store float 0.000000e+00, float* %yLPattanaik, align 4
-  %12 = load i32* %7, align 4
-  %13 = load i32* %8, align 4
-  %14 = mul i32 %12, %13
-  %15 = load i32* %globalIdY, align 4
-  %16 = mul i32 %14, %15
-  %17 = load i32* %globalIdX, align 4
-  %18 = load i32* %8, align 4
-  %19 = mul i32 %17, %18
-  %20 = add i32 %19, 0
-  %21 = add i32 %16, %20
-  %22 = load float addrspace(1)** %1, align 4
-  %23 = getelementptr inbounds float addrspace(1)* %22, i32 %21
-  %24 = load float addrspace(1)* %23, align 4
-  store float %24, float* %r1, align 4
-  %25 = load i32* %7, align 4
-  %26 = load i32* %8, align 4
-  %27 = mul i32 %25, %26
-  %28 = load i32* %globalIdY, align 4
-  %29 = mul i32 %27, %28
-  %30 = load i32* %globalIdX, align 4
-  %31 = load i32* %8, align 4
-  %32 = mul i32 %30, %31
-  %33 = add i32 %32, 1
-  %34 = add i32 %29, %33
-  %35 = load float addrspace(1)** %1, align 4
-  %36 = getelementptr inbounds float addrspace(1)* %35, i32 %34
-  %37 = load float addrspace(1)* %36, align 4
-  store float %37, float* %g1, align 4
-  %38 = load i32* %7, align 4
-  %39 = load i32* %8, align 4
-  %40 = mul i32 %38, %39
-  %41 = load i32* %globalIdY, align 4
-  %42 = mul i32 %40, %41
-  %43 = load i32* %globalIdX, align 4
-  %44 = load i32* %8, align 4
-  %45 = mul i32 %43, %44
-  %46 = add i32 %45, 2
-  %47 = add i32 %42, %46
-  %48 = load float addrspace(1)** %1, align 4
-  %49 = getelementptr inbounds float addrspace(1)* %48, i32 %47
-  %50 = load float addrspace(1)* %49, align 4
-  store float %50, float* %b1, align 4
-  %51 = load float* %r1, align 4
-  %52 = load float* %g1, align 4
-  %53 = load float* %b1, align 4
-  %54 = call float @luminance(float %51, float %52, float %53)
-  store float %54, float* %yLuminance, align 4
-  %55 = load float* %5, align 4
-  %56 = load float* %3, align 4
-  %57 = fmul float %55, %56
-  store float %57, float* %gcPattanaik, align 4
-  %58 = load i32* %globalIdX, align 4
-  %59 = icmp ne i32 %58, 0
-  br i1 %59, label %60, label %470
+  %tmp_12 = load i32* %tmp_7, align 4
+  %tmp_13 = load i32* %tmp_8, align 4
+  %tmp_14 = mul i32 %tmp_12, %tmp_13
+  %tmp_15 = load i32* %globalIdY, align 4
+  %tmp_16 = mul i32 %tmp_14, %tmp_15
+  %tmp_17 = load i32* %globalIdX, align 4
+  %tmp_18 = load i32* %tmp_8, align 4
+  %tmp_19 = mul i32 %tmp_17, %tmp_18
+  %tmp_20 = add i32 %tmp_19, 0
+  %tmp_21 = add i32 %tmp_16, %tmp_20
+  %tmp_22 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_23 = getelementptr inbounds float addrspace(1)* %tmp_22, i32 %tmp_21
+  %tmp_24 = load float addrspace(1)* %tmp_23, align 4
+  store float %tmp_24, float* %r1, align 4
+  %tmp_25 = load i32* %tmp_7, align 4
+  %tmp_26 = load i32* %tmp_8, align 4
+  %tmp_27 = mul i32 %tmp_25, %tmp_26
+  %tmp_28 = load i32* %globalIdY, align 4
+  %tmp_29 = mul i32 %tmp_27, %tmp_28
+  %tmp_30 = load i32* %globalIdX, align 4
+  %tmp_31 = load i32* %tmp_8, align 4
+  %tmp_32 = mul i32 %tmp_30, %tmp_31
+  %tmp_33 = add i32 %tmp_32, 1
+  %tmp_34 = add i32 %tmp_29, %tmp_33
+  %tmp_35 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_36 = getelementptr inbounds float addrspace(1)* %tmp_35, i32 %tmp_34
+  %tmp_37 = load float addrspace(1)* %tmp_36, align 4
+  store float %tmp_37, float* %g1, align 4
+  %tmp_38 = load i32* %tmp_7, align 4
+  %tmp_39 = load i32* %tmp_8, align 4
+  %tmp_40 = mul i32 %tmp_38, %tmp_39
+  %tmp_41 = load i32* %globalIdY, align 4
+  %tmp_42 = mul i32 %tmp_40, %tmp_41
+  %tmp_43 = load i32* %globalIdX, align 4
+  %tmp_44 = load i32* %tmp_8, align 4
+  %tmp_45 = mul i32 %tmp_43, %tmp_44
+  %tmp_46 = add i32 %tmp_45, 2
+  %tmp_47 = add i32 %tmp_42, %tmp_46
+  %tmp_48 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_49 = getelementptr inbounds float addrspace(1)* %tmp_48, i32 %tmp_47
+  %tmp_50 = load float addrspace(1)* %tmp_49, align 4
+  store float %tmp_50, float* %b1, align 4
+  %tmp_51 = load float* %r1, align 4
+  %tmp_52 = load float* %g1, align 4
+  %tmp_53 = load float* %b1, align 4
+  %tmp_54 = call float @luminance(float %tmp_51, float %tmp_52, float %tmp_53)
+  store float %tmp_54, float* %yLuminance, align 4
+  %tmp_55 = load float* %tmp_5, align 4
+  %tmp_56 = load float* %tmp_3, align 4
+  %tmp_57 = fmul float %tmp_55, %tmp_56
+  store float %tmp_57, float* %gcPattanaik, align 4
+  %tmp_58 = load i32* %globalIdX, align 4
+  %tmp_59 = icmp ne i32 %tmp_58, 0
+  br i1 %tmp_59, label %tmp_60, label %tmp_470
 
-; <label>:60                                      ; preds = %0
-  %61 = load i32* %globalIdY, align 4
-  %62 = icmp ne i32 %61, 0
-  br i1 %62, label %63, label %470
+tmp_60:                                      ; preds = %tmp_0
+  %tmp_61 = load i32* %globalIdY, align 4
+  %tmp_62 = icmp ne i32 %tmp_61, 0
+  br i1 %tmp_62, label %tmp_63, label %tmp_470
 
-; <label>:63                                      ; preds = %60
-  %64 = load i32* %globalIdX, align 4
-  %65 = load i32* %7, align 4
-  %66 = sub i32 %65, 1
-  %67 = icmp ne i32 %64, %66
-  br i1 %67, label %68, label %470
+tmp_63:                                      ; preds = %tmp_60
+  %tmp_64 = load i32* %globalIdX, align 4
+  %tmp_65 = load i32* %tmp_7, align 4
+  %tmp_66 = sub i32 %tmp_65, 1
+  %tmp_67 = icmp ne i32 %tmp_64, %tmp_66
+  br i1 %tmp_67, label %tmp_68, label %tmp_470
 
-; <label>:68                                      ; preds = %63
-  %69 = load i32* %globalIdY, align 4
-  %70 = load i32* %9, align 4
-  %71 = sub i32 %70, 1
-  %72 = icmp ne i32 %69, %71
-  br i1 %72, label %73, label %470
+tmp_68:                                      ; preds = %tmp_63
+  %tmp_69 = load i32* %globalIdY, align 4
+  %tmp_70 = load i32* %tmp_9, align 4
+  %tmp_71 = sub i32 %tmp_70, 1
+  %tmp_72 = icmp ne i32 %tmp_69, %tmp_71
+  br i1 %tmp_72, label %tmp_73, label %tmp_470
 
-; <label>:73                                      ; preds = %68
+tmp_73:                                      ; preds = %tmp_68
   store float 0.000000e+00, float* %leftUp, align 4
   store float 0.000000e+00, float* %up, align 4
   store float 0.000000e+00, float* %rightUp, align 4
@@ -153,552 +153,552 @@ define void @toneMappingPattanaik1(float addrspace(1)* %input, float addrspace(1
   store float 0.000000e+00, float* %leftDown, align 4
   store float 0.000000e+00, float* %down, align 4
   store float 0.000000e+00, float* %rightDown, align 4
-  %74 = load i32* %7, align 4
-  %75 = load i32* %8, align 4
-  %76 = mul i32 %74, %75
-  %77 = load i32* %globalIdY, align 4
-  %78 = sub i32 %77, 1
-  %79 = mul i32 %76, %78
-  %80 = load i32* %globalIdX, align 4
-  %81 = sub i32 %80, 1
-  %82 = load i32* %8, align 4
-  %83 = mul i32 %81, %82
-  %84 = add i32 %79, %83
-  %85 = add i32 %84, 0
-  %86 = load float addrspace(1)** %1, align 4
-  %87 = getelementptr inbounds float addrspace(1)* %86, i32 %85
-  %88 = load float addrspace(1)* %87, align 4
-  store float %88, float* %r, align 4
-  %89 = load i32* %7, align 4
-  %90 = load i32* %8, align 4
-  %91 = mul i32 %89, %90
-  %92 = load i32* %globalIdY, align 4
-  %93 = sub i32 %92, 1
-  %94 = mul i32 %91, %93
-  %95 = load i32* %globalIdX, align 4
-  %96 = sub i32 %95, 1
-  %97 = load i32* %8, align 4
-  %98 = mul i32 %96, %97
-  %99 = add i32 %94, %98
-  %100 = add i32 %99, 1
-  %101 = load float addrspace(1)** %1, align 4
-  %102 = getelementptr inbounds float addrspace(1)* %101, i32 %100
-  %103 = load float addrspace(1)* %102, align 4
-  store float %103, float* %g, align 4
-  %104 = load i32* %7, align 4
-  %105 = load i32* %8, align 4
-  %106 = mul i32 %104, %105
-  %107 = load i32* %globalIdY, align 4
-  %108 = sub i32 %107, 1
-  %109 = mul i32 %106, %108
-  %110 = load i32* %globalIdX, align 4
-  %111 = sub i32 %110, 1
-  %112 = load i32* %8, align 4
-  %113 = mul i32 %111, %112
-  %114 = add i32 %109, %113
-  %115 = add i32 %114, 2
-  %116 = load float addrspace(1)** %1, align 4
-  %117 = getelementptr inbounds float addrspace(1)* %116, i32 %115
-  %118 = load float addrspace(1)* %117, align 4
-  store float %118, float* %b, align 4
-  %119 = load float* %r, align 4
-  %120 = load float* %g, align 4
-  %121 = load float* %b, align 4
-  %122 = call float @luminance(float %119, float %120, float %121)
-  store float %122, float* %leftUp, align 4
-  %123 = load i32* %7, align 4
-  %124 = load i32* %8, align 4
-  %125 = mul i32 %123, %124
-  %126 = load i32* %globalIdY, align 4
-  %127 = sub i32 %126, 1
-  %128 = mul i32 %125, %127
-  %129 = load i32* %globalIdX, align 4
-  %130 = load i32* %8, align 4
-  %131 = mul i32 %129, %130
-  %132 = add i32 %128, %131
-  %133 = add i32 %132, 0
-  %134 = load float addrspace(1)** %1, align 4
-  %135 = getelementptr inbounds float addrspace(1)* %134, i32 %133
-  %136 = load float addrspace(1)* %135, align 4
-  store float %136, float* %r, align 4
-  %137 = load i32* %7, align 4
-  %138 = load i32* %8, align 4
-  %139 = mul i32 %137, %138
-  %140 = load i32* %globalIdY, align 4
-  %141 = sub i32 %140, 1
-  %142 = mul i32 %139, %141
-  %143 = load i32* %globalIdX, align 4
-  %144 = load i32* %8, align 4
-  %145 = mul i32 %143, %144
-  %146 = add i32 %142, %145
-  %147 = add i32 %146, 1
-  %148 = load float addrspace(1)** %1, align 4
-  %149 = getelementptr inbounds float addrspace(1)* %148, i32 %147
-  %150 = load float addrspace(1)* %149, align 4
-  store float %150, float* %g, align 4
-  %151 = load i32* %7, align 4
-  %152 = load i32* %8, align 4
-  %153 = mul i32 %151, %152
-  %154 = load i32* %globalIdY, align 4
-  %155 = sub i32 %154, 1
-  %156 = mul i32 %153, %155
-  %157 = load i32* %globalIdX, align 4
-  %158 = load i32* %8, align 4
-  %159 = mul i32 %157, %158
-  %160 = add i32 %156, %159
-  %161 = add i32 %160, 2
-  %162 = load float addrspace(1)** %1, align 4
-  %163 = getelementptr inbounds float addrspace(1)* %162, i32 %161
-  %164 = load float addrspace(1)* %163, align 4
-  store float %164, float* %b, align 4
-  %165 = load float* %r, align 4
-  %166 = load float* %g, align 4
-  %167 = load float* %b, align 4
-  %168 = call float @luminance(float %165, float %166, float %167)
-  store float %168, float* %up, align 4
-  %169 = load i32* %7, align 4
-  %170 = load i32* %8, align 4
-  %171 = mul i32 %169, %170
-  %172 = load i32* %globalIdY, align 4
-  %173 = sub i32 %172, 1
-  %174 = mul i32 %171, %173
-  %175 = load i32* %globalIdX, align 4
-  %176 = add i32 %175, 1
-  %177 = load i32* %8, align 4
-  %178 = mul i32 %176, %177
-  %179 = add i32 %174, %178
-  %180 = add i32 %179, 0
-  %181 = load float addrspace(1)** %1, align 4
-  %182 = getelementptr inbounds float addrspace(1)* %181, i32 %180
-  %183 = load float addrspace(1)* %182, align 4
-  store float %183, float* %r, align 4
-  %184 = load i32* %7, align 4
-  %185 = load i32* %8, align 4
-  %186 = mul i32 %184, %185
-  %187 = load i32* %globalIdY, align 4
-  %188 = sub i32 %187, 1
-  %189 = mul i32 %186, %188
-  %190 = load i32* %globalIdX, align 4
-  %191 = add i32 %190, 1
-  %192 = load i32* %8, align 4
-  %193 = mul i32 %191, %192
-  %194 = add i32 %189, %193
-  %195 = add i32 %194, 1
-  %196 = load float addrspace(1)** %1, align 4
-  %197 = getelementptr inbounds float addrspace(1)* %196, i32 %195
-  %198 = load float addrspace(1)* %197, align 4
-  store float %198, float* %g, align 4
-  %199 = load i32* %7, align 4
-  %200 = load i32* %8, align 4
-  %201 = mul i32 %199, %200
-  %202 = load i32* %globalIdY, align 4
-  %203 = sub i32 %202, 1
-  %204 = mul i32 %201, %203
-  %205 = load i32* %globalIdX, align 4
-  %206 = add i32 %205, 1
-  %207 = load i32* %8, align 4
-  %208 = mul i32 %206, %207
-  %209 = add i32 %204, %208
-  %210 = add i32 %209, 2
-  %211 = load float addrspace(1)** %1, align 4
-  %212 = getelementptr inbounds float addrspace(1)* %211, i32 %210
-  %213 = load float addrspace(1)* %212, align 4
-  store float %213, float* %b, align 4
-  %214 = load float* %r, align 4
-  %215 = load float* %g, align 4
-  %216 = load float* %b, align 4
-  %217 = call float @luminance(float %214, float %215, float %216)
-  store float %217, float* %rightUp, align 4
-  %218 = load i32* %7, align 4
-  %219 = load i32* %8, align 4
-  %220 = mul i32 %218, %219
-  %221 = load i32* %globalIdY, align 4
-  %222 = mul i32 %220, %221
-  %223 = load i32* %globalIdX, align 4
-  %224 = sub i32 %223, 1
-  %225 = load i32* %8, align 4
-  %226 = mul i32 %224, %225
-  %227 = add i32 %222, %226
-  %228 = add i32 %227, 0
-  %229 = load float addrspace(1)** %1, align 4
-  %230 = getelementptr inbounds float addrspace(1)* %229, i32 %228
-  %231 = load float addrspace(1)* %230, align 4
-  store float %231, float* %r, align 4
-  %232 = load i32* %7, align 4
-  %233 = load i32* %8, align 4
-  %234 = mul i32 %232, %233
-  %235 = load i32* %globalIdY, align 4
-  %236 = mul i32 %234, %235
-  %237 = load i32* %globalIdX, align 4
-  %238 = sub i32 %237, 1
-  %239 = load i32* %8, align 4
-  %240 = mul i32 %238, %239
-  %241 = add i32 %236, %240
-  %242 = add i32 %241, 1
-  %243 = load float addrspace(1)** %1, align 4
-  %244 = getelementptr inbounds float addrspace(1)* %243, i32 %242
-  %245 = load float addrspace(1)* %244, align 4
-  store float %245, float* %g, align 4
-  %246 = load i32* %7, align 4
-  %247 = load i32* %8, align 4
-  %248 = mul i32 %246, %247
-  %249 = load i32* %globalIdY, align 4
-  %250 = mul i32 %248, %249
-  %251 = load i32* %globalIdX, align 4
-  %252 = sub i32 %251, 1
-  %253 = load i32* %8, align 4
-  %254 = mul i32 %252, %253
-  %255 = add i32 %250, %254
-  %256 = add i32 %255, 2
-  %257 = load float addrspace(1)** %1, align 4
-  %258 = getelementptr inbounds float addrspace(1)* %257, i32 %256
-  %259 = load float addrspace(1)* %258, align 4
-  store float %259, float* %b, align 4
-  %260 = load float* %r, align 4
-  %261 = load float* %g, align 4
-  %262 = load float* %b, align 4
-  %263 = call float @luminance(float %260, float %261, float %262)
-  store float %263, float* %left, align 4
-  %264 = load i32* %7, align 4
-  %265 = load i32* %8, align 4
-  %266 = mul i32 %264, %265
-  %267 = load i32* %globalIdY, align 4
-  %268 = mul i32 %266, %267
-  %269 = load i32* %globalIdX, align 4
-  %270 = add i32 %269, 1
-  %271 = load i32* %8, align 4
-  %272 = mul i32 %270, %271
-  %273 = add i32 %268, %272
-  %274 = add i32 %273, 0
-  %275 = load float addrspace(1)** %1, align 4
-  %276 = getelementptr inbounds float addrspace(1)* %275, i32 %274
-  %277 = load float addrspace(1)* %276, align 4
-  store float %277, float* %r, align 4
-  %278 = load i32* %7, align 4
-  %279 = load i32* %8, align 4
-  %280 = mul i32 %278, %279
-  %281 = load i32* %globalIdY, align 4
-  %282 = mul i32 %280, %281
-  %283 = load i32* %globalIdX, align 4
-  %284 = add i32 %283, 1
-  %285 = load i32* %8, align 4
-  %286 = mul i32 %284, %285
-  %287 = add i32 %282, %286
-  %288 = add i32 %287, 1
-  %289 = load float addrspace(1)** %1, align 4
-  %290 = getelementptr inbounds float addrspace(1)* %289, i32 %288
-  %291 = load float addrspace(1)* %290, align 4
-  store float %291, float* %g, align 4
-  %292 = load i32* %7, align 4
-  %293 = load i32* %8, align 4
-  %294 = mul i32 %292, %293
-  %295 = load i32* %globalIdY, align 4
-  %296 = mul i32 %294, %295
-  %297 = load i32* %globalIdX, align 4
-  %298 = add i32 %297, 1
-  %299 = load i32* %8, align 4
-  %300 = mul i32 %298, %299
-  %301 = add i32 %296, %300
-  %302 = add i32 %301, 2
-  %303 = load float addrspace(1)** %1, align 4
-  %304 = getelementptr inbounds float addrspace(1)* %303, i32 %302
-  %305 = load float addrspace(1)* %304, align 4
-  store float %305, float* %b, align 4
-  %306 = load float* %r, align 4
-  %307 = load float* %g, align 4
-  %308 = load float* %b, align 4
-  %309 = call float @luminance(float %306, float %307, float %308)
-  store float %309, float* %right, align 4
-  %310 = load i32* %7, align 4
-  %311 = load i32* %8, align 4
-  %312 = mul i32 %310, %311
-  %313 = load i32* %globalIdY, align 4
-  %314 = add i32 %313, 1
-  %315 = mul i32 %312, %314
-  %316 = load i32* %globalIdX, align 4
-  %317 = sub i32 %316, 1
-  %318 = load i32* %8, align 4
-  %319 = mul i32 %317, %318
-  %320 = add i32 %315, %319
-  %321 = add i32 %320, 0
-  %322 = load float addrspace(1)** %1, align 4
-  %323 = getelementptr inbounds float addrspace(1)* %322, i32 %321
-  %324 = load float addrspace(1)* %323, align 4
-  store float %324, float* %r, align 4
-  %325 = load i32* %7, align 4
-  %326 = load i32* %8, align 4
-  %327 = mul i32 %325, %326
-  %328 = load i32* %globalIdY, align 4
-  %329 = add i32 %328, 1
-  %330 = mul i32 %327, %329
-  %331 = load i32* %globalIdX, align 4
-  %332 = sub i32 %331, 1
-  %333 = load i32* %8, align 4
-  %334 = mul i32 %332, %333
-  %335 = add i32 %330, %334
-  %336 = add i32 %335, 1
-  %337 = load float addrspace(1)** %1, align 4
-  %338 = getelementptr inbounds float addrspace(1)* %337, i32 %336
-  %339 = load float addrspace(1)* %338, align 4
-  store float %339, float* %g, align 4
-  %340 = load i32* %7, align 4
-  %341 = load i32* %8, align 4
-  %342 = mul i32 %340, %341
-  %343 = load i32* %globalIdY, align 4
-  %344 = add i32 %343, 1
-  %345 = mul i32 %342, %344
-  %346 = load i32* %globalIdX, align 4
-  %347 = sub i32 %346, 1
-  %348 = load i32* %8, align 4
-  %349 = mul i32 %347, %348
-  %350 = add i32 %345, %349
-  %351 = add i32 %350, 2
-  %352 = load float addrspace(1)** %1, align 4
-  %353 = getelementptr inbounds float addrspace(1)* %352, i32 %351
-  %354 = load float addrspace(1)* %353, align 4
-  store float %354, float* %b, align 4
-  %355 = load float* %r, align 4
-  %356 = load float* %g, align 4
-  %357 = load float* %b, align 4
-  %358 = call float @luminance(float %355, float %356, float %357)
-  store float %358, float* %leftDown, align 4
-  %359 = load i32* %7, align 4
-  %360 = load i32* %8, align 4
-  %361 = mul i32 %359, %360
-  %362 = load i32* %globalIdY, align 4
-  %363 = add i32 %362, 1
-  %364 = mul i32 %361, %363
-  %365 = load i32* %globalIdX, align 4
-  %366 = load i32* %8, align 4
-  %367 = mul i32 %365, %366
-  %368 = add i32 %364, %367
-  %369 = add i32 %368, 0
-  %370 = load float addrspace(1)** %1, align 4
-  %371 = getelementptr inbounds float addrspace(1)* %370, i32 %369
-  %372 = load float addrspace(1)* %371, align 4
-  store float %372, float* %r, align 4
-  %373 = load i32* %7, align 4
-  %374 = load i32* %8, align 4
-  %375 = mul i32 %373, %374
-  %376 = load i32* %globalIdY, align 4
-  %377 = add i32 %376, 1
-  %378 = mul i32 %375, %377
-  %379 = load i32* %globalIdX, align 4
-  %380 = load i32* %8, align 4
-  %381 = mul i32 %379, %380
-  %382 = add i32 %378, %381
-  %383 = add i32 %382, 1
-  %384 = load float addrspace(1)** %1, align 4
-  %385 = getelementptr inbounds float addrspace(1)* %384, i32 %383
-  %386 = load float addrspace(1)* %385, align 4
-  store float %386, float* %g, align 4
-  %387 = load i32* %7, align 4
-  %388 = load i32* %8, align 4
-  %389 = mul i32 %387, %388
-  %390 = load i32* %globalIdY, align 4
-  %391 = add i32 %390, 1
-  %392 = mul i32 %389, %391
-  %393 = load i32* %globalIdX, align 4
-  %394 = load i32* %8, align 4
-  %395 = mul i32 %393, %394
-  %396 = add i32 %392, %395
-  %397 = add i32 %396, 2
-  %398 = load float addrspace(1)** %1, align 4
-  %399 = getelementptr inbounds float addrspace(1)* %398, i32 %397
-  %400 = load float addrspace(1)* %399, align 4
-  store float %400, float* %b, align 4
-  %401 = load float* %r, align 4
-  %402 = load float* %g, align 4
-  %403 = load float* %b, align 4
-  %404 = call float @luminance(float %401, float %402, float %403)
-  store float %404, float* %down, align 4
-  %405 = load i32* %7, align 4
-  %406 = load i32* %8, align 4
-  %407 = mul i32 %405, %406
-  %408 = load i32* %globalIdY, align 4
-  %409 = add i32 %408, 1
-  %410 = mul i32 %407, %409
-  %411 = load i32* %globalIdX, align 4
-  %412 = add i32 %411, 1
-  %413 = load i32* %8, align 4
-  %414 = mul i32 %412, %413
-  %415 = add i32 %410, %414
-  %416 = add i32 %415, 0
-  %417 = load float addrspace(1)** %1, align 4
-  %418 = getelementptr inbounds float addrspace(1)* %417, i32 %416
-  %419 = load float addrspace(1)* %418, align 4
-  store float %419, float* %r, align 4
-  %420 = load i32* %7, align 4
-  %421 = load i32* %8, align 4
-  %422 = mul i32 %420, %421
-  %423 = load i32* %globalIdY, align 4
-  %424 = add i32 %423, 1
-  %425 = mul i32 %422, %424
-  %426 = load i32* %globalIdX, align 4
-  %427 = add i32 %426, 1
-  %428 = load i32* %8, align 4
-  %429 = mul i32 %427, %428
-  %430 = add i32 %425, %429
-  %431 = add i32 %430, 1
-  %432 = load float addrspace(1)** %1, align 4
-  %433 = getelementptr inbounds float addrspace(1)* %432, i32 %431
-  %434 = load float addrspace(1)* %433, align 4
-  store float %434, float* %g, align 4
-  %435 = load i32* %7, align 4
-  %436 = load i32* %8, align 4
-  %437 = mul i32 %435, %436
-  %438 = load i32* %globalIdY, align 4
-  %439 = add i32 %438, 1
-  %440 = mul i32 %437, %439
-  %441 = load i32* %globalIdX, align 4
-  %442 = add i32 %441, 1
-  %443 = load i32* %8, align 4
-  %444 = mul i32 %442, %443
-  %445 = add i32 %440, %444
-  %446 = add i32 %445, 2
-  %447 = load float addrspace(1)** %1, align 4
-  %448 = getelementptr inbounds float addrspace(1)* %447, i32 %446
-  %449 = load float addrspace(1)* %448, align 4
-  store float %449, float* %b, align 4
-  %450 = load float* %r, align 4
-  %451 = load float* %g, align 4
-  %452 = load float* %b, align 4
-  %453 = call float @luminance(float %450, float %451, float %452)
-  store float %453, float* %rightDown, align 4
-  %454 = load float* %leftUp, align 4
-  %455 = load float* %up, align 4
-  %456 = fadd float %454, %455
-  %457 = load float* %rightUp, align 4
-  %458 = fadd float %456, %457
-  %459 = load float* %left, align 4
-  %460 = fadd float %458, %459
-  %461 = load float* %right, align 4
-  %462 = fadd float %460, %461
-  %463 = load float* %leftDown, align 4
-  %464 = fadd float %462, %463
-  %465 = load float* %down, align 4
-  %466 = fadd float %464, %465
-  %467 = load float* %rightDown, align 4
-  %468 = fadd float %466, %467
-  %469 = fdiv float %468, 8.000000e+00, !fpmath !3
-  store float %469, float* %yLPattanaik, align 4
-  br label %472
+  %tmp_74 = load i32* %tmp_7, align 4
+  %tmp_75 = load i32* %tmp_8, align 4
+  %tmp_76 = mul i32 %tmp_74, %tmp_75
+  %tmp_77 = load i32* %globalIdY, align 4
+  %tmp_78 = sub i32 %tmp_77, 1
+  %tmp_79 = mul i32 %tmp_76, %tmp_78
+  %tmp_80 = load i32* %globalIdX, align 4
+  %tmp_81 = sub i32 %tmp_80, 1
+  %tmp_82 = load i32* %tmp_8, align 4
+  %tmp_83 = mul i32 %tmp_81, %tmp_82
+  %tmp_84 = add i32 %tmp_79, %tmp_83
+  %tmp_85 = add i32 %tmp_84, 0
+  %tmp_86 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_87 = getelementptr inbounds float addrspace(1)* %tmp_86, i32 %tmp_85
+  %tmp_88 = load float addrspace(1)* %tmp_87, align 4
+  store float %tmp_88, float* %r, align 4
+  %tmp_89 = load i32* %tmp_7, align 4
+  %tmp_90 = load i32* %tmp_8, align 4
+  %tmp_91 = mul i32 %tmp_89, %tmp_90
+  %tmp_92 = load i32* %globalIdY, align 4
+  %tmp_93 = sub i32 %tmp_92, 1
+  %tmp_94 = mul i32 %tmp_91, %tmp_93
+  %tmp_95 = load i32* %globalIdX, align 4
+  %tmp_96 = sub i32 %tmp_95, 1
+  %tmp_97 = load i32* %tmp_8, align 4
+  %tmp_98 = mul i32 %tmp_96, %tmp_97
+  %tmp_99 = add i32 %tmp_94, %tmp_98
+  %tmp_100 = add i32 %tmp_99, 1
+  %tmp_101 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_102 = getelementptr inbounds float addrspace(1)* %tmp_101, i32 %tmp_100
+  %tmp_103 = load float addrspace(1)* %tmp_102, align 4
+  store float %tmp_103, float* %g, align 4
+  %tmp_104 = load i32* %tmp_7, align 4
+  %tmp_105 = load i32* %tmp_8, align 4
+  %tmp_106 = mul i32 %tmp_104, %tmp_105
+  %tmp_107 = load i32* %globalIdY, align 4
+  %tmp_108 = sub i32 %tmp_107, 1
+  %tmp_109 = mul i32 %tmp_106, %tmp_108
+  %tmp_110 = load i32* %globalIdX, align 4
+  %tmp_111 = sub i32 %tmp_110, 1
+  %tmp_112 = load i32* %tmp_8, align 4
+  %tmp_113 = mul i32 %tmp_111, %tmp_112
+  %tmp_114 = add i32 %tmp_109, %tmp_113
+  %tmp_115 = add i32 %tmp_114, 2
+  %tmp_116 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_117 = getelementptr inbounds float addrspace(1)* %tmp_116, i32 %tmp_115
+  %tmp_118 = load float addrspace(1)* %tmp_117, align 4
+  store float %tmp_118, float* %b, align 4
+  %tmp_119 = load float* %r, align 4
+  %tmp_120 = load float* %g, align 4
+  %tmp_121 = load float* %b, align 4
+  %tmp_122 = call float @luminance(float %tmp_119, float %tmp_120, float %tmp_121)
+  store float %tmp_122, float* %leftUp, align 4
+  %tmp_123 = load i32* %tmp_7, align 4
+  %tmp_124 = load i32* %tmp_8, align 4
+  %tmp_125 = mul i32 %tmp_123, %tmp_124
+  %tmp_126 = load i32* %globalIdY, align 4
+  %tmp_127 = sub i32 %tmp_126, 1
+  %tmp_128 = mul i32 %tmp_125, %tmp_127
+  %tmp_129 = load i32* %globalIdX, align 4
+  %tmp_130 = load i32* %tmp_8, align 4
+  %tmp_131 = mul i32 %tmp_129, %tmp_130
+  %tmp_132 = add i32 %tmp_128, %tmp_131
+  %tmp_133 = add i32 %tmp_132, 0
+  %tmp_134 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_135 = getelementptr inbounds float addrspace(1)* %tmp_134, i32 %tmp_133
+  %tmp_136 = load float addrspace(1)* %tmp_135, align 4
+  store float %tmp_136, float* %r, align 4
+  %tmp_137 = load i32* %tmp_7, align 4
+  %tmp_138 = load i32* %tmp_8, align 4
+  %tmp_139 = mul i32 %tmp_137, %tmp_138
+  %tmp_140 = load i32* %globalIdY, align 4
+  %tmp_141 = sub i32 %tmp_140, 1
+  %tmp_142 = mul i32 %tmp_139, %tmp_141
+  %tmp_143 = load i32* %globalIdX, align 4
+  %tmp_144 = load i32* %tmp_8, align 4
+  %tmp_145 = mul i32 %tmp_143, %tmp_144
+  %tmp_146 = add i32 %tmp_142, %tmp_145
+  %tmp_147 = add i32 %tmp_146, 1
+  %tmp_148 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_149 = getelementptr inbounds float addrspace(1)* %tmp_148, i32 %tmp_147
+  %tmp_150 = load float addrspace(1)* %tmp_149, align 4
+  store float %tmp_150, float* %g, align 4
+  %tmp_151 = load i32* %tmp_7, align 4
+  %tmp_152 = load i32* %tmp_8, align 4
+  %tmp_153 = mul i32 %tmp_151, %tmp_152
+  %tmp_154 = load i32* %globalIdY, align 4
+  %tmp_155 = sub i32 %tmp_154, 1
+  %tmp_156 = mul i32 %tmp_153, %tmp_155
+  %tmp_157 = load i32* %globalIdX, align 4
+  %tmp_158 = load i32* %tmp_8, align 4
+  %tmp_159 = mul i32 %tmp_157, %tmp_158
+  %tmp_160 = add i32 %tmp_156, %tmp_159
+  %tmp_161 = add i32 %tmp_160, 2
+  %tmp_162 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_163 = getelementptr inbounds float addrspace(1)* %tmp_162, i32 %tmp_161
+  %tmp_164 = load float addrspace(1)* %tmp_163, align 4
+  store float %tmp_164, float* %b, align 4
+  %tmp_165 = load float* %r, align 4
+  %tmp_166 = load float* %g, align 4
+  %tmp_167 = load float* %b, align 4
+  %tmp_168 = call float @luminance(float %tmp_165, float %tmp_166, float %tmp_167)
+  store float %tmp_168, float* %up, align 4
+  %tmp_169 = load i32* %tmp_7, align 4
+  %tmp_170 = load i32* %tmp_8, align 4
+  %tmp_171 = mul i32 %tmp_169, %tmp_170
+  %tmp_172 = load i32* %globalIdY, align 4
+  %tmp_173 = sub i32 %tmp_172, 1
+  %tmp_174 = mul i32 %tmp_171, %tmp_173
+  %tmp_175 = load i32* %globalIdX, align 4
+  %tmp_176 = add i32 %tmp_175, 1
+  %tmp_177 = load i32* %tmp_8, align 4
+  %tmp_178 = mul i32 %tmp_176, %tmp_177
+  %tmp_179 = add i32 %tmp_174, %tmp_178
+  %tmp_180 = add i32 %tmp_179, 0
+  %tmp_181 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_182 = getelementptr inbounds float addrspace(1)* %tmp_181, i32 %tmp_180
+  %tmp_183 = load float addrspace(1)* %tmp_182, align 4
+  store float %tmp_183, float* %r, align 4
+  %tmp_184 = load i32* %tmp_7, align 4
+  %tmp_185 = load i32* %tmp_8, align 4
+  %tmp_186 = mul i32 %tmp_184, %tmp_185
+  %tmp_187 = load i32* %globalIdY, align 4
+  %tmp_188 = sub i32 %tmp_187, 1
+  %tmp_189 = mul i32 %tmp_186, %tmp_188
+  %tmp_190 = load i32* %globalIdX, align 4
+  %tmp_191 = add i32 %tmp_190, 1
+  %tmp_192 = load i32* %tmp_8, align 4
+  %tmp_193 = mul i32 %tmp_191, %tmp_192
+  %tmp_194 = add i32 %tmp_189, %tmp_193
+  %tmp_195 = add i32 %tmp_194, 1
+  %tmp_196 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_197 = getelementptr inbounds float addrspace(1)* %tmp_196, i32 %tmp_195
+  %tmp_198 = load float addrspace(1)* %tmp_197, align 4
+  store float %tmp_198, float* %g, align 4
+  %tmp_199 = load i32* %tmp_7, align 4
+  %tmp_200 = load i32* %tmp_8, align 4
+  %tmp_201 = mul i32 %tmp_199, %tmp_200
+  %tmp_202 = load i32* %globalIdY, align 4
+  %tmp_203 = sub i32 %tmp_202, 1
+  %tmp_204 = mul i32 %tmp_201, %tmp_203
+  %tmp_205 = load i32* %globalIdX, align 4
+  %tmp_206 = add i32 %tmp_205, 1
+  %tmp_207 = load i32* %tmp_8, align 4
+  %tmp_208 = mul i32 %tmp_206, %tmp_207
+  %tmp_209 = add i32 %tmp_204, %tmp_208
+  %tmp_210 = add i32 %tmp_209, 2
+  %tmp_211 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_212 = getelementptr inbounds float addrspace(1)* %tmp_211, i32 %tmp_210
+  %tmp_213 = load float addrspace(1)* %tmp_212, align 4
+  store float %tmp_213, float* %b, align 4
+  %tmp_214 = load float* %r, align 4
+  %tmp_215 = load float* %g, align 4
+  %tmp_216 = load float* %b, align 4
+  %tmp_217 = call float @luminance(float %tmp_214, float %tmp_215, float %tmp_216)
+  store float %tmp_217, float* %rightUp, align 4
+  %tmp_218 = load i32* %tmp_7, align 4
+  %tmp_219 = load i32* %tmp_8, align 4
+  %tmp_220 = mul i32 %tmp_218, %tmp_219
+  %tmp_221 = load i32* %globalIdY, align 4
+  %tmp_222 = mul i32 %tmp_220, %tmp_221
+  %tmp_223 = load i32* %globalIdX, align 4
+  %tmp_224 = sub i32 %tmp_223, 1
+  %tmp_225 = load i32* %tmp_8, align 4
+  %tmp_226 = mul i32 %tmp_224, %tmp_225
+  %tmp_227 = add i32 %tmp_222, %tmp_226
+  %tmp_228 = add i32 %tmp_227, 0
+  %tmp_229 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_230 = getelementptr inbounds float addrspace(1)* %tmp_229, i32 %tmp_228
+  %tmp_231 = load float addrspace(1)* %tmp_230, align 4
+  store float %tmp_231, float* %r, align 4
+  %tmp_232 = load i32* %tmp_7, align 4
+  %tmp_233 = load i32* %tmp_8, align 4
+  %tmp_234 = mul i32 %tmp_232, %tmp_233
+  %tmp_235 = load i32* %globalIdY, align 4
+  %tmp_236 = mul i32 %tmp_234, %tmp_235
+  %tmp_237 = load i32* %globalIdX, align 4
+  %tmp_238 = sub i32 %tmp_237, 1
+  %tmp_239 = load i32* %tmp_8, align 4
+  %tmp_240 = mul i32 %tmp_238, %tmp_239
+  %tmp_241 = add i32 %tmp_236, %tmp_240
+  %tmp_242 = add i32 %tmp_241, 1
+  %tmp_243 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_244 = getelementptr inbounds float addrspace(1)* %tmp_243, i32 %tmp_242
+  %tmp_245 = load float addrspace(1)* %tmp_244, align 4
+  store float %tmp_245, float* %g, align 4
+  %tmp_246 = load i32* %tmp_7, align 4
+  %tmp_247 = load i32* %tmp_8, align 4
+  %tmp_248 = mul i32 %tmp_246, %tmp_247
+  %tmp_249 = load i32* %globalIdY, align 4
+  %tmp_250 = mul i32 %tmp_248, %tmp_249
+  %tmp_251 = load i32* %globalIdX, align 4
+  %tmp_252 = sub i32 %tmp_251, 1
+  %tmp_253 = load i32* %tmp_8, align 4
+  %tmp_254 = mul i32 %tmp_252, %tmp_253
+  %tmp_255 = add i32 %tmp_250, %tmp_254
+  %tmp_256 = add i32 %tmp_255, 2
+  %tmp_257 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_258 = getelementptr inbounds float addrspace(1)* %tmp_257, i32 %tmp_256
+  %tmp_259 = load float addrspace(1)* %tmp_258, align 4
+  store float %tmp_259, float* %b, align 4
+  %tmp_260 = load float* %r, align 4
+  %tmp_261 = load float* %g, align 4
+  %tmp_262 = load float* %b, align 4
+  %tmp_263 = call float @luminance(float %tmp_260, float %tmp_261, float %tmp_262)
+  store float %tmp_263, float* %left, align 4
+  %tmp_264 = load i32* %tmp_7, align 4
+  %tmp_265 = load i32* %tmp_8, align 4
+  %tmp_266 = mul i32 %tmp_264, %tmp_265
+  %tmp_267 = load i32* %globalIdY, align 4
+  %tmp_268 = mul i32 %tmp_266, %tmp_267
+  %tmp_269 = load i32* %globalIdX, align 4
+  %tmp_270 = add i32 %tmp_269, 1
+  %tmp_271 = load i32* %tmp_8, align 4
+  %tmp_272 = mul i32 %tmp_270, %tmp_271
+  %tmp_273 = add i32 %tmp_268, %tmp_272
+  %tmp_274 = add i32 %tmp_273, 0
+  %tmp_275 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_276 = getelementptr inbounds float addrspace(1)* %tmp_275, i32 %tmp_274
+  %tmp_277 = load float addrspace(1)* %tmp_276, align 4
+  store float %tmp_277, float* %r, align 4
+  %tmp_278 = load i32* %tmp_7, align 4
+  %tmp_279 = load i32* %tmp_8, align 4
+  %tmp_280 = mul i32 %tmp_278, %tmp_279
+  %tmp_281 = load i32* %globalIdY, align 4
+  %tmp_282 = mul i32 %tmp_280, %tmp_281
+  %tmp_283 = load i32* %globalIdX, align 4
+  %tmp_284 = add i32 %tmp_283, 1
+  %tmp_285 = load i32* %tmp_8, align 4
+  %tmp_286 = mul i32 %tmp_284, %tmp_285
+  %tmp_287 = add i32 %tmp_282, %tmp_286
+  %tmp_288 = add i32 %tmp_287, 1
+  %tmp_289 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_290 = getelementptr inbounds float addrspace(1)* %tmp_289, i32 %tmp_288
+  %tmp_291 = load float addrspace(1)* %tmp_290, align 4
+  store float %tmp_291, float* %g, align 4
+  %tmp_292 = load i32* %tmp_7, align 4
+  %tmp_293 = load i32* %tmp_8, align 4
+  %tmp_294 = mul i32 %tmp_292, %tmp_293
+  %tmp_295 = load i32* %globalIdY, align 4
+  %tmp_296 = mul i32 %tmp_294, %tmp_295
+  %tmp_297 = load i32* %globalIdX, align 4
+  %tmp_298 = add i32 %tmp_297, 1
+  %tmp_299 = load i32* %tmp_8, align 4
+  %tmp_300 = mul i32 %tmp_298, %tmp_299
+  %tmp_301 = add i32 %tmp_296, %tmp_300
+  %tmp_302 = add i32 %tmp_301, 2
+  %tmp_303 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_304 = getelementptr inbounds float addrspace(1)* %tmp_303, i32 %tmp_302
+  %tmp_305 = load float addrspace(1)* %tmp_304, align 4
+  store float %tmp_305, float* %b, align 4
+  %tmp_306 = load float* %r, align 4
+  %tmp_307 = load float* %g, align 4
+  %tmp_308 = load float* %b, align 4
+  %tmp_309 = call float @luminance(float %tmp_306, float %tmp_307, float %tmp_308)
+  store float %tmp_309, float* %right, align 4
+  %tmp_310 = load i32* %tmp_7, align 4
+  %tmp_311 = load i32* %tmp_8, align 4
+  %tmp_312 = mul i32 %tmp_310, %tmp_311
+  %tmp_313 = load i32* %globalIdY, align 4
+  %tmp_314 = add i32 %tmp_313, 1
+  %tmp_315 = mul i32 %tmp_312, %tmp_314
+  %tmp_316 = load i32* %globalIdX, align 4
+  %tmp_317 = sub i32 %tmp_316, 1
+  %tmp_318 = load i32* %tmp_8, align 4
+  %tmp_319 = mul i32 %tmp_317, %tmp_318
+  %tmp_320 = add i32 %tmp_315, %tmp_319
+  %tmp_321 = add i32 %tmp_320, 0
+  %tmp_322 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_323 = getelementptr inbounds float addrspace(1)* %tmp_322, i32 %tmp_321
+  %tmp_324 = load float addrspace(1)* %tmp_323, align 4
+  store float %tmp_324, float* %r, align 4
+  %tmp_325 = load i32* %tmp_7, align 4
+  %tmp_326 = load i32* %tmp_8, align 4
+  %tmp_327 = mul i32 %tmp_325, %tmp_326
+  %tmp_328 = load i32* %globalIdY, align 4
+  %tmp_329 = add i32 %tmp_328, 1
+  %tmp_330 = mul i32 %tmp_327, %tmp_329
+  %tmp_331 = load i32* %globalIdX, align 4
+  %tmp_332 = sub i32 %tmp_331, 1
+  %tmp_333 = load i32* %tmp_8, align 4
+  %tmp_334 = mul i32 %tmp_332, %tmp_333
+  %tmp_335 = add i32 %tmp_330, %tmp_334
+  %tmp_336 = add i32 %tmp_335, 1
+  %tmp_337 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_338 = getelementptr inbounds float addrspace(1)* %tmp_337, i32 %tmp_336
+  %tmp_339 = load float addrspace(1)* %tmp_338, align 4
+  store float %tmp_339, float* %g, align 4
+  %tmp_340 = load i32* %tmp_7, align 4
+  %tmp_341 = load i32* %tmp_8, align 4
+  %tmp_342 = mul i32 %tmp_340, %tmp_341
+  %tmp_343 = load i32* %globalIdY, align 4
+  %tmp_344 = add i32 %tmp_343, 1
+  %tmp_345 = mul i32 %tmp_342, %tmp_344
+  %tmp_346 = load i32* %globalIdX, align 4
+  %tmp_347 = sub i32 %tmp_346, 1
+  %tmp_348 = load i32* %tmp_8, align 4
+  %tmp_349 = mul i32 %tmp_347, %tmp_348
+  %tmp_350 = add i32 %tmp_345, %tmp_349
+  %tmp_351 = add i32 %tmp_350, 2
+  %tmp_352 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_353 = getelementptr inbounds float addrspace(1)* %tmp_352, i32 %tmp_351
+  %tmp_354 = load float addrspace(1)* %tmp_353, align 4
+  store float %tmp_354, float* %b, align 4
+  %tmp_355 = load float* %r, align 4
+  %tmp_356 = load float* %g, align 4
+  %tmp_357 = load float* %b, align 4
+  %tmp_358 = call float @luminance(float %tmp_355, float %tmp_356, float %tmp_357)
+  store float %tmp_358, float* %leftDown, align 4
+  %tmp_359 = load i32* %tmp_7, align 4
+  %tmp_360 = load i32* %tmp_8, align 4
+  %tmp_361 = mul i32 %tmp_359, %tmp_360
+  %tmp_362 = load i32* %globalIdY, align 4
+  %tmp_363 = add i32 %tmp_362, 1
+  %tmp_364 = mul i32 %tmp_361, %tmp_363
+  %tmp_365 = load i32* %globalIdX, align 4
+  %tmp_366 = load i32* %tmp_8, align 4
+  %tmp_367 = mul i32 %tmp_365, %tmp_366
+  %tmp_368 = add i32 %tmp_364, %tmp_367
+  %tmp_369 = add i32 %tmp_368, 0
+  %tmp_370 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_371 = getelementptr inbounds float addrspace(1)* %tmp_370, i32 %tmp_369
+  %tmp_372 = load float addrspace(1)* %tmp_371, align 4
+  store float %tmp_372, float* %r, align 4
+  %tmp_373 = load i32* %tmp_7, align 4
+  %tmp_374 = load i32* %tmp_8, align 4
+  %tmp_375 = mul i32 %tmp_373, %tmp_374
+  %tmp_376 = load i32* %globalIdY, align 4
+  %tmp_377 = add i32 %tmp_376, 1
+  %tmp_378 = mul i32 %tmp_375, %tmp_377
+  %tmp_379 = load i32* %globalIdX, align 4
+  %tmp_380 = load i32* %tmp_8, align 4
+  %tmp_381 = mul i32 %tmp_379, %tmp_380
+  %tmp_382 = add i32 %tmp_378, %tmp_381
+  %tmp_383 = add i32 %tmp_382, 1
+  %tmp_384 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_385 = getelementptr inbounds float addrspace(1)* %tmp_384, i32 %tmp_383
+  %tmp_386 = load float addrspace(1)* %tmp_385, align 4
+  store float %tmp_386, float* %g, align 4
+  %tmp_387 = load i32* %tmp_7, align 4
+  %tmp_388 = load i32* %tmp_8, align 4
+  %tmp_389 = mul i32 %tmp_387, %tmp_388
+  %tmp_390 = load i32* %globalIdY, align 4
+  %tmp_391 = add i32 %tmp_390, 1
+  %tmp_392 = mul i32 %tmp_389, %tmp_391
+  %tmp_393 = load i32* %globalIdX, align 4
+  %tmp_394 = load i32* %tmp_8, align 4
+  %tmp_395 = mul i32 %tmp_393, %tmp_394
+  %tmp_396 = add i32 %tmp_392, %tmp_395
+  %tmp_397 = add i32 %tmp_396, 2
+  %tmp_398 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_399 = getelementptr inbounds float addrspace(1)* %tmp_398, i32 %tmp_397
+  %tmp_400 = load float addrspace(1)* %tmp_399, align 4
+  store float %tmp_400, float* %b, align 4
+  %tmp_401 = load float* %r, align 4
+  %tmp_402 = load float* %g, align 4
+  %tmp_403 = load float* %b, align 4
+  %tmp_404 = call float @luminance(float %tmp_401, float %tmp_402, float %tmp_403)
+  store float %tmp_404, float* %down, align 4
+  %tmp_405 = load i32* %tmp_7, align 4
+  %tmp_406 = load i32* %tmp_8, align 4
+  %tmp_407 = mul i32 %tmp_405, %tmp_406
+  %tmp_408 = load i32* %globalIdY, align 4
+  %tmp_409 = add i32 %tmp_408, 1
+  %tmp_410 = mul i32 %tmp_407, %tmp_409
+  %tmp_411 = load i32* %globalIdX, align 4
+  %tmp_412 = add i32 %tmp_411, 1
+  %tmp_413 = load i32* %tmp_8, align 4
+  %tmp_414 = mul i32 %tmp_412, %tmp_413
+  %tmp_415 = add i32 %tmp_410, %tmp_414
+  %tmp_416 = add i32 %tmp_415, 0
+  %tmp_417 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_418 = getelementptr inbounds float addrspace(1)* %tmp_417, i32 %tmp_416
+  %tmp_419 = load float addrspace(1)* %tmp_418, align 4
+  store float %tmp_419, float* %r, align 4
+  %tmp_420 = load i32* %tmp_7, align 4
+  %tmp_421 = load i32* %tmp_8, align 4
+  %tmp_422 = mul i32 %tmp_420, %tmp_421
+  %tmp_423 = load i32* %globalIdY, align 4
+  %tmp_424 = add i32 %tmp_423, 1
+  %tmp_425 = mul i32 %tmp_422, %tmp_424
+  %tmp_426 = load i32* %globalIdX, align 4
+  %tmp_427 = add i32 %tmp_426, 1
+  %tmp_428 = load i32* %tmp_8, align 4
+  %tmp_429 = mul i32 %tmp_427, %tmp_428
+  %tmp_430 = add i32 %tmp_425, %tmp_429
+  %tmp_431 = add i32 %tmp_430, 1
+  %tmp_432 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_433 = getelementptr inbounds float addrspace(1)* %tmp_432, i32 %tmp_431
+  %tmp_434 = load float addrspace(1)* %tmp_433, align 4
+  store float %tmp_434, float* %g, align 4
+  %tmp_435 = load i32* %tmp_7, align 4
+  %tmp_436 = load i32* %tmp_8, align 4
+  %tmp_437 = mul i32 %tmp_435, %tmp_436
+  %tmp_438 = load i32* %globalIdY, align 4
+  %tmp_439 = add i32 %tmp_438, 1
+  %tmp_440 = mul i32 %tmp_437, %tmp_439
+  %tmp_441 = load i32* %globalIdX, align 4
+  %tmp_442 = add i32 %tmp_441, 1
+  %tmp_443 = load i32* %tmp_8, align 4
+  %tmp_444 = mul i32 %tmp_442, %tmp_443
+  %tmp_445 = add i32 %tmp_440, %tmp_444
+  %tmp_446 = add i32 %tmp_445, 2
+  %tmp_447 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_448 = getelementptr inbounds float addrspace(1)* %tmp_447, i32 %tmp_446
+  %tmp_449 = load float addrspace(1)* %tmp_448, align 4
+  store float %tmp_449, float* %b, align 4
+  %tmp_450 = load float* %r, align 4
+  %tmp_451 = load float* %g, align 4
+  %tmp_452 = load float* %b, align 4
+  %tmp_453 = call float @luminance(float %tmp_450, float %tmp_451, float %tmp_452)
+  store float %tmp_453, float* %rightDown, align 4
+  %tmp_454 = load float* %leftUp, align 4
+  %tmp_455 = load float* %up, align 4
+  %tmp_456 = fadd float %tmp_454, %tmp_455
+  %tmp_457 = load float* %rightUp, align 4
+  %tmp_458 = fadd float %tmp_456, %tmp_457
+  %tmp_459 = load float* %left, align 4
+  %tmp_460 = fadd float %tmp_458, %tmp_459
+  %tmp_461 = load float* %right, align 4
+  %tmp_462 = fadd float %tmp_460, %tmp_461
+  %tmp_463 = load float* %leftDown, align 4
+  %tmp_464 = fadd float %tmp_462, %tmp_463
+  %tmp_465 = load float* %down, align 4
+  %tmp_466 = fadd float %tmp_464, %tmp_465
+  %tmp_467 = load float* %rightDown, align 4
+  %tmp_468 = fadd float %tmp_466, %tmp_467
+  %tmp_469 = fdiv float %tmp_468, 8.000000e+00, !fpmath !3
+  store float %tmp_469, float* %yLPattanaik, align 4
+  br label %tmp_472
 
-; <label>:470                                     ; preds = %68, %63, %60, %0
-  %471 = load float* %yLuminance, align 4
-  store float %471, float* %yLPattanaik, align 4
-  br label %472
+tmp_470:                                     ; preds = %tmp_68, %tmp_63, %tmp_60, %tmp_0
+  %tmp_471 = load float* %yLuminance, align 4
+  store float %tmp_471, float* %yLPattanaik, align 4
+  br label %tmp_472
 
-; <label>:472                                     ; preds = %470, %73
-  %473 = load float* %yLPattanaik, align 4
-  %474 = load float* %6, align 4
-  %475 = load float* %yLPattanaik, align 4
-  %476 = load float* %yLuminance, align 4
-  %477 = fdiv float %475, %476, !fpmath !3
-  %478 = fadd float %474, %477
-  %479 = call float @llvm.log2.f32(float %478)
-  %480 = fmul float %479, 0x3FE62E4300000000
-  %481 = load float* %gcPattanaik, align 4
-  %482 = call float @llvm.fmuladd.f32(float %473, float %480, float %481)
-  store float %482, float* %cLPattanaik, align 4
-  %483 = load float* %yLuminance, align 4
-  %484 = load float* %yLuminance, align 4
-  %485 = load float* %cLPattanaik, align 4
-  %486 = fadd float %484, %485
-  %487 = fdiv float %483, %486, !fpmath !3
-  store float %487, float* %yDPattanaik, align 4
-  %488 = load float* %r1, align 4
-  %489 = load float* %yLuminance, align 4
-  %490 = fdiv float %488, %489, !fpmath !3
-  %491 = load float* %4, align 4
-  %492 = call float @llvm.pow.f32(float %490, float %491)
-  %493 = load float* %yDPattanaik, align 4
-  %494 = fmul float %492, %493
-  store float %494, float* %r, align 4
-  %495 = load float* %g1, align 4
-  %496 = load float* %yLuminance, align 4
-  %497 = fdiv float %495, %496, !fpmath !3
-  %498 = load float* %4, align 4
-  %499 = call float @llvm.pow.f32(float %497, float %498)
-  %500 = load float* %yDPattanaik, align 4
-  %501 = fmul float %499, %500
-  store float %501, float* %g, align 4
-  %502 = load float* %b1, align 4
-  %503 = load float* %yLuminance, align 4
-  %504 = fdiv float %502, %503, !fpmath !3
-  %505 = load float* %4, align 4
-  %506 = call float @llvm.pow.f32(float %504, float %505)
-  %507 = load float* %yDPattanaik, align 4
-  %508 = fmul float %506, %507
-  store float %508, float* %b, align 4
-  %509 = load float* %r, align 4
-  %510 = load i32* %7, align 4
-  %511 = load i32* %8, align 4
-  %512 = mul i32 %510, %511
-  %513 = load i32* %globalIdY, align 4
-  %514 = mul i32 %512, %513
-  %515 = load i32* %globalIdX, align 4
-  %516 = load i32* %8, align 4
-  %517 = mul i32 %515, %516
-  %518 = add i32 %517, 0
-  %519 = add i32 %514, %518
-  %520 = load float addrspace(1)** %2, align 4
-  %521 = getelementptr inbounds float addrspace(1)* %520, i32 %519
-  store float %509, float addrspace(1)* %521, align 4
-  %522 = load float* %g, align 4
-  %523 = load i32* %7, align 4
-  %524 = load i32* %8, align 4
-  %525 = mul i32 %523, %524
-  %526 = load i32* %globalIdY, align 4
-  %527 = mul i32 %525, %526
-  %528 = load i32* %globalIdX, align 4
-  %529 = load i32* %8, align 4
-  %530 = mul i32 %528, %529
-  %531 = add i32 %530, 1
-  %532 = add i32 %527, %531
-  %533 = load float addrspace(1)** %2, align 4
-  %534 = getelementptr inbounds float addrspace(1)* %533, i32 %532
-  store float %522, float addrspace(1)* %534, align 4
-  %535 = load float* %b, align 4
-  %536 = load i32* %7, align 4
-  %537 = load i32* %8, align 4
-  %538 = mul i32 %536, %537
-  %539 = load i32* %globalIdY, align 4
-  %540 = mul i32 %538, %539
-  %541 = load i32* %globalIdX, align 4
-  %542 = load i32* %8, align 4
-  %543 = mul i32 %541, %542
-  %544 = add i32 %543, 2
-  %545 = add i32 %540, %544
-  %546 = load float addrspace(1)** %2, align 4
-  %547 = getelementptr inbounds float addrspace(1)* %546, i32 %545
-  store float %535, float addrspace(1)* %547, align 4
-  %548 = load i32* %7, align 4
-  %549 = load i32* %8, align 4
-  %550 = mul i32 %548, %549
-  %551 = load i32* %globalIdY, align 4
-  %552 = mul i32 %550, %551
-  %553 = load i32* %globalIdX, align 4
-  %554 = load i32* %8, align 4
-  %555 = mul i32 %553, %554
-  %556 = add i32 %555, 3
-  %557 = add i32 %552, %556
-  %558 = load float addrspace(1)** %1, align 4
-  %559 = getelementptr inbounds float addrspace(1)* %558, i32 %557
-  %560 = load float addrspace(1)* %559, align 4
-  %561 = load i32* %7, align 4
-  %562 = load i32* %8, align 4
-  %563 = mul i32 %561, %562
-  %564 = load i32* %globalIdY, align 4
-  %565 = mul i32 %563, %564
-  %566 = load i32* %globalIdX, align 4
-  %567 = load i32* %8, align 4
-  %568 = mul i32 %566, %567
-  %569 = add i32 %568, 3
-  %570 = add i32 %565, %569
-  %571 = load float addrspace(1)** %2, align 4
-  %572 = getelementptr inbounds float addrspace(1)* %571, i32 %570
-  store float %560, float addrspace(1)* %572, align 4
+tmp_472:                                     ; preds = %tmp_470, %tmp_73
+  %tmp_473 = load float* %yLPattanaik, align 4
+  %tmp_474 = load float* %tmp_6, align 4
+  %tmp_475 = load float* %yLPattanaik, align 4
+  %tmp_476 = load float* %yLuminance, align 4
+  %tmp_477 = fdiv float %tmp_475, %tmp_476, !fpmath !3
+  %tmp_478 = fadd float %tmp_474, %tmp_477
+  %tmp_479 = call float @llvm.log2.f32(float %tmp_478)
+  %tmp_480 = fmul float %tmp_479, 0x3FE62E4300000000
+  %tmp_481 = load float* %gcPattanaik, align 4
+  %tmp_482 = call float @llvm.fmuladd.f32(float %tmp_473, float %tmp_480, float %tmp_481)
+  store float %tmp_482, float* %cLPattanaik, align 4
+  %tmp_483 = load float* %yLuminance, align 4
+  %tmp_484 = load float* %yLuminance, align 4
+  %tmp_485 = load float* %cLPattanaik, align 4
+  %tmp_486 = fadd float %tmp_484, %tmp_485
+  %tmp_487 = fdiv float %tmp_483, %tmp_486, !fpmath !3
+  store float %tmp_487, float* %yDPattanaik, align 4
+  %tmp_488 = load float* %r1, align 4
+  %tmp_489 = load float* %yLuminance, align 4
+  %tmp_490 = fdiv float %tmp_488, %tmp_489, !fpmath !3
+  %tmp_491 = load float* %tmp_4, align 4
+  %tmp_492 = call float @llvm.pow.f32(float %tmp_490, float %tmp_491)
+  %tmp_493 = load float* %yDPattanaik, align 4
+  %tmp_494 = fmul float %tmp_492, %tmp_493
+  store float %tmp_494, float* %r, align 4
+  %tmp_495 = load float* %g1, align 4
+  %tmp_496 = load float* %yLuminance, align 4
+  %tmp_497 = fdiv float %tmp_495, %tmp_496, !fpmath !3
+  %tmp_498 = load float* %tmp_4, align 4
+  %tmp_499 = call float @llvm.pow.f32(float %tmp_497, float %tmp_498)
+  %tmp_500 = load float* %yDPattanaik, align 4
+  %tmp_501 = fmul float %tmp_499, %tmp_500
+  store float %tmp_501, float* %g, align 4
+  %tmp_502 = load float* %b1, align 4
+  %tmp_503 = load float* %yLuminance, align 4
+  %tmp_504 = fdiv float %tmp_502, %tmp_503, !fpmath !3
+  %tmp_505 = load float* %tmp_4, align 4
+  %tmp_506 = call float @llvm.pow.f32(float %tmp_504, float %tmp_505)
+  %tmp_507 = load float* %yDPattanaik, align 4
+  %tmp_508 = fmul float %tmp_506, %tmp_507
+  store float %tmp_508, float* %b, align 4
+  %tmp_509 = load float* %r, align 4
+  %tmp_510 = load i32* %tmp_7, align 4
+  %tmp_511 = load i32* %tmp_8, align 4
+  %tmp_512 = mul i32 %tmp_510, %tmp_511
+  %tmp_513 = load i32* %globalIdY, align 4
+  %tmp_514 = mul i32 %tmp_512, %tmp_513
+  %tmp_515 = load i32* %globalIdX, align 4
+  %tmp_516 = load i32* %tmp_8, align 4
+  %tmp_517 = mul i32 %tmp_515, %tmp_516
+  %tmp_518 = add i32 %tmp_517, 0
+  %tmp_519 = add i32 %tmp_514, %tmp_518
+  %tmp_520 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_521 = getelementptr inbounds float addrspace(1)* %tmp_520, i32 %tmp_519
+  store float %tmp_509, float addrspace(1)* %tmp_521, align 4
+  %tmp_522 = load float* %g, align 4
+  %tmp_523 = load i32* %tmp_7, align 4
+  %tmp_524 = load i32* %tmp_8, align 4
+  %tmp_525 = mul i32 %tmp_523, %tmp_524
+  %tmp_526 = load i32* %globalIdY, align 4
+  %tmp_527 = mul i32 %tmp_525, %tmp_526
+  %tmp_528 = load i32* %globalIdX, align 4
+  %tmp_529 = load i32* %tmp_8, align 4
+  %tmp_530 = mul i32 %tmp_528, %tmp_529
+  %tmp_531 = add i32 %tmp_530, 1
+  %tmp_532 = add i32 %tmp_527, %tmp_531
+  %tmp_533 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_534 = getelementptr inbounds float addrspace(1)* %tmp_533, i32 %tmp_532
+  store float %tmp_522, float addrspace(1)* %tmp_534, align 4
+  %tmp_535 = load float* %b, align 4
+  %tmp_536 = load i32* %tmp_7, align 4
+  %tmp_537 = load i32* %tmp_8, align 4
+  %tmp_538 = mul i32 %tmp_536, %tmp_537
+  %tmp_539 = load i32* %globalIdY, align 4
+  %tmp_540 = mul i32 %tmp_538, %tmp_539
+  %tmp_541 = load i32* %globalIdX, align 4
+  %tmp_542 = load i32* %tmp_8, align 4
+  %tmp_543 = mul i32 %tmp_541, %tmp_542
+  %tmp_544 = add i32 %tmp_543, 2
+  %tmp_545 = add i32 %tmp_540, %tmp_544
+  %tmp_546 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_547 = getelementptr inbounds float addrspace(1)* %tmp_546, i32 %tmp_545
+  store float %tmp_535, float addrspace(1)* %tmp_547, align 4
+  %tmp_548 = load i32* %tmp_7, align 4
+  %tmp_549 = load i32* %tmp_8, align 4
+  %tmp_550 = mul i32 %tmp_548, %tmp_549
+  %tmp_551 = load i32* %globalIdY, align 4
+  %tmp_552 = mul i32 %tmp_550, %tmp_551
+  %tmp_553 = load i32* %globalIdX, align 4
+  %tmp_554 = load i32* %tmp_8, align 4
+  %tmp_555 = mul i32 %tmp_553, %tmp_554
+  %tmp_556 = add i32 %tmp_555, 3
+  %tmp_557 = add i32 %tmp_552, %tmp_556
+  %tmp_558 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_559 = getelementptr inbounds float addrspace(1)* %tmp_558, i32 %tmp_557
+  %tmp_560 = load float addrspace(1)* %tmp_559, align 4
+  %tmp_561 = load i32* %tmp_7, align 4
+  %tmp_562 = load i32* %tmp_8, align 4
+  %tmp_563 = mul i32 %tmp_561, %tmp_562
+  %tmp_564 = load i32* %globalIdY, align 4
+  %tmp_565 = mul i32 %tmp_563, %tmp_564
+  %tmp_566 = load i32* %globalIdX, align 4
+  %tmp_567 = load i32* %tmp_8, align 4
+  %tmp_568 = mul i32 %tmp_566, %tmp_567
+  %tmp_569 = add i32 %tmp_568, 3
+  %tmp_570 = add i32 %tmp_565, %tmp_569
+  %tmp_571 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_572 = getelementptr inbounds float addrspace(1)* %tmp_571, i32 %tmp_570
+  store float %tmp_560, float addrspace(1)* %tmp_572, align 4
   ret void
 }
 
@@ -712,15 +712,15 @@ declare float @llvm.pow.f32(float, float) #3
 
 ; Function Attrs: nounwind
 define void @toneMappingPattanaik(<4 x float> addrspace(1)* %input, <4 x float> addrspace(1)* %output, float %averageLuminance, float %gamma, float %c, float %delta, i32 %width, i32 %numChannels, i32 %height) #0 {
-  %1 = alloca <4 x float> addrspace(1)*, align 4
-  %2 = alloca <4 x float> addrspace(1)*, align 4
-  %3 = alloca float, align 4
-  %4 = alloca float, align 4
-  %5 = alloca float, align 4
-  %6 = alloca float, align 4
-  %7 = alloca i32, align 4
-  %8 = alloca i32, align 4
-  %9 = alloca i32, align 4
+  %tmp_1 = alloca <4 x float> addrspace(1)*, align 4
+  %tmp_2 = alloca <4 x float> addrspace(1)*, align 4
+  %tmp_3 = alloca float, align 4
+  %tmp_4 = alloca float, align 4
+  %tmp_5 = alloca float, align 4
+  %tmp_6 = alloca float, align 4
+  %tmp_7 = alloca i32, align 4
+  %tmp_8 = alloca i32, align 4
+  %tmp_9 = alloca i32, align 4
   %globalIdX = alloca i32, align 4
   %globalIdY = alloca i32, align 4
   %r = alloca float, align 4
@@ -742,85 +742,85 @@ define void @toneMappingPattanaik(<4 x float> addrspace(1)* %input, <4 x float> 
   %down = alloca float, align 4
   %rightDown = alloca float, align 4
   %yDPattanaik = alloca float, align 4
-  store <4 x float> addrspace(1)* %input, <4 x float> addrspace(1)** %1, align 4
-  store <4 x float> addrspace(1)* %output, <4 x float> addrspace(1)** %2, align 4
-  store float %averageLuminance, float* %3, align 4
-  store float %gamma, float* %4, align 4
-  store float %c, float* %5, align 4
-  store float %delta, float* %6, align 4
-  store i32 %width, i32* %7, align 4
-  store i32 %numChannels, i32* %8, align 4
-  store i32 %height, i32* %9, align 4
-  %10 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %10, i32* %globalIdX, align 4
-  %11 = call i32 @__get_global_id_u32(i32 1)
-  store i32 %11, i32* %globalIdY, align 4
+  store <4 x float> addrspace(1)* %input, <4 x float> addrspace(1)** %tmp_1, align 4
+  store <4 x float> addrspace(1)* %output, <4 x float> addrspace(1)** %tmp_2, align 4
+  store float %averageLuminance, float* %tmp_3, align 4
+  store float %gamma, float* %tmp_4, align 4
+  store float %c, float* %tmp_5, align 4
+  store float %delta, float* %tmp_6, align 4
+  store i32 %width, i32* %tmp_7, align 4
+  store i32 %numChannels, i32* %tmp_8, align 4
+  store i32 %height, i32* %tmp_9, align 4
+  %tmp_10 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_10, i32* %globalIdX, align 4
+  %tmp_11 = call i32 @__get_global_id_u32(i32 1)
+  store i32 %tmp_11, i32* %globalIdY, align 4
   store float 0.000000e+00, float* %yLuminance, align 4
   store float 0.000000e+00, float* %cLPattanaik, align 4
   store float 0.000000e+00, float* %yLPattanaik, align 4
-  %12 = load i32* %7, align 4
-  %13 = load i32* %globalIdY, align 4
-  %14 = mul i32 %12, %13
-  %15 = load i32* %globalIdX, align 4
-  %16 = add i32 %14, %15
-  %17 = load <4 x float> addrspace(1)** %1, align 4
-  %18 = getelementptr inbounds <4 x float> addrspace(1)* %17, i32 %16
-  %19 = load <4 x float> addrspace(1)* %18, align 16
-  %20 = extractelement <4 x float> %19, i32 0
-  store float %20, float* %r1, align 4
-  %21 = load i32* %7, align 4
-  %22 = load i32* %globalIdY, align 4
-  %23 = mul i32 %21, %22
-  %24 = load i32* %globalIdX, align 4
-  %25 = add i32 %23, %24
-  %26 = load <4 x float> addrspace(1)** %1, align 4
-  %27 = getelementptr inbounds <4 x float> addrspace(1)* %26, i32 %25
-  %28 = load <4 x float> addrspace(1)* %27, align 16
-  %29 = extractelement <4 x float> %28, i32 1
-  store float %29, float* %g1, align 4
-  %30 = load i32* %7, align 4
-  %31 = load i32* %globalIdY, align 4
-  %32 = mul i32 %30, %31
-  %33 = load i32* %globalIdX, align 4
-  %34 = add i32 %32, %33
-  %35 = load <4 x float> addrspace(1)** %1, align 4
-  %36 = getelementptr inbounds <4 x float> addrspace(1)* %35, i32 %34
-  %37 = load <4 x float> addrspace(1)* %36, align 16
-  %38 = extractelement <4 x float> %37, i32 2
-  store float %38, float* %b1, align 4
-  %39 = load float* %r1, align 4
-  %40 = load float* %g1, align 4
-  %41 = load float* %b1, align 4
-  %42 = call float @luminance(float %39, float %40, float %41)
-  store float %42, float* %yLuminance, align 4
-  %43 = load float* %5, align 4
-  %44 = load float* %3, align 4
-  %45 = fmul float %43, %44
-  store float %45, float* %gcPattanaik, align 4
-  %46 = load i32* %globalIdX, align 4
-  %47 = icmp ne i32 %46, 0
-  br i1 %47, label %48, label %362
+  %tmp_12 = load i32* %tmp_7, align 4
+  %tmp_13 = load i32* %globalIdY, align 4
+  %tmp_14 = mul i32 %tmp_12, %tmp_13
+  %tmp_15 = load i32* %globalIdX, align 4
+  %tmp_16 = add i32 %tmp_14, %tmp_15
+  %tmp_17 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_18 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_17, i32 %tmp_16
+  %tmp_19 = load <4 x float> addrspace(1)* %tmp_18, align 16
+  %tmp_20 = extractelement <4 x float> %tmp_19, i32 0
+  store float %tmp_20, float* %r1, align 4
+  %tmp_21 = load i32* %tmp_7, align 4
+  %tmp_22 = load i32* %globalIdY, align 4
+  %tmp_23 = mul i32 %tmp_21, %tmp_22
+  %tmp_24 = load i32* %globalIdX, align 4
+  %tmp_25 = add i32 %tmp_23, %tmp_24
+  %tmp_26 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_27 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_26, i32 %tmp_25
+  %tmp_28 = load <4 x float> addrspace(1)* %tmp_27, align 16
+  %tmp_29 = extractelement <4 x float> %tmp_28, i32 1
+  store float %tmp_29, float* %g1, align 4
+  %tmp_30 = load i32* %tmp_7, align 4
+  %tmp_31 = load i32* %globalIdY, align 4
+  %tmp_32 = mul i32 %tmp_30, %tmp_31
+  %tmp_33 = load i32* %globalIdX, align 4
+  %tmp_34 = add i32 %tmp_32, %tmp_33
+  %tmp_35 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_36 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_35, i32 %tmp_34
+  %tmp_37 = load <4 x float> addrspace(1)* %tmp_36, align 16
+  %tmp_38 = extractelement <4 x float> %tmp_37, i32 2
+  store float %tmp_38, float* %b1, align 4
+  %tmp_39 = load float* %r1, align 4
+  %tmp_40 = load float* %g1, align 4
+  %tmp_41 = load float* %b1, align 4
+  %tmp_42 = call float @luminance(float %tmp_39, float %tmp_40, float %tmp_41)
+  store float %tmp_42, float* %yLuminance, align 4
+  %tmp_43 = load float* %tmp_5, align 4
+  %tmp_44 = load float* %tmp_3, align 4
+  %tmp_45 = fmul float %tmp_43, %tmp_44
+  store float %tmp_45, float* %gcPattanaik, align 4
+  %tmp_46 = load i32* %globalIdX, align 4
+  %tmp_47 = icmp ne i32 %tmp_46, 0
+  br i1 %tmp_47, label %tmp_48, label %tmp_362
 
-; <label>:48                                      ; preds = %0
-  %49 = load i32* %globalIdY, align 4
-  %50 = icmp ne i32 %49, 0
-  br i1 %50, label %51, label %362
+tmp_48:                                      ; preds = %tmp_0
+  %tmp_49 = load i32* %globalIdY, align 4
+  %tmp_50 = icmp ne i32 %tmp_49, 0
+  br i1 %tmp_50, label %tmp_51, label %tmp_362
 
-; <label>:51                                      ; preds = %48
-  %52 = load i32* %globalIdX, align 4
-  %53 = load i32* %7, align 4
-  %54 = sub i32 %53, 1
-  %55 = icmp ne i32 %52, %54
-  br i1 %55, label %56, label %362
+tmp_51:                                      ; preds = %tmp_48
+  %tmp_52 = load i32* %globalIdX, align 4
+  %tmp_53 = load i32* %tmp_7, align 4
+  %tmp_54 = sub i32 %tmp_53, 1
+  %tmp_55 = icmp ne i32 %tmp_52, %tmp_54
+  br i1 %tmp_55, label %tmp_56, label %tmp_362
 
-; <label>:56                                      ; preds = %51
-  %57 = load i32* %globalIdY, align 4
-  %58 = load i32* %9, align 4
-  %59 = sub i32 %58, 1
-  %60 = icmp ne i32 %57, %59
-  br i1 %60, label %61, label %362
+tmp_56:                                      ; preds = %tmp_51
+  %tmp_57 = load i32* %globalIdY, align 4
+  %tmp_58 = load i32* %tmp_9, align 4
+  %tmp_59 = sub i32 %tmp_58, 1
+  %tmp_60 = icmp ne i32 %tmp_57, %tmp_59
+  br i1 %tmp_60, label %tmp_61, label %tmp_362
 
-; <label>:61                                      ; preds = %56
+tmp_61:                                      ; preds = %tmp_56
   store float 0.000000e+00, float* %leftUp, align 4
   store float 0.000000e+00, float* %up, align 4
   store float 0.000000e+00, float* %rightUp, align 4
@@ -829,440 +829,440 @@ define void @toneMappingPattanaik(<4 x float> addrspace(1)* %input, <4 x float> 
   store float 0.000000e+00, float* %leftDown, align 4
   store float 0.000000e+00, float* %down, align 4
   store float 0.000000e+00, float* %rightDown, align 4
-  %62 = load i32* %7, align 4
-  %63 = load i32* %globalIdY, align 4
-  %64 = sub i32 %63, 1
-  %65 = mul i32 %62, %64
-  %66 = load i32* %globalIdX, align 4
-  %67 = add i32 %65, %66
-  %68 = sub i32 %67, 1
-  %69 = load <4 x float> addrspace(1)** %1, align 4
-  %70 = getelementptr inbounds <4 x float> addrspace(1)* %69, i32 %68
-  %71 = load <4 x float> addrspace(1)* %70, align 16
-  %72 = extractelement <4 x float> %71, i32 0
-  store float %72, float* %r, align 4
-  %73 = load i32* %7, align 4
-  %74 = load i32* %globalIdY, align 4
-  %75 = sub i32 %74, 1
-  %76 = mul i32 %73, %75
-  %77 = load i32* %globalIdX, align 4
-  %78 = add i32 %76, %77
-  %79 = sub i32 %78, 1
-  %80 = load <4 x float> addrspace(1)** %1, align 4
-  %81 = getelementptr inbounds <4 x float> addrspace(1)* %80, i32 %79
-  %82 = load <4 x float> addrspace(1)* %81, align 16
-  %83 = extractelement <4 x float> %82, i32 1
-  store float %83, float* %g, align 4
-  %84 = load i32* %7, align 4
-  %85 = load i32* %globalIdY, align 4
-  %86 = sub i32 %85, 1
-  %87 = mul i32 %84, %86
-  %88 = load i32* %globalIdX, align 4
-  %89 = add i32 %87, %88
-  %90 = sub i32 %89, 1
-  %91 = load <4 x float> addrspace(1)** %1, align 4
-  %92 = getelementptr inbounds <4 x float> addrspace(1)* %91, i32 %90
-  %93 = load <4 x float> addrspace(1)* %92, align 16
-  %94 = extractelement <4 x float> %93, i32 2
-  store float %94, float* %b, align 4
-  %95 = load float* %r, align 4
-  %96 = load float* %g, align 4
-  %97 = load float* %b, align 4
-  %98 = call float @luminance(float %95, float %96, float %97)
-  store float %98, float* %leftUp, align 4
-  %99 = load i32* %7, align 4
-  %100 = load i32* %globalIdY, align 4
-  %101 = sub i32 %100, 1
-  %102 = mul i32 %99, %101
-  %103 = load i32* %globalIdX, align 4
-  %104 = add i32 %102, %103
-  %105 = load <4 x float> addrspace(1)** %1, align 4
-  %106 = getelementptr inbounds <4 x float> addrspace(1)* %105, i32 %104
-  %107 = load <4 x float> addrspace(1)* %106, align 16
-  %108 = extractelement <4 x float> %107, i32 0
-  store float %108, float* %r, align 4
-  %109 = load i32* %7, align 4
-  %110 = load i32* %globalIdY, align 4
-  %111 = sub i32 %110, 1
-  %112 = mul i32 %109, %111
-  %113 = load i32* %globalIdX, align 4
-  %114 = add i32 %112, %113
-  %115 = load <4 x float> addrspace(1)** %1, align 4
-  %116 = getelementptr inbounds <4 x float> addrspace(1)* %115, i32 %114
-  %117 = load <4 x float> addrspace(1)* %116, align 16
-  %118 = extractelement <4 x float> %117, i32 1
-  store float %118, float* %g, align 4
-  %119 = load i32* %7, align 4
-  %120 = load i32* %globalIdY, align 4
-  %121 = sub i32 %120, 1
-  %122 = mul i32 %119, %121
-  %123 = load i32* %globalIdX, align 4
-  %124 = add i32 %122, %123
-  %125 = load <4 x float> addrspace(1)** %1, align 4
-  %126 = getelementptr inbounds <4 x float> addrspace(1)* %125, i32 %124
-  %127 = load <4 x float> addrspace(1)* %126, align 16
-  %128 = extractelement <4 x float> %127, i32 2
-  store float %128, float* %b, align 4
-  %129 = load float* %r, align 4
-  %130 = load float* %g, align 4
-  %131 = load float* %b, align 4
-  %132 = call float @luminance(float %129, float %130, float %131)
-  store float %132, float* %up, align 4
-  %133 = load i32* %7, align 4
-  %134 = load i32* %globalIdY, align 4
-  %135 = sub i32 %134, 1
-  %136 = mul i32 %133, %135
-  %137 = load i32* %globalIdX, align 4
-  %138 = add i32 %136, %137
-  %139 = add i32 %138, 1
-  %140 = load <4 x float> addrspace(1)** %1, align 4
-  %141 = getelementptr inbounds <4 x float> addrspace(1)* %140, i32 %139
-  %142 = load <4 x float> addrspace(1)* %141, align 16
-  %143 = extractelement <4 x float> %142, i32 0
-  store float %143, float* %r, align 4
-  %144 = load i32* %7, align 4
-  %145 = load i32* %globalIdY, align 4
-  %146 = sub i32 %145, 1
-  %147 = mul i32 %144, %146
-  %148 = load i32* %globalIdX, align 4
-  %149 = add i32 %147, %148
-  %150 = add i32 %149, 1
-  %151 = load <4 x float> addrspace(1)** %1, align 4
-  %152 = getelementptr inbounds <4 x float> addrspace(1)* %151, i32 %150
-  %153 = load <4 x float> addrspace(1)* %152, align 16
-  %154 = extractelement <4 x float> %153, i32 1
-  store float %154, float* %g, align 4
-  %155 = load i32* %7, align 4
-  %156 = load i32* %globalIdY, align 4
-  %157 = sub i32 %156, 1
-  %158 = mul i32 %155, %157
-  %159 = load i32* %globalIdX, align 4
-  %160 = add i32 %158, %159
-  %161 = add i32 %160, 1
-  %162 = load <4 x float> addrspace(1)** %1, align 4
-  %163 = getelementptr inbounds <4 x float> addrspace(1)* %162, i32 %161
-  %164 = load <4 x float> addrspace(1)* %163, align 16
-  %165 = extractelement <4 x float> %164, i32 2
-  store float %165, float* %b, align 4
-  %166 = load float* %r, align 4
-  %167 = load float* %g, align 4
-  %168 = load float* %b, align 4
-  %169 = call float @luminance(float %166, float %167, float %168)
-  store float %169, float* %rightUp, align 4
-  %170 = load i32* %7, align 4
-  %171 = load i32* %globalIdY, align 4
-  %172 = mul i32 %170, %171
-  %173 = load i32* %globalIdX, align 4
-  %174 = add i32 %172, %173
-  %175 = sub i32 %174, 1
-  %176 = load <4 x float> addrspace(1)** %1, align 4
-  %177 = getelementptr inbounds <4 x float> addrspace(1)* %176, i32 %175
-  %178 = load <4 x float> addrspace(1)* %177, align 16
-  %179 = extractelement <4 x float> %178, i32 0
-  store float %179, float* %r, align 4
-  %180 = load i32* %7, align 4
-  %181 = load i32* %globalIdY, align 4
-  %182 = mul i32 %180, %181
-  %183 = load i32* %globalIdX, align 4
-  %184 = add i32 %182, %183
-  %185 = sub i32 %184, 1
-  %186 = load <4 x float> addrspace(1)** %1, align 4
-  %187 = getelementptr inbounds <4 x float> addrspace(1)* %186, i32 %185
-  %188 = load <4 x float> addrspace(1)* %187, align 16
-  %189 = extractelement <4 x float> %188, i32 1
-  store float %189, float* %g, align 4
-  %190 = load i32* %7, align 4
-  %191 = load i32* %globalIdY, align 4
-  %192 = mul i32 %190, %191
-  %193 = load i32* %globalIdX, align 4
-  %194 = add i32 %192, %193
-  %195 = sub i32 %194, 1
-  %196 = load <4 x float> addrspace(1)** %1, align 4
-  %197 = getelementptr inbounds <4 x float> addrspace(1)* %196, i32 %195
-  %198 = load <4 x float> addrspace(1)* %197, align 16
-  %199 = extractelement <4 x float> %198, i32 2
-  store float %199, float* %b, align 4
-  %200 = load float* %r, align 4
-  %201 = load float* %g, align 4
-  %202 = load float* %b, align 4
-  %203 = call float @luminance(float %200, float %201, float %202)
-  store float %203, float* %left, align 4
-  %204 = load i32* %7, align 4
-  %205 = load i32* %globalIdY, align 4
-  %206 = mul i32 %204, %205
-  %207 = load i32* %globalIdX, align 4
-  %208 = add i32 %206, %207
-  %209 = add i32 %208, 1
-  %210 = load <4 x float> addrspace(1)** %1, align 4
-  %211 = getelementptr inbounds <4 x float> addrspace(1)* %210, i32 %209
-  %212 = load <4 x float> addrspace(1)* %211, align 16
-  %213 = extractelement <4 x float> %212, i32 0
-  store float %213, float* %r, align 4
-  %214 = load i32* %7, align 4
-  %215 = load i32* %globalIdY, align 4
-  %216 = mul i32 %214, %215
-  %217 = load i32* %globalIdX, align 4
-  %218 = add i32 %216, %217
-  %219 = add i32 %218, 1
-  %220 = load <4 x float> addrspace(1)** %1, align 4
-  %221 = getelementptr inbounds <4 x float> addrspace(1)* %220, i32 %219
-  %222 = load <4 x float> addrspace(1)* %221, align 16
-  %223 = extractelement <4 x float> %222, i32 1
-  store float %223, float* %g, align 4
-  %224 = load i32* %7, align 4
-  %225 = load i32* %globalIdY, align 4
-  %226 = mul i32 %224, %225
-  %227 = load i32* %globalIdX, align 4
-  %228 = add i32 %226, %227
-  %229 = add i32 %228, 1
-  %230 = load <4 x float> addrspace(1)** %1, align 4
-  %231 = getelementptr inbounds <4 x float> addrspace(1)* %230, i32 %229
-  %232 = load <4 x float> addrspace(1)* %231, align 16
-  %233 = extractelement <4 x float> %232, i32 2
-  store float %233, float* %b, align 4
-  %234 = load float* %r, align 4
-  %235 = load float* %g, align 4
-  %236 = load float* %b, align 4
-  %237 = call float @luminance(float %234, float %235, float %236)
-  store float %237, float* %right, align 4
-  %238 = load i32* %7, align 4
-  %239 = load i32* %globalIdY, align 4
-  %240 = add i32 %239, 1
-  %241 = mul i32 %238, %240
-  %242 = load i32* %globalIdX, align 4
-  %243 = add i32 %241, %242
-  %244 = sub i32 %243, 1
-  %245 = load <4 x float> addrspace(1)** %1, align 4
-  %246 = getelementptr inbounds <4 x float> addrspace(1)* %245, i32 %244
-  %247 = load <4 x float> addrspace(1)* %246, align 16
-  %248 = extractelement <4 x float> %247, i32 0
-  store float %248, float* %r, align 4
-  %249 = load i32* %7, align 4
-  %250 = load i32* %globalIdY, align 4
-  %251 = add i32 %250, 1
-  %252 = mul i32 %249, %251
-  %253 = load i32* %globalIdX, align 4
-  %254 = add i32 %252, %253
-  %255 = sub i32 %254, 1
-  %256 = load <4 x float> addrspace(1)** %1, align 4
-  %257 = getelementptr inbounds <4 x float> addrspace(1)* %256, i32 %255
-  %258 = load <4 x float> addrspace(1)* %257, align 16
-  %259 = extractelement <4 x float> %258, i32 1
-  store float %259, float* %g, align 4
-  %260 = load i32* %7, align 4
-  %261 = load i32* %globalIdY, align 4
-  %262 = add i32 %261, 1
-  %263 = mul i32 %260, %262
-  %264 = load i32* %globalIdX, align 4
-  %265 = add i32 %263, %264
-  %266 = sub i32 %265, 1
-  %267 = load <4 x float> addrspace(1)** %1, align 4
-  %268 = getelementptr inbounds <4 x float> addrspace(1)* %267, i32 %266
-  %269 = load <4 x float> addrspace(1)* %268, align 16
-  %270 = extractelement <4 x float> %269, i32 2
-  store float %270, float* %b, align 4
-  %271 = load float* %r, align 4
-  %272 = load float* %g, align 4
-  %273 = load float* %b, align 4
-  %274 = call float @luminance(float %271, float %272, float %273)
-  store float %274, float* %leftDown, align 4
-  %275 = load i32* %7, align 4
-  %276 = load i32* %globalIdY, align 4
-  %277 = add i32 %276, 1
-  %278 = mul i32 %275, %277
-  %279 = load i32* %globalIdX, align 4
-  %280 = add i32 %278, %279
-  %281 = load <4 x float> addrspace(1)** %1, align 4
-  %282 = getelementptr inbounds <4 x float> addrspace(1)* %281, i32 %280
-  %283 = load <4 x float> addrspace(1)* %282, align 16
-  %284 = extractelement <4 x float> %283, i32 0
-  store float %284, float* %r, align 4
-  %285 = load i32* %7, align 4
-  %286 = load i32* %globalIdY, align 4
-  %287 = add i32 %286, 1
-  %288 = mul i32 %285, %287
-  %289 = load i32* %globalIdX, align 4
-  %290 = add i32 %288, %289
-  %291 = load <4 x float> addrspace(1)** %1, align 4
-  %292 = getelementptr inbounds <4 x float> addrspace(1)* %291, i32 %290
-  %293 = load <4 x float> addrspace(1)* %292, align 16
-  %294 = extractelement <4 x float> %293, i32 1
-  store float %294, float* %g, align 4
-  %295 = load i32* %7, align 4
-  %296 = load i32* %globalIdY, align 4
-  %297 = add i32 %296, 1
-  %298 = mul i32 %295, %297
-  %299 = load i32* %globalIdX, align 4
-  %300 = add i32 %298, %299
-  %301 = load <4 x float> addrspace(1)** %1, align 4
-  %302 = getelementptr inbounds <4 x float> addrspace(1)* %301, i32 %300
-  %303 = load <4 x float> addrspace(1)* %302, align 16
-  %304 = extractelement <4 x float> %303, i32 2
-  store float %304, float* %b, align 4
-  %305 = load float* %r, align 4
-  %306 = load float* %g, align 4
-  %307 = load float* %b, align 4
-  %308 = call float @luminance(float %305, float %306, float %307)
-  store float %308, float* %down, align 4
-  %309 = load i32* %7, align 4
-  %310 = load i32* %globalIdY, align 4
-  %311 = add i32 %310, 1
-  %312 = mul i32 %309, %311
-  %313 = load i32* %globalIdX, align 4
-  %314 = add i32 %312, %313
-  %315 = add i32 %314, 1
-  %316 = load <4 x float> addrspace(1)** %1, align 4
-  %317 = getelementptr inbounds <4 x float> addrspace(1)* %316, i32 %315
-  %318 = load <4 x float> addrspace(1)* %317, align 16
-  %319 = extractelement <4 x float> %318, i32 0
-  store float %319, float* %r, align 4
-  %320 = load i32* %7, align 4
-  %321 = load i32* %globalIdY, align 4
-  %322 = add i32 %321, 1
-  %323 = mul i32 %320, %322
-  %324 = load i32* %globalIdX, align 4
-  %325 = add i32 %323, %324
-  %326 = add i32 %325, 1
-  %327 = load <4 x float> addrspace(1)** %1, align 4
-  %328 = getelementptr inbounds <4 x float> addrspace(1)* %327, i32 %326
-  %329 = load <4 x float> addrspace(1)* %328, align 16
-  %330 = extractelement <4 x float> %329, i32 1
-  store float %330, float* %g, align 4
-  %331 = load i32* %7, align 4
-  %332 = load i32* %globalIdY, align 4
-  %333 = add i32 %332, 1
-  %334 = mul i32 %331, %333
-  %335 = load i32* %globalIdX, align 4
-  %336 = add i32 %334, %335
-  %337 = add i32 %336, 1
-  %338 = load <4 x float> addrspace(1)** %1, align 4
-  %339 = getelementptr inbounds <4 x float> addrspace(1)* %338, i32 %337
-  %340 = load <4 x float> addrspace(1)* %339, align 16
-  %341 = extractelement <4 x float> %340, i32 2
-  store float %341, float* %b, align 4
-  %342 = load float* %r, align 4
-  %343 = load float* %g, align 4
-  %344 = load float* %b, align 4
-  %345 = call float @luminance(float %342, float %343, float %344)
-  store float %345, float* %rightDown, align 4
-  %346 = load float* %leftUp, align 4
-  %347 = load float* %up, align 4
-  %348 = fadd float %346, %347
-  %349 = load float* %rightUp, align 4
-  %350 = fadd float %348, %349
-  %351 = load float* %left, align 4
-  %352 = fadd float %350, %351
-  %353 = load float* %right, align 4
-  %354 = fadd float %352, %353
-  %355 = load float* %leftDown, align 4
-  %356 = fadd float %354, %355
-  %357 = load float* %down, align 4
-  %358 = fadd float %356, %357
-  %359 = load float* %rightDown, align 4
-  %360 = fadd float %358, %359
-  %361 = fdiv float %360, 8.000000e+00, !fpmath !3
-  store float %361, float* %yLPattanaik, align 4
-  br label %364
+  %tmp_62 = load i32* %tmp_7, align 4
+  %tmp_63 = load i32* %globalIdY, align 4
+  %tmp_64 = sub i32 %tmp_63, 1
+  %tmp_65 = mul i32 %tmp_62, %tmp_64
+  %tmp_66 = load i32* %globalIdX, align 4
+  %tmp_67 = add i32 %tmp_65, %tmp_66
+  %tmp_68 = sub i32 %tmp_67, 1
+  %tmp_69 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_70 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_69, i32 %tmp_68
+  %tmp_71 = load <4 x float> addrspace(1)* %tmp_70, align 16
+  %tmp_72 = extractelement <4 x float> %tmp_71, i32 0
+  store float %tmp_72, float* %r, align 4
+  %tmp_73 = load i32* %tmp_7, align 4
+  %tmp_74 = load i32* %globalIdY, align 4
+  %tmp_75 = sub i32 %tmp_74, 1
+  %tmp_76 = mul i32 %tmp_73, %tmp_75
+  %tmp_77 = load i32* %globalIdX, align 4
+  %tmp_78 = add i32 %tmp_76, %tmp_77
+  %tmp_79 = sub i32 %tmp_78, 1
+  %tmp_80 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_81 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_80, i32 %tmp_79
+  %tmp_82 = load <4 x float> addrspace(1)* %tmp_81, align 16
+  %tmp_83 = extractelement <4 x float> %tmp_82, i32 1
+  store float %tmp_83, float* %g, align 4
+  %tmp_84 = load i32* %tmp_7, align 4
+  %tmp_85 = load i32* %globalIdY, align 4
+  %tmp_86 = sub i32 %tmp_85, 1
+  %tmp_87 = mul i32 %tmp_84, %tmp_86
+  %tmp_88 = load i32* %globalIdX, align 4
+  %tmp_89 = add i32 %tmp_87, %tmp_88
+  %tmp_90 = sub i32 %tmp_89, 1
+  %tmp_91 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_92 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_91, i32 %tmp_90
+  %tmp_93 = load <4 x float> addrspace(1)* %tmp_92, align 16
+  %tmp_94 = extractelement <4 x float> %tmp_93, i32 2
+  store float %tmp_94, float* %b, align 4
+  %tmp_95 = load float* %r, align 4
+  %tmp_96 = load float* %g, align 4
+  %tmp_97 = load float* %b, align 4
+  %tmp_98 = call float @luminance(float %tmp_95, float %tmp_96, float %tmp_97)
+  store float %tmp_98, float* %leftUp, align 4
+  %tmp_99 = load i32* %tmp_7, align 4
+  %tmp_100 = load i32* %globalIdY, align 4
+  %tmp_101 = sub i32 %tmp_100, 1
+  %tmp_102 = mul i32 %tmp_99, %tmp_101
+  %tmp_103 = load i32* %globalIdX, align 4
+  %tmp_104 = add i32 %tmp_102, %tmp_103
+  %tmp_105 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_106 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_105, i32 %tmp_104
+  %tmp_107 = load <4 x float> addrspace(1)* %tmp_106, align 16
+  %tmp_108 = extractelement <4 x float> %tmp_107, i32 0
+  store float %tmp_108, float* %r, align 4
+  %tmp_109 = load i32* %tmp_7, align 4
+  %tmp_110 = load i32* %globalIdY, align 4
+  %tmp_111 = sub i32 %tmp_110, 1
+  %tmp_112 = mul i32 %tmp_109, %tmp_111
+  %tmp_113 = load i32* %globalIdX, align 4
+  %tmp_114 = add i32 %tmp_112, %tmp_113
+  %tmp_115 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_116 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_115, i32 %tmp_114
+  %tmp_117 = load <4 x float> addrspace(1)* %tmp_116, align 16
+  %tmp_118 = extractelement <4 x float> %tmp_117, i32 1
+  store float %tmp_118, float* %g, align 4
+  %tmp_119 = load i32* %tmp_7, align 4
+  %tmp_120 = load i32* %globalIdY, align 4
+  %tmp_121 = sub i32 %tmp_120, 1
+  %tmp_122 = mul i32 %tmp_119, %tmp_121
+  %tmp_123 = load i32* %globalIdX, align 4
+  %tmp_124 = add i32 %tmp_122, %tmp_123
+  %tmp_125 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_126 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_125, i32 %tmp_124
+  %tmp_127 = load <4 x float> addrspace(1)* %tmp_126, align 16
+  %tmp_128 = extractelement <4 x float> %tmp_127, i32 2
+  store float %tmp_128, float* %b, align 4
+  %tmp_129 = load float* %r, align 4
+  %tmp_130 = load float* %g, align 4
+  %tmp_131 = load float* %b, align 4
+  %tmp_132 = call float @luminance(float %tmp_129, float %tmp_130, float %tmp_131)
+  store float %tmp_132, float* %up, align 4
+  %tmp_133 = load i32* %tmp_7, align 4
+  %tmp_134 = load i32* %globalIdY, align 4
+  %tmp_135 = sub i32 %tmp_134, 1
+  %tmp_136 = mul i32 %tmp_133, %tmp_135
+  %tmp_137 = load i32* %globalIdX, align 4
+  %tmp_138 = add i32 %tmp_136, %tmp_137
+  %tmp_139 = add i32 %tmp_138, 1
+  %tmp_140 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_141 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_140, i32 %tmp_139
+  %tmp_142 = load <4 x float> addrspace(1)* %tmp_141, align 16
+  %tmp_143 = extractelement <4 x float> %tmp_142, i32 0
+  store float %tmp_143, float* %r, align 4
+  %tmp_144 = load i32* %tmp_7, align 4
+  %tmp_145 = load i32* %globalIdY, align 4
+  %tmp_146 = sub i32 %tmp_145, 1
+  %tmp_147 = mul i32 %tmp_144, %tmp_146
+  %tmp_148 = load i32* %globalIdX, align 4
+  %tmp_149 = add i32 %tmp_147, %tmp_148
+  %tmp_150 = add i32 %tmp_149, 1
+  %tmp_151 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_152 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_151, i32 %tmp_150
+  %tmp_153 = load <4 x float> addrspace(1)* %tmp_152, align 16
+  %tmp_154 = extractelement <4 x float> %tmp_153, i32 1
+  store float %tmp_154, float* %g, align 4
+  %tmp_155 = load i32* %tmp_7, align 4
+  %tmp_156 = load i32* %globalIdY, align 4
+  %tmp_157 = sub i32 %tmp_156, 1
+  %tmp_158 = mul i32 %tmp_155, %tmp_157
+  %tmp_159 = load i32* %globalIdX, align 4
+  %tmp_160 = add i32 %tmp_158, %tmp_159
+  %tmp_161 = add i32 %tmp_160, 1
+  %tmp_162 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_163 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_162, i32 %tmp_161
+  %tmp_164 = load <4 x float> addrspace(1)* %tmp_163, align 16
+  %tmp_165 = extractelement <4 x float> %tmp_164, i32 2
+  store float %tmp_165, float* %b, align 4
+  %tmp_166 = load float* %r, align 4
+  %tmp_167 = load float* %g, align 4
+  %tmp_168 = load float* %b, align 4
+  %tmp_169 = call float @luminance(float %tmp_166, float %tmp_167, float %tmp_168)
+  store float %tmp_169, float* %rightUp, align 4
+  %tmp_170 = load i32* %tmp_7, align 4
+  %tmp_171 = load i32* %globalIdY, align 4
+  %tmp_172 = mul i32 %tmp_170, %tmp_171
+  %tmp_173 = load i32* %globalIdX, align 4
+  %tmp_174 = add i32 %tmp_172, %tmp_173
+  %tmp_175 = sub i32 %tmp_174, 1
+  %tmp_176 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_177 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_176, i32 %tmp_175
+  %tmp_178 = load <4 x float> addrspace(1)* %tmp_177, align 16
+  %tmp_179 = extractelement <4 x float> %tmp_178, i32 0
+  store float %tmp_179, float* %r, align 4
+  %tmp_180 = load i32* %tmp_7, align 4
+  %tmp_181 = load i32* %globalIdY, align 4
+  %tmp_182 = mul i32 %tmp_180, %tmp_181
+  %tmp_183 = load i32* %globalIdX, align 4
+  %tmp_184 = add i32 %tmp_182, %tmp_183
+  %tmp_185 = sub i32 %tmp_184, 1
+  %tmp_186 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_187 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_186, i32 %tmp_185
+  %tmp_188 = load <4 x float> addrspace(1)* %tmp_187, align 16
+  %tmp_189 = extractelement <4 x float> %tmp_188, i32 1
+  store float %tmp_189, float* %g, align 4
+  %tmp_190 = load i32* %tmp_7, align 4
+  %tmp_191 = load i32* %globalIdY, align 4
+  %tmp_192 = mul i32 %tmp_190, %tmp_191
+  %tmp_193 = load i32* %globalIdX, align 4
+  %tmp_194 = add i32 %tmp_192, %tmp_193
+  %tmp_195 = sub i32 %tmp_194, 1
+  %tmp_196 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_197 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_196, i32 %tmp_195
+  %tmp_198 = load <4 x float> addrspace(1)* %tmp_197, align 16
+  %tmp_199 = extractelement <4 x float> %tmp_198, i32 2
+  store float %tmp_199, float* %b, align 4
+  %tmp_200 = load float* %r, align 4
+  %tmp_201 = load float* %g, align 4
+  %tmp_202 = load float* %b, align 4
+  %tmp_203 = call float @luminance(float %tmp_200, float %tmp_201, float %tmp_202)
+  store float %tmp_203, float* %left, align 4
+  %tmp_204 = load i32* %tmp_7, align 4
+  %tmp_205 = load i32* %globalIdY, align 4
+  %tmp_206 = mul i32 %tmp_204, %tmp_205
+  %tmp_207 = load i32* %globalIdX, align 4
+  %tmp_208 = add i32 %tmp_206, %tmp_207
+  %tmp_209 = add i32 %tmp_208, 1
+  %tmp_210 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_211 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_210, i32 %tmp_209
+  %tmp_212 = load <4 x float> addrspace(1)* %tmp_211, align 16
+  %tmp_213 = extractelement <4 x float> %tmp_212, i32 0
+  store float %tmp_213, float* %r, align 4
+  %tmp_214 = load i32* %tmp_7, align 4
+  %tmp_215 = load i32* %globalIdY, align 4
+  %tmp_216 = mul i32 %tmp_214, %tmp_215
+  %tmp_217 = load i32* %globalIdX, align 4
+  %tmp_218 = add i32 %tmp_216, %tmp_217
+  %tmp_219 = add i32 %tmp_218, 1
+  %tmp_220 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_221 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_220, i32 %tmp_219
+  %tmp_222 = load <4 x float> addrspace(1)* %tmp_221, align 16
+  %tmp_223 = extractelement <4 x float> %tmp_222, i32 1
+  store float %tmp_223, float* %g, align 4
+  %tmp_224 = load i32* %tmp_7, align 4
+  %tmp_225 = load i32* %globalIdY, align 4
+  %tmp_226 = mul i32 %tmp_224, %tmp_225
+  %tmp_227 = load i32* %globalIdX, align 4
+  %tmp_228 = add i32 %tmp_226, %tmp_227
+  %tmp_229 = add i32 %tmp_228, 1
+  %tmp_230 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_231 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_230, i32 %tmp_229
+  %tmp_232 = load <4 x float> addrspace(1)* %tmp_231, align 16
+  %tmp_233 = extractelement <4 x float> %tmp_232, i32 2
+  store float %tmp_233, float* %b, align 4
+  %tmp_234 = load float* %r, align 4
+  %tmp_235 = load float* %g, align 4
+  %tmp_236 = load float* %b, align 4
+  %tmp_237 = call float @luminance(float %tmp_234, float %tmp_235, float %tmp_236)
+  store float %tmp_237, float* %right, align 4
+  %tmp_238 = load i32* %tmp_7, align 4
+  %tmp_239 = load i32* %globalIdY, align 4
+  %tmp_240 = add i32 %tmp_239, 1
+  %tmp_241 = mul i32 %tmp_238, %tmp_240
+  %tmp_242 = load i32* %globalIdX, align 4
+  %tmp_243 = add i32 %tmp_241, %tmp_242
+  %tmp_244 = sub i32 %tmp_243, 1
+  %tmp_245 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_246 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_245, i32 %tmp_244
+  %tmp_247 = load <4 x float> addrspace(1)* %tmp_246, align 16
+  %tmp_248 = extractelement <4 x float> %tmp_247, i32 0
+  store float %tmp_248, float* %r, align 4
+  %tmp_249 = load i32* %tmp_7, align 4
+  %tmp_250 = load i32* %globalIdY, align 4
+  %tmp_251 = add i32 %tmp_250, 1
+  %tmp_252 = mul i32 %tmp_249, %tmp_251
+  %tmp_253 = load i32* %globalIdX, align 4
+  %tmp_254 = add i32 %tmp_252, %tmp_253
+  %tmp_255 = sub i32 %tmp_254, 1
+  %tmp_256 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_257 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_256, i32 %tmp_255
+  %tmp_258 = load <4 x float> addrspace(1)* %tmp_257, align 16
+  %tmp_259 = extractelement <4 x float> %tmp_258, i32 1
+  store float %tmp_259, float* %g, align 4
+  %tmp_260 = load i32* %tmp_7, align 4
+  %tmp_261 = load i32* %globalIdY, align 4
+  %tmp_262 = add i32 %tmp_261, 1
+  %tmp_263 = mul i32 %tmp_260, %tmp_262
+  %tmp_264 = load i32* %globalIdX, align 4
+  %tmp_265 = add i32 %tmp_263, %tmp_264
+  %tmp_266 = sub i32 %tmp_265, 1
+  %tmp_267 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_268 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_267, i32 %tmp_266
+  %tmp_269 = load <4 x float> addrspace(1)* %tmp_268, align 16
+  %tmp_270 = extractelement <4 x float> %tmp_269, i32 2
+  store float %tmp_270, float* %b, align 4
+  %tmp_271 = load float* %r, align 4
+  %tmp_272 = load float* %g, align 4
+  %tmp_273 = load float* %b, align 4
+  %tmp_274 = call float @luminance(float %tmp_271, float %tmp_272, float %tmp_273)
+  store float %tmp_274, float* %leftDown, align 4
+  %tmp_275 = load i32* %tmp_7, align 4
+  %tmp_276 = load i32* %globalIdY, align 4
+  %tmp_277 = add i32 %tmp_276, 1
+  %tmp_278 = mul i32 %tmp_275, %tmp_277
+  %tmp_279 = load i32* %globalIdX, align 4
+  %tmp_280 = add i32 %tmp_278, %tmp_279
+  %tmp_281 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_282 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_281, i32 %tmp_280
+  %tmp_283 = load <4 x float> addrspace(1)* %tmp_282, align 16
+  %tmp_284 = extractelement <4 x float> %tmp_283, i32 0
+  store float %tmp_284, float* %r, align 4
+  %tmp_285 = load i32* %tmp_7, align 4
+  %tmp_286 = load i32* %globalIdY, align 4
+  %tmp_287 = add i32 %tmp_286, 1
+  %tmp_288 = mul i32 %tmp_285, %tmp_287
+  %tmp_289 = load i32* %globalIdX, align 4
+  %tmp_290 = add i32 %tmp_288, %tmp_289
+  %tmp_291 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_292 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_291, i32 %tmp_290
+  %tmp_293 = load <4 x float> addrspace(1)* %tmp_292, align 16
+  %tmp_294 = extractelement <4 x float> %tmp_293, i32 1
+  store float %tmp_294, float* %g, align 4
+  %tmp_295 = load i32* %tmp_7, align 4
+  %tmp_296 = load i32* %globalIdY, align 4
+  %tmp_297 = add i32 %tmp_296, 1
+  %tmp_298 = mul i32 %tmp_295, %tmp_297
+  %tmp_299 = load i32* %globalIdX, align 4
+  %tmp_300 = add i32 %tmp_298, %tmp_299
+  %tmp_301 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_302 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_301, i32 %tmp_300
+  %tmp_303 = load <4 x float> addrspace(1)* %tmp_302, align 16
+  %tmp_304 = extractelement <4 x float> %tmp_303, i32 2
+  store float %tmp_304, float* %b, align 4
+  %tmp_305 = load float* %r, align 4
+  %tmp_306 = load float* %g, align 4
+  %tmp_307 = load float* %b, align 4
+  %tmp_308 = call float @luminance(float %tmp_305, float %tmp_306, float %tmp_307)
+  store float %tmp_308, float* %down, align 4
+  %tmp_309 = load i32* %tmp_7, align 4
+  %tmp_310 = load i32* %globalIdY, align 4
+  %tmp_311 = add i32 %tmp_310, 1
+  %tmp_312 = mul i32 %tmp_309, %tmp_311
+  %tmp_313 = load i32* %globalIdX, align 4
+  %tmp_314 = add i32 %tmp_312, %tmp_313
+  %tmp_315 = add i32 %tmp_314, 1
+  %tmp_316 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_317 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_316, i32 %tmp_315
+  %tmp_318 = load <4 x float> addrspace(1)* %tmp_317, align 16
+  %tmp_319 = extractelement <4 x float> %tmp_318, i32 0
+  store float %tmp_319, float* %r, align 4
+  %tmp_320 = load i32* %tmp_7, align 4
+  %tmp_321 = load i32* %globalIdY, align 4
+  %tmp_322 = add i32 %tmp_321, 1
+  %tmp_323 = mul i32 %tmp_320, %tmp_322
+  %tmp_324 = load i32* %globalIdX, align 4
+  %tmp_325 = add i32 %tmp_323, %tmp_324
+  %tmp_326 = add i32 %tmp_325, 1
+  %tmp_327 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_328 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_327, i32 %tmp_326
+  %tmp_329 = load <4 x float> addrspace(1)* %tmp_328, align 16
+  %tmp_330 = extractelement <4 x float> %tmp_329, i32 1
+  store float %tmp_330, float* %g, align 4
+  %tmp_331 = load i32* %tmp_7, align 4
+  %tmp_332 = load i32* %globalIdY, align 4
+  %tmp_333 = add i32 %tmp_332, 1
+  %tmp_334 = mul i32 %tmp_331, %tmp_333
+  %tmp_335 = load i32* %globalIdX, align 4
+  %tmp_336 = add i32 %tmp_334, %tmp_335
+  %tmp_337 = add i32 %tmp_336, 1
+  %tmp_338 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_339 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_338, i32 %tmp_337
+  %tmp_340 = load <4 x float> addrspace(1)* %tmp_339, align 16
+  %tmp_341 = extractelement <4 x float> %tmp_340, i32 2
+  store float %tmp_341, float* %b, align 4
+  %tmp_342 = load float* %r, align 4
+  %tmp_343 = load float* %g, align 4
+  %tmp_344 = load float* %b, align 4
+  %tmp_345 = call float @luminance(float %tmp_342, float %tmp_343, float %tmp_344)
+  store float %tmp_345, float* %rightDown, align 4
+  %tmp_346 = load float* %leftUp, align 4
+  %tmp_347 = load float* %up, align 4
+  %tmp_348 = fadd float %tmp_346, %tmp_347
+  %tmp_349 = load float* %rightUp, align 4
+  %tmp_350 = fadd float %tmp_348, %tmp_349
+  %tmp_351 = load float* %left, align 4
+  %tmp_352 = fadd float %tmp_350, %tmp_351
+  %tmp_353 = load float* %right, align 4
+  %tmp_354 = fadd float %tmp_352, %tmp_353
+  %tmp_355 = load float* %leftDown, align 4
+  %tmp_356 = fadd float %tmp_354, %tmp_355
+  %tmp_357 = load float* %down, align 4
+  %tmp_358 = fadd float %tmp_356, %tmp_357
+  %tmp_359 = load float* %rightDown, align 4
+  %tmp_360 = fadd float %tmp_358, %tmp_359
+  %tmp_361 = fdiv float %tmp_360, 8.000000e+00, !fpmath !3
+  store float %tmp_361, float* %yLPattanaik, align 4
+  br label %tmp_364
 
-; <label>:362                                     ; preds = %56, %51, %48, %0
-  %363 = load float* %yLuminance, align 4
-  store float %363, float* %yLPattanaik, align 4
-  br label %364
+tmp_362:                                     ; preds = %tmp_56, %tmp_51, %tmp_48, %tmp_0
+  %tmp_363 = load float* %yLuminance, align 4
+  store float %tmp_363, float* %yLPattanaik, align 4
+  br label %tmp_364
 
-; <label>:364                                     ; preds = %362, %61
-  %365 = load float* %yLPattanaik, align 4
-  %366 = load float* %6, align 4
-  %367 = load float* %yLPattanaik, align 4
-  %368 = load float* %yLuminance, align 4
-  %369 = fdiv float %367, %368, !fpmath !3
-  %370 = fadd float %366, %369
-  %371 = call float @llvm.log2.f32(float %370)
-  %372 = fmul float %371, 0x3FE62E4300000000
-  %373 = load float* %gcPattanaik, align 4
-  %374 = call float @llvm.fmuladd.f32(float %365, float %372, float %373)
-  store float %374, float* %cLPattanaik, align 4
-  %375 = load float* %yLuminance, align 4
-  %376 = load float* %yLuminance, align 4
-  %377 = load float* %cLPattanaik, align 4
-  %378 = fadd float %376, %377
-  %379 = fdiv float %375, %378, !fpmath !3
-  store float %379, float* %yDPattanaik, align 4
-  %380 = load float* %r1, align 4
-  %381 = load float* %yLuminance, align 4
-  %382 = fdiv float %380, %381, !fpmath !3
-  %383 = load float* %4, align 4
-  %384 = call float @llvm.pow.f32(float %382, float %383)
-  %385 = load float* %yDPattanaik, align 4
-  %386 = fmul float %384, %385
-  store float %386, float* %r, align 4
-  %387 = load float* %g1, align 4
-  %388 = load float* %yLuminance, align 4
-  %389 = fdiv float %387, %388, !fpmath !3
-  %390 = load float* %4, align 4
-  %391 = call float @llvm.pow.f32(float %389, float %390)
-  %392 = load float* %yDPattanaik, align 4
-  %393 = fmul float %391, %392
-  store float %393, float* %g, align 4
-  %394 = load float* %b1, align 4
-  %395 = load float* %yLuminance, align 4
-  %396 = fdiv float %394, %395, !fpmath !3
-  %397 = load float* %4, align 4
-  %398 = call float @llvm.pow.f32(float %396, float %397)
-  %399 = load float* %yDPattanaik, align 4
-  %400 = fmul float %398, %399
-  store float %400, float* %b, align 4
-  %401 = load float* %r, align 4
-  %402 = load i32* %7, align 4
-  %403 = load i32* %globalIdY, align 4
-  %404 = mul i32 %402, %403
-  %405 = load i32* %globalIdX, align 4
-  %406 = add i32 %404, %405
-  %407 = load <4 x float> addrspace(1)** %2, align 4
-  %408 = getelementptr inbounds <4 x float> addrspace(1)* %407, i32 %406
-  %409 = load <4 x float> addrspace(1)* %408, align 16
-  %410 = insertelement <4 x float> %409, float %401, i32 0
-  store <4 x float> %410, <4 x float> addrspace(1)* %408, align 16
-  %411 = load float* %g, align 4
-  %412 = load i32* %7, align 4
-  %413 = load i32* %globalIdY, align 4
-  %414 = mul i32 %412, %413
-  %415 = load i32* %globalIdX, align 4
-  %416 = add i32 %414, %415
-  %417 = load <4 x float> addrspace(1)** %2, align 4
-  %418 = getelementptr inbounds <4 x float> addrspace(1)* %417, i32 %416
-  %419 = load <4 x float> addrspace(1)* %418, align 16
-  %420 = insertelement <4 x float> %419, float %411, i32 1
-  store <4 x float> %420, <4 x float> addrspace(1)* %418, align 16
-  %421 = load float* %b, align 4
-  %422 = load i32* %7, align 4
-  %423 = load i32* %globalIdY, align 4
-  %424 = mul i32 %422, %423
-  %425 = load i32* %globalIdX, align 4
-  %426 = add i32 %424, %425
-  %427 = load <4 x float> addrspace(1)** %2, align 4
-  %428 = getelementptr inbounds <4 x float> addrspace(1)* %427, i32 %426
-  %429 = load <4 x float> addrspace(1)* %428, align 16
-  %430 = insertelement <4 x float> %429, float %421, i32 2
-  store <4 x float> %430, <4 x float> addrspace(1)* %428, align 16
-  %431 = load i32* %7, align 4
-  %432 = load i32* %globalIdY, align 4
-  %433 = mul i32 %431, %432
-  %434 = load i32* %globalIdX, align 4
-  %435 = add i32 %433, %434
-  %436 = load <4 x float> addrspace(1)** %1, align 4
-  %437 = getelementptr inbounds <4 x float> addrspace(1)* %436, i32 %435
-  %438 = load <4 x float> addrspace(1)* %437, align 16
-  %439 = extractelement <4 x float> %438, i32 3
-  %440 = load i32* %7, align 4
-  %441 = load i32* %globalIdY, align 4
-  %442 = mul i32 %440, %441
-  %443 = load i32* %globalIdX, align 4
-  %444 = add i32 %442, %443
-  %445 = load <4 x float> addrspace(1)** %2, align 4
-  %446 = getelementptr inbounds <4 x float> addrspace(1)* %445, i32 %444
-  %447 = load <4 x float> addrspace(1)* %446, align 16
-  %448 = insertelement <4 x float> %447, float %439, i32 3
-  store <4 x float> %448, <4 x float> addrspace(1)* %446, align 16
+tmp_364:                                     ; preds = %tmp_362, %tmp_61
+  %tmp_365 = load float* %yLPattanaik, align 4
+  %tmp_366 = load float* %tmp_6, align 4
+  %tmp_367 = load float* %yLPattanaik, align 4
+  %tmp_368 = load float* %yLuminance, align 4
+  %tmp_369 = fdiv float %tmp_367, %tmp_368, !fpmath !3
+  %tmp_370 = fadd float %tmp_366, %tmp_369
+  %tmp_371 = call float @llvm.log2.f32(float %tmp_370)
+  %tmp_372 = fmul float %tmp_371, 0x3FE62E4300000000
+  %tmp_373 = load float* %gcPattanaik, align 4
+  %tmp_374 = call float @llvm.fmuladd.f32(float %tmp_365, float %tmp_372, float %tmp_373)
+  store float %tmp_374, float* %cLPattanaik, align 4
+  %tmp_375 = load float* %yLuminance, align 4
+  %tmp_376 = load float* %yLuminance, align 4
+  %tmp_377 = load float* %cLPattanaik, align 4
+  %tmp_378 = fadd float %tmp_376, %tmp_377
+  %tmp_379 = fdiv float %tmp_375, %tmp_378, !fpmath !3
+  store float %tmp_379, float* %yDPattanaik, align 4
+  %tmp_380 = load float* %r1, align 4
+  %tmp_381 = load float* %yLuminance, align 4
+  %tmp_382 = fdiv float %tmp_380, %tmp_381, !fpmath !3
+  %tmp_383 = load float* %tmp_4, align 4
+  %tmp_384 = call float @llvm.pow.f32(float %tmp_382, float %tmp_383)
+  %tmp_385 = load float* %yDPattanaik, align 4
+  %tmp_386 = fmul float %tmp_384, %tmp_385
+  store float %tmp_386, float* %r, align 4
+  %tmp_387 = load float* %g1, align 4
+  %tmp_388 = load float* %yLuminance, align 4
+  %tmp_389 = fdiv float %tmp_387, %tmp_388, !fpmath !3
+  %tmp_390 = load float* %tmp_4, align 4
+  %tmp_391 = call float @llvm.pow.f32(float %tmp_389, float %tmp_390)
+  %tmp_392 = load float* %yDPattanaik, align 4
+  %tmp_393 = fmul float %tmp_391, %tmp_392
+  store float %tmp_393, float* %g, align 4
+  %tmp_394 = load float* %b1, align 4
+  %tmp_395 = load float* %yLuminance, align 4
+  %tmp_396 = fdiv float %tmp_394, %tmp_395, !fpmath !3
+  %tmp_397 = load float* %tmp_4, align 4
+  %tmp_398 = call float @llvm.pow.f32(float %tmp_396, float %tmp_397)
+  %tmp_399 = load float* %yDPattanaik, align 4
+  %tmp_400 = fmul float %tmp_398, %tmp_399
+  store float %tmp_400, float* %b, align 4
+  %tmp_401 = load float* %r, align 4
+  %tmp_402 = load i32* %tmp_7, align 4
+  %tmp_403 = load i32* %globalIdY, align 4
+  %tmp_404 = mul i32 %tmp_402, %tmp_403
+  %tmp_405 = load i32* %globalIdX, align 4
+  %tmp_406 = add i32 %tmp_404, %tmp_405
+  %tmp_407 = load <4 x float> addrspace(1)** %tmp_2, align 4
+  %tmp_408 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_407, i32 %tmp_406
+  %tmp_409 = load <4 x float> addrspace(1)* %tmp_408, align 16
+  %tmp_410 = insertelement <4 x float> %tmp_409, float %tmp_401, i32 0
+  store <4 x float> %tmp_410, <4 x float> addrspace(1)* %tmp_408, align 16
+  %tmp_411 = load float* %g, align 4
+  %tmp_412 = load i32* %tmp_7, align 4
+  %tmp_413 = load i32* %globalIdY, align 4
+  %tmp_414 = mul i32 %tmp_412, %tmp_413
+  %tmp_415 = load i32* %globalIdX, align 4
+  %tmp_416 = add i32 %tmp_414, %tmp_415
+  %tmp_417 = load <4 x float> addrspace(1)** %tmp_2, align 4
+  %tmp_418 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_417, i32 %tmp_416
+  %tmp_419 = load <4 x float> addrspace(1)* %tmp_418, align 16
+  %tmp_420 = insertelement <4 x float> %tmp_419, float %tmp_411, i32 1
+  store <4 x float> %tmp_420, <4 x float> addrspace(1)* %tmp_418, align 16
+  %tmp_421 = load float* %b, align 4
+  %tmp_422 = load i32* %tmp_7, align 4
+  %tmp_423 = load i32* %globalIdY, align 4
+  %tmp_424 = mul i32 %tmp_422, %tmp_423
+  %tmp_425 = load i32* %globalIdX, align 4
+  %tmp_426 = add i32 %tmp_424, %tmp_425
+  %tmp_427 = load <4 x float> addrspace(1)** %tmp_2, align 4
+  %tmp_428 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_427, i32 %tmp_426
+  %tmp_429 = load <4 x float> addrspace(1)* %tmp_428, align 16
+  %tmp_430 = insertelement <4 x float> %tmp_429, float %tmp_421, i32 2
+  store <4 x float> %tmp_430, <4 x float> addrspace(1)* %tmp_428, align 16
+  %tmp_431 = load i32* %tmp_7, align 4
+  %tmp_432 = load i32* %globalIdY, align 4
+  %tmp_433 = mul i32 %tmp_431, %tmp_432
+  %tmp_434 = load i32* %globalIdX, align 4
+  %tmp_435 = add i32 %tmp_433, %tmp_434
+  %tmp_436 = load <4 x float> addrspace(1)** %tmp_1, align 4
+  %tmp_437 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_436, i32 %tmp_435
+  %tmp_438 = load <4 x float> addrspace(1)* %tmp_437, align 16
+  %tmp_439 = extractelement <4 x float> %tmp_438, i32 3
+  %tmp_440 = load i32* %tmp_7, align 4
+  %tmp_441 = load i32* %globalIdY, align 4
+  %tmp_442 = mul i32 %tmp_440, %tmp_441
+  %tmp_443 = load i32* %globalIdX, align 4
+  %tmp_444 = add i32 %tmp_442, %tmp_443
+  %tmp_445 = load <4 x float> addrspace(1)** %tmp_2, align 4
+  %tmp_446 = getelementptr inbounds <4 x float> addrspace(1)* %tmp_445, i32 %tmp_444
+  %tmp_447 = load <4 x float> addrspace(1)* %tmp_446, align 16
+  %tmp_448 = insertelement <4 x float> %tmp_447, float %tmp_439, i32 3
+  store <4 x float> %tmp_448, <4 x float> addrspace(1)* %tmp_446, align 16
   ret void
 }
 

@@ -4,11 +4,11 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @copy(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = getelementptr inbounds float addrspace(1)* %input, i32 %1
-  %3 = load float addrspace(1)* %2, align 4
-  %4 = getelementptr inbounds float addrspace(1)* %output, i32 %1
-  store float %3, float addrspace(1)* %4, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_6 = getelementptr inbounds float addrspace(1)* %input, i32 %tmp_3
+  %tmp_7 = load float addrspace(1)* %tmp_6, align 4
+  %tmp_10 = getelementptr inbounds float addrspace(1)* %output, i32 %tmp_3
+  store float %tmp_7, float addrspace(1)* %tmp_10, align 4
   ret void
 }
 

@@ -4,27 +4,27 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @debugKernel(float addrspace(1)* %inputbuffer, float addrspace(1)* %outputbuffer) #0 {
-  %1 = alloca float addrspace(1)*, align 4
-  %2 = alloca float addrspace(1)*, align 4
+  %tmp_1 = alloca float addrspace(1)*, align 4
+  %tmp_2 = alloca float addrspace(1)*, align 4
   %globalID = alloca i32, align 4
   %value = alloca i32, align 4
-  store float addrspace(1)* %inputbuffer, float addrspace(1)** %1, align 4
-  store float addrspace(1)* %outputbuffer, float addrspace(1)** %2, align 4
-  %3 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %3, i32* %globalID, align 4
+  store float addrspace(1)* %inputbuffer, float addrspace(1)** %tmp_1, align 4
+  store float addrspace(1)* %outputbuffer, float addrspace(1)** %tmp_2, align 4
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_3, i32* %globalID, align 4
   store i32 0, i32* %value, align 4
-  %4 = load i32* %globalID, align 4
-  %5 = load float addrspace(1)** %1, align 4
-  %6 = getelementptr inbounds float addrspace(1)* %5, i32 %4
-  %7 = load float addrspace(1)* %6, align 4
-  %8 = fptoui float %7 to i32
-  store i32 %8, i32* %value, align 4
-  %9 = load i32* %value, align 4
-  %10 = uitofp i32 %9 to float
-  %11 = load i32* %globalID, align 4
-  %12 = load float addrspace(1)** %2, align 4
-  %13 = getelementptr inbounds float addrspace(1)* %12, i32 %11
-  store float %10, float addrspace(1)* %13, align 4
+  %tmp_4 = load i32* %globalID, align 4
+  %tmp_5 = load float addrspace(1)** %tmp_1, align 4
+  %tmp_6 = getelementptr inbounds float addrspace(1)* %tmp_5, i32 %tmp_4
+  %tmp_7 = load float addrspace(1)* %tmp_6, align 4
+  %tmp_8 = fptoui float %tmp_7 to i32
+  store i32 %tmp_8, i32* %value, align 4
+  %tmp_9 = load i32* %value, align 4
+  %tmp_10 = uitofp i32 %tmp_9 to float
+  %tmp_11 = load i32* %globalID, align 4
+  %tmp_12 = load float addrspace(1)** %tmp_2, align 4
+  %tmp_13 = getelementptr inbounds float addrspace(1)* %tmp_12, i32 %tmp_11
+  store float %tmp_10, float addrspace(1)* %tmp_13, align 4
   ret void
 }
 

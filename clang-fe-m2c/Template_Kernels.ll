@@ -4,25 +4,25 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @templateKernel(i32 addrspace(1)* %output, i32 addrspace(1)* %input, i32 %multiplier) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
-  %3 = alloca i32, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
+  %tmp_3 = alloca i32, align 4
   %tid = alloca i32, align 4
-  store i32 addrspace(1)* %output, i32 addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %input, i32 addrspace(1)** %2, align 4
-  store i32 %multiplier, i32* %3, align 4
-  %4 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %4, i32* %tid, align 4
-  %5 = load i32* %tid, align 4
-  %6 = load i32 addrspace(1)** %2, align 4
-  %7 = getelementptr inbounds i32 addrspace(1)* %6, i32 %5
-  %8 = load i32 addrspace(1)* %7, align 4
-  %9 = load i32* %3, align 4
-  %10 = mul i32 %8, %9
-  %11 = load i32* %tid, align 4
-  %12 = load i32 addrspace(1)** %1, align 4
-  %13 = getelementptr inbounds i32 addrspace(1)* %12, i32 %11
-  store i32 %10, i32 addrspace(1)* %13, align 4
+  store i32 addrspace(1)* %output, i32 addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %input, i32 addrspace(1)** %tmp_2, align 4
+  store i32 %multiplier, i32* %tmp_3, align 4
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_4, i32* %tid, align 4
+  %tmp_5 = load i32* %tid, align 4
+  %tmp_6 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_7 = getelementptr inbounds i32 addrspace(1)* %tmp_6, i32 %tmp_5
+  %tmp_8 = load i32 addrspace(1)* %tmp_7, align 4
+  %tmp_9 = load i32* %tmp_3, align 4
+  %tmp_10 = mul i32 %tmp_8, %tmp_9
+  %tmp_11 = load i32* %tid, align 4
+  %tmp_12 = load i32 addrspace(1)** %tmp_1, align 4
+  %tmp_13 = getelementptr inbounds i32 addrspace(1)* %tmp_12, i32 %tmp_11
+  store i32 %tmp_10, i32 addrspace(1)* %tmp_13, align 4
   ret void
 }
 

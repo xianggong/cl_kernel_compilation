@@ -6,165 +6,165 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32 %ni, i32 %val, i32 %nk) #0 {
-  %1 = alloca <4 x i32> addrspace(1)*, align 4
-  %2 = alloca i32 addrspace(1)*, align 4
-  %3 = alloca i32, align 4
-  %4 = alloca i32, align 4
-  %5 = alloca i32, align 4
+  %tmp_1 = alloca <4 x i32> addrspace(1)*, align 4
+  %tmp_2 = alloca i32 addrspace(1)*, align 4
+  %tmp_3 = alloca i32, align 4
+  %tmp_4 = alloca i32, align 4
+  %tmp_5 = alloca i32, align 4
   %pcount = alloca i32, align 4
   %i = alloca i32, align 4
   %idx = alloca i32, align 4
   %n = alloca i32, align 4
-  store <4 x i32> addrspace(1)* %in, <4 x i32> addrspace(1)** %1, align 4
-  store i32 addrspace(1)* %out, i32 addrspace(1)** %2, align 4
-  store i32 %ni, i32* %3, align 4
-  store i32 %val, i32* %4, align 4
-  store i32 %nk, i32* %5, align 4
-  %6 = load i32* %5, align 4
-  %7 = icmp eq i32 %6, 0
-  br i1 %7, label %8, label %9
+  store <4 x i32> addrspace(1)* %in, <4 x i32> addrspace(1)** %tmp_1, align 4
+  store i32 addrspace(1)* %out, i32 addrspace(1)** %tmp_2, align 4
+  store i32 %ni, i32* %tmp_3, align 4
+  store i32 %val, i32* %tmp_4, align 4
+  store i32 %nk, i32* %tmp_5, align 4
+  %tmp_6 = load i32* %tmp_5, align 4
+  %tmp_7 = icmp eq i32 %tmp_6, 0
+  br i1 %tmp_7, label %tmp_8, label %tmp_9
 
-; <label>:8                                       ; preds = %0
-  br label %91
+tmp_8:                                       ; preds = %tmp_0
+  br label %tmp_91
 
-; <label>:9                                       ; preds = %0
+tmp_9:                                       ; preds = %tmp_0
   store i32 0, i32* %pcount, align 4
-  %10 = call i32 @__get_local_id_u32(i32 0)
-  %11 = icmp eq i32 %10, 0
-  br i1 %11, label %12, label %13
+  %tmp_10 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_11 = icmp eq i32 %tmp_10, 0
+  br i1 %tmp_11, label %tmp_12, label %tmp_13
 
-; <label>:12                                      ; preds = %9
+tmp_12:                                      ; preds = %tmp_9
   store i32 0, i32 addrspace(3)* @read_kernel.lcount, align 4
-  br label %13
+  br label %tmp_13
 
-; <label>:13                                      ; preds = %12, %9
+tmp_13:                                      ; preds = %tmp_12, %tmp_9
   call void @barrier(i32 1)
   store i32 0, i32* %n, align 4
-  br label %14
+  br label %tmp_14
 
-; <label>:14                                      ; preds = %76, %13
-  %15 = load i32* %n, align 4
-  %16 = load i32* %5, align 4
-  %17 = icmp ult i32 %15, %16
-  br i1 %17, label %18, label %79
+tmp_14:                                      ; preds = %tmp_76, %tmp_13
+  %tmp_15 = load i32* %n, align 4
+  %tmp_16 = load i32* %tmp_5, align 4
+  %tmp_17 = icmp ult i32 %tmp_15, %tmp_16
+  br i1 %tmp_17, label %tmp_18, label %tmp_79
 
-; <label>:18                                      ; preds = %14
+tmp_18:                                      ; preds = %tmp_14
   store i32 0, i32* %i, align 4
-  %19 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %19, i32* %idx, align 4
-  br label %20
+  %tmp_19 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_19, i32* %idx, align 4
+  br label %tmp_20
 
-; <label>:20                                      ; preds = %69, %18
-  %21 = load i32* %i, align 4
-  %22 = load i32* %3, align 4
-  %23 = icmp ult i32 %21, %22
-  br i1 %23, label %24, label %75
+tmp_20:                                      ; preds = %tmp_69, %tmp_18
+  %tmp_21 = load i32* %i, align 4
+  %tmp_22 = load i32* %tmp_3, align 4
+  %tmp_23 = icmp ult i32 %tmp_21, %tmp_22
+  br i1 %tmp_23, label %tmp_24, label %tmp_75
 
-; <label>:24                                      ; preds = %20
-  %25 = load i32* %idx, align 4
-  %26 = load <4 x i32> addrspace(1)** %1, align 4
-  %27 = getelementptr inbounds <4 x i32> addrspace(1)* %26, i32 %25
-  %28 = load volatile <4 x i32> addrspace(1)* %27, align 16
-  %29 = extractelement <4 x i32> %28, i32 0
-  %30 = load i32* %4, align 4
-  %31 = icmp eq i32 %29, %30
-  br i1 %31, label %32, label %35
+tmp_24:                                      ; preds = %tmp_20
+  %tmp_25 = load i32* %idx, align 4
+  %tmp_26 = load <4 x i32> addrspace(1)** %tmp_1, align 4
+  %tmp_27 = getelementptr inbounds <4 x i32> addrspace(1)* %tmp_26, i32 %tmp_25
+  %tmp_28 = load volatile <4 x i32> addrspace(1)* %tmp_27, align 16
+  %tmp_29 = extractelement <4 x i32> %tmp_28, i32 0
+  %tmp_30 = load i32* %tmp_4, align 4
+  %tmp_31 = icmp eq i32 %tmp_29, %tmp_30
+  br i1 %tmp_31, label %tmp_32, label %tmp_35
 
-; <label>:32                                      ; preds = %24
-  %33 = load i32* %pcount, align 4
-  %34 = add i32 %33, 1
-  store i32 %34, i32* %pcount, align 4
-  br label %35
+tmp_32:                                      ; preds = %tmp_24
+  %tmp_33 = load i32* %pcount, align 4
+  %tmp_34 = add i32 %tmp_33, 1
+  store i32 %tmp_34, i32* %pcount, align 4
+  br label %tmp_35
 
-; <label>:35                                      ; preds = %32, %24
-  %36 = load i32* %idx, align 4
-  %37 = load <4 x i32> addrspace(1)** %1, align 4
-  %38 = getelementptr inbounds <4 x i32> addrspace(1)* %37, i32 %36
-  %39 = load volatile <4 x i32> addrspace(1)* %38, align 16
-  %40 = extractelement <4 x i32> %39, i32 1
-  %41 = load i32* %4, align 4
-  %42 = icmp eq i32 %40, %41
-  br i1 %42, label %43, label %46
+tmp_35:                                      ; preds = %tmp_32, %tmp_24
+  %tmp_36 = load i32* %idx, align 4
+  %tmp_37 = load <4 x i32> addrspace(1)** %tmp_1, align 4
+  %tmp_38 = getelementptr inbounds <4 x i32> addrspace(1)* %tmp_37, i32 %tmp_36
+  %tmp_39 = load volatile <4 x i32> addrspace(1)* %tmp_38, align 16
+  %tmp_40 = extractelement <4 x i32> %tmp_39, i32 1
+  %tmp_41 = load i32* %tmp_4, align 4
+  %tmp_42 = icmp eq i32 %tmp_40, %tmp_41
+  br i1 %tmp_42, label %tmp_43, label %tmp_46
 
-; <label>:43                                      ; preds = %35
-  %44 = load i32* %pcount, align 4
-  %45 = add i32 %44, 1
-  store i32 %45, i32* %pcount, align 4
-  br label %46
+tmp_43:                                      ; preds = %tmp_35
+  %tmp_44 = load i32* %pcount, align 4
+  %tmp_45 = add i32 %tmp_44, 1
+  store i32 %tmp_45, i32* %pcount, align 4
+  br label %tmp_46
 
-; <label>:46                                      ; preds = %43, %35
-  %47 = load i32* %idx, align 4
-  %48 = load <4 x i32> addrspace(1)** %1, align 4
-  %49 = getelementptr inbounds <4 x i32> addrspace(1)* %48, i32 %47
-  %50 = load volatile <4 x i32> addrspace(1)* %49, align 16
-  %51 = extractelement <4 x i32> %50, i32 2
-  %52 = load i32* %4, align 4
-  %53 = icmp eq i32 %51, %52
-  br i1 %53, label %54, label %57
+tmp_46:                                      ; preds = %tmp_43, %tmp_35
+  %tmp_47 = load i32* %idx, align 4
+  %tmp_48 = load <4 x i32> addrspace(1)** %tmp_1, align 4
+  %tmp_49 = getelementptr inbounds <4 x i32> addrspace(1)* %tmp_48, i32 %tmp_47
+  %tmp_50 = load volatile <4 x i32> addrspace(1)* %tmp_49, align 16
+  %tmp_51 = extractelement <4 x i32> %tmp_50, i32 2
+  %tmp_52 = load i32* %tmp_4, align 4
+  %tmp_53 = icmp eq i32 %tmp_51, %tmp_52
+  br i1 %tmp_53, label %tmp_54, label %tmp_57
 
-; <label>:54                                      ; preds = %46
-  %55 = load i32* %pcount, align 4
-  %56 = add i32 %55, 1
-  store i32 %56, i32* %pcount, align 4
-  br label %57
+tmp_54:                                      ; preds = %tmp_46
+  %tmp_55 = load i32* %pcount, align 4
+  %tmp_56 = add i32 %tmp_55, 1
+  store i32 %tmp_56, i32* %pcount, align 4
+  br label %tmp_57
 
-; <label>:57                                      ; preds = %54, %46
-  %58 = load i32* %idx, align 4
-  %59 = load <4 x i32> addrspace(1)** %1, align 4
-  %60 = getelementptr inbounds <4 x i32> addrspace(1)* %59, i32 %58
-  %61 = load volatile <4 x i32> addrspace(1)* %60, align 16
-  %62 = extractelement <4 x i32> %61, i32 3
-  %63 = load i32* %4, align 4
-  %64 = icmp eq i32 %62, %63
-  br i1 %64, label %65, label %68
+tmp_57:                                      ; preds = %tmp_54, %tmp_46
+  %tmp_58 = load i32* %idx, align 4
+  %tmp_59 = load <4 x i32> addrspace(1)** %tmp_1, align 4
+  %tmp_60 = getelementptr inbounds <4 x i32> addrspace(1)* %tmp_59, i32 %tmp_58
+  %tmp_61 = load volatile <4 x i32> addrspace(1)* %tmp_60, align 16
+  %tmp_62 = extractelement <4 x i32> %tmp_61, i32 3
+  %tmp_63 = load i32* %tmp_4, align 4
+  %tmp_64 = icmp eq i32 %tmp_62, %tmp_63
+  br i1 %tmp_64, label %tmp_65, label %tmp_68
 
-; <label>:65                                      ; preds = %57
-  %66 = load i32* %pcount, align 4
-  %67 = add i32 %66, 1
-  store i32 %67, i32* %pcount, align 4
-  br label %68
+tmp_65:                                      ; preds = %tmp_57
+  %tmp_66 = load i32* %pcount, align 4
+  %tmp_67 = add i32 %tmp_66, 1
+  store i32 %tmp_67, i32* %pcount, align 4
+  br label %tmp_68
 
-; <label>:68                                      ; preds = %65, %57
-  br label %69
+tmp_68:                                      ; preds = %tmp_65, %tmp_57
+  br label %tmp_69
 
-; <label>:69                                      ; preds = %68
-  %70 = load i32* %i, align 4
-  %71 = add i32 %70, 1
-  store i32 %71, i32* %i, align 4
-  %72 = call i32 @__get_global_size_u32(i32 0)
-  %73 = load i32* %idx, align 4
-  %74 = add i32 %73, %72
-  store i32 %74, i32* %idx, align 4
-  br label %20
+tmp_69:                                      ; preds = %tmp_68
+  %tmp_70 = load i32* %i, align 4
+  %tmp_71 = add i32 %tmp_70, 1
+  store i32 %tmp_71, i32* %i, align 4
+  %tmp_72 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_73 = load i32* %idx, align 4
+  %tmp_74 = add i32 %tmp_73, %tmp_72
+  store i32 %tmp_74, i32* %idx, align 4
+  br label %tmp_20
 
-; <label>:75                                      ; preds = %20
-  br label %76
+tmp_75:                                      ; preds = %tmp_20
+  br label %tmp_76
 
-; <label>:76                                      ; preds = %75
-  %77 = load i32* %n, align 4
-  %78 = add nsw i32 %77, 1
-  store i32 %78, i32* %n, align 4
-  br label %14
+tmp_76:                                      ; preds = %tmp_75
+  %tmp_77 = load i32* %n, align 4
+  %tmp_78 = add nsw i32 %tmp_77, 1
+  store i32 %tmp_78, i32* %n, align 4
+  br label %tmp_14
 
-; <label>:79                                      ; preds = %14
-  %80 = load i32* %pcount, align 4
-  %81 = call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @read_kernel.lcount, i32 %80)
+tmp_79:                                      ; preds = %tmp_14
+  %tmp_80 = load i32* %pcount, align 4
+  %tmp_81 = call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @read_kernel.lcount, i32 %tmp_80)
   call void @barrier(i32 1)
-  %82 = call i32 @__get_local_id_u32(i32 0)
-  %83 = icmp eq i32 %82, 0
-  br i1 %83, label %84, label %91
+  %tmp_82 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_83 = icmp eq i32 %tmp_82, 0
+  br i1 %tmp_83, label %tmp_84, label %tmp_91
 
-; <label>:84                                      ; preds = %79
-  %85 = load i32 addrspace(3)* @read_kernel.lcount, align 4
-  %86 = load i32* %5, align 4
-  %87 = udiv i32 %85, %86
-  %88 = call i32 @__get_group_id_u32(i32 0)
-  %89 = load i32 addrspace(1)** %2, align 4
-  %90 = getelementptr inbounds i32 addrspace(1)* %89, i32 %88
-  store volatile i32 %87, i32 addrspace(1)* %90, align 4
-  br label %91
+tmp_84:                                      ; preds = %tmp_79
+  %tmp_85 = load i32 addrspace(3)* @read_kernel.lcount, align 4
+  %tmp_86 = load i32* %tmp_5, align 4
+  %tmp_87 = udiv i32 %tmp_85, %tmp_86
+  %tmp_88 = call i32 @__get_group_id_u32(i32 0)
+  %tmp_89 = load i32 addrspace(1)** %tmp_2, align 4
+  %tmp_90 = getelementptr inbounds i32 addrspace(1)* %tmp_89, i32 %tmp_88
+  store volatile i32 %tmp_87, i32 addrspace(1)* %tmp_90, align 4
+  br label %tmp_91
 
-; <label>:91                                      ; preds = %8, %84, %79
+tmp_91:                                      ; preds = %tmp_8, %tmp_84, %tmp_79
   ret void
 }
 
@@ -182,89 +182,89 @@ declare i32 @__get_group_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define void @write_kernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i32 %ni, i32 %val, i32 %nk) #0 {
-  %1 = alloca i32 addrspace(1)*, align 4
-  %2 = alloca <4 x i32> addrspace(1)*, align 4
-  %3 = alloca i32, align 4
-  %4 = alloca i32, align 4
-  %5 = alloca i32, align 4
+  %tmp_1 = alloca i32 addrspace(1)*, align 4
+  %tmp_2 = alloca <4 x i32> addrspace(1)*, align 4
+  %tmp_3 = alloca i32, align 4
+  %tmp_4 = alloca i32, align 4
+  %tmp_5 = alloca i32, align 4
   %i = alloca i32, align 4
   %idx = alloca i32, align 4
   %pval = alloca <4 x i32>, align 16
-  %6 = alloca <4 x i32>, align 16
+  %tmp_6 = alloca <4 x i32>, align 16
   %n = alloca i32, align 4
-  store i32 addrspace(1)* %in, i32 addrspace(1)** %1, align 4
-  store <4 x i32> addrspace(1)* %out, <4 x i32> addrspace(1)** %2, align 4
-  store i32 %ni, i32* %3, align 4
-  store i32 %val, i32* %4, align 4
-  store i32 %nk, i32* %5, align 4
-  %7 = load i32* %5, align 4
-  %8 = icmp eq i32 %7, 0
-  br i1 %8, label %9, label %10
+  store i32 addrspace(1)* %in, i32 addrspace(1)** %tmp_1, align 4
+  store <4 x i32> addrspace(1)* %out, <4 x i32> addrspace(1)** %tmp_2, align 4
+  store i32 %ni, i32* %tmp_3, align 4
+  store i32 %val, i32* %tmp_4, align 4
+  store i32 %nk, i32* %tmp_5, align 4
+  %tmp_7 = load i32* %tmp_5, align 4
+  %tmp_8 = icmp eq i32 %tmp_7, 0
+  br i1 %tmp_8, label %tmp_9, label %tmp_10
 
-; <label>:9                                       ; preds = %0
-  br label %45
+tmp_9:                                       ; preds = %tmp_0
+  br label %tmp_45
 
-; <label>:10                                      ; preds = %0
-  %11 = load i32* %4, align 4
-  %12 = insertelement <4 x i32> undef, i32 %11, i32 0
-  %13 = load i32* %4, align 4
-  %14 = insertelement <4 x i32> %12, i32 %13, i32 1
-  %15 = load i32* %4, align 4
-  %16 = insertelement <4 x i32> %14, i32 %15, i32 2
-  %17 = load i32* %4, align 4
-  %18 = insertelement <4 x i32> %16, i32 %17, i32 3
-  store <4 x i32> %18, <4 x i32>* %6
-  %19 = load <4 x i32>* %6
-  store <4 x i32> %19, <4 x i32>* %pval, align 16
+tmp_10:                                      ; preds = %tmp_0
+  %tmp_11 = load i32* %tmp_4, align 4
+  %tmp_12 = insertelement <4 x i32> undef, i32 %tmp_11, i32 0
+  %tmp_13 = load i32* %tmp_4, align 4
+  %tmp_14 = insertelement <4 x i32> %tmp_12, i32 %tmp_13, i32 1
+  %tmp_15 = load i32* %tmp_4, align 4
+  %tmp_16 = insertelement <4 x i32> %tmp_14, i32 %tmp_15, i32 2
+  %tmp_17 = load i32* %tmp_4, align 4
+  %tmp_18 = insertelement <4 x i32> %tmp_16, i32 %tmp_17, i32 3
+  store <4 x i32> %tmp_18, <4 x i32>* %tmp_6
+  %tmp_19 = load <4 x i32>* %tmp_6
+  store <4 x i32> %tmp_19, <4 x i32>* %pval, align 16
   store i32 0, i32* %n, align 4
-  br label %20
+  br label %tmp_20
 
-; <label>:20                                      ; preds = %42, %10
-  %21 = load i32* %n, align 4
-  %22 = load i32* %5, align 4
-  %23 = icmp ult i32 %21, %22
-  br i1 %23, label %24, label %45
+tmp_20:                                      ; preds = %tmp_42, %tmp_10
+  %tmp_21 = load i32* %n, align 4
+  %tmp_22 = load i32* %tmp_5, align 4
+  %tmp_23 = icmp ult i32 %tmp_21, %tmp_22
+  br i1 %tmp_23, label %tmp_24, label %tmp_45
 
-; <label>:24                                      ; preds = %20
+tmp_24:                                      ; preds = %tmp_20
   store i32 0, i32* %i, align 4
-  %25 = call i32 @__get_global_id_u32(i32 0)
-  store i32 %25, i32* %idx, align 4
-  br label %26
+  %tmp_25 = call i32 @__get_global_id_u32(i32 0)
+  store i32 %tmp_25, i32* %idx, align 4
+  br label %tmp_26
 
-; <label>:26                                      ; preds = %35, %24
-  %27 = load i32* %i, align 4
-  %28 = load i32* %3, align 4
-  %29 = icmp ult i32 %27, %28
-  br i1 %29, label %30, label %41
+tmp_26:                                      ; preds = %tmp_35, %tmp_24
+  %tmp_27 = load i32* %i, align 4
+  %tmp_28 = load i32* %tmp_3, align 4
+  %tmp_29 = icmp ult i32 %tmp_27, %tmp_28
+  br i1 %tmp_29, label %tmp_30, label %tmp_41
 
-; <label>:30                                      ; preds = %26
-  %31 = load <4 x i32>* %pval, align 16
-  %32 = load i32* %idx, align 4
-  %33 = load <4 x i32> addrspace(1)** %2, align 4
-  %34 = getelementptr inbounds <4 x i32> addrspace(1)* %33, i32 %32
-  store volatile <4 x i32> %31, <4 x i32> addrspace(1)* %34, align 16
-  br label %35
+tmp_30:                                      ; preds = %tmp_26
+  %tmp_31 = load <4 x i32>* %pval, align 16
+  %tmp_32 = load i32* %idx, align 4
+  %tmp_33 = load <4 x i32> addrspace(1)** %tmp_2, align 4
+  %tmp_34 = getelementptr inbounds <4 x i32> addrspace(1)* %tmp_33, i32 %tmp_32
+  store volatile <4 x i32> %tmp_31, <4 x i32> addrspace(1)* %tmp_34, align 16
+  br label %tmp_35
 
-; <label>:35                                      ; preds = %30
-  %36 = load i32* %i, align 4
-  %37 = add i32 %36, 1
-  store i32 %37, i32* %i, align 4
-  %38 = call i32 @__get_global_size_u32(i32 0)
-  %39 = load i32* %idx, align 4
-  %40 = add i32 %39, %38
-  store i32 %40, i32* %idx, align 4
-  br label %26
+tmp_35:                                      ; preds = %tmp_30
+  %tmp_36 = load i32* %i, align 4
+  %tmp_37 = add i32 %tmp_36, 1
+  store i32 %tmp_37, i32* %i, align 4
+  %tmp_38 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_39 = load i32* %idx, align 4
+  %tmp_40 = add i32 %tmp_39, %tmp_38
+  store i32 %tmp_40, i32* %idx, align 4
+  br label %tmp_26
 
-; <label>:41                                      ; preds = %26
-  br label %42
+tmp_41:                                      ; preds = %tmp_26
+  br label %tmp_42
 
-; <label>:42                                      ; preds = %41
-  %43 = load i32* %n, align 4
-  %44 = add nsw i32 %43, 1
-  store i32 %44, i32* %n, align 4
-  br label %20
+tmp_42:                                      ; preds = %tmp_41
+  %tmp_43 = load i32* %n, align 4
+  %tmp_44 = add nsw i32 %tmp_43, 1
+  store i32 %tmp_44, i32* %n, align 4
+  br label %tmp_20
 
-; <label>:45                                      ; preds = %9, %20
+tmp_45:                                      ; preds = %tmp_9, %tmp_20
   ret void
 }
 

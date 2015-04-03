@@ -4,117 +4,117 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define i32 @getIdx(i32 %blockIdx, i32 %blockIdy, i32 %localIdx, i32 %localIdy, i32 %blockWidth, i32 %globalWidth) #0 {
-  %1 = mul i32 %blockIdx, %blockWidth
-  %2 = add i32 %1, %localIdx
-  %3 = mul i32 %blockIdy, %blockWidth
-  %4 = add i32 %3, %localIdy
-  %5 = mul i32 %4, %globalWidth
-  %6 = add i32 %5, %2
-  ret i32 %6
+  %tmp_9 = mul i32 %blockIdx, %blockWidth
+  %tmp_11 = add i32 %tmp_9, %localIdx
+  %tmp_14 = mul i32 %blockIdy, %blockWidth
+  %tmp_16 = add i32 %tmp_14, %localIdy
+  %tmp_19 = mul i32 %tmp_16, %globalWidth
+  %tmp_21 = add i32 %tmp_19, %tmp_11
+  ret i32 %tmp_21
 }
 
 ; Function Attrs: nounwind
 define void @DCT(float addrspace(1)* %output, float addrspace(1)* %input, float addrspace(1)* %dct8x8, float addrspace(1)* %dct8x8_trans, float addrspace(3)* %inter, i32 %width, i32 %blockWidth, i32 %inverse) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = call i32 @__get_group_id_u32(i32 0)
-  %4 = call i32 @__get_group_id_u32(i32 1)
-  %5 = call i32 @__get_local_id_u32(i32 0)
-  %6 = call i32 @__get_local_id_u32(i32 1)
-  %7 = mul i32 %2, %width
-  %8 = add i32 %7, %1
-  br label %9
+  %tmp_9 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_10 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_11 = call i32 @__get_group_id_u32(i32 0)
+  %tmp_12 = call i32 @__get_group_id_u32(i32 1)
+  %tmp_13 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_14 = call i32 @__get_local_id_u32(i32 1)
+  %tmp_17 = mul i32 %tmp_10, %width
+  %tmp_19 = add i32 %tmp_17, %tmp_9
+  br label %tmp_20
 
-; <label>:9                                       ; preds = %31, %0
-  %acc.0 = phi float [ 0.000000e+00, %0 ], [ %acc.1, %31 ]
-  %k.0 = phi i32 [ 0, %0 ], [ %32, %31 ]
-  %10 = icmp ult i32 %k.0, %blockWidth
-  br i1 %10, label %11, label %33
+tmp_20:                                           ; preds = %tmp_64, %0
+  %acc.0 = phi float [ 0.000000e+00, %0 ], [ %acc.1, %tmp_64 ]
+  %k.0 = phi i32 [ 0, %0 ], [ %tmp_66, %tmp_64 ]
+  %tmp_23 = icmp ult i32 %k.0, %blockWidth
+  br i1 %tmp_23, label %tmp_24, label %tmp_67
 
-; <label>:11                                      ; preds = %9
-  %12 = mul i32 %6, %blockWidth
-  %13 = add i32 %12, %k.0
-  %14 = call i32 @getIdx(i32 %3, i32 %4, i32 %5, i32 %k.0, i32 %blockWidth, i32 %width)
-  %15 = icmp ne i32 %inverse, 0
-  br i1 %15, label %16, label %23
+tmp_24:                                           ; preds = %tmp_20
+  %tmp_27 = mul i32 %tmp_14, %blockWidth
+  %tmp_29 = add i32 %tmp_27, %k.0
+  %tmp_36 = call i32 @getIdx(i32 %tmp_11, i32 %tmp_12, i32 %tmp_13, i32 %k.0, i32 %blockWidth, i32 %width)
+  %tmp_38 = icmp ne i32 %inverse, 0
+  br i1 %tmp_38, label %tmp_39, label %tmp_51
 
-; <label>:16                                      ; preds = %11
-  %17 = getelementptr inbounds float addrspace(1)* %dct8x8, i32 %13
-  %18 = load float addrspace(1)* %17, align 4
-  %19 = getelementptr inbounds float addrspace(1)* %input, i32 %14
-  %20 = load float addrspace(1)* %19, align 4
-  %21 = fmul float %18, %20
-  %22 = fadd float %acc.0, %21
-  br label %30
+tmp_39:                                           ; preds = %tmp_24
+  %tmp_42 = getelementptr inbounds float addrspace(1)* %dct8x8, i32 %tmp_29
+  %tmp_43 = load float addrspace(1)* %tmp_42, align 4
+  %tmp_46 = getelementptr inbounds float addrspace(1)* %input, i32 %tmp_36
+  %tmp_47 = load float addrspace(1)* %tmp_46, align 4
+  %tmp_48 = fmul float %tmp_43, %tmp_47
+  %tmp_50 = fadd float %acc.0, %tmp_48
+  br label %tmp_63
 
-; <label>:23                                      ; preds = %11
-  %24 = getelementptr inbounds float addrspace(1)* %dct8x8_trans, i32 %13
-  %25 = load float addrspace(1)* %24, align 4
-  %26 = getelementptr inbounds float addrspace(1)* %input, i32 %14
-  %27 = load float addrspace(1)* %26, align 4
-  %28 = fmul float %25, %27
-  %29 = fadd float %acc.0, %28
-  br label %30
+tmp_51:                                           ; preds = %tmp_24
+  %tmp_54 = getelementptr inbounds float addrspace(1)* %dct8x8_trans, i32 %tmp_29
+  %tmp_55 = load float addrspace(1)* %tmp_54, align 4
+  %tmp_58 = getelementptr inbounds float addrspace(1)* %input, i32 %tmp_36
+  %tmp_59 = load float addrspace(1)* %tmp_58, align 4
+  %tmp_60 = fmul float %tmp_55, %tmp_59
+  %tmp_62 = fadd float %acc.0, %tmp_60
+  br label %tmp_63
 
-; <label>:30                                      ; preds = %23, %16
-  %acc.1 = phi float [ %22, %16 ], [ %29, %23 ]
-  br label %31
+tmp_63:                                           ; preds = %tmp_51, %tmp_39
+  %acc.1 = phi float [ %tmp_50, %tmp_39 ], [ %tmp_62, %tmp_51 ]
+  br label %tmp_64
 
-; <label>:31                                      ; preds = %30
-  %32 = add i32 %k.0, 1
-  br label %9
+tmp_64:                                           ; preds = %tmp_63
+  %tmp_66 = add i32 %k.0, 1
+  br label %tmp_20
 
-; <label>:33                                      ; preds = %9
-  %34 = mul i32 %6, %blockWidth
-  %35 = add i32 %34, %5
-  %36 = getelementptr inbounds float addrspace(3)* %inter, i32 %35
-  store float %acc.0, float addrspace(3)* %36, align 4
+tmp_67:                                           ; preds = %tmp_20
+  %tmp_71 = mul i32 %tmp_14, %blockWidth
+  %tmp_73 = add i32 %tmp_71, %tmp_13
+  %tmp_75 = getelementptr inbounds float addrspace(3)* %inter, i32 %tmp_73
+  store float %acc.0, float addrspace(3)* %tmp_75, align 4
   call void @barrier(i32 1)
-  br label %37
+  br label %tmp_76
 
-; <label>:37                                      ; preds = %60, %33
-  %acc.2 = phi float [ 0.000000e+00, %33 ], [ %acc.3, %60 ]
-  %k1.0 = phi i32 [ 0, %33 ], [ %61, %60 ]
-  %38 = icmp ult i32 %k1.0, %blockWidth
-  br i1 %38, label %39, label %62
+tmp_76:                                           ; preds = %tmp_118, %tmp_67
+  %acc.2 = phi float [ 0.000000e+00, %tmp_67 ], [ %acc.3, %tmp_118 ]
+  %k1.0 = phi i32 [ 0, %tmp_67 ], [ %tmp_120, %tmp_118 ]
+  %tmp_79 = icmp ult i32 %k1.0, %blockWidth
+  br i1 %tmp_79, label %tmp_80, label %tmp_121
 
-; <label>:39                                      ; preds = %37
-  %40 = mul i32 %6, %blockWidth
-  %41 = add i32 %40, %k1.0
-  %42 = mul i32 %k1.0, %blockWidth
-  %43 = add i32 %42, %5
-  %44 = icmp ne i32 %inverse, 0
-  br i1 %44, label %45, label %52
+tmp_80:                                           ; preds = %tmp_76
+  %tmp_83 = mul i32 %tmp_14, %blockWidth
+  %tmp_85 = add i32 %tmp_83, %k1.0
+  %tmp_88 = mul i32 %k1.0, %blockWidth
+  %tmp_90 = add i32 %tmp_88, %tmp_13
+  %tmp_92 = icmp ne i32 %inverse, 0
+  br i1 %tmp_92, label %tmp_93, label %tmp_105
 
-; <label>:45                                      ; preds = %39
-  %46 = getelementptr inbounds float addrspace(3)* %inter, i32 %41
-  %47 = load float addrspace(3)* %46, align 4
-  %48 = getelementptr inbounds float addrspace(1)* %dct8x8_trans, i32 %43
-  %49 = load float addrspace(1)* %48, align 4
-  %50 = fmul float %47, %49
-  %51 = fadd float %acc.2, %50
-  br label %59
+tmp_93:                                           ; preds = %tmp_80
+  %tmp_96 = getelementptr inbounds float addrspace(3)* %inter, i32 %tmp_85
+  %tmp_97 = load float addrspace(3)* %tmp_96, align 4
+  %tmp_100 = getelementptr inbounds float addrspace(1)* %dct8x8_trans, i32 %tmp_90
+  %tmp_101 = load float addrspace(1)* %tmp_100, align 4
+  %tmp_102 = fmul float %tmp_97, %tmp_101
+  %tmp_104 = fadd float %acc.2, %tmp_102
+  br label %tmp_117
 
-; <label>:52                                      ; preds = %39
-  %53 = getelementptr inbounds float addrspace(3)* %inter, i32 %41
-  %54 = load float addrspace(3)* %53, align 4
-  %55 = getelementptr inbounds float addrspace(1)* %dct8x8, i32 %43
-  %56 = load float addrspace(1)* %55, align 4
-  %57 = fmul float %54, %56
-  %58 = fadd float %acc.2, %57
-  br label %59
+tmp_105:                                          ; preds = %tmp_80
+  %tmp_108 = getelementptr inbounds float addrspace(3)* %inter, i32 %tmp_85
+  %tmp_109 = load float addrspace(3)* %tmp_108, align 4
+  %tmp_112 = getelementptr inbounds float addrspace(1)* %dct8x8, i32 %tmp_90
+  %tmp_113 = load float addrspace(1)* %tmp_112, align 4
+  %tmp_114 = fmul float %tmp_109, %tmp_113
+  %tmp_116 = fadd float %acc.2, %tmp_114
+  br label %tmp_117
 
-; <label>:59                                      ; preds = %52, %45
-  %acc.3 = phi float [ %51, %45 ], [ %58, %52 ]
-  br label %60
+tmp_117:                                          ; preds = %tmp_105, %tmp_93
+  %acc.3 = phi float [ %tmp_104, %tmp_93 ], [ %tmp_116, %tmp_105 ]
+  br label %tmp_118
 
-; <label>:60                                      ; preds = %59
-  %61 = add i32 %k1.0, 1
-  br label %37
+tmp_118:                                          ; preds = %tmp_117
+  %tmp_120 = add i32 %k1.0, 1
+  br label %tmp_76
 
-; <label>:62                                      ; preds = %37
-  %63 = getelementptr inbounds float addrspace(1)* %output, i32 %8
-  store float %acc.2, float addrspace(1)* %63, align 4
+tmp_121:                                          ; preds = %tmp_76
+  %tmp_125 = getelementptr inbounds float addrspace(1)* %output, i32 %tmp_19
+  store float %acc.2, float addrspace(1)* %tmp_125, align 4
   ret void
 }
 

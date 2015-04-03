@@ -6,108 +6,108 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
-  %1 = call i32 @__get_local_id_u32(i32 0)
-  br label %2
+  %tmp_3 = call i32 @__get_local_id_u32(i32 0)
+  br label %tmp_4
 
-; <label>:2                                       ; preds = %21, %0
-  %j.0 = phi i32 [ 4, %0 ], [ %22, %21 ]
-  %.0 = phi i32 [ %idum, %0 ], [ %.1, %21 ]
-  %3 = icmp sge i32 %j.0, 0
-  br i1 %3, label %4, label %23
+tmp_4:                                            ; preds = %tmp_35, %0
+  %j.0 = phi i32 [ 4, %0 ], [ %tmp_37, %tmp_35 ]
+  %tmp_1.0 = phi i32 [ %idum, %0 ], [ %tmp_1.1, %tmp_35 ]
+  %tmp_6 = icmp sge i32 %j.0, 0
+  br i1 %tmp_6, label %tmp_7, label %tmp_38
 
-; <label>:4                                       ; preds = %2
-  %5 = sdiv i32 %.0, 127773
-  %6 = mul nsw i32 %5, 127773
-  %7 = sub nsw i32 %.0, %6
-  %8 = mul nsw i32 16807, %7
-  %9 = mul nsw i32 2836, %5
-  %10 = sub nsw i32 %8, %9
-  %11 = icmp slt i32 %10, 0
-  br i1 %11, label %12, label %14
+tmp_7:                                            ; preds = %tmp_4
+  %tmp_9 = sdiv i32 %tmp_1.0, 127773
+  %tmp_12 = mul nsw i32 %tmp_9, 127773
+  %tmp_13 = sub nsw i32 %tmp_1.0, %tmp_12
+  %tmp_14 = mul nsw i32 16807, %tmp_13
+  %tmp_16 = mul nsw i32 2836, %tmp_9
+  %tmp_17 = sub nsw i32 %tmp_14, %tmp_16
+  %tmp_19 = icmp slt i32 %tmp_17, 0
+  br i1 %tmp_19, label %tmp_20, label %tmp_23
 
-; <label>:12                                      ; preds = %4
-  %13 = add nsw i32 %10, 2147483647
-  br label %14
+tmp_20:                                           ; preds = %tmp_7
+  %tmp_22 = add nsw i32 %tmp_17, 2147483647
+  br label %tmp_23
 
-; <label>:14                                      ; preds = %12, %4
-  %.1 = phi i32 [ %13, %12 ], [ %10, %4 ]
-  %15 = icmp slt i32 %j.0, 4
-  br i1 %15, label %16, label %20
+tmp_23:                                           ; preds = %tmp_20, %tmp_7
+  %tmp_1.1 = phi i32 [ %tmp_22, %tmp_20 ], [ %tmp_17, %tmp_7 ]
+  %tmp_25 = icmp slt i32 %j.0, 4
+  br i1 %tmp_25, label %tmp_26, label %tmp_34
 
-; <label>:16                                      ; preds = %14
-  %17 = mul nsw i32 4, %1
-  %18 = add nsw i32 %17, %j.0
-  %19 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %18
-  store i32 %.1, i32 addrspace(3)* %19, align 4
-  br label %20
+tmp_26:                                           ; preds = %tmp_23
+  %tmp_29 = mul nsw i32 4, %tmp_3
+  %tmp_31 = add nsw i32 %tmp_29, %j.0
+  %tmp_33 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %tmp_31
+  store i32 %tmp_1.1, i32 addrspace(3)* %tmp_33, align 4
+  br label %tmp_34
 
-; <label>:20                                      ; preds = %16, %14
-  br label %21
+tmp_34:                                           ; preds = %tmp_26, %tmp_23
+  br label %tmp_35
 
-; <label>:21                                      ; preds = %20
-  %22 = add nsw i32 %j.0, -1
-  br label %2
+tmp_35:                                           ; preds = %tmp_34
+  %tmp_37 = add nsw i32 %j.0, -1
+  br label %tmp_4
 
-; <label>:23                                      ; preds = %2
-  %24 = mul nsw i32 4, %1
-  %25 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %24
-  %26 = load i32 addrspace(3)* %25, align 4
-  %27 = sdiv i32 %.0, 127773
-  %28 = mul nsw i32 %27, 127773
-  %29 = sub nsw i32 %.0, %28
-  %30 = mul nsw i32 16807, %29
-  %31 = mul nsw i32 2836, %27
-  %32 = sub nsw i32 %30, %31
-  %33 = icmp slt i32 %32, 0
-  br i1 %33, label %34, label %36
+tmp_38:                                           ; preds = %tmp_4
+  %tmp_40 = mul nsw i32 4, %tmp_3
+  %tmp_42 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %tmp_40
+  %tmp_43 = load i32 addrspace(3)* %tmp_42, align 4
+  %tmp_45 = sdiv i32 %tmp_1.0, 127773
+  %tmp_48 = mul nsw i32 %tmp_45, 127773
+  %tmp_49 = sub nsw i32 %tmp_1.0, %tmp_48
+  %tmp_50 = mul nsw i32 16807, %tmp_49
+  %tmp_52 = mul nsw i32 2836, %tmp_45
+  %tmp_53 = sub nsw i32 %tmp_50, %tmp_52
+  %tmp_55 = icmp slt i32 %tmp_53, 0
+  br i1 %tmp_55, label %tmp_56, label %tmp_59
 
-; <label>:34                                      ; preds = %23
-  %35 = add nsw i32 %32, 2147483647
-  br label %36
+tmp_56:                                           ; preds = %tmp_38
+  %tmp_58 = add nsw i32 %tmp_53, 2147483647
+  br label %tmp_59
 
-; <label>:36                                      ; preds = %34, %23
-  %37 = sdiv i32 %26, 536870912
-  %38 = mul nsw i32 4, %1
-  %39 = add nsw i32 %38, %37
-  %40 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %39
-  %41 = load i32 addrspace(3)* %40, align 4
-  %42 = sitofp i32 %41 to float
-  %43 = fmul float 0x3E00000000000000, %42
-  ret float %43
+tmp_59:                                           ; preds = %tmp_56, %tmp_38
+  %tmp_61 = sdiv i32 %tmp_43, 536870912
+  %tmp_63 = mul nsw i32 4, %tmp_3
+  %tmp_65 = add nsw i32 %tmp_63, %tmp_61
+  %tmp_67 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %tmp_65
+  %tmp_68 = load i32 addrspace(3)* %tmp_67, align 4
+  %tmp_70 = sitofp i32 %tmp_68 to float
+  %tmp_71 = fmul float 0x3E00000000000000, %tmp_70
+  ret float %tmp_71
 }
 
 declare i32 @__get_local_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define void @noise_uniform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %factor) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = call i32 @__get_global_size_u32(i32 0)
-  %4 = mul i32 %2, %3
-  %5 = add i32 %1, %4
-  %6 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %5
-  %7 = load <4 x i8> addrspace(1)* %6, align 4
-  %8 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %7)
-  %9 = extractelement <4 x float> %8, i32 0
-  %10 = extractelement <4 x float> %8, i32 1
-  %11 = fadd float %9, %10
-  %12 = extractelement <4 x float> %8, i32 2
-  %13 = fadd float %11, %12
-  %14 = extractelement <4 x float> %8, i32 1
-  %15 = fadd float %13, %14
-  %16 = fdiv float %15, 4.000000e+00, !fpmath !2
-  %17 = fsub float -0.000000e+00, %16
-  %18 = fptosi float %17 to i32
-  %19 = call float @ran1(i32 %18, i32 addrspace(3)* getelementptr inbounds ([256 x i32] addrspace(3)* @noise_uniform.iv, i32 0, i32 0))
-  %20 = fsub float %19, 5.000000e-01
-  %21 = sitofp i32 %factor to float
-  %22 = fmul float %20, %21
-  %23 = insertelement <4 x float> undef, float %22, i32 0
-  %24 = shufflevector <4 x float> %23, <4 x float> undef, <4 x i32> zeroinitializer
-  %25 = fadd <4 x float> %8, %24
-  %26 = call <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float> %25)
-  %27 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %5
-  store <4 x i8> %26, <4 x i8> addrspace(1)* %27, align 4
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_5 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_6 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_7 = mul i32 %tmp_5, %tmp_6
+  %tmp_8 = add i32 %tmp_4, %tmp_7
+  %tmp_11 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %tmp_8
+  %tmp_12 = load <4 x i8> addrspace(1)* %tmp_11, align 4
+  %tmp_13 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %tmp_12)
+  %tmp_15 = extractelement <4 x float> %tmp_13, i32 0
+  %tmp_17 = extractelement <4 x float> %tmp_13, i32 1
+  %tmp_18 = fadd float %tmp_15, %tmp_17
+  %tmp_20 = extractelement <4 x float> %tmp_13, i32 2
+  %tmp_21 = fadd float %tmp_18, %tmp_20
+  %tmp_23 = extractelement <4 x float> %tmp_13, i32 1
+  %tmp_24 = fadd float %tmp_21, %tmp_23
+  %tmp_25 = fdiv float %tmp_24, 4.000000e+00, !fpmath !2
+  %tmp_27 = fsub float -0.000000e+00, %tmp_25
+  %tmp_28 = fptosi float %tmp_27 to i32
+  %tmp_29 = call float @ran1(i32 %tmp_28, i32 addrspace(3)* getelementptr inbounds ([256 x i32] addrspace(3)* @noise_uniform.iv, i32 0, i32 0))
+  %tmp_31 = fsub float %tmp_29, 5.000000e-01
+  %tmp_33 = sitofp i32 %factor to float
+  %tmp_34 = fmul float %tmp_31, %tmp_33
+  %tmp_37 = insertelement <4 x float> undef, float %tmp_34, i32 0
+  %tmp_38 = shufflevector <4 x float> %tmp_37, <4 x float> undef, <4 x i32> zeroinitializer
+  %tmp_39 = fadd <4 x float> %tmp_13, %tmp_38
+  %tmp_40 = call <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float> %tmp_39)
+  %tmp_43 = getelementptr inbounds <4 x i8> addrspace(1)* %outputImage, i32 %tmp_8
+  store <4 x i8> %tmp_40, <4 x i8> addrspace(1)* %tmp_43, align 4
   ret void
 }
 

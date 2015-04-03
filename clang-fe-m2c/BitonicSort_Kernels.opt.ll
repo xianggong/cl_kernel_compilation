@@ -4,63 +4,63 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @bitonicSort(i32 addrspace(1)* %theArray, i32 %stage, i32 %passOfStage, i32 %direction) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = sub i32 %stage, %passOfStage
-  %3 = and i32 %2, 31
-  %4 = shl i32 1, %3
-  %5 = mul i32 2, %4
-  %6 = urem i32 %1, %4
-  %7 = udiv i32 %1, %4
-  %8 = mul i32 %7, %5
-  %9 = add i32 %6, %8
-  %10 = add i32 %9, %4
-  %11 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %9
-  %12 = load i32 addrspace(1)* %11, align 4
-  %13 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %10
-  %14 = load i32 addrspace(1)* %13, align 4
-  %15 = and i32 %stage, 31
-  %16 = shl i32 1, %15
-  %17 = udiv i32 %1, %16
-  %18 = urem i32 %17, 2
-  %19 = icmp eq i32 %18, 1
-  br i1 %19, label %20, label %22
+  %tmp_6 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_9 = sub i32 %stage, %passOfStage
+  %tmp_10 = and i32 %tmp_9, 31
+  %tmp_11 = shl i32 1, %tmp_10
+  %tmp_13 = mul i32 2, %tmp_11
+  %tmp_16 = urem i32 %tmp_6, %tmp_11
+  %tmp_19 = udiv i32 %tmp_6, %tmp_11
+  %tmp_21 = mul i32 %tmp_19, %tmp_13
+  %tmp_22 = add i32 %tmp_16, %tmp_21
+  %tmp_25 = add i32 %tmp_22, %tmp_11
+  %tmp_28 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %tmp_22
+  %tmp_29 = load i32 addrspace(1)* %tmp_28, align 4
+  %tmp_32 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %tmp_25
+  %tmp_33 = load i32 addrspace(1)* %tmp_32, align 4
+  %tmp_35 = and i32 %stage, 31
+  %tmp_36 = shl i32 1, %tmp_35
+  %tmp_39 = udiv i32 %tmp_6, %tmp_36
+  %tmp_40 = urem i32 %tmp_39, 2
+  %tmp_41 = icmp eq i32 %tmp_40, 1
+  br i1 %tmp_41, label %tmp_42, label %tmp_45
 
-; <label>:20                                      ; preds = %0
-  %21 = sub i32 1, %direction
-  br label %22
+tmp_42:                                           ; preds = %0
+  %tmp_44 = sub i32 1, %direction
+  br label %tmp_45
 
-; <label>:22                                      ; preds = %20, %0
-  %sortIncreasing.0 = phi i32 [ %21, %20 ], [ %direction, %0 ]
-  %23 = icmp ugt i32 %12, %14
-  br i1 %23, label %24, label %25
+tmp_45:                                           ; preds = %tmp_42, %0
+  %sortIncreasing.0 = phi i32 [ %tmp_44, %tmp_42 ], [ %direction, %0 ]
+  %tmp_48 = icmp ugt i32 %tmp_29, %tmp_33
+  br i1 %tmp_48, label %tmp_49, label %tmp_52
 
-; <label>:24                                      ; preds = %22
-  br label %26
+tmp_49:                                           ; preds = %tmp_45
+  br label %tmp_55
 
-; <label>:25                                      ; preds = %22
-  br label %26
+tmp_52:                                           ; preds = %tmp_45
+  br label %tmp_55
 
-; <label>:26                                      ; preds = %25, %24
-  %greater.0 = phi i32 [ %12, %24 ], [ %14, %25 ]
-  %lesser.0 = phi i32 [ %14, %24 ], [ %12, %25 ]
-  %27 = icmp ne i32 %sortIncreasing.0, 0
-  br i1 %27, label %28, label %31
+tmp_55:                                           ; preds = %tmp_52, %tmp_49
+  %greater.0 = phi i32 [ %tmp_29, %tmp_49 ], [ %tmp_33, %tmp_52 ]
+  %lesser.0 = phi i32 [ %tmp_33, %tmp_49 ], [ %tmp_29, %tmp_52 ]
+  %tmp_57 = icmp ne i32 %sortIncreasing.0, 0
+  br i1 %tmp_57, label %tmp_58, label %tmp_67
 
-; <label>:28                                      ; preds = %26
-  %29 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %9
-  store i32 %lesser.0, i32 addrspace(1)* %29, align 4
-  %30 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %10
-  store i32 %greater.0, i32 addrspace(1)* %30, align 4
-  br label %34
+tmp_58:                                           ; preds = %tmp_55
+  %tmp_62 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %tmp_22
+  store i32 %lesser.0, i32 addrspace(1)* %tmp_62, align 4
+  %tmp_66 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %tmp_25
+  store i32 %greater.0, i32 addrspace(1)* %tmp_66, align 4
+  br label %tmp_76
 
-; <label>:31                                      ; preds = %26
-  %32 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %9
-  store i32 %greater.0, i32 addrspace(1)* %32, align 4
-  %33 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %10
-  store i32 %lesser.0, i32 addrspace(1)* %33, align 4
-  br label %34
+tmp_67:                                           ; preds = %tmp_55
+  %tmp_71 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %tmp_22
+  store i32 %greater.0, i32 addrspace(1)* %tmp_71, align 4
+  %tmp_75 = getelementptr inbounds i32 addrspace(1)* %theArray, i32 %tmp_25
+  store i32 %lesser.0, i32 addrspace(1)* %tmp_75, align 4
+  br label %tmp_76
 
-; <label>:34                                      ; preds = %31, %28
+tmp_76:                                           ; preds = %tmp_67, %tmp_58
   ret void
 }
 

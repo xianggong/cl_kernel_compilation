@@ -4,14 +4,14 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @helloworld(i8 addrspace(1)* %in, i8 addrspace(1)* %out) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = getelementptr inbounds i8 addrspace(1)* %in, i32 %1
-  %3 = load i8 addrspace(1)* %2, align 1
-  %4 = sext i8 %3 to i32
-  %5 = add nsw i32 %4, 1
-  %6 = trunc i32 %5 to i8
-  %7 = getelementptr inbounds i8 addrspace(1)* %out, i32 %1
-  store i8 %6, i8 addrspace(1)* %7, align 1
+  %tmp_3 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_6 = getelementptr inbounds i8 addrspace(1)* %in, i32 %tmp_3
+  %tmp_7 = load i8 addrspace(1)* %tmp_6, align 1
+  %tmp_8 = sext i8 %tmp_7 to i32
+  %tmp_9 = add nsw i32 %tmp_8, 1
+  %tmp_10 = trunc i32 %tmp_9 to i8
+  %tmp_13 = getelementptr inbounds i8 addrspace(1)* %out, i32 %tmp_3
+  store i8 %tmp_10, i8 addrspace(1)* %tmp_13, align 1
   ret void
 }
 

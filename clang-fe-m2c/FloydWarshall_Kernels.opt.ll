@@ -4,36 +4,36 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @floydWarshallPass(i32 addrspace(1)* %pathDistanceBuffer, i32 addrspace(1)* %pathBuffer, i32 %numNodes, i32 %pass) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = mul i32 %2, %numNodes
-  %4 = add i32 %3, %1
-  %5 = getelementptr inbounds i32 addrspace(1)* %pathDistanceBuffer, i32 %4
-  %6 = load i32 addrspace(1)* %5, align 4
-  %7 = mul i32 %2, %numNodes
-  %8 = add i32 %7, %pass
-  %9 = getelementptr inbounds i32 addrspace(1)* %pathDistanceBuffer, i32 %8
-  %10 = load i32 addrspace(1)* %9, align 4
-  %11 = mul i32 %pass, %numNodes
-  %12 = add i32 %11, %1
-  %13 = getelementptr inbounds i32 addrspace(1)* %pathDistanceBuffer, i32 %12
-  %14 = load i32 addrspace(1)* %13, align 4
-  %15 = add i32 %10, %14
-  %16 = icmp slt i32 %15, %6
-  br i1 %16, label %17, label %24
+  %tmp_5 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_6 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_10 = mul i32 %tmp_6, %numNodes
+  %tmp_12 = add i32 %tmp_10, %tmp_5
+  %tmp_14 = getelementptr inbounds i32 addrspace(1)* %pathDistanceBuffer, i32 %tmp_12
+  %tmp_15 = load i32 addrspace(1)* %tmp_14, align 4
+  %tmp_18 = mul i32 %tmp_6, %numNodes
+  %tmp_20 = add i32 %tmp_18, %pass
+  %tmp_22 = getelementptr inbounds i32 addrspace(1)* %pathDistanceBuffer, i32 %tmp_20
+  %tmp_23 = load i32 addrspace(1)* %tmp_22, align 4
+  %tmp_26 = mul i32 %pass, %numNodes
+  %tmp_28 = add i32 %tmp_26, %tmp_5
+  %tmp_30 = getelementptr inbounds i32 addrspace(1)* %pathDistanceBuffer, i32 %tmp_28
+  %tmp_31 = load i32 addrspace(1)* %tmp_30, align 4
+  %tmp_32 = add i32 %tmp_23, %tmp_31
+  %tmp_35 = icmp slt i32 %tmp_32, %tmp_15
+  br i1 %tmp_35, label %tmp_36, label %tmp_53
 
-; <label>:17                                      ; preds = %0
-  %18 = mul i32 %2, %numNodes
-  %19 = add i32 %18, %1
-  %20 = getelementptr inbounds i32 addrspace(1)* %pathDistanceBuffer, i32 %19
-  store i32 %15, i32 addrspace(1)* %20, align 4
-  %21 = mul i32 %2, %numNodes
-  %22 = add i32 %21, %1
-  %23 = getelementptr inbounds i32 addrspace(1)* %pathBuffer, i32 %22
-  store i32 %pass, i32 addrspace(1)* %23, align 4
-  br label %24
+tmp_36:                                           ; preds = %0
+  %tmp_40 = mul i32 %tmp_6, %numNodes
+  %tmp_42 = add i32 %tmp_40, %tmp_5
+  %tmp_44 = getelementptr inbounds i32 addrspace(1)* %pathDistanceBuffer, i32 %tmp_42
+  store i32 %tmp_32, i32 addrspace(1)* %tmp_44, align 4
+  %tmp_48 = mul i32 %tmp_6, %numNodes
+  %tmp_50 = add i32 %tmp_48, %tmp_5
+  %tmp_52 = getelementptr inbounds i32 addrspace(1)* %pathBuffer, i32 %tmp_50
+  store i32 %pass, i32 addrspace(1)* %tmp_52, align 4
+  br label %tmp_53
 
-; <label>:24                                      ; preds = %17, %0
+tmp_53:                                           ; preds = %tmp_36, %0
   ret void
 }
 

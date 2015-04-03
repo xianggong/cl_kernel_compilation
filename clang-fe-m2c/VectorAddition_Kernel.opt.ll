@@ -4,14 +4,14 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @vectorAdd(float addrspace(1)* %output, float addrspace(1)* %inputA, float addrspace(1)* %inputB) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = getelementptr inbounds float addrspace(1)* %inputA, i32 %1
-  %3 = load float addrspace(1)* %2, align 4
-  %4 = getelementptr inbounds float addrspace(1)* %inputB, i32 %1
-  %5 = load float addrspace(1)* %4, align 4
-  %6 = fadd float %3, %5
-  %7 = getelementptr inbounds float addrspace(1)* %output, i32 %1
-  store float %6, float addrspace(1)* %7, align 4
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_7 = getelementptr inbounds float addrspace(1)* %inputA, i32 %tmp_4
+  %tmp_8 = load float addrspace(1)* %tmp_7, align 4
+  %tmp_11 = getelementptr inbounds float addrspace(1)* %inputB, i32 %tmp_4
+  %tmp_12 = load float addrspace(1)* %tmp_11, align 4
+  %tmp_13 = fadd float %tmp_8, %tmp_12
+  %tmp_16 = getelementptr inbounds float addrspace(1)* %output, i32 %tmp_4
+  store float %tmp_13, float addrspace(1)* %tmp_16, align 4
   ret void
 }
 

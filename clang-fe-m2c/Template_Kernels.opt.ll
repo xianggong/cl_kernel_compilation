@@ -4,12 +4,12 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @templateKernel(i32 addrspace(1)* %output, i32 addrspace(1)* %input, i32 %multiplier) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = getelementptr inbounds i32 addrspace(1)* %input, i32 %1
-  %3 = load i32 addrspace(1)* %2, align 4
-  %4 = mul i32 %3, %multiplier
-  %5 = getelementptr inbounds i32 addrspace(1)* %output, i32 %1
-  store i32 %4, i32 addrspace(1)* %5, align 4
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_7 = getelementptr inbounds i32 addrspace(1)* %input, i32 %tmp_4
+  %tmp_8 = load i32 addrspace(1)* %tmp_7, align 4
+  %tmp_10 = mul i32 %tmp_8, %multiplier
+  %tmp_13 = getelementptr inbounds i32 addrspace(1)* %output, i32 %tmp_4
+  store i32 %tmp_10, i32 addrspace(1)* %tmp_13, align 4
   ret void
 }
 

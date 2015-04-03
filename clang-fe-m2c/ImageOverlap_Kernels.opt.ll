@@ -6,18 +6,18 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @OverLap(%opencl.image2d_t* %pconfig_src, %opencl.image2d_t* %pconfig_src2, %opencl.image2d_t* %pconfig_dst) #0 {
-  %1 = call i32 @__get_global_id_u32(i32 0)
-  %2 = call i32 @__get_global_id_u32(i32 1)
-  %3 = insertelement <2 x i32> undef, i32 %1, i32 0
-  %4 = insertelement <2 x i32> %3, i32 %2, i32 1
-  %5 = call i32 bitcast (i32 (...)* @read_imageui to i32 (%opencl.image2d_t*, i32, <2 x i32>)*)(%opencl.image2d_t* %pconfig_src, i32 0, <2 x i32> %4)
-  %6 = insertelement <4 x i32> undef, i32 %5, i32 0
-  %7 = shufflevector <4 x i32> %6, <4 x i32> undef, <4 x i32> zeroinitializer
-  %8 = call i32 bitcast (i32 (...)* @read_imageui to i32 (%opencl.image2d_t*, i32, <2 x i32>)*)(%opencl.image2d_t* %pconfig_src2, i32 0, <2 x i32> %4)
-  %9 = insertelement <4 x i32> undef, i32 %8, i32 0
-  %10 = shufflevector <4 x i32> %9, <4 x i32> undef, <4 x i32> zeroinitializer
-  %11 = add <4 x i32> %7, %10
-  %12 = call i32 bitcast (i32 (...)* @write_imageui to i32 (%opencl.image2d_t*, <2 x i32>, <4 x i32>)*)(%opencl.image2d_t* %pconfig_dst, <2 x i32> %4, <4 x i32> %11)
+  %tmp_4 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_5 = call i32 @__get_global_id_u32(i32 1)
+  %tmp_8 = insertelement <2 x i32> undef, i32 %tmp_4, i32 0
+  %tmp_11 = insertelement <2 x i32> %tmp_8, i32 %tmp_5, i32 1
+  %tmp_15 = call i32 bitcast (i32 (...)* @read_imageui to i32 (%opencl.image2d_t*, i32, <2 x i32>)*)(%opencl.image2d_t* %pconfig_src, i32 0, <2 x i32> %tmp_11)
+  %tmp_16 = insertelement <4 x i32> undef, i32 %tmp_15, i32 0
+  %tmp_17 = shufflevector <4 x i32> %tmp_16, <4 x i32> undef, <4 x i32> zeroinitializer
+  %tmp_21 = call i32 bitcast (i32 (...)* @read_imageui to i32 (%opencl.image2d_t*, i32, <2 x i32>)*)(%opencl.image2d_t* %pconfig_src2, i32 0, <2 x i32> %tmp_11)
+  %tmp_22 = insertelement <4 x i32> undef, i32 %tmp_21, i32 0
+  %tmp_23 = shufflevector <4 x i32> %tmp_22, <4 x i32> undef, <4 x i32> zeroinitializer
+  %tmp_28 = add <4 x i32> %tmp_17, %tmp_23
+  %tmp_29 = call i32 bitcast (i32 (...)* @write_imageui to i32 (%opencl.image2d_t*, <2 x i32>, <4 x i32>)*)(%opencl.image2d_t* %pconfig_dst, <2 x i32> %tmp_11, <4 x i32> %tmp_28)
   ret void
 }
 

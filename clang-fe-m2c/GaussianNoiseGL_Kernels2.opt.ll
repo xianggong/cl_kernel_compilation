@@ -4,93 +4,93 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
-  %1 = call i32 @__get_local_id_u32(i32 0)
-  br label %2
+  %tmp_3 = call i32 @__get_local_id_u32(i32 0)
+  br label %tmp_4
 
-; <label>:2                                       ; preds = %21, %0
-  %j.0 = phi i32 [ 4, %0 ], [ %22, %21 ]
-  %.0 = phi i32 [ %idum, %0 ], [ %.1, %21 ]
-  %3 = icmp sge i32 %j.0, 0
-  br i1 %3, label %4, label %23
+tmp_4:                                            ; preds = %tmp_35, %0
+  %j.0 = phi i32 [ 4, %0 ], [ %tmp_37, %tmp_35 ]
+  %tmp_1.0 = phi i32 [ %idum, %0 ], [ %tmp_1.1, %tmp_35 ]
+  %tmp_6 = icmp sge i32 %j.0, 0
+  br i1 %tmp_6, label %tmp_7, label %tmp_38
 
-; <label>:4                                       ; preds = %2
-  %5 = sdiv i32 %.0, 127773
-  %6 = mul nsw i32 %5, 127773
-  %7 = sub nsw i32 %.0, %6
-  %8 = mul nsw i32 16807, %7
-  %9 = mul nsw i32 2836, %5
-  %10 = sub nsw i32 %8, %9
-  %11 = icmp slt i32 %10, 0
-  br i1 %11, label %12, label %14
+tmp_7:                                            ; preds = %tmp_4
+  %tmp_9 = sdiv i32 %tmp_1.0, 127773
+  %tmp_12 = mul nsw i32 %tmp_9, 127773
+  %tmp_13 = sub nsw i32 %tmp_1.0, %tmp_12
+  %tmp_14 = mul nsw i32 16807, %tmp_13
+  %tmp_16 = mul nsw i32 2836, %tmp_9
+  %tmp_17 = sub nsw i32 %tmp_14, %tmp_16
+  %tmp_19 = icmp slt i32 %tmp_17, 0
+  br i1 %tmp_19, label %tmp_20, label %tmp_23
 
-; <label>:12                                      ; preds = %4
-  %13 = add nsw i32 %10, 2147483647
-  br label %14
+tmp_20:                                           ; preds = %tmp_7
+  %tmp_22 = add nsw i32 %tmp_17, 2147483647
+  br label %tmp_23
 
-; <label>:14                                      ; preds = %12, %4
-  %.1 = phi i32 [ %13, %12 ], [ %10, %4 ]
-  %15 = icmp slt i32 %j.0, 4
-  br i1 %15, label %16, label %20
+tmp_23:                                           ; preds = %tmp_20, %tmp_7
+  %tmp_1.1 = phi i32 [ %tmp_22, %tmp_20 ], [ %tmp_17, %tmp_7 ]
+  %tmp_25 = icmp slt i32 %j.0, 4
+  br i1 %tmp_25, label %tmp_26, label %tmp_34
 
-; <label>:16                                      ; preds = %14
-  %17 = mul nsw i32 4, %1
-  %18 = add nsw i32 %17, %j.0
-  %19 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %18
-  store i32 %.1, i32 addrspace(3)* %19, align 4
-  br label %20
+tmp_26:                                           ; preds = %tmp_23
+  %tmp_29 = mul nsw i32 4, %tmp_3
+  %tmp_31 = add nsw i32 %tmp_29, %j.0
+  %tmp_33 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %tmp_31
+  store i32 %tmp_1.1, i32 addrspace(3)* %tmp_33, align 4
+  br label %tmp_34
 
-; <label>:20                                      ; preds = %16, %14
-  br label %21
+tmp_34:                                           ; preds = %tmp_26, %tmp_23
+  br label %tmp_35
 
-; <label>:21                                      ; preds = %20
-  %22 = add nsw i32 %j.0, -1
-  br label %2
+tmp_35:                                           ; preds = %tmp_34
+  %tmp_37 = add nsw i32 %j.0, -1
+  br label %tmp_4
 
-; <label>:23                                      ; preds = %2
-  %24 = getelementptr inbounds i32 addrspace(3)* %iv, i32 0
-  %25 = load i32 addrspace(3)* %24, align 4
-  %26 = sdiv i32 %.0, 127773
-  %27 = mul nsw i32 %26, 127773
-  %28 = sub nsw i32 %.0, %27
-  %29 = mul nsw i32 16807, %28
-  %30 = mul nsw i32 2836, %26
-  %31 = sub nsw i32 %29, %30
-  %32 = icmp slt i32 %31, 0
-  br i1 %32, label %33, label %35
+tmp_38:                                           ; preds = %tmp_4
+  %tmp_40 = getelementptr inbounds i32 addrspace(3)* %iv, i32 0
+  %tmp_41 = load i32 addrspace(3)* %tmp_40, align 4
+  %tmp_43 = sdiv i32 %tmp_1.0, 127773
+  %tmp_46 = mul nsw i32 %tmp_43, 127773
+  %tmp_47 = sub nsw i32 %tmp_1.0, %tmp_46
+  %tmp_48 = mul nsw i32 16807, %tmp_47
+  %tmp_50 = mul nsw i32 2836, %tmp_43
+  %tmp_51 = sub nsw i32 %tmp_48, %tmp_50
+  %tmp_53 = icmp slt i32 %tmp_51, 0
+  br i1 %tmp_53, label %tmp_54, label %tmp_57
 
-; <label>:33                                      ; preds = %23
-  %34 = add nsw i32 %31, 2147483647
-  br label %35
+tmp_54:                                           ; preds = %tmp_38
+  %tmp_56 = add nsw i32 %tmp_51, 2147483647
+  br label %tmp_57
 
-; <label>:35                                      ; preds = %33, %23
-  %36 = sdiv i32 %25, 536870912
-  %37 = mul nsw i32 4, %1
-  %38 = add nsw i32 %37, %36
-  %39 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %38
-  %40 = load i32 addrspace(3)* %39, align 4
-  %41 = sitofp i32 %40 to float
-  %42 = fmul float 0x3E00000000000000, %41
-  ret float %42
+tmp_57:                                           ; preds = %tmp_54, %tmp_38
+  %tmp_59 = sdiv i32 %tmp_41, 536870912
+  %tmp_61 = mul nsw i32 4, %tmp_3
+  %tmp_63 = add nsw i32 %tmp_61, %tmp_59
+  %tmp_65 = getelementptr inbounds i32 addrspace(3)* %iv, i32 %tmp_63
+  %tmp_66 = load i32 addrspace(3)* %tmp_65, align 4
+  %tmp_68 = sitofp i32 %tmp_66 to float
+  %tmp_69 = fmul float 0x3E00000000000000, %tmp_68
+  ret float %tmp_69
 }
 
 declare i32 @__get_local_id_u32(i32) #1
 
 ; Function Attrs: nounwind
 define <2 x float> @BoxMuller(<2 x float> %uniform) #0 {
-  %1 = extractelement <2 x float> %uniform, i32 0
-  %2 = call float @llvm.log2.f32(float %1)
-  %3 = fmul float %2, 0x3FE62E4300000000
-  %4 = fmul float -2.000000e+00, %3
-  %5 = call float @llvm.sqrt.f32(float %4)
-  %6 = extractelement <2 x float> %uniform, i32 1
-  %7 = fmul float 0x40191EB860000000, %6
-  %8 = call float @_Z3sinf(float %7)
-  %9 = fmul float %5, %8
-  %10 = insertelement <2 x float> undef, float %9, i32 0
-  %11 = call float @_Z3cosf(float %7)
-  %12 = fmul float %5, %11
-  %13 = insertelement <2 x float> %10, float %12, i32 1
-  ret <2 x float> %13
+  %tmp_4 = extractelement <2 x float> %uniform, i32 0
+  %tmp_5 = call float @llvm.log2.f32(float %tmp_4)
+  %tmp_6 = fmul float %tmp_5, 0x3FE62E4300000000
+  %tmp_7 = fmul float -2.000000e+00, %tmp_6
+  %tmp_8 = call float @llvm.sqrt.f32(float %tmp_7)
+  %tmp_10 = extractelement <2 x float> %uniform, i32 1
+  %tmp_11 = fmul float 0x40191EB860000000, %tmp_10
+  %tmp_14 = call float @_Z3sinf(float %tmp_11)
+  %tmp_15 = fmul float %tmp_8, %tmp_14
+  %tmp_16 = insertelement <2 x float> undef, float %tmp_15, i32 0
+  %tmp_19 = call float @_Z3cosf(float %tmp_11)
+  %tmp_20 = fmul float %tmp_8, %tmp_19
+  %tmp_21 = insertelement <2 x float> %tmp_16, float %tmp_20, i32 1
+  ret <2 x float> %tmp_21
 }
 
 ; Function Attrs: nounwind readonly

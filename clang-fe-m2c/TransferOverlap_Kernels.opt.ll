@@ -7,127 +7,127 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32 %ni, i32 %val, i32 %nk) #0 {
-  %1 = call i32 @__get_local_id_u32(i32 0)
-  %2 = icmp eq i32 %1, 0
-  br i1 %2, label %3, label %4
+  %tmp_6 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_7 = icmp eq i32 %tmp_6, 0
+  br i1 %tmp_7, label %tmp_8, label %tmp_9
 
-; <label>:3                                       ; preds = %0
+tmp_8:                                            ; preds = %0
   store i32 0, i32 addrspace(3)* @readKernel.lcount, align 4
-  br label %4
+  br label %tmp_9
 
-; <label>:4                                       ; preds = %3, %0
+tmp_9:                                            ; preds = %tmp_8, %0
   call void @barrier(i32 1)
-  br label %5
+  br label %tmp_10
 
-; <label>:5                                       ; preds = %45, %4
-  %pcount.0 = phi i32 [ 0, %4 ], [ %pcount.1, %45 ]
-  %n.0 = phi i32 [ 0, %4 ], [ %46, %45 ]
-  %6 = icmp ult i32 %n.0, %nk
-  br i1 %6, label %7, label %47
+tmp_10:                                           ; preds = %tmp_72, %tmp_9
+  %pcount.0 = phi i32 [ 0, %tmp_9 ], [ %pcount.1, %tmp_72 ]
+  %n.0 = phi i32 [ 0, %tmp_9 ], [ %tmp_74, %tmp_72 ]
+  %tmp_13 = icmp ult i32 %n.0, %nk
+  br i1 %tmp_13, label %tmp_14, label %tmp_75
 
-; <label>:7                                       ; preds = %5
-  %8 = call i32 @__get_global_id_u32(i32 0)
-  br label %9
+tmp_14:                                           ; preds = %tmp_10
+  %tmp_15 = call i32 @__get_global_id_u32(i32 0)
+  br label %tmp_16
 
-; <label>:9                                       ; preds = %40, %7
-  %pcount.1 = phi i32 [ %pcount.0, %7 ], [ %pcount.5, %40 ]
-  %i.0 = phi i32 [ 0, %7 ], [ %41, %40 ]
-  %idx.0 = phi i32 [ %8, %7 ], [ %43, %40 ]
-  %10 = icmp ult i32 %i.0, %ni
-  br i1 %10, label %11, label %44
+tmp_16:                                           ; preds = %tmp_65, %tmp_14
+  %pcount.1 = phi i32 [ %pcount.0, %tmp_14 ], [ %pcount.5, %tmp_65 ]
+  %i.0 = phi i32 [ 0, %tmp_14 ], [ %tmp_67, %tmp_65 ]
+  %idx.0 = phi i32 [ %tmp_15, %tmp_14 ], [ %tmp_70, %tmp_65 ]
+  %tmp_19 = icmp ult i32 %i.0, %ni
+  br i1 %tmp_19, label %tmp_20, label %tmp_71
 
-; <label>:11                                      ; preds = %9
-  %12 = getelementptr inbounds <4 x i32> addrspace(1)* %in, i32 %idx.0
-  %13 = load volatile <4 x i32> addrspace(1)* %12, align 16
-  %14 = extractelement <4 x i32> %13, i32 0
-  %15 = icmp eq i32 %14, %val
-  br i1 %15, label %16, label %18
+tmp_20:                                           ; preds = %tmp_16
+  %tmp_23 = getelementptr inbounds <4 x i32> addrspace(1)* %in, i32 %idx.0
+  %tmp_24 = load volatile <4 x i32> addrspace(1)* %tmp_23, align 16
+  %tmp_25 = extractelement <4 x i32> %tmp_24, i32 0
+  %tmp_27 = icmp eq i32 %tmp_25, %val
+  br i1 %tmp_27, label %tmp_28, label %tmp_31
 
-; <label>:16                                      ; preds = %11
-  %17 = add i32 %pcount.1, 1
-  br label %18
+tmp_28:                                           ; preds = %tmp_20
+  %tmp_30 = add i32 %pcount.1, 1
+  br label %tmp_31
 
-; <label>:18                                      ; preds = %16, %11
-  %pcount.2 = phi i32 [ %17, %16 ], [ %pcount.1, %11 ]
-  %19 = getelementptr inbounds <4 x i32> addrspace(1)* %in, i32 %idx.0
-  %20 = load volatile <4 x i32> addrspace(1)* %19, align 16
-  %21 = extractelement <4 x i32> %20, i32 1
-  %22 = icmp eq i32 %21, %val
-  br i1 %22, label %23, label %25
+tmp_31:                                           ; preds = %tmp_28, %tmp_20
+  %pcount.2 = phi i32 [ %tmp_30, %tmp_28 ], [ %pcount.1, %tmp_20 ]
+  %tmp_34 = getelementptr inbounds <4 x i32> addrspace(1)* %in, i32 %idx.0
+  %tmp_35 = load volatile <4 x i32> addrspace(1)* %tmp_34, align 16
+  %tmp_36 = extractelement <4 x i32> %tmp_35, i32 1
+  %tmp_38 = icmp eq i32 %tmp_36, %val
+  br i1 %tmp_38, label %tmp_39, label %tmp_42
 
-; <label>:23                                      ; preds = %18
-  %24 = add i32 %pcount.2, 1
-  br label %25
+tmp_39:                                           ; preds = %tmp_31
+  %tmp_41 = add i32 %pcount.2, 1
+  br label %tmp_42
 
-; <label>:25                                      ; preds = %23, %18
-  %pcount.3 = phi i32 [ %24, %23 ], [ %pcount.2, %18 ]
-  %26 = getelementptr inbounds <4 x i32> addrspace(1)* %in, i32 %idx.0
-  %27 = load volatile <4 x i32> addrspace(1)* %26, align 16
-  %28 = extractelement <4 x i32> %27, i32 2
-  %29 = icmp eq i32 %28, %val
-  br i1 %29, label %30, label %32
+tmp_42:                                           ; preds = %tmp_39, %tmp_31
+  %pcount.3 = phi i32 [ %tmp_41, %tmp_39 ], [ %pcount.2, %tmp_31 ]
+  %tmp_45 = getelementptr inbounds <4 x i32> addrspace(1)* %in, i32 %idx.0
+  %tmp_46 = load volatile <4 x i32> addrspace(1)* %tmp_45, align 16
+  %tmp_47 = extractelement <4 x i32> %tmp_46, i32 2
+  %tmp_49 = icmp eq i32 %tmp_47, %val
+  br i1 %tmp_49, label %tmp_50, label %tmp_53
 
-; <label>:30                                      ; preds = %25
-  %31 = add i32 %pcount.3, 1
-  br label %32
+tmp_50:                                           ; preds = %tmp_42
+  %tmp_52 = add i32 %pcount.3, 1
+  br label %tmp_53
 
-; <label>:32                                      ; preds = %30, %25
-  %pcount.4 = phi i32 [ %31, %30 ], [ %pcount.3, %25 ]
-  %33 = getelementptr inbounds <4 x i32> addrspace(1)* %in, i32 %idx.0
-  %34 = load volatile <4 x i32> addrspace(1)* %33, align 16
-  %35 = extractelement <4 x i32> %34, i32 3
-  %36 = icmp eq i32 %35, %val
-  br i1 %36, label %37, label %39
+tmp_53:                                           ; preds = %tmp_50, %tmp_42
+  %pcount.4 = phi i32 [ %tmp_52, %tmp_50 ], [ %pcount.3, %tmp_42 ]
+  %tmp_56 = getelementptr inbounds <4 x i32> addrspace(1)* %in, i32 %idx.0
+  %tmp_57 = load volatile <4 x i32> addrspace(1)* %tmp_56, align 16
+  %tmp_58 = extractelement <4 x i32> %tmp_57, i32 3
+  %tmp_60 = icmp eq i32 %tmp_58, %val
+  br i1 %tmp_60, label %tmp_61, label %tmp_64
 
-; <label>:37                                      ; preds = %32
-  %38 = add i32 %pcount.4, 1
-  br label %39
+tmp_61:                                           ; preds = %tmp_53
+  %tmp_63 = add i32 %pcount.4, 1
+  br label %tmp_64
 
-; <label>:39                                      ; preds = %37, %32
-  %pcount.5 = phi i32 [ %38, %37 ], [ %pcount.4, %32 ]
-  br label %40
+tmp_64:                                           ; preds = %tmp_61, %tmp_53
+  %pcount.5 = phi i32 [ %tmp_63, %tmp_61 ], [ %pcount.4, %tmp_53 ]
+  br label %tmp_65
 
-; <label>:40                                      ; preds = %39
-  %41 = add i32 %i.0, 1
-  %42 = call i32 @__get_global_size_u32(i32 0)
-  %43 = add i32 %idx.0, %42
-  br label %9
+tmp_65:                                           ; preds = %tmp_64
+  %tmp_67 = add i32 %i.0, 1
+  %tmp_68 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_70 = add i32 %idx.0, %tmp_68
+  br label %tmp_16
 
-; <label>:44                                      ; preds = %9
-  br label %45
+tmp_71:                                           ; preds = %tmp_16
+  br label %tmp_72
 
-; <label>:45                                      ; preds = %44
-  %46 = add nsw i32 %n.0, 1
-  br label %5
+tmp_72:                                           ; preds = %tmp_71
+  %tmp_74 = add nsw i32 %n.0, 1
+  br label %tmp_10
 
-; <label>:47                                      ; preds = %5
-  %48 = call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @readKernel.lcount, i32 %pcount.0)
+tmp_75:                                           ; preds = %tmp_10
+  %tmp_77 = call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @readKernel.lcount, i32 %pcount.0)
   call void @barrier(i32 1)
-  %49 = call i32 @__get_local_id_u32(i32 0)
-  %50 = icmp eq i32 %49, 0
-  br i1 %50, label %51, label %56
+  %tmp_78 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_79 = icmp eq i32 %tmp_78, 0
+  br i1 %tmp_79, label %tmp_80, label %tmp_87
 
-; <label>:51                                      ; preds = %47
-  %52 = load i32 addrspace(3)* @readKernel.lcount, align 4
-  %53 = udiv i32 %52, %nk
-  %54 = call i32 @__get_group_id_u32(i32 0)
-  %55 = getelementptr inbounds i32 addrspace(1)* %out, i32 %54
-  store volatile i32 %53, i32 addrspace(1)* %55, align 4
-  br label %56
+tmp_80:                                           ; preds = %tmp_75
+  %tmp_81 = load i32 addrspace(3)* @readKernel.lcount, align 4
+  %tmp_83 = udiv i32 %tmp_81, %nk
+  %tmp_84 = call i32 @__get_group_id_u32(i32 0)
+  %tmp_86 = getelementptr inbounds i32 addrspace(1)* %out, i32 %tmp_84
+  store volatile i32 %tmp_83, i32 addrspace(1)* %tmp_86, align 4
+  br label %tmp_87
 
-; <label>:56                                      ; preds = %51, %47
-  %57 = call i32 @__get_global_id_u32(i32 0)
-  %58 = icmp eq i32 %57, 0
-  br i1 %58, label %59, label %63
+tmp_87:                                           ; preds = %tmp_80, %tmp_75
+  %tmp_88 = call i32 @__get_global_id_u32(i32 0)
+  %tmp_89 = icmp eq i32 %tmp_88, 0
+  br i1 %tmp_89, label %tmp_90, label %tmp_96
 
-; <label>:59                                      ; preds = %56
-  %60 = call i32 @__get_num_groups_u32(i32 0)
-  %61 = add i32 %60, 1
-  %62 = getelementptr inbounds i32 addrspace(1)* %out, i32 %61
-  store volatile i32 %val, i32 addrspace(1)* %62, align 4
-  br label %63
+tmp_90:                                           ; preds = %tmp_87
+  %tmp_92 = call i32 @__get_num_groups_u32(i32 0)
+  %tmp_93 = add i32 %tmp_92, 1
+  %tmp_95 = getelementptr inbounds i32 addrspace(1)* %out, i32 %tmp_93
+  store volatile i32 %val, i32 addrspace(1)* %tmp_95, align 4
+  br label %tmp_96
 
-; <label>:63                                      ; preds = %59, %56
+tmp_96:                                           ; preds = %tmp_90, %tmp_87
   ret void
 }
 
@@ -147,64 +147,64 @@ declare i32 @__get_num_groups_u32(i32) #1
 
 ; Function Attrs: nounwind
 define void @writeKernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i32 %ni, i32 %val, i32 %nk) #0 {
-  %1 = call i32 @__get_local_id_u32(i32 0)
-  %2 = icmp eq i32 %1, 0
-  br i1 %2, label %3, label %8
+  %tmp_7 = call i32 @__get_local_id_u32(i32 0)
+  %tmp_8 = icmp eq i32 %tmp_7, 0
+  br i1 %tmp_8, label %tmp_9, label %tmp_15
 
-; <label>:3                                       ; preds = %0
-  %4 = call i32 @__get_num_groups_u32(i32 0)
-  %5 = add i32 %4, 1
-  %6 = getelementptr inbounds i32 addrspace(1)* %in, i32 %5
-  %7 = load volatile i32 addrspace(1)* %6, align 4
-  store i32 %7, i32 addrspace(3)* @writeKernel.lval, align 4
-  br label %8
+tmp_9:                                            ; preds = %0
+  %tmp_10 = call i32 @__get_num_groups_u32(i32 0)
+  %tmp_11 = add i32 %tmp_10, 1
+  %tmp_13 = getelementptr inbounds i32 addrspace(1)* %in, i32 %tmp_11
+  %tmp_14 = load volatile i32 addrspace(1)* %tmp_13, align 4
+  store i32 %tmp_14, i32 addrspace(3)* @writeKernel.lval, align 4
+  br label %tmp_15
 
-; <label>:8                                       ; preds = %3, %0
+tmp_15:                                           ; preds = %tmp_9, %0
   call void @barrier(i32 1)
-  %9 = load i32 addrspace(3)* @writeKernel.lval, align 4
-  %10 = insertelement <4 x i32> undef, i32 %9, i32 0
-  %11 = load i32 addrspace(3)* @writeKernel.lval, align 4
-  %12 = insertelement <4 x i32> %10, i32 %11, i32 1
-  %13 = load i32 addrspace(3)* @writeKernel.lval, align 4
-  %14 = insertelement <4 x i32> %12, i32 %13, i32 2
-  %15 = load i32 addrspace(3)* @writeKernel.lval, align 4
-  %16 = insertelement <4 x i32> %14, i32 %15, i32 3
-  br label %17
+  %tmp_16 = load i32 addrspace(3)* @writeKernel.lval, align 4
+  %tmp_17 = insertelement <4 x i32> undef, i32 %tmp_16, i32 0
+  %tmp_18 = load i32 addrspace(3)* @writeKernel.lval, align 4
+  %tmp_19 = insertelement <4 x i32> %tmp_17, i32 %tmp_18, i32 1
+  %tmp_20 = load i32 addrspace(3)* @writeKernel.lval, align 4
+  %tmp_21 = insertelement <4 x i32> %tmp_19, i32 %tmp_20, i32 2
+  %tmp_22 = load i32 addrspace(3)* @writeKernel.lval, align 4
+  %tmp_23 = insertelement <4 x i32> %tmp_21, i32 %tmp_22, i32 3
+  br label %tmp_25
 
-; <label>:17                                      ; preds = %30, %8
-  %n.0 = phi i32 [ 0, %8 ], [ %31, %30 ]
-  %18 = icmp ult i32 %n.0, %nk
-  br i1 %18, label %19, label %32
+tmp_25:                                           ; preds = %tmp_47, %tmp_15
+  %n.0 = phi i32 [ 0, %tmp_15 ], [ %tmp_49, %tmp_47 ]
+  %tmp_28 = icmp ult i32 %n.0, %nk
+  br i1 %tmp_28, label %tmp_29, label %tmp_50
 
-; <label>:19                                      ; preds = %17
-  %20 = call i32 @__get_global_id_u32(i32 0)
-  br label %21
+tmp_29:                                           ; preds = %tmp_25
+  %tmp_30 = call i32 @__get_global_id_u32(i32 0)
+  br label %tmp_31
 
-; <label>:21                                      ; preds = %25, %19
-  %i.0 = phi i32 [ 0, %19 ], [ %26, %25 ]
-  %idx.0 = phi i32 [ %20, %19 ], [ %28, %25 ]
-  %22 = icmp ult i32 %i.0, %ni
-  br i1 %22, label %23, label %29
+tmp_31:                                           ; preds = %tmp_40, %tmp_29
+  %i.0 = phi i32 [ 0, %tmp_29 ], [ %tmp_42, %tmp_40 ]
+  %idx.0 = phi i32 [ %tmp_30, %tmp_29 ], [ %tmp_45, %tmp_40 ]
+  %tmp_34 = icmp ult i32 %i.0, %ni
+  br i1 %tmp_34, label %tmp_35, label %tmp_46
 
-; <label>:23                                      ; preds = %21
-  %24 = getelementptr inbounds <4 x i32> addrspace(1)* %out, i32 %idx.0
-  store volatile <4 x i32> %16, <4 x i32> addrspace(1)* %24, align 16
-  br label %25
+tmp_35:                                           ; preds = %tmp_31
+  %tmp_39 = getelementptr inbounds <4 x i32> addrspace(1)* %out, i32 %idx.0
+  store volatile <4 x i32> %tmp_23, <4 x i32> addrspace(1)* %tmp_39, align 16
+  br label %tmp_40
 
-; <label>:25                                      ; preds = %23
-  %26 = add i32 %i.0, 1
-  %27 = call i32 @__get_global_size_u32(i32 0)
-  %28 = add i32 %idx.0, %27
-  br label %21
+tmp_40:                                           ; preds = %tmp_35
+  %tmp_42 = add i32 %i.0, 1
+  %tmp_43 = call i32 @__get_global_size_u32(i32 0)
+  %tmp_45 = add i32 %idx.0, %tmp_43
+  br label %tmp_31
 
-; <label>:29                                      ; preds = %21
-  br label %30
+tmp_46:                                           ; preds = %tmp_31
+  br label %tmp_47
 
-; <label>:30                                      ; preds = %29
-  %31 = add nsw i32 %n.0, 1
-  br label %17
+tmp_47:                                           ; preds = %tmp_46
+  %tmp_49 = add nsw i32 %n.0, 1
+  br label %tmp_25
 
-; <label>:32                                      ; preds = %17
+tmp_50:                                           ; preds = %tmp_25
   ret void
 }
 
