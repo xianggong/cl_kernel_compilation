@@ -1,0 +1,15 @@
+[31m
+Panic: Unsupported argument type kind (12)
+
+Call stack:
+[1] m2c() [0x43e25a]
+[2] m2c() [0x43df75]
+[3] m2c() [0x440143]
+[4] m2c() [0x43a956]
+[5] m2c() [0x420ab1]
+[6] m2c() [0x420ec9]
+[7] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b7a058e4ec5]
+[8] m2c() [0x4204b2]
+
+
+[m

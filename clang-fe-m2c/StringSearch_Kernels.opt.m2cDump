@@ -1,0 +1,1 @@
+m2c: ../../src/lib/cpp/Misc.h:213: X misc::cast(const Y&) [with X = llvm2si::BasicBlock*; Y = comm::BasicBlock*]: Assertion `result && "cast<Ty>() argument of incompatible type"' failed.

@@ -1,0 +1,16 @@
+[31m
+Panic: Invalid argument type (sreg)
+
+Call stack:
+[1] m2c() [0x459f02]
+[2] m2c() [0x455af4]
+[3] m2c() [0x458a1f]
+[4] m2c() [0x440370]
+[5] m2c() [0x43a966]
+[6] m2c() [0x420ab1]
+[7] m2c() [0x420ec9]
+[8] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2ac5742c0ec5]
+[9] m2c() [0x4204b2]
+
+
+[m

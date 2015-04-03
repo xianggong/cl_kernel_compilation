@@ -1,0 +1,17 @@
+[31m
+Panic: Constant type not supported (14)
+
+Call stack:
+[1] m2c() [0x442206]
+[2] m2c() [0x442302]
+[3] m2c() [0x4552d2]
+[4] m2c() [0x4589f0]
+[5] m2c() [0x440370]
+[6] m2c() [0x43a966]
+[7] m2c() [0x420ab1]
+[8] m2c() [0x420ec9]
+[9] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2afebc535ec5]
+[10] m2c() [0x4204b2]
+
+
+[m

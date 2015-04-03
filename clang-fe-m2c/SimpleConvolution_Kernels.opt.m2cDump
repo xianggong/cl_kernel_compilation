@@ -1,0 +1,14 @@
+[31m
+Panic: Unsupported number of elements
+
+Call stack:
+[1] m2c() [0x43ecf0]
+[2] m2c() [0x44019d]
+[3] m2c() [0x43a956]
+[4] m2c() [0x420ab1]
+[5] m2c() [0x420ec9]
+[6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2ae71e850ec5]
+[7] m2c() [0x4204b2]
+
+
+[m

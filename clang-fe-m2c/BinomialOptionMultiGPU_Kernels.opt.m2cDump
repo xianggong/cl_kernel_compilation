@@ -1,0 +1,15 @@
+[31m
+Panic: Only 4-byte int/float types supported
+
+Call stack:
+[1] m2c() [0x453f28]
+[2] m2c() [0x458934]
+[3] m2c() [0x440370]
+[4] m2c() [0x43a966]
+[5] m2c() [0x420ab1]
+[6] m2c() [0x420ec9]
+[7] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b8d77e4eec5]
+[8] m2c() [0x4204b2]
+
+
+[m

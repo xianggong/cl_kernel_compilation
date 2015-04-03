@@ -1,0 +1,14 @@
+[31m
+Panic: LLVM opcode not supported (17 urem)
+
+Call stack:
+[1] m2c() [0x458c60]
+[2] m2c() [0x440370]
+[3] m2c() [0x43a966]
+[4] m2c() [0x420ab1]
+[5] m2c() [0x420ec9]
+[6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b8bea78cec5]
+[7] m2c() [0x4204b2]
+
+
+[m

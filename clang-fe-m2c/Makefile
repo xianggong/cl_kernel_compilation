@@ -7,4 +7,4 @@ clang:
 	python clang_gen.py
 
 clean:
-	rm -rf *.ll *.bc *.s
+	rm -rf *.ll *.bc *.s *.m2cDump

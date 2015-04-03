@@ -2,6 +2,7 @@
 
 import os
 import subprocess
+from subprocess import call
 import fileinput
 import re
 
@@ -41,7 +42,7 @@ def rename_variable_in_ir_file( file_name ):
                         line = re.sub('(\;\ \<label\>\:)([0-9]+)', r'tmp_\2:', line.rstrip())
                         fo.write(line + '\n')
         
-def runCommand(exe):    
+def runCommand(exe):
         p = subprocess.Popen(exe, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         while(True):
                 retcode = p.poll() #returns None while subprocess is running
@@ -65,15 +66,14 @@ for file in os.listdir(kernel_dir):
                 # print command_gen_bc
                 # print command_opt_bc
                 # print command_dis_bc
-
-                
-                runCommand(command_gen_ir.split())
+                 
+                call(command_gen_ir.split())
                 rename_variable_in_ir_file(file_name)
-                runCommand(command_gen_bc.split())
-                runCommand(command_opt_bc.split())
-                runCommand(command_dis_bc.split())
+                call(command_gen_bc.split())
+                call(command_opt_bc.split())
+                call(command_dis_bc.split())
                 
                 m2c_as_debug = open(file_name + ".opt.m2cDump", "w+")
                 for line in runCommand(command_m2s_as.split()):
-                        m2c_as_debug.write(line + '\n')
+                        m2c_as_debug.write(line)
 

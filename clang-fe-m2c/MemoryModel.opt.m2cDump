@@ -1,0 +1,15 @@
+[31m
+Panic: 2 operands supported, 3 found
+
+Call stack:
+[1] m2c() [0x452d6c]
+[2] m2c() [0x4588d6]
+[3] m2c() [0x440370]
+[4] m2c() [0x43a966]
+[5] m2c() [0x420ab1]
+[6] m2c() [0x420ec9]
+[7] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2ac062a71ec5]
+[8] m2c() [0x4204b2]
+
+
+[m
