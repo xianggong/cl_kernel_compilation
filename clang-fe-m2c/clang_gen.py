@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import os
-from subprocess import call
+import subprocess
 import fileinput
 import re
 
@@ -15,6 +15,7 @@ gen_ir = "clang -S -emit-llvm "
 gen_bc = "llvm-as "
 opt_bc = "opt --mem2reg "
 dis_bc = "llvm-dis "
+m2c_as = "m2c --llvm2si "
 
 # Compilation parameters
 clpara = " -O0 -target r600-- -mcpu=verde "
@@ -40,26 +41,39 @@ def rename_variable_in_ir_file( file_name ):
                         line = re.sub('(\;\ \<label\>\:)([0-9]+)', r'tmp_\2:', line.rstrip())
                         fo.write(line + '\n')
         
-
+def runCommand(exe):    
+        p = subprocess.Popen(exe, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        while(True):
+                retcode = p.poll() #returns None while subprocess is running
+                line = p.stdout.readline()
+                yield line
+                if(retcode is not None):
+                        break
 
 for file in os.listdir(kernel_dir):
         if file.endswith(".cl"):
                 file_name = os.path.splitext(file)[0]
                 kernel_src = kernel_dir + file
+                
                 command_gen_ir = gen_ir + clpara + header + kernel_src + " -o " + file_name + ".ll"
                 command_gen_bc = gen_bc + file_name + ".ll" 
                 command_opt_bc = opt_bc + file_name + ".bc" + " -o " + file_name + ".opt.bc"
                 command_dis_bc = dis_bc + file_name + ".opt.bc"
-                
+                command_m2s_as = m2c_as + file_name + ".opt.bc"
+
                 # print command_gen_ir
                 # print command_gen_bc
                 # print command_opt_bc
                 # print command_dis_bc
 
-                # 
-                call(command_gen_ir.split())
+                
+                runCommand(command_gen_ir.split())
                 rename_variable_in_ir_file(file_name)
-                call(command_gen_bc.split())
-                call(command_opt_bc.split())
-                call(command_dis_bc.split())
-        
+                runCommand(command_gen_bc.split())
+                runCommand(command_opt_bc.split())
+                runCommand(command_dis_bc.split())
+                
+                m2c_as_debug = open(file_name + ".opt.m2cDump", "w+")
+                for line in runCommand(command_m2s_as.split()):
+                        m2c_as_debug.write(line + '\n')
+
