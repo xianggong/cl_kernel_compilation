@@ -29,19 +29,19 @@ define void @gaussian_transform(<4 x i8> addrspace(1)* %inputImage, %opencl.imag
   store <4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)** %1, align 4
   store %opencl.image2d_t* %outputImage, %opencl.image2d_t** %2, align 4
   store i32 %factor, i32* %3, align 4
-  %5 = call i32 @get_global_id(i32 0)
-  %6 = call i32 @get_global_size(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
+  %6 = call i32 @llvm.r600.read.global.size.x()
   %7 = mul i32 2, %6
-  %8 = call i32 @get_global_id(i32 1)
+  %8 = call i32 @llvm.r600.read.tgid.y()
   %9 = mul i32 %7, %8
   %10 = add i32 %5, %9
   store i32 %10, i32* %pos0, align 4
-  %11 = call i32 @get_global_id(i32 0)
-  %12 = call i32 @get_global_size(i32 0)
+  %11 = call i32 @llvm.r600.read.tgid.x()
+  %12 = call i32 @llvm.r600.read.global.size.x()
   %13 = add i32 %11, %12
-  %14 = call i32 @get_global_size(i32 0)
+  %14 = call i32 @llvm.r600.read.global.size.x()
   %15 = mul i32 2, %14
-  %16 = call i32 @get_global_id(i32 1)
+  %16 = call i32 @llvm.r600.read.tgid.y()
   %17 = mul i32 %15, %16
   %18 = add i32 %13, %17
   store i32 %18, i32* %pos1, align 4
@@ -123,21 +123,21 @@ define void @gaussian_transform(<4 x i8> addrspace(1)* %inputImage, %opencl.imag
   %85 = fadd <4 x float> %77, %84
   %86 = fdiv <4 x float> %85, <float 2.550000e+02, float 2.550000e+02, float 2.550000e+02, float 2.550000e+02>, !fpmath !2
   store <4 x float> %86, <4 x float>* %out1, align 16
-  %87 = call i32 @get_global_id(i32 0)
+  %87 = call i32 @llvm.r600.read.tgid.x()
   %88 = load <2 x i32>* %locate0, align 8
   %89 = insertelement <2 x i32> %88, i32 %87, i32 0
   store <2 x i32> %89, <2 x i32>* %locate0, align 8
-  %90 = call i32 @get_global_id(i32 1)
+  %90 = call i32 @llvm.r600.read.tgid.y()
   %91 = load <2 x i32>* %locate0, align 8
   %92 = insertelement <2 x i32> %91, i32 %90, i32 1
   store <2 x i32> %92, <2 x i32>* %locate0, align 8
-  %93 = call i32 @get_global_id(i32 0)
-  %94 = call i32 @get_global_size(i32 0)
+  %93 = call i32 @llvm.r600.read.tgid.x()
+  %94 = call i32 @llvm.r600.read.global.size.x()
   %95 = add i32 %93, %94
   %96 = load <2 x i32>* %locate1, align 8
   %97 = insertelement <2 x i32> %96, i32 %95, i32 0
   store <2 x i32> %97, <2 x i32>* %locate1, align 8
-  %98 = call i32 @get_global_id(i32 1)
+  %98 = call i32 @llvm.r600.read.tgid.y()
   %99 = load <2 x i32>* %locate1, align 8
   %100 = insertelement <2 x i32> %99, i32 %98, i32 1
   store <2 x i32> %100, <2 x i32>* %locate1, align 8
@@ -152,9 +152,13 @@ define void @gaussian_transform(<4 x i8> addrspace(1)* %inputImage, %opencl.imag
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
 declare <4 x float> @_Z14convert_float4Dv4_h(<4 x i8>) #1
 

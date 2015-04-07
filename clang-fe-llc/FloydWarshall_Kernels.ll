@@ -17,9 +17,9 @@ define void @floydWarshallPass(i32 addrspace(1)* %pathDistanceBuffer, i32 addrsp
   store i32 addrspace(1)* %pathBuffer, i32 addrspace(1)** %2, align 4
   store i32 %numNodes, i32* %3, align 4
   store i32 %pass, i32* %4, align 4
-  %5 = call i32 @get_global_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
   store i32 %5, i32* %xValue, align 4
-  %6 = call i32 @get_global_id(i32 1)
+  %6 = call i32 @llvm.r600.read.tgid.y()
   store i32 %6, i32* %yValue, align 4
   %7 = load i32* %4, align 4
   store i32 %7, i32* %k, align 4
@@ -80,7 +80,9 @@ define void @floydWarshallPass(i32 addrspace(1)* %pathDistanceBuffer, i32 addrsp
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }

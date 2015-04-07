@@ -1,17 +1,43 @@
+Function readKernel
+Num of basic block = 23
+BasicBlock name
+BasicBlock nametmp_8
+BasicBlock nametmp_9
+BasicBlock nametmp_10
+BasicBlock nametmp_14
+BasicBlock nametmp_16
+BasicBlock nametmp_20
+BasicBlock nametmp_28
+BasicBlock nametmp_31
+BasicBlock nametmp_39
+BasicBlock nametmp_42
+BasicBlock nametmp_50
+BasicBlock nametmp_53
+BasicBlock nametmp_61
+BasicBlock nametmp_64
+BasicBlock nametmp_65
+BasicBlock nametmp_71
+BasicBlock nametmp_72
+BasicBlock nametmp_75
+BasicBlock nametmp_80
+BasicBlock nametmp_87
+BasicBlock nametmp_90
+BasicBlock nametmp_96
+var_name = tmp_6
 [31m
 Panic: Constant type not supported (14)
 
 Call stack:
-[1] m2c() [0x442206]
-[2] m2c() [0x442302]
-[3] m2c() [0x4552d2]
-[4] m2c() [0x4589f0]
-[5] m2c() [0x440370]
-[6] m2c() [0x43a966]
-[7] m2c() [0x420ab1]
-[8] m2c() [0x420ec9]
-[9] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b5153c1aec5]
-[10] m2c() [0x4204b2]
+[1] m2c() [0x442356]
+[2] m2c() [0x442452]
+[3] m2c() [0x45545a]
+[4] m2c() [0x458b78]
+[5] m2c() [0x4404c0]
+[6] m2c() [0x43aa96]
+[7] m2c() [0x420b71]
+[8] m2c() [0x420f89]
+[9] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b2834a9dec5]
+[10] m2c() [0x420572]
 
 
 [m

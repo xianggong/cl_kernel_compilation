@@ -22,9 +22,9 @@ define void @QuasiRandomSequence_Vector(<4 x float> addrspace(1)* %output, <4 x 
   store <4 x float> addrspace(1)* %output, <4 x float> addrspace(1)** %1, align 4
   store <4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1)** %2, align 4
   store <4 x i32> addrspace(3)* %shared, <4 x i32> addrspace(3)** %3, align 4
-  %5 = call i32 @get_global_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
   store i32 %5, i32* %global_id, align 4
-  %6 = call i32 @get_local_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tidig.x()
   store i32 %6, i32* %local_id, align 4
   %7 = call i32 @get_group_id(i32 0)
   store i32 %7, i32* %group_id, align 4
@@ -71,7 +71,7 @@ define void @QuasiRandomSequence_Vector(<4 x float> addrspace(1)* %output, <4 x 
   br label %38
 
 ; <label>:38                                      ; preds = %27
-  %39 = call i32 @get_local_size(i32 0)
+  %39 = call i32 @llvm.r600.read.local.size.x()
   %40 = load i32* %i, align 4
   %41 = add i32 %40, %39
   store i32 %41, i32* %i, align 4
@@ -131,16 +131,22 @@ define void @QuasiRandomSequence_Vector(<4 x float> addrspace(1)* %output, <4 x 
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 declare i32 @get_group_id(i32) #1
 
 ; Function Attrs: nounwind readonly
 declare float @llvm.pow.f32(float, float) #2
 
-declare i32 @get_local_size(i32) #1
+declare i32 @llvm.r600.read.local.size.x() #1
+declare i32 @llvm.r600.read.local.size.y() #1
+declare i32 @llvm.r600.read.local.size.z() #1
 
 declare void @barrier(i32) #1
 
@@ -162,9 +168,9 @@ define void @QuasiRandomSequence_Scalar(float addrspace(1)* %output, i32 addrspa
   store float addrspace(1)* %output, float addrspace(1)** %1, align 4
   store i32 addrspace(1)* %input, i32 addrspace(1)** %2, align 4
   store i32 addrspace(3)* %shared, i32 addrspace(3)** %3, align 4
-  %4 = call i32 @get_global_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tgid.x()
   store i32 %4, i32* %global_id, align 4
-  %5 = call i32 @get_local_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tidig.x()
   store i32 %5, i32* %local_id, align 4
   %6 = call i32 @get_group_id(i32 0)
   store i32 %6, i32* %group_id, align 4
@@ -194,7 +200,7 @@ define void @QuasiRandomSequence_Scalar(float addrspace(1)* %output, i32 addrspa
   br label %23
 
 ; <label>:23                                      ; preds = %12
-  %24 = call i32 @get_local_size(i32 0)
+  %24 = call i32 @llvm.r600.read.local.size.x()
   %25 = load i32* %i, align 4
   %26 = add i32 %25, %24
   store i32 %26, i32* %i, align 4

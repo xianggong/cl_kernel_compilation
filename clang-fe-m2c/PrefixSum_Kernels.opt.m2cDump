@@ -1,16 +1,44 @@
+Function group_prefixSum
+Num of basic block = 23
+BasicBlock name
+BasicBlock nametmp_22
+BasicBlock nametmp_31
+BasicBlock nametmp_37
+BasicBlock nametmp_49
+BasicBlock nametmp_52
+BasicBlock nametmp_55
+BasicBlock nametmp_59
+BasicBlock nametmp_81
+BasicBlock nametmp_84
+BasicBlock nametmp_87
+BasicBlock nametmp_91
+BasicBlock nametmp_94
+BasicBlock nametmp_97
+BasicBlock nametmp_101
+BasicBlock nametmp_109
+BasicBlock nametmp_128
+BasicBlock nametmp_129
+BasicBlock nametmp_132
+BasicBlock nametmp_136
+BasicBlock nametmp_145
+BasicBlock nametmp_151
+BasicBlock nametmp_163
+var_name = tmp_6
+var_name = tmp_7
+var_name = tmp_8
 [31m
 Panic: Invalid argument type (sreg)
 
 Call stack:
-[1] m2c() [0x459f02]
-[2] m2c() [0x45374a]
-[3] m2c() [0x458905]
-[4] m2c() [0x440370]
-[5] m2c() [0x43a966]
-[6] m2c() [0x420ab1]
-[7] m2c() [0x420ec9]
-[8] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2abd5f4aeec5]
-[9] m2c() [0x4204b2]
+[1] m2c() [0x45a08a]
+[2] m2c() [0x4538d2]
+[3] m2c() [0x458a8d]
+[4] m2c() [0x4404c0]
+[5] m2c() [0x43aa96]
+[6] m2c() [0x420b71]
+[7] m2c() [0x420f89]
+[8] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b3660de3ec5]
+[9] m2c() [0x420572]
 
 
 [m

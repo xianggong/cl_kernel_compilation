@@ -15,7 +15,7 @@ define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
   store i32 %idum, i32* %1, align 4
   store i32 addrspace(3)* %iv, i32 addrspace(3)** %2, align 4
   store i32 0, i32* %iy, align 4
-  %3 = call i32 @get_local_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tidig.x()
   store i32 %3, i32* %tid, align 4
   store i32 4, i32* %j, align 4
   br label %4
@@ -120,7 +120,9 @@ define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
   ret float %71
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 ; Function Attrs: nounwind
 define void @noise_uniform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %factor) #0 {
@@ -134,9 +136,9 @@ define void @noise_uniform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspac
   store <4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)** %1, align 4
   store <4 x i8> addrspace(1)* %outputImage, <4 x i8> addrspace(1)** %2, align 4
   store i32 %factor, i32* %3, align 4
-  %4 = call i32 @get_global_id(i32 0)
-  %5 = call i32 @get_global_id(i32 1)
-  %6 = call i32 @get_global_size(i32 0)
+  %4 = call i32 @llvm.r600.read.tgid.x()
+  %5 = call i32 @llvm.r600.read.tgid.y()
+  %6 = call i32 @llvm.r600.read.global.size.x()
   %7 = mul i32 %5, %6
   %8 = add i32 %4, %7
   store i32 %8, i32* %pos, align 4
@@ -183,9 +185,13 @@ define void @noise_uniform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspac
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
 declare <4 x float> @_Z14convert_float4Dv4_h(<4 x i8>) #1
 

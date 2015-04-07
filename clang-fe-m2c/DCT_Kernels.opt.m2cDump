@@ -1,16 +1,19 @@
+Function getIdx
+Num of basic block = 1
+BasicBlock name
 [31m
 Panic: Invalid argument type (sreg)
 
 Call stack:
-[1] m2c() [0x459fe6]
-[2] m2c() [0x4520a6]
-[3] m2c() [0x458878]
-[4] m2c() [0x440370]
-[5] m2c() [0x43a966]
-[6] m2c() [0x420ab1]
-[7] m2c() [0x420ec9]
-[8] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2af38e0b9ec5]
-[9] m2c() [0x4204b2]
+[1] m2c() [0x45a16e]
+[2] m2c() [0x4521f6]
+[3] m2c() [0x458a00]
+[4] m2c() [0x4404c0]
+[5] m2c() [0x43aa96]
+[6] m2c() [0x420b71]
+[7] m2c() [0x420f89]
+[8] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b2221a7eec5]
+[9] m2c() [0x420572]
 
 
 [m

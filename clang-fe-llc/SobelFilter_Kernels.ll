@@ -24,13 +24,13 @@ define void @sobel_filter(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace
   %i22 = alloca <4 x float>, align 16
   store <4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)** %1, align 4
   store <4 x i8> addrspace(1)* %outputImage, <4 x i8> addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %x, align 4
-  %4 = call i32 @get_global_id(i32 1)
+  %4 = call i32 @llvm.r600.read.tgid.y()
   store i32 %4, i32* %y, align 4
-  %5 = call i32 @get_global_size(i32 0)
+  %5 = call i32 @llvm.r600.read.global.size.x()
   store i32 %5, i32* %width, align 4
-  %6 = call i32 @get_global_size(i32 1)
+  %6 = call i32 @llvm.r600.read.global.size.y()
   store i32 %6, i32* %height, align 4
   store <4 x float> zeroinitializer, <4 x float>* %Gx, align 16
   %7 = load <4 x float>* %Gx, align 16
@@ -179,9 +179,13 @@ define void @sobel_filter(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
 declare <4 x float> @_Z14convert_float4Dv4_h(<4 x i8>) #1
 

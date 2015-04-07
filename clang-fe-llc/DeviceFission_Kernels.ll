@@ -9,7 +9,7 @@ define void @Add(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
   %xPos = alloca i32, align 4
   store i32 addrspace(1)* %input, i32 addrspace(1)** %1, align 4
   store i32 addrspace(1)* %output, i32 addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %xPos, align 4
   %4 = load i32* %xPos, align 4
   %5 = load i32 addrspace(1)** %1, align 4
@@ -23,7 +23,9 @@ define void @Add(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 ; Function Attrs: nounwind
 define void @Sub(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
@@ -32,7 +34,7 @@ define void @Sub(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
   %xPos = alloca i32, align 4
   store i32 addrspace(1)* %input, i32 addrspace(1)** %1, align 4
   store i32 addrspace(1)* %output, i32 addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %xPos, align 4
   %4 = load i32* %xPos, align 4
   %5 = load i32 addrspace(1)** %1, align 4

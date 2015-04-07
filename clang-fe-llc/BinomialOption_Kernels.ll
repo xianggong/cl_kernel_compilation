@@ -33,7 +33,7 @@ define void @binomial_options(i32 %numSteps, <4 x float> addrspace(1)* %randArra
   store <4 x float> addrspace(1)* %output, <4 x float> addrspace(1)** %3, align 4
   store <4 x float> addrspace(3)* %callA, <4 x float> addrspace(3)** %4, align 4
   store <4 x float> addrspace(3)* %callB, <4 x float> addrspace(3)** %5, align 4
-  %6 = call i32 @get_local_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tidig.x()
   store i32 %6, i32* %tid, align 4
   %7 = call i32 @get_group_id(i32 0)
   store i32 %7, i32* %bid, align 4
@@ -299,7 +299,9 @@ define void @binomial_options(i32 %numSteps, <4 x float> addrspace(1)* %randArra
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 declare i32 @get_group_id(i32) #1
 

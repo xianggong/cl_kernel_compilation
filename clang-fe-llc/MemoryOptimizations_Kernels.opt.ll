@@ -4,7 +4,7 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @copy1DFastPath(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = getelementptr inbounds float addrspace(1)* %input, i32 %1
   %3 = load float addrspace(1)* %2, align 4
   %4 = getelementptr inbounds float addrspace(1)* %output, i32 %1
@@ -12,11 +12,18 @@ define void @copy1DFastPath(float addrspace(1)* %input, float addrspace(1)* %out
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
 ; Function Attrs: nounwind
 define void @copy1DCompletePath(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = icmp slt i32 %1, 0
   br i1 %2, label %3, label %6
 
@@ -33,12 +40,12 @@ define void @copy1DCompletePath(float addrspace(1)* %input, float addrspace(1)* 
   ret void
 }
 
-declare i32 @_Z8atom_addPU3AS1ii(i32 addrspace(1)*, i32) #1
+declare i32 @_Z8atom_addPU3AS1ii(i32 addrspace(1)*, i32) #2
 
 ; Function Attrs: nounwind
 define void @copy2Dfloat(float addrspace(1)* %A, float addrspace(1)* %C) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
   %3 = mul nsw i32 %2, 1024
   %4 = add nsw i32 %3, %1
   %5 = getelementptr inbounds float addrspace(1)* %A, i32 %4
@@ -52,8 +59,8 @@ define void @copy2Dfloat(float addrspace(1)* %A, float addrspace(1)* %C) #0 {
 
 ; Function Attrs: nounwind
 define void @copy2Dfloat4(<4 x float> addrspace(1)* %A, <4 x float> addrspace(1)* %C) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
   %3 = mul nsw i32 %2, 1024
   %4 = add nsw i32 %3, %1
   %5 = getelementptr inbounds <4 x float> addrspace(1)* %A, i32 %4
@@ -67,7 +74,7 @@ define void @copy2Dfloat4(<4 x float> addrspace(1)* %A, <4 x float> addrspace(1)
 
 ; Function Attrs: nounwind
 define void @copy1Dfloat4(<4 x float> addrspace(1)* %input, <4 x float> addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = getelementptr inbounds <4 x float> addrspace(1)* %input, i32 %1
   %3 = load <4 x float> addrspace(1)* %2, align 16
   %4 = getelementptr inbounds <4 x float> addrspace(1)* %output, i32 %1
@@ -77,9 +84,9 @@ define void @copy1Dfloat4(<4 x float> addrspace(1)* %input, <4 x float> addrspac
 
 ; Function Attrs: nounwind
 define void @NoCoal(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = sub i32 %1, 1
-  %3 = call i32 @get_local_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tidig.x()
   %4 = and i32 %3, 15
   %5 = icmp eq i32 %4, 0
   br i1 %5, label %6, label %8
@@ -97,11 +104,18 @@ define void @NoCoal(float addrspace(1)* %input, float addrspace(1)* %output) #0 
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
 ; Function Attrs: nounwind
 define void @Split(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = and i32 %1, 1
   %3 = icmp eq i32 %2, 0
   br i1 %3, label %4, label %9
@@ -109,7 +123,7 @@ define void @Split(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
 ; <label>:4                                       ; preds = %0
   %5 = and i32 %1, 0
   %6 = add nsw i32 %5, 62
-  %7 = call i32 @get_local_id(i32 0)
+  %7 = call i32 @llvm.r600.read.tidig.x()
   %8 = sub i32 %6, %7
   br label %9
 
@@ -124,8 +138,8 @@ define void @Split(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
 
 ; Function Attrs: nounwind
 define void @localBankConflicts(float addrspace(3)* %share, float addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_local_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tidig.x()
   br label %3
 
 ; <label>:3                                       ; preds = %21, %0
@@ -167,8 +181,8 @@ define void @localBankConflicts(float addrspace(3)* %share, float addrspace(1)* 
 
 ; Function Attrs: nounwind
 define void @noLocalBankConflicts(float addrspace(3)* %share, float addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_local_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tidig.x()
   br label %3
 
 ; <label>:3                                       ; preds = %19, %0
@@ -207,7 +221,8 @@ define void @noLocalBankConflicts(float addrspace(3)* %share, float addrspace(1)
 }
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0, !1, !2, !3, !4, !5, !6, !7, !8}
 !llvm.ident = !{!9}

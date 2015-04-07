@@ -6,9 +6,9 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @blockAddition(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = call i32 @get_group_id(i32 0)
-  %3 = call i32 @get_local_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tidig.x()
   %4 = icmp eq i32 %3, 0
   br i1 %4, label %5, label %8
 
@@ -28,18 +28,32 @@ define void @blockAddition(float addrspace(1)* %input, float addrspace(1)* %outp
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare void @barrier(i32) #1
+declare i32 @get_group_id(i32) #2
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
+
+declare void @barrier(i32) #2
 
 ; Function Attrs: nounwind
 define void @ScanLargeArrays(float addrspace(1)* %output, float addrspace(1)* %input, float addrspace(3)* %block, i32 %block_size, float addrspace(1)* %sumBuffer) #0 {
-  %1 = call i32 @get_local_id(i32 0)
-  %2 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
+  %2 = call i32 @llvm.r600.read.tgid.x()
   %3 = call i32 @get_group_id(i32 0)
   %4 = mul nsw i32 2, %2
   %5 = getelementptr inbounds float addrspace(1)* %input, i32 %4
@@ -159,8 +173,8 @@ define void @ScanLargeArrays(float addrspace(1)* %output, float addrspace(1)* %i
 
 ; Function Attrs: nounwind
 define void @prefixSum(float addrspace(1)* %output, float addrspace(1)* %input, float addrspace(3)* %block, i32 %block_size) #0 {
-  %1 = call i32 @get_local_id(i32 0)
-  %2 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
+  %2 = call i32 @llvm.r600.read.tgid.x()
   %3 = call i32 @get_group_id(i32 0)
   %4 = mul nsw i32 2, %2
   %5 = getelementptr inbounds float addrspace(1)* %input, i32 %4
@@ -274,7 +288,8 @@ define void @prefixSum(float addrspace(1)* %output, float addrspace(1)* %input, 
 }
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0, !1, !2}
 !llvm.ident = !{!3}

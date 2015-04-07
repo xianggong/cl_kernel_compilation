@@ -4,10 +4,10 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @box_filter(<4 x i32> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %N) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
-  %3 = call i32 @get_global_size(i32 0)
-  %4 = call i32 @get_global_size(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
+  %3 = call i32 @llvm.r600.read.global.size.x()
+  %4 = call i32 @llvm.r600.read.global.size.y()
   %5 = sub i32 %N, 1
   %6 = udiv i32 %5, 2
   %7 = icmp slt i32 %1, %6
@@ -153,18 +153,32 @@ define void @box_filter(<4 x i32> addrspace(1)* %inputImage, <4 x i8> addrspace(
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @get_global_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32>) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32>) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.z() #1
+
+declare <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32>) #2
+
+declare <4 x i8> @_Z14convert_uchar4Dv4_i(<4 x i32>) #2
 
 ; Function Attrs: nounwind
 define void @horizontalSAT0(<4 x i8> addrspace(1)* %input, <4 x i32> addrspace(1)* %output, i32 %i, i32 %r, i32 %width) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
   %3 = mul nsw i32 %2, %width
   %4 = add nsw i32 %1, %3
   %5 = sitofp i32 %r to float
@@ -213,14 +227,14 @@ define void @horizontalSAT0(<4 x i8> addrspace(1)* %input, <4 x i32> addrspace(1
 }
 
 ; Function Attrs: nounwind readonly
-declare float @llvm.pow.f32(float, float) #2
+declare float @llvm.pow.f32(float, float) #3
 
-declare <4 x i32> @_Z13convert_uint4Dv4_h(<4 x i8>) #1
+declare <4 x i32> @_Z13convert_uint4Dv4_h(<4 x i8>) #2
 
 ; Function Attrs: nounwind
 define void @horizontalSAT(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1)* %output, i32 %i, i32 %r, i32 %width) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
   %3 = mul nsw i32 %2, %width
   %4 = add nsw i32 %1, %3
   %5 = sitofp i32 %r to float
@@ -269,8 +283,8 @@ define void @horizontalSAT(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1
 
 ; Function Attrs: nounwind
 define void @verticalSAT(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1)* %output, i32 %i, i32 %r, i32 %width) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
   %3 = sitofp i32 %r to float
   %4 = sitofp i32 %i to float
   %5 = call float @llvm.pow.f32(float %3, float %4)
@@ -323,10 +337,10 @@ define void @verticalSAT(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1)*
 
 ; Function Attrs: nounwind
 define void @box_filter_horizontal(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %filterWidth) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
-  %3 = call i32 @get_global_size(i32 0)
-  %4 = call i32 @get_global_size(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
+  %3 = call i32 @llvm.r600.read.global.size.x()
+  %4 = call i32 @llvm.r600.read.global.size.y()
   %5 = mul nsw i32 %2, %3
   %6 = add nsw i32 %1, %5
   %7 = sub nsw i32 %filterWidth, 1
@@ -390,14 +404,14 @@ define void @box_filter_horizontal(<4 x i8> addrspace(1)* %inputImage, <4 x i8> 
   ret void
 }
 
-declare <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8>) #1
+declare <4 x i32> @_Z12convert_int4Dv4_h(<4 x i8>) #2
 
 ; Function Attrs: nounwind
 define void @box_filter_vertical(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %filterWidth) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
-  %3 = call i32 @get_global_size(i32 0)
-  %4 = call i32 @get_global_size(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
+  %3 = call i32 @llvm.r600.read.global.size.x()
+  %4 = call i32 @llvm.r600.read.global.size.y()
   %5 = mul nsw i32 %2, %3
   %6 = add nsw i32 %1, %5
   %7 = sub nsw i32 %filterWidth, 1
@@ -466,19 +480,19 @@ define void @box_filter_vertical(<4 x i8> addrspace(1)* %inputImage, <4 x i8> ad
 
 ; Function Attrs: nounwind
 define void @box_filter_horizontal_local(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %filterWidth, <4 x i8> addrspace(3)* %lds) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
-  %3 = call i32 @get_global_size(i32 0)
-  %4 = call i32 @get_global_size(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
+  %3 = call i32 @llvm.r600.read.global.size.x()
+  %4 = call i32 @llvm.r600.read.global.size.y()
   %5 = mul nsw i32 %2, %3
   %6 = add nsw i32 %1, %5
   %7 = sub nsw i32 %filterWidth, 1
   %8 = sdiv i32 %7, 2
-  %9 = call i32 @get_local_id(i32 0)
+  %9 = call i32 @llvm.r600.read.tidig.x()
   %10 = call i32 @get_group_id(i32 0)
   %11 = call i32 @get_group_id(i32 1)
-  %12 = call i32 @get_local_size(i32 0)
-  %13 = call i32 @get_local_size(i32 1)
+  %12 = call i32 @llvm.r600.read.local.size.x()
+  %13 = call i32 @llvm.r600.read.local.size.y()
   %14 = mul nsw i32 %12, %10
   %15 = mul nsw i32 %3, %11
   %16 = mul nsw i32 %15, %13
@@ -558,17 +572,32 @@ define void @box_filter_horizontal_local(<4 x i8> addrspace(1)* %inputImage, <4 
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
 
-declare i32 @get_local_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare void @barrier(i32) #1
+declare i32 @get_group_id(i32) #2
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.z() #1
+
+declare void @barrier(i32) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind readonly }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { nounwind readonly }
 
 !opencl.kernels = !{!0, !1, !2, !3, !4, !5, !6}
 !llvm.ident = !{!7}

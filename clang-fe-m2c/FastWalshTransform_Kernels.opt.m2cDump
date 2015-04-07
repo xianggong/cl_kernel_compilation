@@ -1,14 +1,18 @@
+Function fastWalshTransform
+Num of basic block = 1
+BasicBlock name
+var_name = tmp_3
 [31m
 Panic: LLVM opcode not supported (17 urem)
 
 Call stack:
-[1] m2c() [0x458c60]
-[2] m2c() [0x440370]
-[3] m2c() [0x43a966]
-[4] m2c() [0x420ab1]
-[5] m2c() [0x420ec9]
-[6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b5199ce2ec5]
-[7] m2c() [0x4204b2]
+[1] m2c() [0x458de8]
+[2] m2c() [0x4404c0]
+[3] m2c() [0x43aa96]
+[4] m2c() [0x420b71]
+[5] m2c() [0x420f89]
+[6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b9a16d4eec5]
+[7] m2c() [0x420572]
 
 
 [m

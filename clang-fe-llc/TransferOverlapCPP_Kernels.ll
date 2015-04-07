@@ -22,7 +22,7 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
   store i32 %val, i32* %4, align 4
   store i32 %nk, i32* %5, align 4
   store i32 0, i32* %pcount, align 4
-  %6 = call i32 @get_local_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tidig.x()
   %7 = icmp eq i32 %6, 0
   br i1 %7, label %8, label %9
 
@@ -43,7 +43,7 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
 
 ; <label>:14                                      ; preds = %10
   store i32 0, i32* %i, align 4
-  %15 = call i32 @get_global_id(i32 0)
+  %15 = call i32 @llvm.r600.read.tgid.x()
   store i32 %15, i32* %idx, align 4
   br label %16
 
@@ -124,7 +124,7 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
   %66 = load i32* %i, align 4
   %67 = add i32 %66, 1
   store i32 %67, i32* %i, align 4
-  %68 = call i32 @get_global_size(i32 0)
+  %68 = call i32 @llvm.r600.read.global.size.x()
   %69 = load i32* %idx, align 4
   %70 = add i32 %69, %68
   store i32 %70, i32* %idx, align 4
@@ -143,7 +143,7 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
   %76 = load i32* %pcount, align 4
   %77 = call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @readKernel.lcount, i32 %76)
   call void @barrier(i32 1)
-  %78 = call i32 @get_local_id(i32 0)
+  %78 = call i32 @llvm.r600.read.tidig.x()
   %79 = icmp eq i32 %78, 0
   br i1 %79, label %80, label %87
 
@@ -158,13 +158,13 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
   br label %87
 
 ; <label>:87                                      ; preds = %80, %75
-  %88 = call i32 @get_global_id(i32 0)
+  %88 = call i32 @llvm.r600.read.tgid.x()
   %89 = icmp eq i32 %88, 0
   br i1 %89, label %90, label %96
 
 ; <label>:90                                      ; preds = %87
   %91 = load i32* %4, align 4
-  %92 = call i32 @get_num_groups(i32 0)
+  %92 = call i32 @llvm.r600.read.ngroups.x()
   %93 = add i32 %92, 1
   %94 = load i32 addrspace(1)** %2, align 4
   %95 = getelementptr inbounds i32 addrspace(1)* %94, i32 %93
@@ -175,19 +175,28 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 declare void @barrier(i32) #1
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
 declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #1
 
 declare i32 @get_group_id(i32) #1
 
-declare i32 @get_num_groups(i32) #1
+declare i32 @llvm.r600.read.ngroups.x() #1
+declare i32 @llvm.r600.read.ngroups.y() #1
+declare i32 @llvm.r600.read.ngroups.z() #1
+
 
 ; Function Attrs: nounwind
 define void @writeKernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i32 %ni, i32 %val, i32 %nk) #0 {
@@ -206,12 +215,12 @@ define void @writeKernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i3
   store i32 %ni, i32* %3, align 4
   store i32 %val, i32* %4, align 4
   store i32 %nk, i32* %5, align 4
-  %7 = call i32 @get_local_id(i32 0)
+  %7 = call i32 @llvm.r600.read.tidig.x()
   %8 = icmp eq i32 %7, 0
   br i1 %8, label %9, label %15
 
 ; <label>:9                                       ; preds = %0
-  %10 = call i32 @get_num_groups(i32 0)
+  %10 = call i32 @llvm.r600.read.ngroups.x()
   %11 = add i32 %10, 1
   %12 = load i32 addrspace(1)** %1, align 4
   %13 = getelementptr inbounds i32 addrspace(1)* %12, i32 %11
@@ -243,7 +252,7 @@ define void @writeKernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i3
 
 ; <label>:29                                      ; preds = %25
   store i32 0, i32* %i, align 4
-  %30 = call i32 @get_global_id(i32 0)
+  %30 = call i32 @llvm.r600.read.tgid.x()
   store i32 %30, i32* %idx, align 4
   br label %31
 
@@ -265,7 +274,7 @@ define void @writeKernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i3
   %41 = load i32* %i, align 4
   %42 = add i32 %41, 1
   store i32 %42, i32* %i, align 4
-  %43 = call i32 @get_global_size(i32 0)
+  %43 = call i32 @llvm.r600.read.global.size.x()
   %44 = load i32* %idx, align 4
   %45 = add i32 %44, %43
   store i32 %45, i32* %idx, align 4

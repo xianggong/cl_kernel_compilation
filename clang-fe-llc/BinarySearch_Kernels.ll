@@ -17,7 +17,7 @@ define void @binarySearch(<4 x i32> addrspace(1)* %outputArray, i32 addrspace(1)
   store i32 %subdivSize, i32* %3, align 4
   store i32 %globalLowerIndex, i32* %4, align 4
   store i32 %findMe, i32* %5, align 4
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   store i32 %6, i32* %tid, align 4
   %7 = load i32* %4, align 4
   %8 = load i32* %tid, align 4
@@ -71,7 +71,9 @@ define void @binarySearch(<4 x i32> addrspace(1)* %outputArray, i32 addrspace(1)
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 ; Function Attrs: nounwind
 define void @binarySearch_mulkeys(i32 addrspace(1)* %keys, i32 addrspace(1)* %input, i32 %numKeys, i32 addrspace(1)* %output) #0 {
@@ -87,7 +89,7 @@ define void @binarySearch_mulkeys(i32 addrspace(1)* %keys, i32 addrspace(1)* %in
   store i32 addrspace(1)* %input, i32 addrspace(1)** %2, align 4
   store i32 %numKeys, i32* %3, align 4
   store i32 addrspace(1)* %output, i32 addrspace(1)** %4, align 4
-  %5 = call i32 @get_global_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
   store i32 %5, i32* %gid, align 4
   %6 = load i32* %gid, align 4
   %7 = mul nsw i32 %6, 256
@@ -165,7 +167,7 @@ define void @binarySearch_mulkeysConcurrent(i32 addrspace(1)* %keys, i32 addrspa
   store i32 %inputSize, i32* %3, align 4
   store i32 %numSubdivisions, i32* %4, align 4
   store i32 addrspace(1)* %output, i32 addrspace(1)** %5, align 4
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   %7 = load i32* %4, align 4
   %8 = urem i32 %6, %7
   %9 = load i32* %3, align 4
@@ -179,7 +181,7 @@ define void @binarySearch_mulkeysConcurrent(i32 addrspace(1)* %keys, i32 addrspa
   %16 = udiv i32 %14, %15
   %17 = add i32 %13, %16
   store i32 %17, i32* %uBound, align 4
-  %18 = call i32 @get_global_id(i32 0)
+  %18 = call i32 @llvm.r600.read.tgid.x()
   %19 = load i32* %4, align 4
   %20 = udiv i32 %18, %19
   %21 = load i32 addrspace(1)** %1, align 4
@@ -210,7 +212,7 @@ define void @binarySearch_mulkeysConcurrent(i32 addrspace(1)* %keys, i32 addrspa
 
 ; <label>:39                                      ; preds = %28
   %40 = load i32* %mid, align 4
-  %41 = call i32 @get_global_id(i32 0)
+  %41 = call i32 @llvm.r600.read.tgid.x()
   %42 = load i32* %4, align 4
   %43 = udiv i32 %41, %42
   %44 = load i32 addrspace(1)** %5, align 4

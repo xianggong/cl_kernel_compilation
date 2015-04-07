@@ -4,10 +4,10 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @transpose_kernel(<4 x i8> addrspace(1)* %output, <4 x i8> addrspace(1)* %input, <4 x i8> addrspace(3)* %block, i32 %width, i32 %height, i32 %blockSize) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
-  %3 = call i32 @get_local_id(i32 0)
-  %4 = call i32 @get_local_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
+  %3 = call i32 @llvm.r600.read.tidig.x()
+  %4 = call i32 @llvm.r600.read.tidig.y()
   %5 = mul i32 %2, %width
   %6 = add i32 %5, %1
   %7 = getelementptr inbounds <4 x i8> addrspace(1)* %input, i32 %6
@@ -28,15 +28,29 @@ define void @transpose_kernel(<4 x i8> addrspace(1)* %output, <4 x i8> addrspace
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
+
+declare void @barrier(i32) #2
 
 ; Function Attrs: nounwind
 define void @RecursiveGaussian_kernel(<4 x i8> addrspace(1)* %input, <4 x i8> addrspace(1)* %output, i32 %width, i32 %height, float %a0, float %a1, float %a2, float %a3, float %b1, float %b2, float %coefp, float %coefn) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = icmp uge i32 %1, %width
   br i1 %2, label %3, label %4
 
@@ -208,11 +222,11 @@ define void @RecursiveGaussian_kernel(<4 x i8> addrspace(1)* %input, <4 x i8> ad
 }
 
 ; Function Attrs: nounwind readnone
-declare <4 x float> @llvm.fmuladd.v4f32(<4 x float>, <4 x float>, <4 x float>) #2
+declare <4 x float> @llvm.fmuladd.v4f32(<4 x float>, <4 x float>, <4 x float>) #1
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind readnone }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0, !1}
 !llvm.ident = !{!2}

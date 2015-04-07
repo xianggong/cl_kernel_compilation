@@ -28,13 +28,13 @@ define void @histogramKernel_Vector(<4 x i32> addrspace(1)* %Image, i32 addrspac
   store <4 x i32> addrspace(1)* %Image, <4 x i32> addrspace(1)** %1, align 4
   store i32 addrspace(1)* %Histogram, i32 addrspace(1)** %2, align 4
   store i32 %n4VectorsPerThread, i32* %3, align 4
-  %4 = call i32 @get_global_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tgid.x()
   store i32 %4, i32* %tid, align 4
-  %5 = call i32 @get_local_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tidig.x()
   store i32 %5, i32* %ltid, align 4
-  %6 = call i32 @get_global_size(i32 0)
+  %6 = call i32 @llvm.r600.read.global.size.x()
   store i32 %6, i32* %Stride, align 4
-  %7 = call i32 @get_local_size(i32 0)
+  %7 = call i32 @llvm.r600.read.local.size.x()
   store i32 %7, i32* %groupSize, align 4
   store i32 8, i32* %shft, align 4
   store i32 255, i32* %msk, align 4
@@ -269,13 +269,21 @@ define void @histogramKernel_Vector(<4 x i32> addrspace(1)* %Image, i32 addrspac
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
-declare i32 @get_local_size(i32) #1
+declare i32 @llvm.r600.read.local.size.x() #1
+declare i32 @llvm.r600.read.local.size.y() #1
+declare i32 @llvm.r600.read.local.size.z() #1
 
 declare void @barrier(i32) #1
 
@@ -308,13 +316,13 @@ define void @histogramKernel_Scalar(i32 addrspace(1)* %Image, i32 addrspace(1)* 
   store i32 addrspace(1)* %Image, i32 addrspace(1)** %1, align 4
   store i32 addrspace(1)* %Histogram, i32 addrspace(1)** %2, align 4
   store i32 %nVectorsPerThread, i32* %3, align 4
-  %4 = call i32 @get_global_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tgid.x()
   store i32 %4, i32* %tid, align 4
-  %5 = call i32 @get_local_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tidig.x()
   store i32 %5, i32* %ltid, align 4
-  %6 = call i32 @get_global_size(i32 0)
+  %6 = call i32 @llvm.r600.read.global.size.x()
   store i32 %6, i32* %Stride, align 4
-  %7 = call i32 @get_local_size(i32 0)
+  %7 = call i32 @llvm.r600.read.local.size.x()
   store i32 %7, i32* %groupSize, align 4
   store i32 8, i32* %shft, align 4
   store i32 255, i32* %msk, align 4
@@ -497,7 +505,7 @@ define void @reduceKernel(i32 addrspace(1)* %Histogram, i32 %nSubHists) #0 {
   %i = alloca i32, align 4
   store i32 addrspace(1)* %Histogram, i32 addrspace(1)** %1, align 4
   store i32 %nSubHists, i32* %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %tid, align 4
   store i32 0, i32* %bin, align 4
   store i32 0, i32* %i, align 4

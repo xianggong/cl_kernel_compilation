@@ -1,4 +1,13 @@
+Function work
+Num of basic block = 5
+BasicBlock name
+BasicBlock nametmp_6
+BasicBlock nametmp_9
+BasicBlock nametmp_56
+BasicBlock nametmp_59
 Alloca not implemented
+var_name = tmp_4
+var_name = tmp_5
 [31m
 [Southern Islands back-end] Error: Symbol not found: zero
 

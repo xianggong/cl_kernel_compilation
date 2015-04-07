@@ -121,9 +121,9 @@ define void @StringSearchNaive(i8 addrspace(1)* %text, i32 %textLength, i8 addrs
   store i32 addrspace(1)* %resultCountPerWG, i32 addrspace(1)** %6, align 4
   store i32 %maxSearchLength, i32* %7, align 4
   store i8 addrspace(3)* %localPattern, i8 addrspace(3)** %8, align 4
-  %9 = call i32 @get_local_id(i32 0)
+  %9 = call i32 @llvm.r600.read.tidig.x()
   store i32 %9, i32* %localIdx, align 4
-  %10 = call i32 @get_local_size(i32 0)
+  %10 = call i32 @llvm.r600.read.local.size.x()
   store i32 %10, i32* %localSize, align 4
   %11 = call i32 @get_group_id(i32 0)
   store i32 %11, i32* %groupIdx, align 4
@@ -295,9 +295,13 @@ define void @StringSearchNaive(i8 addrspace(1)* %text, i32 %textLength, i8 addrs
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_local_size(i32) #1
+declare i32 @llvm.r600.read.local.size.x() #1
+declare i32 @llvm.r600.read.local.size.y() #1
+declare i32 @llvm.r600.read.local.size.z() #1
 
 declare i32 @get_group_id(i32) #1
 
@@ -341,9 +345,9 @@ define void @StringSearchLoadBalance(i8 addrspace(1)* %text, i32 %textLength, i8
   store i32 %maxSearchLength, i32* %7, align 4
   store i8 addrspace(3)* %localPattern, i8 addrspace(3)** %8, align 4
   store i32 addrspace(3)* %stack1, i32 addrspace(3)** %9, align 4
-  %10 = call i32 @get_local_id(i32 0)
+  %10 = call i32 @llvm.r600.read.tidig.x()
   store i32 %10, i32* %localIdx, align 4
-  %11 = call i32 @get_local_size(i32 0)
+  %11 = call i32 @llvm.r600.read.local.size.x()
   store i32 %11, i32* %localSize, align 4
   %12 = call i32 @get_group_id(i32 0)
   store i32 %12, i32* %groupIdx, align 4

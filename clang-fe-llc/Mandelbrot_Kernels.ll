@@ -38,7 +38,7 @@ define void @mandelbrot_vector_float(<4 x i8> addrspace(1)* %mandelbrotImage, fl
   store i32 %maxIterations, i32* %6, align 4
   store i32 %width, i32* %7, align 4
   store i32 %bench, i32* %8, align 4
-  %9 = call i32 @get_global_id(i32 0)
+  %9 = call i32 @llvm.r600.read.tgid.x()
   store i32 %9, i32* %tid, align 4
   %10 = load i32* %tid, align 4
   %11 = load i32* %7, align 4
@@ -1712,7 +1712,9 @@ define void @mandelbrot_vector_float(<4 x i8> addrspace(1)* %mandelbrotImage, fl
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 ; Function Attrs: nounwind readnone
 declare float @llvm.fmuladd.f32(float, float, float) #2

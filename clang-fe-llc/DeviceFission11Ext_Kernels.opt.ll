@@ -4,7 +4,7 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @copy(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = getelementptr inbounds float addrspace(1)* %input, i32 %1
   %3 = load float addrspace(1)* %2, align 4
   %4 = getelementptr inbounds float addrspace(1)* %output, i32 %1
@@ -12,10 +12,17 @@ define void @copy(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
 
 !opencl.kernels = !{!0}
 !llvm.ident = !{!1}

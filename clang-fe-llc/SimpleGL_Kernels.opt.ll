@@ -4,8 +4,8 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @sineWave(<4 x float> addrspace(1)* %pos, i32 %width, i32 %height, float %time) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
   %3 = uitofp i32 %1 to float
   %4 = uitofp i32 %width to float
   %5 = fdiv float %3, %4, !fpmath !2
@@ -31,18 +31,25 @@ define void @sineWave(<4 x float> addrspace(1)* %pos, i32 %width, i32 %height, f
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
 ; Function Attrs: nounwind readnone
-declare float @llvm.fmuladd.f32(float, float, float) #2
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare float @_Z3sinf(float) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare float @_Z3cosf(float) #1
+; Function Attrs: nounwind readnone
+declare float @llvm.fmuladd.f32(float, float, float) #1
+
+declare float @_Z3sinf(float) #2
+
+declare float @_Z3cosf(float) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind readnone }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0}
 !llvm.ident = !{!1}

@@ -18,9 +18,9 @@ define void @OverLap(%opencl.image2d_t* %pconfig_src, %opencl.image2d_t* %pconfi
   store %opencl.image2d_t* %pconfig_src, %opencl.image2d_t** %1, align 4
   store %opencl.image2d_t* %pconfig_src2, %opencl.image2d_t** %2, align 4
   store %opencl.image2d_t* %pconfig_dst, %opencl.image2d_t** %3, align 4
-  %4 = call i32 @get_global_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tgid.x()
   store i32 %4, i32* %ix, align 4
-  %5 = call i32 @get_global_id(i32 1)
+  %5 = call i32 @llvm.r600.read.tgid.y()
   store i32 %5, i32* %iy, align 4
   %6 = load i32* %ix, align 4
   %7 = load <2 x i32>* %locate, align 8
@@ -54,7 +54,9 @@ define void @OverLap(%opencl.image2d_t* %pconfig_src, %opencl.image2d_t* %pconfi
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 declare i32 @read_imageui(...) #1
 

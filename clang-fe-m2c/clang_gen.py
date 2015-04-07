@@ -73,7 +73,8 @@ for file in os.listdir(kernel_dir):
                 call(command_opt_bc.split())
                 call(command_dis_bc.split())
                 
-                m2c_as_debug = open(file_name + ".opt.m2cDump", "w+")
-                for line in runCommand(command_m2s_as.split()):
-                        m2c_as_debug.write(line)
+		if os.path.isfile(file_name + ".opt.bc"):
+	                m2c_as_debug = open(file_name + ".opt.m2cDump", "w+")
+        	        for line in runCommand(command_m2s_as.split()):
+                	        m2c_as_debug.write(line)
 

@@ -1,0 +1,9 @@
+LLVM ERROR: Cannot select: 0x1da8150: i64 = add 0x1da59f0, 0x1da8750 [ORD=30] [ID=26]
+  0x1da59f0: i64,ch = load 0x1d6e788, 0x1da58f0, 0x1da52f0<LD8[undef]> [ID=20]
+    0x1da58f0: i64 = add 0x1da4ff0, 0x1da57f0 [ID=17]
+      0x1da4ff0: i64,ch = CopyFromReg 0x1d6e788, 0x1da4ef0 [ID=16]
+        0x1da4ef0: i64 = Register %vreg0 [ID=1]
+      0x1da57f0: i64 = Constant<60> [ID=5]
+    0x1da52f0: i64 = undef [ID=3]
+  0x1da8750: i64 = Constant<4> [ID=12]
+In function: lshift128

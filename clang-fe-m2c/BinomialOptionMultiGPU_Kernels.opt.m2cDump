@@ -1,15 +1,42 @@
+Function binomial_options
+Num of basic block = 23
+BasicBlock name
+BasicBlock nametmp_80
+BasicBlock nametmp_83
+BasicBlock nametmp_84
+BasicBlock nametmp_94
+BasicBlock nametmp_97
+BasicBlock nametmp_98
+BasicBlock nametmp_108
+BasicBlock nametmp_111
+BasicBlock nametmp_112
+BasicBlock nametmp_122
+BasicBlock nametmp_125
+BasicBlock nametmp_126
+BasicBlock nametmp_134
+BasicBlock nametmp_137
+BasicBlock nametmp_141
+BasicBlock nametmp_158
+BasicBlock nametmp_163
+BasicBlock nametmp_180
+BasicBlock nametmp_181
+BasicBlock nametmp_184
+BasicBlock nametmp_187
+BasicBlock nametmp_194
+var_name = tmp_6
+var_name = tmp_7
 [31m
 Panic: Only 4-byte int/float types supported
 
 Call stack:
-[1] m2c() [0x453f28]
-[2] m2c() [0x458934]
-[3] m2c() [0x440370]
-[4] m2c() [0x43a966]
-[5] m2c() [0x420ab1]
-[6] m2c() [0x420ec9]
-[7] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b8d77e4eec5]
-[8] m2c() [0x4204b2]
+[1] m2c() [0x4540b0]
+[2] m2c() [0x458abc]
+[3] m2c() [0x4404c0]
+[4] m2c() [0x43aa96]
+[5] m2c() [0x420b71]
+[6] m2c() [0x420f89]
+[7] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b8619eacec5]
+[8] m2c() [0x420572]
 
 
 [m

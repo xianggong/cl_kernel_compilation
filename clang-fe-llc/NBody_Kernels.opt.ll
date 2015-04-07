@@ -4,7 +4,7 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @nbody_sim(<4 x float> addrspace(1)* %pos, <4 x float> addrspace(1)* %vel, i32 %numBodies, float %deltaTime, float %epsSqr, <4 x float> addrspace(1)* %newPosition, <4 x float> addrspace(1)* %newVelocity) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = getelementptr inbounds <4 x float> addrspace(1)* %pos, i32 %1
   %3 = load <4 x float> addrspace(1)* %2, align 16
   br label %4
@@ -151,21 +151,27 @@ define void @nbody_sim(<4 x float> addrspace(1)* %pos, <4 x float> addrspace(1)*
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
 ; Function Attrs: nounwind readnone
-declare float @llvm.fmuladd.f32(float, float, float) #2
+declare i32 @llvm.r600.read.tgid.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
+
+; Function Attrs: nounwind readnone
+declare float @llvm.fmuladd.f32(float, float, float) #1
 
 ; Function Attrs: nounwind readonly
-declare float @llvm.sqrt.f32(float) #3
+declare float @llvm.sqrt.f32(float) #2
 
 ; Function Attrs: nounwind readnone
-declare <3 x float> @llvm.fmuladd.v3f32(<3 x float>, <3 x float>, <3 x float>) #2
+declare <3 x float> @llvm.fmuladd.v3f32(<3 x float>, <3 x float>, <3 x float>) #1
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind readnone }
-attributes #3 = { nounwind readonly }
+attributes #1 = { nounwind readnone }
+attributes #2 = { nounwind readonly }
 
 !opencl.kernels = !{!0}
 !llvm.ident = !{!1}

@@ -6,8 +6,8 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @OverLap(%opencl.image2d_t* %pconfig_src, %opencl.image2d_t* %pconfig_src2, %opencl.image2d_t* %pconfig_dst) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
   %3 = insertelement <2 x i32> undef, i32 %1, i32 0
   %4 = insertelement <2 x i32> %3, i32 %2, i32 1
   %5 = call i32 bitcast (i32 (...)* @read_imageui to i32 (%opencl.image2d_t*, i32, <2 x i32>)*)(%opencl.image2d_t* %pconfig_src, i32 0, <2 x i32> %4)
@@ -21,14 +21,22 @@ define void @OverLap(%opencl.image2d_t* %pconfig_src, %opencl.image2d_t* %pconfi
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @read_imageui(...) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare i32 @write_imageui(...) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
+
+declare i32 @read_imageui(...) #2
+
+declare i32 @write_imageui(...) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0}
 !llvm.ident = !{!1}

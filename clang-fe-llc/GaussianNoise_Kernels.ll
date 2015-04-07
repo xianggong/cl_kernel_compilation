@@ -16,7 +16,7 @@ define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
   store i32 %idum, i32* %1, align 4
   store i32 addrspace(3)* %iv, i32 addrspace(3)** %2, align 4
   store i32 0, i32* %iy, align 4
-  %3 = call i32 @get_local_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tidig.x()
   store i32 %3, i32* %tid, align 4
   store i32 4, i32* %j, align 4
   br label %4
@@ -119,7 +119,9 @@ define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
   ret float %69
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 ; Function Attrs: nounwind
 define <2 x float> @BoxMuller(<2 x float> %uniform) #0 {
@@ -181,10 +183,10 @@ define void @gaussian_transform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> add
   store <4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)** %1, align 4
   store <4 x i8> addrspace(1)* %outputImage, <4 x i8> addrspace(1)** %2, align 4
   store i32 %factor, i32* %3, align 4
-  %5 = call i32 @get_global_id(i32 0)
-  %6 = call i32 @get_global_size(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
+  %6 = call i32 @llvm.r600.read.global.size.x()
   %7 = mul i32 2, %6
-  %8 = call i32 @get_global_id(i32 1)
+  %8 = call i32 @llvm.r600.read.tgid.y()
   %9 = mul i32 %7, %8
   %10 = add i32 %5, %9
   store i32 %10, i32* %pos, align 4
@@ -195,7 +197,7 @@ define void @gaussian_transform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> add
   %15 = call <4 x float> @_Z14convert_float4Dv4_h(<4 x i8> %14)
   store <4 x float> %15, <4 x float>* %texel0, align 16
   %16 = load i32* %pos, align 4
-  %17 = call i32 @get_global_size(i32 0)
+  %17 = call i32 @llvm.r600.read.global.size.x()
   %18 = add i32 %16, %17
   %19 = load <4 x i8> addrspace(1)** %1, align 4
   %20 = getelementptr inbounds <4 x i8> addrspace(1)* %19, i32 %18
@@ -271,7 +273,7 @@ define void @gaussian_transform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> add
   %82 = fadd <4 x float> %74, %81
   %83 = call <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float> %82)
   %84 = load i32* %pos, align 4
-  %85 = call i32 @get_global_size(i32 0)
+  %85 = call i32 @llvm.r600.read.global.size.x()
   %86 = add i32 %84, %85
   %87 = load <4 x i8> addrspace(1)** %2, align 4
   %88 = getelementptr inbounds <4 x i8> addrspace(1)* %87, i32 %86
@@ -279,9 +281,13 @@ define void @gaussian_transform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> add
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
 declare <4 x float> @_Z14convert_float4Dv4_h(<4 x i8>) #1
 

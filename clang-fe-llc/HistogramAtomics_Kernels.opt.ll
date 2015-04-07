@@ -7,10 +7,10 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @histogramKernel_Vector(<4 x i32> addrspace(1)* %Image, i32 addrspace(1)* %Histogram, i32 %n4VectorsPerThread) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_local_id(i32 0)
-  %3 = call i32 @get_global_size(i32 0)
-  %4 = call i32 @get_local_size(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tidig.x()
+  %3 = call i32 @llvm.r600.read.global.size.x()
+  %4 = call i32 @llvm.r600.read.local.size.x()
   %5 = urem i32 %2, 16
   br label %6
 
@@ -169,26 +169,54 @@ define void @histogramKernel_Vector(<4 x i32> addrspace(1)* %Image, i32 addrspac
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare i32 @get_global_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_local_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
 
-declare i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)*) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.z() #1
+
+declare void @barrier(i32) #2
+
+declare i32 @_Z8atom_incPU3AS3j(i32 addrspace(3)*) #2
+
+declare i32 @get_group_id(i32) #2
 
 ; Function Attrs: nounwind
 define void @histogramKernel_Scalar(i32 addrspace(1)* %Image, i32 addrspace(1)* %Histogram, i32 %nVectorsPerThread) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_local_id(i32 0)
-  %3 = call i32 @get_global_size(i32 0)
-  %4 = call i32 @get_local_size(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tidig.x()
+  %3 = call i32 @llvm.r600.read.global.size.x()
+  %4 = call i32 @llvm.r600.read.local.size.x()
   %5 = urem i32 %2, 4
   br label %6
 
@@ -300,7 +328,7 @@ define void @histogramKernel_Scalar(i32 addrspace(1)* %Image, i32 addrspace(1)* 
 
 ; Function Attrs: nounwind
 define void @reduceKernel(i32 addrspace(1)* %Histogram, i32 %nSubHists) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   br label %2
 
 ; <label>:2                                       ; preds = %28, %0
@@ -346,7 +374,8 @@ define void @reduceKernel(i32 addrspace(1)* %Histogram, i32 %nSubHists) #0 {
 }
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0, !1, !2}
 !llvm.ident = !{!3}

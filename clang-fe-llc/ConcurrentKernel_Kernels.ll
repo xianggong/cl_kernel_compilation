@@ -25,11 +25,11 @@ define void @work1(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %buffe
   store i8 addrspace(1)* %output, i8 addrspace(1)** %2, align 4
   store i32 %bufferSize, i32* %3, align 4
   store i32 %multiplier, i32* %4, align 4
-  %5 = call i32 @get_global_size(i32 0)
+  %5 = call i32 @llvm.r600.read.global.size.x()
   store i32 %5, i32* %gSize, align 4
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   store i32 %6, i32* %gId, align 4
-  %7 = call i32 @get_local_id(i32 0)
+  %7 = call i32 @llvm.r600.read.tidig.x()
   store i32 %7, i32* %lId, align 4
   store i32 1, i32* %tmp, align 4
   store volatile i32 0, i32* %zero, align 4
@@ -139,11 +139,17 @@ define void @work1(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %buffe
   ret void
 }
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 ; Function Attrs: nounwind
 define void @work2(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %bufferSize, i32 %multiplier, i8 addrspace(3)* %lds) #0 {
@@ -164,11 +170,11 @@ define void @work2(i8 addrspace(1)* %input, i8 addrspace(1)* %output, i32 %buffe
   store i32 %bufferSize, i32* %3, align 4
   store i32 %multiplier, i32* %4, align 4
   store i8 addrspace(3)* %lds, i8 addrspace(3)** %5, align 4
-  %6 = call i32 @get_global_size(i32 0)
+  %6 = call i32 @llvm.r600.read.global.size.x()
   store i32 %6, i32* %gSize, align 4
-  %7 = call i32 @get_global_id(i32 0)
+  %7 = call i32 @llvm.r600.read.tgid.x()
   store i32 %7, i32* %gId, align 4
-  %8 = call i32 @get_local_id(i32 0)
+  %8 = call i32 @llvm.r600.read.tidig.x()
   store i32 %8, i32* %lId, align 4
   store i32 1, i32* %tmp, align 4
   store volatile i32 0, i32* %zero, align 4

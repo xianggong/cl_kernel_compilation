@@ -7,7 +7,7 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32 %ni, i32 %val, i32 %nk) #0 {
-  %1 = call i32 @get_local_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
   %2 = icmp eq i32 %1, 0
   br i1 %2, label %3, label %4
 
@@ -26,7 +26,7 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
   br i1 %6, label %7, label %47
 
 ; <label>:7                                       ; preds = %5
-  %8 = call i32 @get_global_id(i32 0)
+  %8 = call i32 @llvm.r600.read.tgid.x()
   br label %9
 
 ; <label>:9                                       ; preds = %40, %7
@@ -89,7 +89,7 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
 
 ; <label>:40                                      ; preds = %39
   %41 = add i32 %i.0, 1
-  %42 = call i32 @get_global_size(i32 0)
+  %42 = call i32 @llvm.r600.read.global.size.x()
   %43 = add i32 %idx.0, %42
   br label %9
 
@@ -103,7 +103,7 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
 ; <label>:47                                      ; preds = %5
   %48 = call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @readKernel.lcount, i32 %pcount.0)
   call void @barrier(i32 1)
-  %49 = call i32 @get_local_id(i32 0)
+  %49 = call i32 @llvm.r600.read.tidig.x()
   %50 = icmp eq i32 %49, 0
   br i1 %50, label %51, label %56
 
@@ -116,12 +116,12 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
   br label %56
 
 ; <label>:56                                      ; preds = %51, %47
-  %57 = call i32 @get_global_id(i32 0)
+  %57 = call i32 @llvm.r600.read.tgid.x()
   %58 = icmp eq i32 %57, 0
   br i1 %58, label %59, label %63
 
 ; <label>:59                                      ; preds = %56
-  %60 = call i32 @get_num_groups(i32 0)
+  %60 = call i32 @llvm.r600.read.ngroups.x()
   %61 = add i32 %60, 1
   %62 = getelementptr inbounds i32 addrspace(1)* %out, i32 %61
   store volatile i32 %val, i32 addrspace(1)* %62, align 4
@@ -131,28 +131,56 @@ define void @readKernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i32
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare void @barrier(i32) #2
 
-declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare i32 @get_num_groups(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.z() #1
+
+declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #2
+
+declare i32 @get_group_id(i32) #2
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.ngroups.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.ngroups.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.ngroups.z() #1
 
 ; Function Attrs: nounwind
 define void @writeKernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i32 %ni, i32 %val, i32 %nk) #0 {
-  %1 = call i32 @get_local_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
   %2 = icmp eq i32 %1, 0
   br i1 %2, label %3, label %8
 
 ; <label>:3                                       ; preds = %0
-  %4 = call i32 @get_num_groups(i32 0)
+  %4 = call i32 @llvm.r600.read.ngroups.x()
   %5 = add i32 %4, 1
   %6 = getelementptr inbounds i32 addrspace(1)* %in, i32 %5
   %7 = load volatile i32 addrspace(1)* %6, align 4
@@ -177,7 +205,7 @@ define void @writeKernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i3
   br i1 %18, label %19, label %32
 
 ; <label>:19                                      ; preds = %17
-  %20 = call i32 @get_global_id(i32 0)
+  %20 = call i32 @llvm.r600.read.tgid.x()
   br label %21
 
 ; <label>:21                                      ; preds = %25, %19
@@ -193,7 +221,7 @@ define void @writeKernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i3
 
 ; <label>:25                                      ; preds = %23
   %26 = add i32 %i.0, 1
-  %27 = call i32 @get_global_size(i32 0)
+  %27 = call i32 @llvm.r600.read.global.size.x()
   %28 = add i32 %idx.0, %27
   br label %21
 
@@ -209,7 +237,8 @@ define void @writeKernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i3
 }
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0, !1}
 !llvm.ident = !{!2}

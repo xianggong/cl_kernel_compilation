@@ -8,8 +8,8 @@ target triple = "r600--"
 ; Function Attrs: nounwind
 define void @MemoryModel(i32 addrspace(1)* %outputbuffer, i32 addrspace(1)* %inputbuffer) #0 {
   %1 = call i32 @get_group_id(i32 0)
-  %2 = call i32 @get_local_id(i32 0)
-  %3 = call i32 @get_global_id(i32 0)
+  %2 = call i32 @llvm.r600.read.tidig.x()
+  %3 = call i32 @llvm.r600.read.tgid.x()
   %4 = getelementptr inbounds i32 addrspace(1)* %inputbuffer, i32 %3
   %5 = load i32 addrspace(1)* %4, align 4
   %6 = getelementptr inbounds [64 x i32] addrspace(3)* @MemoryModel.localBuffer, i32 0, i32 %2
@@ -47,14 +47,29 @@ define void @MemoryModel(i32 addrspace(1)* %outputbuffer, i32 addrspace(1)* %inp
 
 declare i32 @get_group_id(i32) #1
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #2
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #2
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #2
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #2
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #2
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #2
 
 declare void @barrier(i32) #1
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { nounwind readnone }
 
 !opencl.kernels = !{!0}
 !llvm.ident = !{!1}

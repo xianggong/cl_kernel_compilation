@@ -70,17 +70,17 @@ define void @DCT(float addrspace(1)* %output, float addrspace(1)* %input, float 
   store i32 %width, i32* %6, align 4
   store i32 %blockWidth, i32* %7, align 4
   store i32 %inverse, i32* %8, align 4
-  %9 = call i32 @get_global_id(i32 0)
+  %9 = call i32 @llvm.r600.read.tgid.x()
   store i32 %9, i32* %globalIdx, align 4
-  %10 = call i32 @get_global_id(i32 1)
+  %10 = call i32 @llvm.r600.read.tgid.y()
   store i32 %10, i32* %globalIdy, align 4
   %11 = call i32 @get_group_id(i32 0)
   store i32 %11, i32* %groupIdx, align 4
   %12 = call i32 @get_group_id(i32 1)
   store i32 %12, i32* %groupIdy, align 4
-  %13 = call i32 @get_local_id(i32 0)
+  %13 = call i32 @llvm.r600.read.tidig.x()
   store i32 %13, i32* %i, align 4
-  %14 = call i32 @get_local_id(i32 1)
+  %14 = call i32 @llvm.r600.read.tidig.y()
   store i32 %14, i32* %j, align 4
   %15 = load i32* %globalIdy, align 4
   %16 = load i32* %6, align 4
@@ -242,11 +242,15 @@ define void @DCT(float addrspace(1)* %output, float addrspace(1)* %input, float 
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 declare i32 @get_group_id(i32) #1
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 declare void @barrier(i32) #1
 

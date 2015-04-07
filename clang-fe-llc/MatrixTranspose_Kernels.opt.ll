@@ -4,15 +4,15 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @matrixTranspose(<4 x float> addrspace(1)* %output, <4 x float> addrspace(1)* %input, <4 x float> addrspace(3)* %block) #0 {
-  %1 = call i32 @get_global_size(i32 0)
+  %1 = call i32 @llvm.r600.read.global.size.x()
   %2 = call i32 @get_group_id(i32 0)
   %3 = call i32 @get_group_id(i32 1)
-  %4 = call i32 @get_num_groups(i32 0)
+  %4 = call i32 @llvm.r600.read.ngroups.x()
   %5 = add i32 %2, %3
   %6 = urem i32 %5, %4
-  %7 = call i32 @get_local_id(i32 0)
-  %8 = call i32 @get_local_id(i32 1)
-  %9 = call i32 @get_local_size(i32 0)
+  %7 = call i32 @llvm.r600.read.tidig.x()
+  %8 = call i32 @llvm.r600.read.tidig.y()
+  %9 = call i32 @llvm.r600.read.local.size.x()
   %10 = mul i32 %6, %9
   %11 = add i32 %10, %7
   %12 = mul i32 %2, %9
@@ -121,20 +121,49 @@ define void @matrixTranspose(<4 x float> addrspace(1)* %output, <4 x float> addr
   ret void
 }
 
-declare i32 @get_global_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.x() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.y() #1
 
-declare i32 @get_num_groups(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.z() #1
 
-declare i32 @get_local_id(i32) #1
+declare i32 @get_group_id(i32) #2
 
-declare i32 @get_local_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.ngroups.x() #1
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.ngroups.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.ngroups.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.z() #1
+
+declare void @barrier(i32) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0}
 !llvm.ident = !{!1}

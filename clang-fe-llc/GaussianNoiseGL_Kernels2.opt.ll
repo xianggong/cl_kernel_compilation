@@ -4,7 +4,7 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
-  %1 = call i32 @get_local_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
   br label %2
 
 ; <label>:2                                       ; preds = %21, %0
@@ -73,7 +73,14 @@ define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
   ret float %42
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
 ; Function Attrs: nounwind
 define <2 x float> @BoxMuller(<2 x float> %uniform) #0 {
@@ -99,13 +106,14 @@ declare float @llvm.sqrt.f32(float) #2
 ; Function Attrs: nounwind readonly
 declare float @llvm.log2.f32(float) #2
 
-declare float @_Z3sinf(float) #1
+declare float @_Z3sinf(float) #3
 
-declare float @_Z3cosf(float) #1
+declare float @_Z3cosf(float) #3
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
 attributes #2 = { nounwind readonly }
+attributes #3 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !llvm.ident = !{!0}
 

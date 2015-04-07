@@ -1,0 +1,13 @@
+LLVM ERROR: Cannot select: 0x17c30d0: i1 = truncate 0x17c48f0 [ORD=19] [ID=38]
+  0x17c48f0: i32 = srl 0x17c0ea0, 0x17c2fd0 [ORD=17] [ID=36]
+    0x17c0ea0: i32,ch = CopyFromReg 0x1784378, 0x17c20c0 [ID=23]
+      0x17c20c0: i32 = Register %vreg15 [ID=21]
+    0x17c2fd0: i32 = and 0x17bf2e0, 0x17c08a0 [ORD=15] [ID=33]
+      0x17bf2e0: i32,ch = load 0x1784378, 0x17bf1e0, 0x17beee0<LD4[undef]> [ID=30]
+        0x17bf1e0: i64 = add 0x17bebe0, 0x17bf0e0 [ID=26]
+          0x17bebe0: i64,ch = CopyFromReg 0x1784378, 0x17beae0 [ID=22]
+            0x17beae0: i64 = Register %vreg12 [ID=1]
+          0x17bf0e0: i64 = Constant<44> [ID=4]
+        0x17beee0: i64 = undef [ID=3]
+      0x17c08a0: i32 = Constant<31> [ID=9]
+In function: bitonicSort

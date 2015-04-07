@@ -25,9 +25,9 @@ define void @group_prefixSum(float addrspace(1)* %output, float addrspace(1)* %i
   store float addrspace(3)* %block, float addrspace(3)** %3, align 4
   store i32 %length, i32* %4, align 4
   store i32 %idxOffset, i32* %5, align 4
-  %6 = call i32 @get_local_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tidig.x()
   store i32 %6, i32* %localId, align 4
-  %7 = call i32 @get_local_size(i32 0)
+  %7 = call i32 @llvm.r600.read.local.size.x()
   store i32 %7, i32* %localSize, align 4
   %8 = call i32 @get_group_id(i32 0)
   store i32 %8, i32* %globalIdx, align 4
@@ -257,9 +257,13 @@ define void @group_prefixSum(float addrspace(1)* %output, float addrspace(1)* %i
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_local_size(i32) #1
+declare i32 @llvm.r600.read.local.size.x() #1
+declare i32 @llvm.r600.read.local.size.y() #1
+declare i32 @llvm.r600.read.local.size.z() #1
 
 declare i32 @get_group_id(i32) #1
 
@@ -278,7 +282,7 @@ define void @global_prefixSum(float addrspace(1)* %buffer, i32 %offset, i32 %len
   store float addrspace(1)* %buffer, float addrspace(1)** %1, align 4
   store i32 %offset, i32* %2, align 4
   store i32 %length, i32* %3, align 4
-  %4 = call i32 @get_local_size(i32 0)
+  %4 = call i32 @llvm.r600.read.local.size.x()
   store i32 %4, i32* %localSize, align 4
   %5 = call i32 @get_group_id(i32 0)
   store i32 %5, i32* %groupIdx, align 4
@@ -301,7 +305,7 @@ define void @global_prefixSum(float addrspace(1)* %buffer, i32 %offset, i32 %len
   %20 = load i32* %gidToUnsortedBlocks, align 4
   %21 = load i32* %localSize, align 4
   %22 = mul nsw i32 %20, %21
-  %23 = call i32 @get_local_id(i32 0)
+  %23 = call i32 @llvm.r600.read.tidig.x()
   %24 = add i32 %22, %23
   store i32 %24, i32* %globalIdx, align 4
   %25 = load i32* %globalIdx, align 4

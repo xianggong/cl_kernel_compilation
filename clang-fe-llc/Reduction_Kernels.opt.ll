@@ -4,10 +4,10 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @reduce(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1)* %output, <4 x i32> addrspace(3)* %sdata) #0 {
-  %1 = call i32 @get_local_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
   %2 = call i32 @get_group_id(i32 0)
-  %3 = call i32 @get_global_id(i32 0)
-  %4 = call i32 @get_local_size(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
+  %4 = call i32 @llvm.r600.read.local.size.x()
   %5 = mul i32 %3, 2
   %6 = getelementptr inbounds <4 x i32> addrspace(1)* %input, i32 %5
   %7 = load <4 x i32> addrspace(1)* %6, align 16
@@ -63,18 +63,40 @@ define void @reduce(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1)* %out
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_local_size(i32) #1
+declare i32 @get_group_id(i32) #2
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.z() #1
+
+declare void @barrier(i32) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0}
 !llvm.ident = !{!1}

@@ -4,12 +4,12 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @histogram(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %buckets, i32 %shiftCount, i32 addrspace(3)* %sharedArray) #0 {
-  %1 = call i32 @get_local_id(i32 0)
-  %2 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
+  %2 = call i32 @llvm.r600.read.tgid.x()
   %3 = call i32 @get_group_id(i32 0)
-  %4 = call i32 @get_local_size(i32 0)
-  %5 = call i32 @get_global_size(i32 0)
-  %6 = call i32 @get_local_size(i32 0)
+  %4 = call i32 @llvm.r600.read.local.size.x()
+  %5 = call i32 @llvm.r600.read.global.size.x()
+  %6 = call i32 @llvm.r600.read.local.size.x()
   %7 = udiv i32 %5, %6
   %8 = getelementptr inbounds i32 addrspace(3)* %sharedArray, i32 %1
   store i32 0, i32 addrspace(3)* %8, align 4
@@ -31,26 +31,54 @@ define void @histogram(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %bucke
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_local_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @get_global_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #1
+declare i32 @get_group_id(i32) #2
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.z() #1
+
+declare void @barrier(i32) #2
+
+declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #2
 
 ; Function Attrs: nounwind
 define void @permute(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %scanedBuckets, i32 %shiftCount, i16 addrspace(3)* %sharedBuckets, i32 addrspace(1)* %sortedData) #0 {
   %1 = call i32 @get_group_id(i32 0)
-  %2 = call i32 @get_local_id(i32 0)
-  %3 = call i32 @get_global_id(i32 0)
-  %4 = call i32 @get_local_size(i32 0)
+  %2 = call i32 @llvm.r600.read.tidig.x()
+  %3 = call i32 @llvm.r600.read.tgid.x()
+  %4 = call i32 @llvm.r600.read.local.size.x()
   br label %5
 
 ; <label>:5                                       ; preds = %19, %0
@@ -124,17 +152,17 @@ define void @permute(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %scanedB
 
 ; Function Attrs: nounwind
 define void @ScanArraysdim2(i32 addrspace(1)* %output, i32 addrspace(1)* %input, i32 addrspace(3)* %block, i32 %block_size, i32 %stride, i32 addrspace(1)* %sumBuffer) #0 {
-  %1 = call i32 @get_local_id(i32 0)
-  %2 = call i32 @get_local_id(i32 1)
-  %3 = call i32 @get_global_id(i32 0)
-  %4 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tidig.x()
+  %2 = call i32 @llvm.r600.read.tidig.y()
+  %3 = call i32 @llvm.r600.read.tgid.x()
+  %4 = call i32 @llvm.r600.read.tgid.y()
   %5 = call i32 @get_group_id(i32 0)
   %6 = call i32 @get_group_id(i32 1)
   %7 = mul i32 %2, %block_size
   %8 = add i32 %7, %1
   %9 = shl i32 %3, 8
   %10 = add nsw i32 %9, %4
-  %11 = call i32 @get_global_size(i32 0)
+  %11 = call i32 @llvm.r600.read.global.size.x()
   %12 = udiv i32 %11, %block_size
   %13 = mul i32 %6, %12
   %14 = add i32 %13, %5
@@ -206,8 +234,8 @@ define void @ScanArraysdim2(i32 addrspace(1)* %output, i32 addrspace(1)* %input,
 
 ; Function Attrs: nounwind
 define void @ScanArraysdim1(i32 addrspace(1)* %output, i32 addrspace(1)* %input, i32 addrspace(3)* %block, i32 %block_size) #0 {
-  %1 = call i32 @get_local_id(i32 0)
-  %2 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
+  %2 = call i32 @llvm.r600.read.tgid.x()
   %3 = call i32 @get_group_id(i32 0)
   %4 = getelementptr inbounds i32 addrspace(1)* %input, i32 %2
   %5 = load i32 addrspace(1)* %4, align 4
@@ -271,8 +299,8 @@ define void @ScanArraysdim1(i32 addrspace(1)* %output, i32 addrspace(1)* %input,
 
 ; Function Attrs: nounwind
 define void @prefixSum(i32 addrspace(1)* %output, i32 addrspace(1)* %input, i32 addrspace(1)* %summary, i32 %stride) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
   %3 = mul nsw i32 %2, %stride
   %4 = add nsw i32 %3, %1
   %5 = getelementptr inbounds i32 addrspace(1)* %output, i32 %4
@@ -330,8 +358,8 @@ define void @prefixSum(i32 addrspace(1)* %output, i32 addrspace(1)* %input, i32 
 
 ; Function Attrs: nounwind
 define void @blockAddition(i32 addrspace(1)* %input, i32 addrspace(1)* %output, i32 %stride) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
   %3 = call i32 @get_group_id(i32 0)
   %4 = call i32 @get_group_id(i32 1)
   %5 = shl i32 %1, 8
@@ -349,8 +377,8 @@ define void @blockAddition(i32 addrspace(1)* %input, i32 addrspace(1)* %output, 
 
 ; Function Attrs: nounwind
 define void @FixOffset(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
   %3 = shl i32 %1, 8
   %4 = add nsw i32 %2, %3
   %5 = getelementptr inbounds i32 addrspace(1)* %input, i32 %2
@@ -363,7 +391,8 @@ define void @FixOffset(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
 }
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0, !1, !2, !3, !4, !5, !6}
 !llvm.ident = !{!7}

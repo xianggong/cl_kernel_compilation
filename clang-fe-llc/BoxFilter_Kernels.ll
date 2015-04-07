@@ -28,13 +28,13 @@ define void @box_filter(<4 x i32> addrspace(1)* %inputImage, <4 x i8> addrspace(
   store <4 x i32> addrspace(1)* %inputImage, <4 x i32> addrspace(1)** %1, align 4
   store <4 x i8> addrspace(1)* %outputImage, <4 x i8> addrspace(1)** %2, align 4
   store i32 %N, i32* %3, align 4
-  %8 = call i32 @get_global_id(i32 0)
+  %8 = call i32 @llvm.r600.read.tgid.x()
   store i32 %8, i32* %x, align 4
-  %9 = call i32 @get_global_id(i32 1)
+  %9 = call i32 @llvm.r600.read.tgid.y()
   store i32 %9, i32* %y, align 4
-  %10 = call i32 @get_global_size(i32 0)
+  %10 = call i32 @llvm.r600.read.global.size.x()
   store i32 %10, i32* %width, align 4
-  %11 = call i32 @get_global_size(i32 1)
+  %11 = call i32 @llvm.r600.read.global.size.y()
   store i32 %11, i32* %height, align 4
   %12 = load i32* %3, align 4
   %13 = sub i32 %12, 1
@@ -276,9 +276,13 @@ define void @box_filter(<4 x i32> addrspace(1)* %inputImage, <4 x i8> addrspace(
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
 declare <4 x i32> @_Z12convert_int4Dv4_j(<4 x i32>) #1
 
@@ -302,9 +306,9 @@ define void @horizontalSAT0(<4 x i8> addrspace(1)* %input, <4 x i32> addrspace(1
   store i32 %i, i32* %3, align 4
   store i32 %r, i32* %4, align 4
   store i32 %width, i32* %5, align 4
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   store i32 %6, i32* %x, align 4
-  %7 = call i32 @get_global_id(i32 1)
+  %7 = call i32 @llvm.r600.read.tgid.y()
   store i32 %7, i32* %y, align 4
   %8 = load i32* %x, align 4
   %9 = load i32* %y, align 4
@@ -402,9 +406,9 @@ define void @horizontalSAT(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1
   store i32 %i, i32* %3, align 4
   store i32 %r, i32* %4, align 4
   store i32 %width, i32* %5, align 4
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   store i32 %6, i32* %x, align 4
-  %7 = call i32 @get_global_id(i32 1)
+  %7 = call i32 @llvm.r600.read.tgid.y()
   store i32 %7, i32* %y, align 4
   %8 = load i32* %x, align 4
   %9 = load i32* %y, align 4
@@ -495,9 +499,9 @@ define void @verticalSAT(<4 x i32> addrspace(1)* %input, <4 x i32> addrspace(1)*
   store i32 %i, i32* %3, align 4
   store i32 %r, i32* %4, align 4
   store i32 %width, i32* %5, align 4
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   store i32 %6, i32* %x, align 4
-  %7 = call i32 @get_global_id(i32 1)
+  %7 = call i32 @llvm.r600.read.tgid.y()
   store i32 %7, i32* %y, align 4
   %8 = load i32* %4, align 4
   %9 = sitofp i32 %8 to float
@@ -594,13 +598,13 @@ define void @box_filter_horizontal(<4 x i8> addrspace(1)* %inputImage, <4 x i8> 
   store <4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)** %1, align 4
   store <4 x i8> addrspace(1)* %outputImage, <4 x i8> addrspace(1)** %2, align 4
   store i32 %filterWidth, i32* %3, align 4
-  %4 = call i32 @get_global_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tgid.x()
   store i32 %4, i32* %x, align 4
-  %5 = call i32 @get_global_id(i32 1)
+  %5 = call i32 @llvm.r600.read.tgid.y()
   store i32 %5, i32* %y, align 4
-  %6 = call i32 @get_global_size(i32 0)
+  %6 = call i32 @llvm.r600.read.global.size.x()
   store i32 %6, i32* %width, align 4
-  %7 = call i32 @get_global_size(i32 1)
+  %7 = call i32 @llvm.r600.read.global.size.y()
   store i32 %7, i32* %height, align 4
   %8 = load i32* %x, align 4
   %9 = load i32* %y, align 4
@@ -723,13 +727,13 @@ define void @box_filter_vertical(<4 x i8> addrspace(1)* %inputImage, <4 x i8> ad
   store <4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)** %1, align 4
   store <4 x i8> addrspace(1)* %outputImage, <4 x i8> addrspace(1)** %2, align 4
   store i32 %filterWidth, i32* %3, align 4
-  %4 = call i32 @get_global_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tgid.x()
   store i32 %4, i32* %x, align 4
-  %5 = call i32 @get_global_id(i32 1)
+  %5 = call i32 @llvm.r600.read.tgid.y()
   store i32 %5, i32* %y, align 4
-  %6 = call i32 @get_global_size(i32 0)
+  %6 = call i32 @llvm.r600.read.global.size.x()
   store i32 %6, i32* %width, align 4
-  %7 = call i32 @get_global_size(i32 1)
+  %7 = call i32 @llvm.r600.read.global.size.y()
   store i32 %7, i32* %height, align 4
   %8 = load i32* %x, align 4
   %9 = load i32* %y, align 4
@@ -864,13 +868,13 @@ define void @box_filter_horizontal_local(<4 x i8> addrspace(1)* %inputImage, <4 
   store <4 x i8> addrspace(1)* %outputImage, <4 x i8> addrspace(1)** %2, align 4
   store i32 %filterWidth, i32* %3, align 4
   store <4 x i8> addrspace(3)* %lds, <4 x i8> addrspace(3)** %4, align 4
-  %5 = call i32 @get_global_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
   store i32 %5, i32* %x, align 4
-  %6 = call i32 @get_global_id(i32 1)
+  %6 = call i32 @llvm.r600.read.tgid.y()
   store i32 %6, i32* %y, align 4
-  %7 = call i32 @get_global_size(i32 0)
+  %7 = call i32 @llvm.r600.read.global.size.x()
   store i32 %7, i32* %width, align 4
-  %8 = call i32 @get_global_size(i32 1)
+  %8 = call i32 @llvm.r600.read.global.size.y()
   store i32 %8, i32* %height, align 4
   %9 = load i32* %x, align 4
   %10 = load i32* %y, align 4
@@ -882,15 +886,15 @@ define void @box_filter_horizontal_local(<4 x i8> addrspace(1)* %inputImage, <4 
   %15 = sub nsw i32 %14, 1
   %16 = sdiv i32 %15, 2
   store i32 %16, i32* %k, align 4
-  %17 = call i32 @get_local_id(i32 0)
+  %17 = call i32 @llvm.r600.read.tidig.x()
   store i32 %17, i32* %lid, align 4
   %18 = call i32 @get_group_id(i32 0)
   store i32 %18, i32* %gidX, align 4
   %19 = call i32 @get_group_id(i32 1)
   store i32 %19, i32* %gidY, align 4
-  %20 = call i32 @get_local_size(i32 0)
+  %20 = call i32 @llvm.r600.read.local.size.x()
   store i32 %20, i32* %gSizeX, align 4
-  %21 = call i32 @get_local_size(i32 1)
+  %21 = call i32 @llvm.r600.read.local.size.y()
   store i32 %21, i32* %gSizeY, align 4
   %22 = load i32* %gSizeX, align 4
   %23 = load i32* %gidX, align 4
@@ -1019,11 +1023,15 @@ define void @box_filter_horizontal_local(<4 x i8> addrspace(1)* %inputImage, <4 
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 declare i32 @get_group_id(i32) #1
 
-declare i32 @get_local_size(i32) #1
+declare i32 @llvm.r600.read.local.size.x() #1
+declare i32 @llvm.r600.read.local.size.y() #1
+declare i32 @llvm.r600.read.local.size.z() #1
 
 declare void @barrier(i32) #1
 

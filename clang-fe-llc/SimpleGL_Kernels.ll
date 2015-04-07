@@ -19,9 +19,9 @@ define void @sineWave(<4 x float> addrspace(1)* %pos, i32 %width, i32 %height, f
   store i32 %width, i32* %2, align 4
   store i32 %height, i32* %3, align 4
   store float %time, float* %4, align 4
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   store i32 %6, i32* %x, align 4
-  %7 = call i32 @get_global_id(i32 1)
+  %7 = call i32 @llvm.r600.read.tgid.y()
   store i32 %7, i32* %y, align 4
   %8 = load i32* %x, align 4
   %9 = uitofp i32 %8 to float
@@ -75,7 +75,9 @@ define void @sineWave(<4 x float> addrspace(1)* %pos, i32 %width, i32 %height, f
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 ; Function Attrs: nounwind readnone
 declare float @llvm.fmuladd.f32(float, float, float) #2

@@ -13,7 +13,7 @@ define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
   store i32 %idum, i32* %1, align 4
   store i32 addrspace(3)* %iv, i32 addrspace(3)** %2, align 4
   store i32 0, i32* %iy, align 4
-  %3 = call i32 @get_local_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tidig.x()
   store i32 %3, i32* %tid, align 4
   store i32 4, i32* %j, align 4
   br label %4
@@ -116,7 +116,9 @@ define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
   ret float %69
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 ; Function Attrs: nounwind
 define <2 x float> @BoxMuller(<2 x float> %uniform) #0 {

@@ -1,16 +1,38 @@
+Function dwtHaar1D
+Num of basic block = 16
+BasicBlock name
+BasicBlock nametmp_35
+BasicBlock nametmp_46
+BasicBlock nametmp_60
+BasicBlock nametmp_62
+BasicBlock nametmp_64
+BasicBlock nametmp_74
+BasicBlock nametmp_78
+BasicBlock nametmp_82
+BasicBlock nametmp_94
+BasicBlock nametmp_98
+BasicBlock nametmp_124
+BasicBlock nametmp_127
+BasicBlock nametmp_130
+BasicBlock nametmp_133
+BasicBlock nametmp_140
+var_name = tmp_9
+var_name = tmp_10
+var_name = tmp_11
+var_name = tmp_12
 [31m
 Panic: Invalid argument type (sreg)
 
 Call stack:
-[1] m2c() [0x459f02]
-[2] m2c() [0x45374a]
-[3] m2c() [0x458905]
-[4] m2c() [0x440370]
-[5] m2c() [0x43a966]
-[6] m2c() [0x420ab1]
-[7] m2c() [0x420ec9]
-[8] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2aca85aa4ec5]
-[9] m2c() [0x4204b2]
+[1] m2c() [0x45a08a]
+[2] m2c() [0x4538d2]
+[3] m2c() [0x458a8d]
+[4] m2c() [0x4404c0]
+[5] m2c() [0x43aa96]
+[6] m2c() [0x420b71]
+[7] m2c() [0x420f89]
+[8] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2abcfa3f8ec5]
+[9] m2c() [0x420572]
 
 
 [m

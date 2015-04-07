@@ -127,9 +127,9 @@ define void @blackScholes(<4 x float> addrspace(1)* %randArray, i32 %width, <4 x
   store i32 %width, i32* %2, align 4
   store <4 x float> addrspace(1)* %call, <4 x float> addrspace(1)** %3, align 4
   store <4 x float> addrspace(1)* %put, <4 x float> addrspace(1)** %4, align 4
-  %5 = call i32 @get_global_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
   store i32 %5, i32* %xPos, align 4
-  %6 = call i32 @get_global_id(i32 1)
+  %6 = call i32 @llvm.r600.read.tgid.y()
   store i32 %6, i32* %yPos, align 4
   store <4 x float> <float 2.000000e+00, float 2.000000e+00, float 2.000000e+00, float 2.000000e+00>, <4 x float>* %two, align 16
   %7 = load i32* %yPos, align 4
@@ -368,9 +368,9 @@ define void @blackScholes_scalar(float addrspace(1)* %randArray, i32 %width, flo
   store i32 %width, i32* %2, align 4
   store float addrspace(1)* %call, float addrspace(1)** %3, align 4
   store float addrspace(1)* %put, float addrspace(1)** %4, align 4
-  %5 = call i32 @get_global_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
   store i32 %5, i32* %xPos, align 4
-  %6 = call i32 @get_global_id(i32 1)
+  %6 = call i32 @llvm.r600.read.tgid.y()
   store i32 %6, i32* %yPos, align 4
   store float 2.000000e+00, float* %two, align 4
   %7 = load i32* %yPos, align 4

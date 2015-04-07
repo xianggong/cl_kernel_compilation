@@ -29,13 +29,13 @@ define void @histogram256_vector(<4 x i32> addrspace(1)* %data, i8 addrspace(3)*
   store <4 x i32> addrspace(1)* %data, <4 x i32> addrspace(1)** %1, align 4
   store i8 addrspace(3)* %sharedArray, i8 addrspace(3)** %2, align 4
   store i32 addrspace(1)* %binResult, i32 addrspace(1)** %3, align 4
-  %4 = call i32 @get_local_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tidig.x()
   store i32 %4, i32* %localId, align 4
-  %5 = call i32 @get_global_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
   store i32 %5, i32* %globalId, align 4
   %6 = call i32 @get_group_id(i32 0)
   store i32 %6, i32* %groupId, align 4
-  %7 = call i32 @get_local_size(i32 0)
+  %7 = call i32 @llvm.r600.read.local.size.x()
   store i32 %7, i32* %groupSize, align 4
   %8 = load i32* %localId, align 4
   %9 = and i32 %8, 31
@@ -250,13 +250,19 @@ define void @histogram256_vector(<4 x i32> addrspace(1)* %data, i8 addrspace(3)*
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 declare i32 @get_group_id(i32) #1
 
-declare i32 @get_local_size(i32) #1
+declare i32 @llvm.r600.read.local.size.x() #1
+declare i32 @llvm.r600.read.local.size.y() #1
+declare i32 @llvm.r600.read.local.size.z() #1
 
 declare void @barrier(i32) #1
 
@@ -289,13 +295,13 @@ define void @histogram256_scalar(i32 addrspace(1)* %data, i8 addrspace(3)* %shar
   store i32 addrspace(1)* %data, i32 addrspace(1)** %1, align 4
   store i8 addrspace(3)* %sharedArray, i8 addrspace(3)** %2, align 4
   store i32 addrspace(1)* %binResult, i32 addrspace(1)** %3, align 4
-  %4 = call i32 @get_local_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tidig.x()
   store i32 %4, i32* %localId, align 4
-  %5 = call i32 @get_global_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
   store i32 %5, i32* %globalId, align 4
   %6 = call i32 @get_group_id(i32 0)
   store i32 %6, i32* %groupId, align 4
-  %7 = call i32 @get_local_size(i32 0)
+  %7 = call i32 @llvm.r600.read.local.size.x()
   store i32 %7, i32* %groupSize, align 4
   %8 = load i32* %localId, align 4
   %9 = and i32 %8, 31

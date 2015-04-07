@@ -22,13 +22,13 @@ define void @transpose_kernel(<4 x i8> addrspace(1)* %output, <4 x i8> addrspace
   store i32 %width, i32* %4, align 4
   store i32 %height, i32* %5, align 4
   store i32 %blockSize, i32* %6, align 4
-  %7 = call i32 @get_global_id(i32 0)
+  %7 = call i32 @llvm.r600.read.tgid.x()
   store i32 %7, i32* %globalIdx, align 4
-  %8 = call i32 @get_global_id(i32 1)
+  %8 = call i32 @llvm.r600.read.tgid.y()
   store i32 %8, i32* %globalIdy, align 4
-  %9 = call i32 @get_local_id(i32 0)
+  %9 = call i32 @llvm.r600.read.tidig.x()
   store i32 %9, i32* %localIdx, align 4
-  %10 = call i32 @get_local_id(i32 1)
+  %10 = call i32 @llvm.r600.read.tidig.y()
   store i32 %10, i32* %localIdy, align 4
   %11 = load i32* %globalIdy, align 4
   %12 = load i32* %4, align 4
@@ -70,9 +70,13 @@ define void @transpose_kernel(<4 x i8> addrspace(1)* %output, <4 x i8> addrspace
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 declare void @barrier(i32) #1
 
@@ -124,7 +128,7 @@ define void @RecursiveGaussian_kernel(<4 x i8> addrspace(1)* %input, <4 x i8> ad
   store float %b2, float* %10, align 4
   store float %coefp, float* %11, align 4
   store float %coefn, float* %12, align 4
-  %18 = call i32 @get_global_id(i32 0)
+  %18 = call i32 @llvm.r600.read.tgid.x()
   store i32 %18, i32* %x, align 4
   %19 = load i32* %x, align 4
   %20 = load i32* %3, align 4

@@ -32,13 +32,13 @@ define void @matrixTranspose(<4 x float> addrspace(1)* %output, <4 x float> addr
   store <4 x float> addrspace(1)* %output, <4 x float> addrspace(1)** %1, align 4
   store <4 x float> addrspace(1)* %input, <4 x float> addrspace(1)** %2, align 4
   store <4 x float> addrspace(3)* %block, <4 x float> addrspace(3)** %3, align 4
-  %8 = call i32 @get_global_size(i32 0)
+  %8 = call i32 @llvm.r600.read.global.size.x()
   store i32 %8, i32* %wiWidth, align 4
   %9 = call i32 @get_group_id(i32 0)
   store i32 %9, i32* %gix_t, align 4
   %10 = call i32 @get_group_id(i32 1)
   store i32 %10, i32* %giy_t, align 4
-  %11 = call i32 @get_num_groups(i32 0)
+  %11 = call i32 @llvm.r600.read.ngroups.x()
   store i32 %11, i32* %num_of_blocks_x, align 4
   %12 = load i32* %gix_t, align 4
   store i32 %12, i32* %giy, align 4
@@ -48,11 +48,11 @@ define void @matrixTranspose(<4 x float> addrspace(1)* %output, <4 x float> addr
   %16 = load i32* %num_of_blocks_x, align 4
   %17 = urem i32 %15, %16
   store i32 %17, i32* %gix, align 4
-  %18 = call i32 @get_local_id(i32 0)
+  %18 = call i32 @llvm.r600.read.tidig.x()
   store i32 %18, i32* %lix, align 4
-  %19 = call i32 @get_local_id(i32 1)
+  %19 = call i32 @llvm.r600.read.tidig.y()
   store i32 %19, i32* %liy, align 4
-  %20 = call i32 @get_local_size(i32 0)
+  %20 = call i32 @llvm.r600.read.local.size.x()
   store i32 %20, i32* %blockSize, align 4
   %21 = load i32* %gix, align 4
   %22 = load i32* %blockSize, align 4
@@ -266,15 +266,24 @@ define void @matrixTranspose(<4 x float> addrspace(1)* %output, <4 x float> addr
   ret void
 }
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
 declare i32 @get_group_id(i32) #1
 
-declare i32 @get_num_groups(i32) #1
+declare i32 @llvm.r600.read.ngroups.x() #1
+declare i32 @llvm.r600.read.ngroups.y() #1
+declare i32 @llvm.r600.read.ngroups.z() #1
 
-declare i32 @get_local_id(i32) #1
 
-declare i32 @get_local_size(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
+
+declare i32 @llvm.r600.read.local.size.x() #1
+declare i32 @llvm.r600.read.local.size.y() #1
+declare i32 @llvm.r600.read.local.size.z() #1
 
 declare void @barrier(i32) #1
 

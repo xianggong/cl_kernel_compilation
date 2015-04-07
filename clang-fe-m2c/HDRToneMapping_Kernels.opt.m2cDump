@@ -1,18 +1,21 @@
+Function luminance
+Num of basic block = 1
+BasicBlock name
 [31m
 Panic: Constant type not supported (2)
 
 Call stack:
-[1] m2c() [0x442206]
-[2] m2c() [0x442302]
-[3] m2c() [0x4599df]
-[4] m2c() [0x45673f]
-[5] m2c() [0x458aac]
-[6] m2c() [0x440370]
-[7] m2c() [0x43a966]
-[8] m2c() [0x420ab1]
-[9] m2c() [0x420ec9]
-[10] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b579af07ec5]
-[11] m2c() [0x4204b2]
+[1] m2c() [0x442356]
+[2] m2c() [0x442452]
+[3] m2c() [0x459b67]
+[4] m2c() [0x4568c7]
+[5] m2c() [0x458c34]
+[6] m2c() [0x4404c0]
+[7] m2c() [0x43aa96]
+[8] m2c() [0x420b71]
+[9] m2c() [0x420f89]
+[10] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b00bd367ec5]
+[11] m2c() [0x420572]
 
 
 [m

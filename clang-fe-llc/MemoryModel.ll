@@ -19,9 +19,9 @@ define void @MemoryModel(i32 addrspace(1)* %outputbuffer, i32 addrspace(1)* %inp
   store i32 0, i32* %result, align 4
   %3 = call i32 @get_group_id(i32 0)
   store i32 %3, i32* %group_id, align 4
-  %4 = call i32 @get_local_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tidig.x()
   store i32 %4, i32* %item_id, align 4
-  %5 = call i32 @get_global_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
   store i32 %5, i32* %gid, align 4
   %6 = load i32* %gid, align 4
   %7 = load i32 addrspace(1)** %2, align 4
@@ -75,9 +75,13 @@ define void @MemoryModel(i32 addrspace(1)* %outputbuffer, i32 addrspace(1)* %inp
 
 declare i32 @get_group_id(i32) #1
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 declare void @barrier(i32) #1
 

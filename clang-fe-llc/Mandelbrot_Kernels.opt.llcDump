@@ -1,0 +1,17 @@
+0  libLLVM-3.4.so.1 0x00002af3fc4d15d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
+1  libLLVM-3.4.so.1 0x00002af3fc4d13c4
+2  libc.so.6        0x00002af3fd2bfd40
+3  libLLVM-3.4.so.1 0x00002af3fbebad20 llvm::Value::getName() const + 0
+4  libLLVM-3.4.so.1 0x00002af3fc25fb92
+5  libLLVM-3.4.so.1 0x00002af3fc260609
+6  libLLVM-3.4.so.1 0x00002af3fbea1f77 llvm::FPPassManager::runOnFunction(llvm::Function&) + 471
+7  libLLVM-3.4.so.1 0x00002af3fbea1ffb llvm::FPPassManager::runOnModule(llvm::Module&) + 43
+8  libLLVM-3.4.so.1 0x00002af3fbea44b5 llvm::legacy::PassManagerImpl::run(llvm::Module&) + 693
+9  llc              0x000000000040c0d4
+10 llc              0x000000000040b150 main + 368
+11 libc.so.6        0x00002af3fd2aaec5 __libc_start_main + 245
+12 llc              0x000000000040b1a9
+Stack dump:
+0.	Program arguments: llc -march=r600 -mcpu=verde Mandelbrot_Kernels.opt.bc 
+1.	Running pass 'Function Pass Manager' on module 'Mandelbrot_Kernels.opt.bc'.
+2.	Running pass 'SI Type Rewriter' on function '@mandelbrot_vector_float'

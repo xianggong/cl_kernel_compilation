@@ -1,0 +1,6 @@
+0x1340c60: i64 = GlobalAddress<<4 x i32> (<4 x i32>)* @_Z12convert_int4Dv4_j> 0 [ORD=63]
+0  libLLVM-3.4.so.1 0x00002b62a7b585d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
+1  libLLVM-3.4.so.1 0x00002b62a7b583c4
+2  libc.so.6        0x00002b62a8946d40
+3  libLLVM-3.4.so.1 0x00002b62a78a847b
+4  libLLVM-3.4.so.1 0x00007fff382f4f00

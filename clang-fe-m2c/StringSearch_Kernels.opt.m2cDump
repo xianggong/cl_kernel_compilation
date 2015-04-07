@@ -1,1 +1,15 @@
+Function compare
+Num of basic block = 12
 m2c: ../../src/lib/cpp/Misc.h:213: X misc::cast(const Y&) [with X = llvm2si::BasicBlock*; Y = comm::BasicBlock*]: Assertion `result && "cast<Ty>() argument of incompatible type"' failed.
+BasicBlock name
+BasicBlock nametmp_5
+BasicBlock nametmp_9
+BasicBlock nametmp_16
+BasicBlock nametmp_23
+BasicBlock nametmp_31
+BasicBlock nametmp_37
+BasicBlock nametmp_45
+BasicBlock nametmp_46
+BasicBlock nametmp_47
+BasicBlock nametmp_50
+BasicBlock nametmp_51

@@ -1,16 +1,24 @@
+Function binarySearch
+Num of basic block = 5
+BasicBlock name
+BasicBlock nametmp_28
+BasicBlock nametmp_32
+BasicBlock nametmp_33
+BasicBlock nametmp_43
+var_name = tmp_6
 [31m
 Panic: Invalid argument type (sreg)
 
 Call stack:
-[1] m2c() [0x459f02]
-[2] m2c() [0x45208c]
-[3] m2c() [0x458878]
-[4] m2c() [0x440370]
-[5] m2c() [0x43a966]
-[6] m2c() [0x420ab1]
-[7] m2c() [0x420ec9]
-[8] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b5f2c64eec5]
-[9] m2c() [0x4204b2]
+[1] m2c() [0x45a08a]
+[2] m2c() [0x4521dc]
+[3] m2c() [0x458a00]
+[4] m2c() [0x4404c0]
+[5] m2c() [0x43aa96]
+[6] m2c() [0x420b71]
+[7] m2c() [0x420f89]
+[8] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b71d125fec5]
+[9] m2c() [0x420572]
 
 
 [m

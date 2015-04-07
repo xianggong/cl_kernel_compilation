@@ -4,7 +4,7 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @binomial_options(i32 %numSteps, <4 x float> addrspace(1)* %randArray, <4 x float> addrspace(1)* %output, <4 x float> addrspace(3)* %callA, <4 x float> addrspace(3)* %callB) #0 {
-  %1 = call i32 @get_local_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
   %2 = call i32 @get_group_id(i32 0)
   %3 = getelementptr inbounds <4 x float> addrspace(1)* %randArray, i32 %2
   %4 = load <4 x float> addrspace(1)* %3, align 16
@@ -178,26 +178,33 @@ define void @binomial_options(i32 %numSteps, <4 x float> addrspace(1)* %randArra
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
-
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
 ; Function Attrs: nounwind readnone
-declare <4 x float> @llvm.fmuladd.v4f32(<4 x float>, <4 x float>, <4 x float>) #2
+declare i32 @llvm.r600.read.tidig.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
+
+declare i32 @get_group_id(i32) #2
+
+; Function Attrs: nounwind readnone
+declare <4 x float> @llvm.fmuladd.v4f32(<4 x float>, <4 x float>, <4 x float>) #1
 
 ; Function Attrs: nounwind readonly
 declare <4 x float> @llvm.sqrt.v4f32(<4 x float>) #3
 
-declare <4 x float> @_Z3expDv4_f(<4 x float>) #1
+declare <4 x float> @_Z3expDv4_f(<4 x float>) #2
 
 ; Function Attrs: nounwind readnone
-declare float @llvm.fmuladd.f32(float, float, float) #2
+declare float @llvm.fmuladd.f32(float, float, float) #1
 
-declare void @barrier(i32) #1
+declare void @barrier(i32) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind readnone }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #3 = { nounwind readonly }
 
 !opencl.kernels = !{!0}

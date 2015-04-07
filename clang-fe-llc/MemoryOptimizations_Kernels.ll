@@ -9,7 +9,7 @@ define void @copy1DFastPath(float addrspace(1)* %input, float addrspace(1)* %out
   %gid = alloca i32, align 4
   store float addrspace(1)* %input, float addrspace(1)** %1, align 4
   store float addrspace(1)* %output, float addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %gid, align 4
   %4 = load i32* %gid, align 4
   %5 = load float addrspace(1)** %1, align 4
@@ -22,7 +22,9 @@ define void @copy1DFastPath(float addrspace(1)* %input, float addrspace(1)* %out
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 ; Function Attrs: nounwind
 define void @copy1DCompletePath(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
@@ -31,7 +33,7 @@ define void @copy1DCompletePath(float addrspace(1)* %input, float addrspace(1)* 
   %gid = alloca i32, align 4
   store float addrspace(1)* %input, float addrspace(1)** %1, align 4
   store float addrspace(1)* %output, float addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %gid, align 4
   %4 = load i32* %gid, align 4
   %5 = icmp slt i32 %4, 0
@@ -65,9 +67,9 @@ define void @copy2Dfloat(float addrspace(1)* %A, float addrspace(1)* %C) #0 {
   %idy = alloca i32, align 4
   store float addrspace(1)* %A, float addrspace(1)** %1, align 4
   store float addrspace(1)* %C, float addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %idx, align 4
-  %4 = call i32 @get_global_id(i32 1)
+  %4 = call i32 @llvm.r600.read.tgid.y()
   store i32 %4, i32* %idy, align 4
   %5 = load i32* %idy, align 4
   %6 = mul nsw i32 %5, 1024
@@ -94,9 +96,9 @@ define void @copy2Dfloat4(<4 x float> addrspace(1)* %A, <4 x float> addrspace(1)
   %idy = alloca i32, align 4
   store <4 x float> addrspace(1)* %A, <4 x float> addrspace(1)** %1, align 4
   store <4 x float> addrspace(1)* %C, <4 x float> addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %idx, align 4
-  %4 = call i32 @get_global_id(i32 1)
+  %4 = call i32 @llvm.r600.read.tgid.y()
   store i32 %4, i32* %idy, align 4
   %5 = load i32* %idy, align 4
   %6 = mul nsw i32 %5, 1024
@@ -122,7 +124,7 @@ define void @copy1Dfloat4(<4 x float> addrspace(1)* %input, <4 x float> addrspac
   %gid = alloca i32, align 4
   store <4 x float> addrspace(1)* %input, <4 x float> addrspace(1)** %1, align 4
   store <4 x float> addrspace(1)* %output, <4 x float> addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %gid, align 4
   %4 = load i32* %gid, align 4
   %5 = load <4 x float> addrspace(1)** %1, align 4
@@ -142,10 +144,10 @@ define void @NoCoal(float addrspace(1)* %input, float addrspace(1)* %output) #0 
   %gid = alloca i32, align 4
   store float addrspace(1)* %input, float addrspace(1)** %1, align 4
   store float addrspace(1)* %output, float addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   %4 = sub i32 %3, 1
   store i32 %4, i32* %gid, align 4
-  %5 = call i32 @get_local_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tidig.x()
   %6 = and i32 %5, 15
   %7 = icmp eq i32 %6, 0
   br i1 %7, label %8, label %11
@@ -168,7 +170,9 @@ define void @NoCoal(float addrspace(1)* %input, float addrspace(1)* %output) #0 
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 ; Function Attrs: nounwind
 define void @Split(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
@@ -177,7 +181,7 @@ define void @Split(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
   %gid = alloca i32, align 4
   store float addrspace(1)* %input, float addrspace(1)** %1, align 4
   store float addrspace(1)* %output, float addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %gid, align 4
   %4 = load i32* %gid, align 4
   %5 = and i32 %4, 1
@@ -188,7 +192,7 @@ define void @Split(float addrspace(1)* %input, float addrspace(1)* %output) #0 {
   %8 = load i32* %gid, align 4
   %9 = and i32 %8, 0
   %10 = add nsw i32 %9, 62
-  %11 = call i32 @get_local_id(i32 0)
+  %11 = call i32 @llvm.r600.read.tidig.x()
   %12 = sub i32 %10, %11
   store i32 %12, i32* %gid, align 4
   br label %13
@@ -216,9 +220,9 @@ define void @localBankConflicts(float addrspace(3)* %share, float addrspace(1)* 
   %i = alloca i32, align 4
   store float addrspace(3)* %share, float addrspace(3)** %1, align 4
   store float addrspace(1)* %output, float addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %gid, align 4
-  %4 = call i32 @get_local_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tidig.x()
   store i32 %4, i32* %lid, align 4
   store i32 0, i32* %resulta, align 4
   store i32 0, i32* %resultb, align 4
@@ -287,9 +291,9 @@ define void @noLocalBankConflicts(float addrspace(3)* %share, float addrspace(1)
   %i = alloca i32, align 4
   store float addrspace(3)* %share, float addrspace(3)** %1, align 4
   store float addrspace(1)* %output, float addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %gid, align 4
-  %4 = call i32 @get_local_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tidig.x()
   store i32 %4, i32* %lid, align 4
   store i32 0, i32* %resulta, align 4
   store i32 0, i32* %resultb, align 4

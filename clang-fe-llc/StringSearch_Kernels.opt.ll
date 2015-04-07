@@ -72,8 +72,8 @@ define i32 @compare(i8 addrspace(1)* %text, i8 addrspace(3)* %pattern, i32 %leng
 
 ; Function Attrs: nounwind
 define void @StringSearchNaive(i8 addrspace(1)* %text, i32 %textLength, i8 addrspace(1)* %pattern, i32 %patternLength, i32 addrspace(1)* %resultBuffer, i32 addrspace(1)* %resultCountPerWG, i32 %maxSearchLength, i8 addrspace(3)* %localPattern) #0 {
-  %1 = call i32 @get_local_id(i32 0)
-  %2 = call i32 @get_local_size(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
+  %2 = call i32 @llvm.r600.read.local.size.x()
   %3 = call i32 @get_group_id(i32 0)
   %4 = sub i32 %textLength, %patternLength
   %5 = add i32 %4, 1
@@ -193,20 +193,34 @@ define void @StringSearchNaive(i8 addrspace(1)* %text, i32 %textLength, i8 addrs
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
-declare i32 @get_local_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.x() #1
 
-declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.z() #1
+
+declare i32 @get_group_id(i32) #2
+
+declare void @barrier(i32) #2
+
+declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #2
 
 ; Function Attrs: nounwind
 define void @StringSearchLoadBalance(i8 addrspace(1)* %text, i32 %textLength, i8 addrspace(1)* %pattern, i32 %patternLength, i32 addrspace(1)* %resultBuffer, i32 addrspace(1)* %resultCountPerWG, i32 %maxSearchLength, i8 addrspace(3)* %localPattern, i32 addrspace(3)* %stack1) #0 {
-  %1 = call i32 @get_local_id(i32 0)
-  %2 = call i32 @get_local_size(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
+  %2 = call i32 @llvm.r600.read.local.size.x()
   %3 = call i32 @get_group_id(i32 0)
   %4 = icmp eq i32 %1, 0
   br i1 %4, label %5, label %6
@@ -469,10 +483,11 @@ define void @StringSearchLoadBalance(i8 addrspace(1)* %text, i32 %textLength, i8
   ret void
 }
 
-declare i32 @_Z10atomic_subPVU3AS3jj(i32 addrspace(3)*, i32) #1
+declare i32 @_Z10atomic_subPVU3AS3jj(i32 addrspace(3)*, i32) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0, !1}
 !llvm.ident = !{!2}

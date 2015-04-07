@@ -771,9 +771,9 @@ define void @calPriceVega(%struct._MonteCalroAttrib* byval %attrib, i32 %noOfSum
   %18 = getelementptr inbounds %struct._MonteCalroAttrib* %attrib, i32 0, i32 6
   %19 = load <4 x float>* %18, align 16
   store <4 x float> %19, <4 x float>* %timeStep, align 16
-  %20 = call i32 @get_global_id(i32 0)
+  %20 = call i32 @llvm.r600.read.tgid.x()
   store i32 %20, i32* %xPos, align 4
-  %21 = call i32 @get_global_id(i32 1)
+  %21 = call i32 @llvm.r600.read.tgid.y()
   store i32 %21, i32* %yPos, align 4
   store <4 x float> zeroinitializer, <4 x float>* %temp, align 16
   store <4 x float> zeroinitializer, <4 x float>* %price1, align 16
@@ -974,7 +974,9 @@ define void @calPriceVega(%struct._MonteCalroAttrib* byval %attrib, i32 %noOfSum
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 declare <4 x float> @_Z3expDv4_f(<4 x float>) #1
 

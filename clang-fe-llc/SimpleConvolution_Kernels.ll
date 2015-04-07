@@ -32,7 +32,7 @@ define void @simpleConvolution(i32 addrspace(1)* %output, i32 addrspace(1)* %inp
   store float addrspace(1)* %mask, float addrspace(1)** %3, align 4
   store <2 x i32> %inputDimensions, <2 x i32>* %4, align 8
   store <2 x i32> %maskDimensions, <2 x i32>* %5, align 8
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   store i32 %6, i32* %tid, align 4
   %7 = load <2 x i32>* %4, align 8
   %8 = extractelement <2 x i32> %7, i32 0
@@ -224,7 +224,9 @@ define void @simpleConvolution(i32 addrspace(1)* %output, i32 addrspace(1)* %inp
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }

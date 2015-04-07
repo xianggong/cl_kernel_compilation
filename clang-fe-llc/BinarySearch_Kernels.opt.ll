@@ -4,7 +4,7 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @binarySearch(<4 x i32> addrspace(1)* %outputArray, i32 addrspace(1)* %sortedArray, i32 %subdivSize, i32 %globalLowerIndex, i32 %findMe) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = mul i32 %1, %subdivSize
   %3 = add i32 %globalLowerIndex, %2
   %4 = getelementptr inbounds i32 addrspace(1)* %sortedArray, i32 %3
@@ -40,11 +40,18 @@ define void @binarySearch(<4 x i32> addrspace(1)* %outputArray, i32 addrspace(1)
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
 ; Function Attrs: nounwind
 define void @binarySearch_mulkeys(i32 addrspace(1)* %keys, i32 addrspace(1)* %input, i32 %numKeys, i32 addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = mul nsw i32 %1, 256
   %3 = add nsw i32 %2, 255
   br label %4
@@ -88,13 +95,13 @@ define void @binarySearch_mulkeys(i32 addrspace(1)* %keys, i32 addrspace(1)* %in
 
 ; Function Attrs: nounwind
 define void @binarySearch_mulkeysConcurrent(i32 addrspace(1)* %keys, i32 addrspace(1)* %input, i32 %inputSize, i32 %numSubdivisions, i32 addrspace(1)* %output) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = urem i32 %1, %numSubdivisions
   %3 = udiv i32 %inputSize, %numSubdivisions
   %4 = mul i32 %2, %3
   %5 = udiv i32 %inputSize, %numSubdivisions
   %6 = add i32 %4, %5
-  %7 = call i32 @get_global_id(i32 0)
+  %7 = call i32 @llvm.r600.read.tgid.x()
   %8 = udiv i32 %7, %numSubdivisions
   %9 = getelementptr inbounds i32 addrspace(1)* %keys, i32 %8
   %10 = load i32 addrspace(1)* %9, align 4
@@ -115,7 +122,7 @@ define void @binarySearch_mulkeysConcurrent(i32 addrspace(1)* %keys, i32 addrspa
   br i1 %18, label %19, label %23
 
 ; <label>:19                                      ; preds = %13
-  %20 = call i32 @get_global_id(i32 0)
+  %20 = call i32 @llvm.r600.read.tgid.x()
   %21 = udiv i32 %20, %numSubdivisions
   %22 = getelementptr inbounds i32 addrspace(1)* %output, i32 %21
   store i32 %15, i32 addrspace(1)* %22, align 4
@@ -148,7 +155,7 @@ define void @binarySearch_mulkeysConcurrent(i32 addrspace(1)* %keys, i32 addrspa
 }
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
 
 !opencl.kernels = !{!0, !1, !2}
 !llvm.ident = !{!3}

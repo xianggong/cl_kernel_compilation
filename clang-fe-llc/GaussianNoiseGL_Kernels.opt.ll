@@ -9,18 +9,18 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @gaussian_transform(<4 x i8> addrspace(1)* %inputImage, %opencl.image2d_t* %outputImage, i32 %factor) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_size(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.global.size.x()
   %3 = mul i32 2, %2
-  %4 = call i32 @get_global_id(i32 1)
+  %4 = call i32 @llvm.r600.read.tgid.y()
   %5 = mul i32 %3, %4
   %6 = add i32 %1, %5
-  %7 = call i32 @get_global_id(i32 0)
-  %8 = call i32 @get_global_size(i32 0)
+  %7 = call i32 @llvm.r600.read.tgid.x()
+  %8 = call i32 @llvm.r600.read.global.size.x()
   %9 = add i32 %7, %8
-  %10 = call i32 @get_global_size(i32 0)
+  %10 = call i32 @llvm.r600.read.global.size.x()
   %11 = mul i32 2, %10
-  %12 = call i32 @get_global_id(i32 1)
+  %12 = call i32 @llvm.r600.read.tgid.y()
   %13 = mul i32 %11, %12
   %14 = add i32 %9, %13
   %15 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %6
@@ -68,35 +68,50 @@ define void @gaussian_transform(<4 x i8> addrspace(1)* %inputImage, %opencl.imag
   %57 = shufflevector <4 x float> %56, <4 x float> undef, <4 x i32> zeroinitializer
   %58 = fadd <4 x float> %20, %57
   %59 = fdiv <4 x float> %58, <float 2.550000e+02, float 2.550000e+02, float 2.550000e+02, float 2.550000e+02>, !fpmath !2
-  %60 = call i32 @get_global_id(i32 0)
+  %60 = call i32 @llvm.r600.read.tgid.x()
   %61 = insertelement <2 x i32> undef, i32 %60, i32 0
-  %62 = call i32 @get_global_id(i32 1)
+  %62 = call i32 @llvm.r600.read.tgid.y()
   %63 = insertelement <2 x i32> %61, i32 %62, i32 1
-  %64 = call i32 @get_global_id(i32 0)
-  %65 = call i32 @get_global_size(i32 0)
+  %64 = call i32 @llvm.r600.read.tgid.x()
+  %65 = call i32 @llvm.r600.read.global.size.x()
   %66 = add i32 %64, %65
   %67 = insertelement <2 x i32> undef, i32 %66, i32 0
-  %68 = call i32 @get_global_id(i32 1)
+  %68 = call i32 @llvm.r600.read.tgid.y()
   %69 = insertelement <2 x i32> %67, i32 %68, i32 1
   %70 = call i32 bitcast (i32 (...)* @write_imagef to i32 (%opencl.image2d_t*, <2 x i32>, <4 x float>)*)(%opencl.image2d_t* %outputImage, <2 x i32> %63, <4 x float> %52)
   %71 = call i32 bitcast (i32 (...)* @write_imagef to i32 (%opencl.image2d_t*, <2 x i32>, <4 x float>)*)(%opencl.image2d_t* %outputImage, <2 x i32> %69, <4 x float> %59)
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @get_global_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare <4 x float> @_Z14convert_float4Dv4_h(<4 x i8>) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare float @ran1(i32, i32 addrspace(3)*) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.x() #1
 
-declare <2 x float> @BoxMuller(<2 x float>) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.y() #1
 
-declare i32 @write_imagef(...) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.z() #1
+
+declare <4 x float> @_Z14convert_float4Dv4_h(<4 x i8>) #2
+
+declare float @ran1(i32, i32 addrspace(3)*) #2
+
+declare <2 x float> @BoxMuller(<2 x float>) #2
+
+declare i32 @write_imagef(...) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0}
 !llvm.ident = !{!1}

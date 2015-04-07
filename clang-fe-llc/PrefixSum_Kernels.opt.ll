@@ -4,8 +4,8 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @group_prefixSum(float addrspace(1)* %output, float addrspace(1)* %input, float addrspace(3)* %block, i32 %length, i32 %idxOffset) #0 {
-  %1 = call i32 @get_local_id(i32 0)
-  %2 = call i32 @get_local_size(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
+  %2 = call i32 @llvm.r600.read.local.size.x()
   %3 = call i32 @get_group_id(i32 0)
   %4 = mul nsw i32 %3, %2
   %5 = add nsw i32 %4, %1
@@ -158,17 +158,31 @@ define void @group_prefixSum(float addrspace(1)* %output, float addrspace(1)* %i
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
-declare i32 @get_local_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.z() #1
+
+declare i32 @get_group_id(i32) #2
+
+declare void @barrier(i32) #2
 
 ; Function Attrs: nounwind
 define void @global_prefixSum(float addrspace(1)* %buffer, i32 %offset, i32 %length) #0 {
-  %1 = call i32 @get_local_size(i32 0)
+  %1 = call i32 @llvm.r600.read.local.size.x()
   %2 = call i32 @get_group_id(i32 0)
   %3 = udiv i32 %offset, %1
   %4 = shl i32 %offset, 1
@@ -178,7 +192,7 @@ define void @global_prefixSum(float addrspace(1)* %buffer, i32 %offset, i32 %len
   %8 = mul i32 %7, %3
   %9 = add i32 %2, %8
   %10 = mul nsw i32 %9, %1
-  %11 = call i32 @get_local_id(i32 0)
+  %11 = call i32 @llvm.r600.read.tidig.x()
   %12 = add i32 %10, %11
   %13 = add nsw i32 %12, 1
   %14 = urem i32 %13, %offset
@@ -206,7 +220,8 @@ define void @global_prefixSum(float addrspace(1)* %buffer, i32 %offset, i32 %len
 }
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0, !1}
 !llvm.ident = !{!2}

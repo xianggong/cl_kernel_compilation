@@ -5,7 +5,7 @@ target triple = "r600--"
 ; Function Attrs: nounwind
 define void @mandelbrot_vector_float(<4 x i8> addrspace(1)* %mandelbrotImage, float %posx, float %posy, float %stepSizeX, float %stepSizeY, i32 %maxIterations, i32 %width, i32 %bench) #0 {
   %color = alloca [4 x <4 x i8>], align 4
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = sdiv i32 %width, 4
   %3 = srem i32 %1, %2
   %4 = sdiv i32 %width, 4
@@ -1168,23 +1168,30 @@ define void @mandelbrot_vector_float(<4 x i8> addrspace(1)* %mandelbrotImage, fl
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
 ; Function Attrs: nounwind readnone
-declare float @llvm.fmuladd.f32(float, float, float) #2
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare i32 @MUL_ADD(...) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare <4 x float> @_Z14convert_float4Dv4_i(<4 x i32>) #1
+; Function Attrs: nounwind readnone
+declare float @llvm.fmuladd.f32(float, float, float) #1
+
+declare i32 @MUL_ADD(...) #2
+
+declare <4 x float> @_Z14convert_float4Dv4_i(<4 x i32>) #2
 
 ; Function Attrs: nounwind readonly
 declare float @llvm.log2.f32(float) #3
 
-declare float @_Z3cosf(float) #1
+declare float @_Z3cosf(float) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind readnone }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #3 = { nounwind readonly }
 
 !opencl.kernels = !{!0}

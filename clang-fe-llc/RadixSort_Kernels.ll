@@ -19,16 +19,16 @@ define void @histogram(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %bucke
   store i32 addrspace(1)* %buckets, i32 addrspace(1)** %2, align 4
   store i32 %shiftCount, i32* %3, align 4
   store i32 addrspace(3)* %sharedArray, i32 addrspace(3)** %4, align 4
-  %5 = call i32 @get_local_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tidig.x()
   store i32 %5, i32* %localId, align 4
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   store i32 %6, i32* %globalId, align 4
   %7 = call i32 @get_group_id(i32 0)
   store i32 %7, i32* %groupId, align 4
-  %8 = call i32 @get_local_size(i32 0)
+  %8 = call i32 @llvm.r600.read.local.size.x()
   store i32 %8, i32* %groupSize, align 4
-  %9 = call i32 @get_global_size(i32 0)
-  %10 = call i32 @get_local_size(i32 0)
+  %9 = call i32 @llvm.r600.read.global.size.x()
+  %10 = call i32 @llvm.r600.read.local.size.x()
   %11 = udiv i32 %9, %10
   store i32 %11, i32* %numGroups, align 4
   %12 = load i32* %localId, align 4
@@ -69,15 +69,23 @@ define void @histogram(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %bucke
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 declare i32 @get_group_id(i32) #1
 
-declare i32 @get_local_size(i32) #1
+declare i32 @llvm.r600.read.local.size.x() #1
+declare i32 @llvm.r600.read.local.size.y() #1
+declare i32 @llvm.r600.read.local.size.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
 declare void @barrier(i32) #1
 
@@ -106,11 +114,11 @@ define void @permute(i32 addrspace(1)* %unsortedData, i32 addrspace(1)* %scanedB
   store i32 addrspace(1)* %sortedData, i32 addrspace(1)** %5, align 4
   %6 = call i32 @get_group_id(i32 0)
   store i32 %6, i32* %groupId, align 4
-  %7 = call i32 @get_local_id(i32 0)
+  %7 = call i32 @llvm.r600.read.tidig.x()
   store i32 %7, i32* %localId, align 4
-  %8 = call i32 @get_global_id(i32 0)
+  %8 = call i32 @llvm.r600.read.tgid.x()
   store i32 %8, i32* %globalId, align 4
-  %9 = call i32 @get_local_size(i32 0)
+  %9 = call i32 @llvm.r600.read.local.size.x()
   store i32 %9, i32* %groupSize, align 4
   store i32 0, i32* %i, align 4
   br label %10
@@ -244,13 +252,13 @@ define void @ScanArraysdim2(i32 addrspace(1)* %output, i32 addrspace(1)* %input,
   store i32 %block_size, i32* %4, align 4
   store i32 %stride, i32* %5, align 4
   store i32 addrspace(1)* %sumBuffer, i32 addrspace(1)** %6, align 4
-  %7 = call i32 @get_local_id(i32 0)
+  %7 = call i32 @llvm.r600.read.tidig.x()
   store i32 %7, i32* %tidx, align 4
-  %8 = call i32 @get_local_id(i32 1)
+  %8 = call i32 @llvm.r600.read.tidig.y()
   store i32 %8, i32* %tidy, align 4
-  %9 = call i32 @get_global_id(i32 0)
+  %9 = call i32 @llvm.r600.read.tgid.x()
   store i32 %9, i32* %gidx, align 4
-  %10 = call i32 @get_global_id(i32 1)
+  %10 = call i32 @llvm.r600.read.tgid.y()
   store i32 %10, i32* %gidy, align 4
   %11 = call i32 @get_group_id(i32 0)
   store i32 %11, i32* %bidx, align 4
@@ -268,7 +276,7 @@ define void @ScanArraysdim2(i32 addrspace(1)* %output, i32 addrspace(1)* %input,
   %21 = add nsw i32 %19, %20
   store i32 %21, i32* %gpos, align 4
   %22 = load i32* %bidy, align 4
-  %23 = call i32 @get_global_size(i32 0)
+  %23 = call i32 @llvm.r600.read.global.size.x()
   %24 = load i32* %4, align 4
   %25 = udiv i32 %23, %24
   %26 = mul i32 %22, %25
@@ -386,9 +394,9 @@ define void @ScanArraysdim1(i32 addrspace(1)* %output, i32 addrspace(1)* %input,
   store i32 addrspace(1)* %input, i32 addrspace(1)** %2, align 4
   store i32 addrspace(3)* %block, i32 addrspace(3)** %3, align 4
   store i32 %block_size, i32* %4, align 4
-  %5 = call i32 @get_local_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tidig.x()
   store i32 %5, i32* %tid, align 4
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   store i32 %6, i32* %gid, align 4
   %7 = call i32 @get_group_id(i32 0)
   store i32 %7, i32* %bid, align 4
@@ -492,9 +500,9 @@ define void @prefixSum(i32 addrspace(1)* %output, i32 addrspace(1)* %input, i32 
   store i32 addrspace(1)* %input, i32 addrspace(1)** %2, align 4
   store i32 addrspace(1)* %summary, i32 addrspace(1)** %3, align 4
   store i32 %stride, i32* %4, align 4
-  %5 = call i32 @get_global_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tgid.x()
   store i32 %5, i32* %gidx, align 4
-  %6 = call i32 @get_global_id(i32 1)
+  %6 = call i32 @llvm.r600.read.tgid.y()
   store i32 %6, i32* %gidy, align 4
   %7 = load i32* %gidy, align 4
   %8 = load i32* %4, align 4
@@ -593,9 +601,9 @@ define void @blockAddition(i32 addrspace(1)* %input, i32 addrspace(1)* %output, 
   store i32 addrspace(1)* %input, i32 addrspace(1)** %1, align 4
   store i32 addrspace(1)* %output, i32 addrspace(1)** %2, align 4
   store i32 %stride, i32* %3, align 4
-  %4 = call i32 @get_global_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tgid.x()
   store i32 %4, i32* %gidx, align 4
-  %5 = call i32 @get_global_id(i32 1)
+  %5 = call i32 @llvm.r600.read.tgid.y()
   store i32 %5, i32* %gidy, align 4
   %6 = call i32 @get_group_id(i32 0)
   store i32 %6, i32* %bidx, align 4
@@ -636,9 +644,9 @@ define void @FixOffset(i32 addrspace(1)* %input, i32 addrspace(1)* %output) #0 {
   %gpos = alloca i32, align 4
   store i32 addrspace(1)* %input, i32 addrspace(1)** %1, align 4
   store i32 addrspace(1)* %output, i32 addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %gidx, align 4
-  %4 = call i32 @get_global_id(i32 1)
+  %4 = call i32 @llvm.r600.read.tgid.y()
   store i32 %4, i32* %gidy, align 4
   %5 = load i32* %gidy, align 4
   %6 = load i32* %gidx, align 4

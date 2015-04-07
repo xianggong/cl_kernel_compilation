@@ -13,11 +13,11 @@ define void @blockAddition(float addrspace(1)* %input, float addrspace(1)* %outp
   %localId = alloca i32, align 4
   store float addrspace(1)* %input, float addrspace(1)** %1, align 4
   store float addrspace(1)* %output, float addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %globalId, align 4
   %4 = call i32 @get_group_id(i32 0)
   store i32 %4, i32* %groupId, align 4
-  %5 = call i32 @get_local_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tidig.x()
   store i32 %5, i32* %localId, align 4
   %6 = load i32* %localId, align 4
   %7 = icmp eq i32 %6, 0
@@ -43,11 +43,15 @@ define void @blockAddition(float addrspace(1)* %input, float addrspace(1)* %outp
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 declare i32 @get_group_id(i32) #1
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 declare void @barrier(i32) #1
 
@@ -69,9 +73,9 @@ define void @ScanLargeArrays(float addrspace(1)* %output, float addrspace(1)* %i
   store float addrspace(3)* %block, float addrspace(3)** %3, align 4
   store i32 %block_size, i32* %4, align 4
   store float addrspace(1)* %sumBuffer, float addrspace(1)** %5, align 4
-  %6 = call i32 @get_local_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tidig.x()
   store i32 %6, i32* %tid, align 4
-  %7 = call i32 @get_global_id(i32 0)
+  %7 = call i32 @llvm.r600.read.tgid.x()
   store i32 %7, i32* %gid, align 4
   %8 = call i32 @get_group_id(i32 0)
   store i32 %8, i32* %bid, align 4
@@ -259,9 +263,9 @@ define void @prefixSum(float addrspace(1)* %output, float addrspace(1)* %input, 
   store float addrspace(1)* %input, float addrspace(1)** %2, align 4
   store float addrspace(3)* %block, float addrspace(3)** %3, align 4
   store i32 %block_size, i32* %4, align 4
-  %5 = call i32 @get_local_id(i32 0)
+  %5 = call i32 @llvm.r600.read.tidig.x()
   store i32 %5, i32* %tid, align 4
-  %6 = call i32 @get_global_id(i32 0)
+  %6 = call i32 @llvm.r600.read.tgid.x()
   store i32 %6, i32* %gid, align 4
   %7 = call i32 @get_group_id(i32 0)
   store i32 %7, i32* %bid, align 4

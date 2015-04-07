@@ -10,7 +10,7 @@ define void @debugKernel(float addrspace(1)* %inputbuffer, float addrspace(1)* %
   %value = alloca i32, align 4
   store float addrspace(1)* %inputbuffer, float addrspace(1)** %1, align 4
   store float addrspace(1)* %outputbuffer, float addrspace(1)** %2, align 4
-  %3 = call i32 @get_global_id(i32 0)
+  %3 = call i32 @llvm.r600.read.tgid.x()
   store i32 %3, i32* %globalID, align 4
   store i32 0, i32* %value, align 4
   %4 = load i32* %globalID, align 4
@@ -28,7 +28,9 @@ define void @debugKernel(float addrspace(1)* %inputbuffer, float addrspace(1)* %
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }

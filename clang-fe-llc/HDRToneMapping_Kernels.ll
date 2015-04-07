@@ -63,9 +63,9 @@ define void @toneMappingPattanaik1(float addrspace(1)* %input, float addrspace(1
   store i32 %width, i32* %7, align 4
   store i32 %numChannels, i32* %8, align 4
   store i32 %height, i32* %9, align 4
-  %10 = call i32 @get_global_id(i32 0)
+  %10 = call i32 @llvm.r600.read.tgid.x()
   store i32 %10, i32* %globalIdX, align 4
-  %11 = call i32 @get_global_id(i32 1)
+  %11 = call i32 @llvm.r600.read.tgid.y()
   store i32 %11, i32* %globalIdY, align 4
   store float 0.000000e+00, float* %yLuminance, align 4
   store float 0.000000e+00, float* %cLPattanaik, align 4
@@ -751,9 +751,9 @@ define void @toneMappingPattanaik(<4 x float> addrspace(1)* %input, <4 x float> 
   store i32 %width, i32* %7, align 4
   store i32 %numChannels, i32* %8, align 4
   store i32 %height, i32* %9, align 4
-  %10 = call i32 @get_global_id(i32 0)
+  %10 = call i32 @llvm.r600.read.tgid.x()
   store i32 %10, i32* %globalIdX, align 4
-  %11 = call i32 @get_global_id(i32 1)
+  %11 = call i32 @llvm.r600.read.tgid.y()
   store i32 %11, i32* %globalIdY, align 4
   store float 0.000000e+00, float* %yLuminance, align 4
   store float 0.000000e+00, float* %cLPattanaik, align 4

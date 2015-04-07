@@ -29,7 +29,7 @@ define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i3
 
 ; <label>:9                                       ; preds = %0
   store i32 0, i32* %pcount, align 4
-  %10 = call i32 @get_local_id(i32 0)
+  %10 = call i32 @llvm.r600.read.tidig.x()
   %11 = icmp eq i32 %10, 0
   br i1 %11, label %12, label %13
 
@@ -50,7 +50,7 @@ define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i3
 
 ; <label>:18                                      ; preds = %14
   store i32 0, i32* %i, align 4
-  %19 = call i32 @get_global_id(i32 0)
+  %19 = call i32 @llvm.r600.read.tgid.x()
   store i32 %19, i32* %idx, align 4
   br label %20
 
@@ -131,7 +131,7 @@ define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i3
   %70 = load i32* %i, align 4
   %71 = add i32 %70, 1
   store i32 %71, i32* %i, align 4
-  %72 = call i32 @get_global_size(i32 0)
+  %72 = call i32 @llvm.r600.read.global.size.x()
   %73 = load i32* %idx, align 4
   %74 = add i32 %73, %72
   store i32 %74, i32* %idx, align 4
@@ -150,7 +150,7 @@ define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i3
   %80 = load i32* %pcount, align 4
   %81 = call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @read_kernel.lcount, i32 %80)
   call void @barrier(i32 1)
-  %82 = call i32 @get_local_id(i32 0)
+  %82 = call i32 @llvm.r600.read.tidig.x()
   %83 = icmp eq i32 %82, 0
   br i1 %83, label %84, label %91
 
@@ -168,13 +168,19 @@ define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i3
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 declare void @barrier(i32) #1
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare i32 @llvm.r600.read.global.size.x() #1
+declare i32 @llvm.r600.read.global.size.y() #1
+declare i32 @llvm.r600.read.global.size.z() #1
 
 declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #1
 
@@ -227,7 +233,7 @@ define void @write_kernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i
 
 ; <label>:24                                      ; preds = %20
   store i32 0, i32* %i, align 4
-  %25 = call i32 @get_global_id(i32 0)
+  %25 = call i32 @llvm.r600.read.tgid.x()
   store i32 %25, i32* %idx, align 4
   br label %26
 
@@ -249,7 +255,7 @@ define void @write_kernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i
   %36 = load i32* %i, align 4
   %37 = add i32 %36, 1
   store i32 %37, i32* %i, align 4
-  %38 = call i32 @get_global_size(i32 0)
+  %38 = call i32 @llvm.r600.read.global.size.x()
   %39 = load i32* %idx, align 4
   %40 = add i32 %39, %38
   store i32 %40, i32* %idx, align 4

@@ -6,9 +6,9 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
-  %1 = call i32 @get_local_id(i32 0)
-  %2 = call i32 @get_local_id(i32 1)
-  %3 = call i32 @get_local_size(i32 0)
+  %1 = call i32 @llvm.r600.read.tidig.x()
+  %2 = call i32 @llvm.r600.read.tidig.y()
+  %3 = call i32 @llvm.r600.read.local.size.x()
   %4 = mul i32 %2, %3
   %5 = add i32 %1, %4
   br label %6
@@ -80,15 +80,29 @@ define float @ran1(i32 %idum, i32 addrspace(3)* %iv) #0 {
   ret float %47
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
-declare i32 @get_local_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.z() #1
 
 ; Function Attrs: nounwind
 define void @noise_uniform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspace(1)* %outputImage, i32 %factor) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_global_id(i32 1)
-  %3 = call i32 @get_global_size(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tgid.y()
+  %3 = call i32 @llvm.r600.read.global.size.x()
   %4 = mul i32 %2, %3
   %5 = add i32 %1, %4
   %6 = getelementptr inbounds <4 x i8> addrspace(1)* %inputImage, i32 %5
@@ -117,16 +131,31 @@ define void @noise_uniform(<4 x i8> addrspace(1)* %inputImage, <4 x i8> addrspac
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @get_global_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare <4 x float> @_Z14convert_float4Dv4_h(<4 x i8>) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float>) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.z() #1
+
+declare <4 x float> @_Z14convert_float4Dv4_h(<4 x i8>) #2
+
+declare <4 x i8> @_Z18convert_uchar4_satDv4_f(<4 x float>) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0}
 !llvm.ident = !{!1}

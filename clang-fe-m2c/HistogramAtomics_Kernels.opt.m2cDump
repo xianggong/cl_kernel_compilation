@@ -1,14 +1,37 @@
+Function histogramKernel_Vector
+Num of basic block = 17
+BasicBlock name
+BasicBlock nametmp_11
+BasicBlock nametmp_16
+BasicBlock nametmp_20
+BasicBlock nametmp_24
+BasicBlock nametmp_25
+BasicBlock nametmp_29
+BasicBlock nametmp_136
+BasicBlock nametmp_139
+BasicBlock nametmp_141
+BasicBlock nametmp_144
+BasicBlock nametmp_146
+BasicBlock nametmp_149
+BasicBlock nametmp_159
+BasicBlock nametmp_164
+BasicBlock nametmp_172
+BasicBlock nametmp_176
+var_name = tmp_4
+var_name = tmp_5
+var_name = tmp_6
+var_name = tmp_7
 [31m
 Panic: LLVM opcode not supported (17 urem)
 
 Call stack:
-[1] m2c() [0x458c60]
-[2] m2c() [0x440370]
-[3] m2c() [0x43a966]
-[4] m2c() [0x420ab1]
-[5] m2c() [0x420ec9]
-[6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2ae60c78eec5]
-[7] m2c() [0x4204b2]
+[1] m2c() [0x458de8]
+[2] m2c() [0x4404c0]
+[3] m2c() [0x43aa96]
+[4] m2c() [0x420b71]
+[5] m2c() [0x420f89]
+[6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b5d276c2ec5]
+[7] m2c() [0x420572]
 
 
 [m

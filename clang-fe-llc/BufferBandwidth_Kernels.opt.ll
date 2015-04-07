@@ -13,7 +13,7 @@ define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i3
   br label %59
 
 ; <label>:3                                       ; preds = %0
-  %4 = call i32 @get_local_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tidig.x()
   %5 = icmp eq i32 %4, 0
   br i1 %5, label %6, label %7
 
@@ -32,7 +32,7 @@ define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i3
   br i1 %9, label %10, label %50
 
 ; <label>:10                                      ; preds = %8
-  %11 = call i32 @get_global_id(i32 0)
+  %11 = call i32 @llvm.r600.read.tgid.x()
   br label %12
 
 ; <label>:12                                      ; preds = %43, %10
@@ -95,7 +95,7 @@ define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i3
 
 ; <label>:43                                      ; preds = %42
   %44 = add i32 %i.0, 1
-  %45 = call i32 @get_global_size(i32 0)
+  %45 = call i32 @llvm.r600.read.global.size.x()
   %46 = add i32 %idx.0, %45
   br label %12
 
@@ -109,7 +109,7 @@ define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i3
 ; <label>:50                                      ; preds = %8
   %51 = call i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)* @read_kernel.lcount, i32 %pcount.0)
   call void @barrier(i32 1)
-  %52 = call i32 @get_local_id(i32 0)
+  %52 = call i32 @llvm.r600.read.tidig.x()
   %53 = icmp eq i32 %52, 0
   br i1 %53, label %54, label %59
 
@@ -125,17 +125,38 @@ define void @read_kernel(<4 x i32> addrspace(1)* %in, i32 addrspace(1)* %out, i3
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare i32 @get_global_size(i32) #1
+declare void @barrier(i32) #2
 
-declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.z() #1
+
+declare i32 @_Z10atomic_addPVU3AS3jj(i32 addrspace(3)*, i32) #2
+
+declare i32 @get_group_id(i32) #2
 
 ; Function Attrs: nounwind
 define void @write_kernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i32 %ni, i32 %val, i32 %nk) #0 {
@@ -158,7 +179,7 @@ define void @write_kernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i
   br i1 %9, label %10, label %23
 
 ; <label>:10                                      ; preds = %8
-  %11 = call i32 @get_global_id(i32 0)
+  %11 = call i32 @llvm.r600.read.tgid.x()
   br label %12
 
 ; <label>:12                                      ; preds = %16, %10
@@ -174,7 +195,7 @@ define void @write_kernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i
 
 ; <label>:16                                      ; preds = %14
   %17 = add i32 %i.0, 1
-  %18 = call i32 @get_global_size(i32 0)
+  %18 = call i32 @llvm.r600.read.global.size.x()
   %19 = add i32 %idx.0, %18
   br label %12
 
@@ -190,7 +211,8 @@ define void @write_kernel(i32 addrspace(1)* %in, <4 x i32> addrspace(1)* %out, i
 }
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0, !1}
 !llvm.ident = !{!2}

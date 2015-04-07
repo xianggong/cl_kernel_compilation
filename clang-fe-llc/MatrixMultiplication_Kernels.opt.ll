@@ -4,9 +4,9 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @mmmKernel(<4 x float> addrspace(1)* %matrixA, <4 x float> addrspace(1)* %matrixB, <4 x float> addrspace(1)* %matrixC, i32 %widthA, i32 %widthB) #0 {
-  %1 = call i32 @get_global_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
   %2 = insertelement <2 x i32> undef, i32 %1, i32 0
-  %3 = call i32 @get_global_id(i32 1)
+  %3 = call i32 @llvm.r600.read.tgid.y()
   %4 = insertelement <2 x i32> %2, i32 %3, i32 1
   %5 = udiv i32 %widthB, 4
   br label %6
@@ -361,23 +361,30 @@ define void @mmmKernel(<4 x float> addrspace(1)* %matrixA, <4 x float> addrspace
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
 ; Function Attrs: nounwind readnone
-declare float @llvm.fmuladd.f32(float, float, float) #2
+declare i32 @llvm.r600.read.tgid.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
+
+; Function Attrs: nounwind readnone
+declare float @llvm.fmuladd.f32(float, float, float) #1
 
 ; Function Attrs: nounwind
 define void @mmmKernel_local(<4 x float> addrspace(1)* %matrixA, <4 x float> addrspace(1)* %matrixB, <4 x float> addrspace(1)* %matrixC, i32 %widthA, <4 x float> addrspace(3)* %blockA) #0 {
-  %1 = call i32 @get_local_id(i32 0)
-  %2 = call i32 @get_local_size(i32 0)
-  %3 = call i32 @get_local_id(i32 1)
+  %1 = call i32 @llvm.r600.read.tidig.x()
+  %2 = call i32 @llvm.r600.read.local.size.x()
+  %3 = call i32 @llvm.r600.read.tidig.y()
   %4 = shl i32 %3, 2
   %5 = mul i32 %2, %4
   %6 = add i32 %1, %5
-  %7 = call i32 @get_global_id(i32 0)
-  %8 = call i32 @get_global_id(i32 1)
+  %7 = call i32 @llvm.r600.read.tgid.x()
+  %8 = call i32 @llvm.r600.read.tgid.y()
   %9 = shl i32 %8, 2
-  %10 = call i32 @get_global_size(i32 0)
+  %10 = call i32 @llvm.r600.read.global.size.x()
   %11 = mul i32 %9, %10
   %12 = add i32 %7, %11
   %13 = sdiv i32 %widthA, 4
@@ -389,17 +396,17 @@ define void @mmmKernel_local(<4 x float> addrspace(1)* %matrixA, <4 x float> add
   %sum2.0 = phi <4 x float> [ zeroinitializer, %0 ], [ %sum2.1, %365 ]
   %sum3.0 = phi <4 x float> [ zeroinitializer, %0 ], [ %sum3.1, %365 ]
   %i.0 = phi i32 [ 0, %0 ], [ %366, %365 ]
-  %15 = call i32 @get_local_size(i32 0)
+  %15 = call i32 @llvm.r600.read.local.size.x()
   %16 = udiv i32 %13, %15
   %17 = icmp ult i32 %i.0, %16
   br i1 %17, label %18, label %367
 
 ; <label>:18                                      ; preds = %14
-  %19 = call i32 @get_local_size(i32 0)
+  %19 = call i32 @llvm.r600.read.local.size.x()
   %20 = mul i32 %i.0, %19
-  %21 = call i32 @get_local_id(i32 0)
+  %21 = call i32 @llvm.r600.read.tidig.x()
   %22 = add i32 %20, %21
-  %23 = call i32 @get_global_id(i32 1)
+  %23 = call i32 @llvm.r600.read.tgid.y()
   %24 = shl i32 %23, 2
   %25 = mul i32 %24, %13
   %26 = add i32 %22, %25
@@ -410,7 +417,7 @@ define void @mmmKernel_local(<4 x float> addrspace(1)* %matrixA, <4 x float> add
   %30 = add nsw i32 %26, %13
   %31 = getelementptr inbounds <4 x float> addrspace(1)* %matrixA, i32 %30
   %32 = load <4 x float> addrspace(1)* %31, align 16
-  %33 = call i32 @get_local_size(i32 0)
+  %33 = call i32 @llvm.r600.read.local.size.x()
   %34 = add i32 %6, %33
   %35 = getelementptr inbounds <4 x float> addrspace(3)* %blockA, i32 %34
   store <4 x float> %32, <4 x float> addrspace(3)* %35, align 16
@@ -418,7 +425,7 @@ define void @mmmKernel_local(<4 x float> addrspace(1)* %matrixA, <4 x float> add
   %37 = add nsw i32 %26, %36
   %38 = getelementptr inbounds <4 x float> addrspace(1)* %matrixA, i32 %37
   %39 = load <4 x float> addrspace(1)* %38, align 16
-  %40 = call i32 @get_local_size(i32 0)
+  %40 = call i32 @llvm.r600.read.local.size.x()
   %41 = mul i32 2, %40
   %42 = add i32 %6, %41
   %43 = getelementptr inbounds <4 x float> addrspace(3)* %blockA, i32 %42
@@ -427,17 +434,17 @@ define void @mmmKernel_local(<4 x float> addrspace(1)* %matrixA, <4 x float> add
   %45 = add nsw i32 %26, %44
   %46 = getelementptr inbounds <4 x float> addrspace(1)* %matrixA, i32 %45
   %47 = load <4 x float> addrspace(1)* %46, align 16
-  %48 = call i32 @get_local_size(i32 0)
+  %48 = call i32 @llvm.r600.read.local.size.x()
   %49 = mul i32 3, %48
   %50 = add i32 %6, %49
   %51 = getelementptr inbounds <4 x float> addrspace(3)* %blockA, i32 %50
   store <4 x float> %47, <4 x float> addrspace(3)* %51, align 16
   call void @barrier(i32 1)
-  %52 = call i32 @get_global_id(i32 0)
-  %53 = call i32 @get_local_size(i32 0)
+  %52 = call i32 @llvm.r600.read.tgid.x()
+  %53 = call i32 @llvm.r600.read.local.size.x()
   %54 = mul i32 %i.0, %53
   %55 = shl i32 %54, 2
-  %56 = call i32 @get_global_size(i32 0)
+  %56 = call i32 @llvm.r600.read.global.size.x()
   %57 = mul i32 %55, %56
   %58 = add i32 %52, %57
   br label %59
@@ -448,66 +455,66 @@ define void @mmmKernel_local(<4 x float> addrspace(1)* %matrixA, <4 x float> add
   %sum2.1 = phi <4 x float> [ %sum2.0, %18 ], [ %301, %362 ]
   %sum3.1 = phi <4 x float> [ %sum3.0, %18 ], [ %361, %362 ]
   %j.0 = phi i32 [ 0, %18 ], [ %363, %362 ]
-  %60 = call i32 @get_local_size(i32 0)
+  %60 = call i32 @llvm.r600.read.local.size.x()
   %61 = mul i32 %60, 4
   %62 = icmp ult i32 %j.0, %61
   br i1 %62, label %63, label %364
 
 ; <label>:63                                      ; preds = %59
   %64 = ashr i32 %j.0, 2
-  %65 = call i32 @get_local_id(i32 1)
+  %65 = call i32 @llvm.r600.read.tidig.y()
   %66 = mul i32 %65, 4
-  %67 = call i32 @get_local_size(i32 0)
+  %67 = call i32 @llvm.r600.read.local.size.x()
   %68 = mul i32 %66, %67
   %69 = add i32 %64, %68
   %70 = getelementptr inbounds <4 x float> addrspace(3)* %blockA, i32 %69
   %71 = load <4 x float> addrspace(3)* %70, align 16
   %72 = ashr i32 %j.0, 2
-  %73 = call i32 @get_local_id(i32 1)
+  %73 = call i32 @llvm.r600.read.tidig.y()
   %74 = mul i32 %73, 4
   %75 = add i32 %74, 1
-  %76 = call i32 @get_local_size(i32 0)
+  %76 = call i32 @llvm.r600.read.local.size.x()
   %77 = mul i32 %75, %76
   %78 = add i32 %72, %77
   %79 = getelementptr inbounds <4 x float> addrspace(3)* %blockA, i32 %78
   %80 = load <4 x float> addrspace(3)* %79, align 16
   %81 = ashr i32 %j.0, 2
-  %82 = call i32 @get_local_id(i32 1)
+  %82 = call i32 @llvm.r600.read.tidig.y()
   %83 = mul i32 %82, 4
   %84 = add i32 %83, 2
-  %85 = call i32 @get_local_size(i32 0)
+  %85 = call i32 @llvm.r600.read.local.size.x()
   %86 = mul i32 %84, %85
   %87 = add i32 %81, %86
   %88 = getelementptr inbounds <4 x float> addrspace(3)* %blockA, i32 %87
   %89 = load <4 x float> addrspace(3)* %88, align 16
   %90 = ashr i32 %j.0, 2
-  %91 = call i32 @get_local_id(i32 1)
+  %91 = call i32 @llvm.r600.read.tidig.y()
   %92 = mul i32 %91, 4
   %93 = add i32 %92, 3
-  %94 = call i32 @get_local_size(i32 0)
+  %94 = call i32 @llvm.r600.read.local.size.x()
   %95 = mul i32 %93, %94
   %96 = add i32 %90, %95
   %97 = getelementptr inbounds <4 x float> addrspace(3)* %blockA, i32 %96
   %98 = load <4 x float> addrspace(3)* %97, align 16
-  %99 = call i32 @get_global_size(i32 0)
+  %99 = call i32 @llvm.r600.read.global.size.x()
   %100 = mul i32 %j.0, %99
   %101 = add i32 %58, %100
   %102 = getelementptr inbounds <4 x float> addrspace(1)* %matrixB, i32 %101
   %103 = load <4 x float> addrspace(1)* %102, align 16
   %104 = add nsw i32 %j.0, 1
-  %105 = call i32 @get_global_size(i32 0)
+  %105 = call i32 @llvm.r600.read.global.size.x()
   %106 = mul i32 %104, %105
   %107 = add i32 %58, %106
   %108 = getelementptr inbounds <4 x float> addrspace(1)* %matrixB, i32 %107
   %109 = load <4 x float> addrspace(1)* %108, align 16
   %110 = add nsw i32 %j.0, 2
-  %111 = call i32 @get_global_size(i32 0)
+  %111 = call i32 @llvm.r600.read.global.size.x()
   %112 = mul i32 %110, %111
   %113 = add i32 %58, %112
   %114 = getelementptr inbounds <4 x float> addrspace(1)* %matrixB, i32 %113
   %115 = load <4 x float> addrspace(1)* %114, align 16
   %116 = add nsw i32 %j.0, 3
-  %117 = call i32 @get_global_size(i32 0)
+  %117 = call i32 @llvm.r600.read.global.size.x()
   %118 = mul i32 %116, %117
   %119 = add i32 %58, %118
   %120 = getelementptr inbounds <4 x float> addrspace(1)* %matrixB, i32 %119
@@ -769,16 +776,16 @@ define void @mmmKernel_local(<4 x float> addrspace(1)* %matrixA, <4 x float> add
 ; <label>:367                                     ; preds = %14
   %368 = getelementptr inbounds <4 x float> addrspace(1)* %matrixC, i32 %12
   store <4 x float> %sum0.0, <4 x float> addrspace(1)* %368, align 16
-  %369 = call i32 @get_global_size(i32 0)
+  %369 = call i32 @llvm.r600.read.global.size.x()
   %370 = add i32 %12, %369
   %371 = getelementptr inbounds <4 x float> addrspace(1)* %matrixC, i32 %370
   store <4 x float> %sum1.0, <4 x float> addrspace(1)* %371, align 16
-  %372 = call i32 @get_global_size(i32 0)
+  %372 = call i32 @llvm.r600.read.global.size.x()
   %373 = mul i32 2, %372
   %374 = add i32 %12, %373
   %375 = getelementptr inbounds <4 x float> addrspace(1)* %matrixC, i32 %374
   store <4 x float> %sum2.0, <4 x float> addrspace(1)* %375, align 16
-  %376 = call i32 @get_global_size(i32 0)
+  %376 = call i32 @llvm.r600.read.global.size.x()
   %377 = mul i32 3, %376
   %378 = add i32 %12, %377
   %379 = getelementptr inbounds <4 x float> addrspace(1)* %matrixC, i32 %378
@@ -786,17 +793,38 @@ define void @mmmKernel_local(<4 x float> addrspace(1)* %matrixA, <4 x float> add
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
 
-declare i32 @get_local_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
 
-declare i32 @get_global_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.global.size.z() #1
+
+declare void @barrier(i32) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind readnone }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !opencl.kernels = !{!0, !1}
 !llvm.ident = !{!2}

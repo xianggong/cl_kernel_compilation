@@ -11,7 +11,7 @@ define void @templateKernel(i32 addrspace(1)* %output, i32 addrspace(1)* %input,
   store i32 addrspace(1)* %output, i32 addrspace(1)** %1, align 4
   store i32 addrspace(1)* %input, i32 addrspace(1)** %2, align 4
   store i32 %multiplier, i32* %3, align 4
-  %4 = call i32 @get_global_id(i32 0)
+  %4 = call i32 @llvm.r600.read.tgid.x()
   store i32 %4, i32* %tid, align 4
   %5 = load i32* %tid, align 4
   %6 = load i32 addrspace(1)** %2, align 4
@@ -26,7 +26,9 @@ define void @templateKernel(i32 addrspace(1)* %output, i32 addrspace(1)* %input,
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }

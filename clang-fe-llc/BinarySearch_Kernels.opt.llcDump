@@ -1,0 +1,13 @@
+LLVM ERROR: Cannot select: 0x1d3c880: i64 = add 0x1d3e6b0, 0x1d3d090 [ORD=57] [ID=20]
+  0x1d3e6b0: i64,ch = CopyFromReg 0x1d02428, 0x1d3efb0 [ORD=54] [ID=14]
+    0x1d3efb0: i64 = Register %vreg17 [ID=3]
+  0x1d3d090: i64 = shl 0x1d3eab0, 0x1d3c780 [ORD=56] [ID=19]
+    0x1d3eab0: i64 = build_pair 0x1d40fe0, 0x1d3d690 [ORD=55] [ID=18]
+      0x1d40fe0: i32,ch = CopyFromReg 0x1d02428, 0x1d3e7b0 [ORD=55] [ID=15]
+        0x1d3e7b0: i32 = Register %vreg0 [ID=4]
+      0x1d3d690: i32 = sra 0x1d40fe0, 0x1d40ee0 [ORD=55] [ID=17]
+        0x1d40fe0: i32,ch = CopyFromReg 0x1d02428, 0x1d3e7b0 [ORD=55] [ID=15]
+          0x1d3e7b0: i32 = Register %vreg0 [ID=4]
+        0x1d40ee0: i32 = Constant<31> [ID=12]
+    0x1d3c780: i32 = Constant<2> [ID=11]
+In function: binarySearch_mulkeys

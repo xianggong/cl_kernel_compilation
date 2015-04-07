@@ -35,13 +35,13 @@ define void @dwtHaar1D(float addrspace(1)* %inSignal, float addrspace(1)* %coefs
   store i32 %signalLength, i32* %6, align 4
   store i32 %levelsDone, i32* %7, align 4
   store i32 %mLevels, i32* %8, align 4
-  %9 = call i32 @get_local_id(i32 0)
+  %9 = call i32 @llvm.r600.read.tidig.x()
   store i32 %9, i32* %localId, align 4
   %10 = call i32 @get_group_id(i32 0)
   store i32 %10, i32* %groupId, align 4
-  %11 = call i32 @get_global_id(i32 0)
+  %11 = call i32 @llvm.r600.read.tgid.x()
   store i32 %11, i32* %globalId, align 4
-  %12 = call i32 @get_local_size(i32 0)
+  %12 = call i32 @llvm.r600.read.local.size.x()
   store i32 %12, i32* %localSize, align 4
   %13 = load i32* %groupId, align 4
   %14 = load i32* %localSize, align 4
@@ -228,13 +228,19 @@ define void @dwtHaar1D(float addrspace(1)* %inSignal, float addrspace(1)* %coefs
   ret void
 }
 
-declare i32 @get_local_id(i32) #1
+declare i32 @llvm.r600.read.tidig.x() #1
+declare i32 @llvm.r600.read.tidig.y() #1
+declare i32 @llvm.r600.read.tidig.z() #1
 
 declare i32 @get_group_id(i32) #1
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
-declare i32 @get_local_size(i32) #1
+declare i32 @llvm.r600.read.local.size.x() #1
+declare i32 @llvm.r600.read.local.size.y() #1
+declare i32 @llvm.r600.read.local.size.z() #1
 
 ; Function Attrs: nounwind readonly
 declare float @llvm.sqrt.f32(float) #2

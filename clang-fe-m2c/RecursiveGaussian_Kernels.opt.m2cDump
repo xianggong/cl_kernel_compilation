@@ -1,15 +1,22 @@
+Function transpose_kernel
+Num of basic block = 1
+BasicBlock name
+var_name = tmp_7
+var_name = tmp_8
+var_name = tmp_9
+var_name = tmp_10
 [31m
 Panic: Only 4-byte int/float types supported
 
 Call stack:
-[1] m2c() [0x453f28]
-[2] m2c() [0x458934]
-[3] m2c() [0x440370]
-[4] m2c() [0x43a966]
-[5] m2c() [0x420ab1]
-[6] m2c() [0x420ec9]
-[7] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b876e7b6ec5]
-[8] m2c() [0x4204b2]
+[1] m2c() [0x4540b0]
+[2] m2c() [0x458abc]
+[3] m2c() [0x4404c0]
+[4] m2c() [0x43aa96]
+[5] m2c() [0x420b71]
+[6] m2c() [0x420f89]
+[7] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5) [0x2b386b7a3ec5]
+[8] m2c() [0x420572]
 
 
 [m

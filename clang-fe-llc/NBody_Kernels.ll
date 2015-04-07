@@ -38,7 +38,7 @@ define void @nbody_sim(<4 x float> addrspace(1)* %pos, <4 x float> addrspace(1)*
   store float %epsSqr, float* %5, align 4
   store <4 x float> addrspace(1)* %newPosition, <4 x float> addrspace(1)** %6, align 4
   store <4 x float> addrspace(1)* %newVelocity, <4 x float> addrspace(1)** %7, align 4
-  %8 = call i32 @get_global_id(i32 0)
+  %8 = call i32 @llvm.r600.read.tgid.x()
   store i32 %8, i32* %gid, align 4
   %9 = load i32* %gid, align 4
   %10 = load <4 x float> addrspace(1)** %1, align 4
@@ -282,7 +282,9 @@ define void @nbody_sim(<4 x float> addrspace(1)* %pos, <4 x float> addrspace(1)*
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+declare i32 @llvm.r600.read.tgid.x() #1
+declare i32 @llvm.r600.read.tgid.y() #1
+declare i32 @llvm.r600.read.tgid.z() #1
 
 ; Function Attrs: nounwind readnone
 declare float @llvm.fmuladd.f32(float, float, float) #2

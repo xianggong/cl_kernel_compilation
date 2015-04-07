@@ -4,8 +4,8 @@ target triple = "r600--"
 
 ; Function Attrs: nounwind
 define void @QuasiRandomSequence_Vector(<4 x float> addrspace(1)* %output, <4 x i32> addrspace(1)* %input, <4 x i32> addrspace(3)* %shared) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_local_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tidig.x()
   %3 = call i32 @get_group_id(i32 0)
   %4 = mul i32 %2, 4
   %5 = insertelement <4 x i32> undef, i32 %4, i32 0
@@ -33,7 +33,7 @@ define void @QuasiRandomSequence_Vector(<4 x float> addrspace(1)* %output, <4 x 
   br label %21
 
 ; <label>:21                                      ; preds = %15
-  %22 = call i32 @get_local_size(i32 0)
+  %22 = call i32 @llvm.r600.read.local.size.x()
   %23 = add i32 %i.0, %22
   br label %13
 
@@ -74,25 +74,46 @@ define void @QuasiRandomSequence_Vector(<4 x float> addrspace(1)* %output, <4 x 
   ret void
 }
 
-declare i32 @get_global_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.x() #1
 
-declare i32 @get_local_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.y() #1
 
-declare i32 @get_group_id(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tgid.z() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.x() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.y() #1
+
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.tidig.z() #1
+
+declare i32 @get_group_id(i32) #2
 
 ; Function Attrs: nounwind readonly
-declare float @llvm.pow.f32(float, float) #2
+declare float @llvm.pow.f32(float, float) #3
 
-declare i32 @get_local_size(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.x() #1
 
-declare void @barrier(i32) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.y() #1
 
-declare <4 x float> @_Z14convert_float4Dv4_j(<4 x i32>) #1
+; Function Attrs: nounwind readnone
+declare i32 @llvm.r600.read.local.size.z() #1
+
+declare void @barrier(i32) #2
+
+declare <4 x float> @_Z14convert_float4Dv4_j(<4 x i32>) #2
 
 ; Function Attrs: nounwind
 define void @QuasiRandomSequence_Scalar(float addrspace(1)* %output, i32 addrspace(1)* %input, i32 addrspace(3)* %shared) #0 {
-  %1 = call i32 @get_global_id(i32 0)
-  %2 = call i32 @get_local_id(i32 0)
+  %1 = call i32 @llvm.r600.read.tgid.x()
+  %2 = call i32 @llvm.r600.read.tidig.x()
   %3 = call i32 @get_group_id(i32 0)
   %4 = call float @llvm.pow.f32(float 2.000000e+00, float 3.200000e+01)
   br label %5
@@ -112,7 +133,7 @@ define void @QuasiRandomSequence_Scalar(float addrspace(1)* %output, i32 addrspa
   br label %13
 
 ; <label>:13                                      ; preds = %7
-  %14 = call i32 @get_local_size(i32 0)
+  %14 = call i32 @llvm.r600.read.local.size.x()
   %15 = add i32 %i.0, %14
   br label %5
 
@@ -148,11 +169,12 @@ define void @QuasiRandomSequence_Scalar(float addrspace(1)* %output, i32 addrspa
   ret void
 }
 
-declare float @_Z13convert_floatj(i32) #1
+declare float @_Z13convert_floatj(i32) #2
 
 attributes #0 = { nounwind "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind readonly }
+attributes #1 = { nounwind readnone }
+attributes #2 = { "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { nounwind readonly }
 
 !opencl.kernels = !{!0, !1}
 !llvm.ident = !{!2}
