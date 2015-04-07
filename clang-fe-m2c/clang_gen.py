@@ -42,14 +42,11 @@ def rename_variable_in_ir_file( file_name ):
                         line = re.sub('(\;\ \<label\>\:)([0-9]+)', r'tmp_\2:', line.rstrip())
                         fo.write(line + '\n')
         
-def runCommand(exe):
-        p = subprocess.Popen(exe, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        while(True):
-                retcode = p.poll() #returns None while subprocess is running
-                line = p.stdout.readline()
-                yield line
-                if(retcode is not None):
-                        break
+def runCommand(command):
+        p = subprocess.Popen(command, 
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.STDOUT)
+        return iter(p.stdout.readline, b'')
 
 for file in os.listdir(kernel_dir):
         if file.endswith(".cl"):

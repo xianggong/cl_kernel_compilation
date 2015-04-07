@@ -84,14 +84,11 @@ def rename_buildin_in_ir_file( file_name ):
 
                         fo.write(line + '\n')
 
-def runCommand(exe):
-        p = subprocess.Popen(exe, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        while(True):
-                retcode = p.poll() #returns None while subprocess is running
-                line = p.stdout.readline()
-                yield line
-                if(retcode is not None):
-                        break
+def runCommand(command):
+        p = subprocess.Popen(command, 
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.STDOUT)
+        return iter(p.stdout.readline, b'')
 
 for file in os.listdir(kernel_dir):
         if file.endswith(".cl"):
@@ -117,3 +114,4 @@ for file in os.listdir(kernel_dir):
                         llc_as_debug = open(file_name + ".opt.llcDump", "w+")
                         for line in runCommand(command_llc_as_opt.split()):
                                 llc_as_debug.write(line)
+                                print line

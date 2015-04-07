@@ -1,6 +1,6 @@
-0x1004f20: i64 = GlobalAddress<i32 (i32 addrspace(1)*, i32)* @_Z8atom_addPU3AS1ii> 0 [ORD=14]
-0  libLLVM-3.4.so.1 0x00002b09736855d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
-1  libLLVM-3.4.so.1 0x00002b09736853c4
-2  libc.so.6        0x00002b0974473d40
-3  libLLVM-3.4.so.1 0x00002b09733d547b
-4  libLLVM-3.4.so.1 0x00007fffdc08c820
+0x216ff30: i64 = GlobalAddress<i32 (i32 addrspace(1)*, i32)* @_Z8atom_addPU3AS1ii> 0 [ORD=14]
+0  libLLVM-3.4.so.1 0x00002b7360f5e5d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
+1  libLLVM-3.4.so.1 0x00002b7360f5e3c4
+2  libc.so.6        0x00002b7361d4cd40
+3  libLLVM-3.4.so.1 0x00002b7360cae47b
+4  libLLVM-3.4.so.1 0x00007fffa6746be0
