@@ -1,0 +1,2 @@
+MonteCarloAsianDP_Kernels.cl:30:0: warning: Extensions are not supported by m2c
+MonteCarloAsianDP_Kernels.cl:33:8: error: syntax error

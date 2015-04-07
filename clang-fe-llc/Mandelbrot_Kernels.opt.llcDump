@@ -1,15 +1,15 @@
-0  libLLVM-3.4.so.1 0x00002b3c4e73d5d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
-1  libLLVM-3.4.so.1 0x00002b3c4e73d3c4
-2  libc.so.6        0x00002b3c4f52bd40
-3  libLLVM-3.4.so.1 0x00002b3c4e126d20 llvm::Value::getName() const + 0
-4  libLLVM-3.4.so.1 0x00002b3c4e4cbb92
-5  libLLVM-3.4.so.1 0x00002b3c4e4cc609
-6  libLLVM-3.4.so.1 0x00002b3c4e10df77 llvm::FPPassManager::runOnFunction(llvm::Function&) + 471
-7  libLLVM-3.4.so.1 0x00002b3c4e10dffb llvm::FPPassManager::runOnModule(llvm::Module&) + 43
-8  libLLVM-3.4.so.1 0x00002b3c4e1104b5 llvm::legacy::PassManagerImpl::run(llvm::Module&) + 693
+0  libLLVM-3.4.so.1 0x00002b5d2eee55d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
+1  libLLVM-3.4.so.1 0x00002b5d2eee53c4
+2  libc.so.6        0x00002b5d2fcd3d40
+3  libLLVM-3.4.so.1 0x00002b5d2e8ced20 llvm::Value::getName() const + 0
+4  libLLVM-3.4.so.1 0x00002b5d2ec73b92
+5  libLLVM-3.4.so.1 0x00002b5d2ec74609
+6  libLLVM-3.4.so.1 0x00002b5d2e8b5f77 llvm::FPPassManager::runOnFunction(llvm::Function&) + 471
+7  libLLVM-3.4.so.1 0x00002b5d2e8b5ffb llvm::FPPassManager::runOnModule(llvm::Module&) + 43
+8  libLLVM-3.4.so.1 0x00002b5d2e8b84b5 llvm::legacy::PassManagerImpl::run(llvm::Module&) + 693
 9  llc              0x000000000040c0d4
 10 llc              0x000000000040b150 main + 368
-11 libc.so.6        0x00002b3c4f516ec5 __libc_start_main + 245
+11 libc.so.6        0x00002b5d2fcbeec5 __libc_start_main + 245
 12 llc              0x000000000040b1a9
 Stack dump:
 0.	Program arguments: llc -march=r600 -mcpu=verde Mandelbrot_Kernels.opt.bc 

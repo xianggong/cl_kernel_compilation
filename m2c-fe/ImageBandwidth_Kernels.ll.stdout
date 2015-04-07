@@ -1,0 +1,2 @@
+ImageBandwidth_Kernels.cl:19:0: warning: Extensions are not supported by m2c
+ImageBandwidth_Kernels.cl:21:49: error: syntax error

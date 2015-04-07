@@ -1,0 +1,2 @@
+BinomialOption_Kernels.cl:40:9: warning: const not supported
+BinomialOption_Kernels.cl:67:50: error: a'?'b':'c not supported

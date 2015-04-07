@@ -1,15 +1,15 @@
-0  libLLVM-3.4.so.1 0x00002ad45cbbd5d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
-1  libLLVM-3.4.so.1 0x00002ad45cbbd3c4
-2  libc.so.6        0x00002ad45d9abd40
-3  libLLVM-3.4.so.1 0x00002ad45c5a6d20 llvm::Value::getName() const + 0
-4  libLLVM-3.4.so.1 0x00002ad45c94bb92
-5  libLLVM-3.4.so.1 0x00002ad45c94c609
-6  libLLVM-3.4.so.1 0x00002ad45c58df77 llvm::FPPassManager::runOnFunction(llvm::Function&) + 471
-7  libLLVM-3.4.so.1 0x00002ad45c58dffb llvm::FPPassManager::runOnModule(llvm::Module&) + 43
-8  libLLVM-3.4.so.1 0x00002ad45c5904b5 llvm::legacy::PassManagerImpl::run(llvm::Module&) + 693
+0  libLLVM-3.4.so.1 0x00002ba87c7285d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
+1  libLLVM-3.4.so.1 0x00002ba87c7283c4
+2  libc.so.6        0x00002ba87d516d40
+3  libLLVM-3.4.so.1 0x00002ba87c111d20 llvm::Value::getName() const + 0
+4  libLLVM-3.4.so.1 0x00002ba87c4b6b92
+5  libLLVM-3.4.so.1 0x00002ba87c4b7609
+6  libLLVM-3.4.so.1 0x00002ba87c0f8f77 llvm::FPPassManager::runOnFunction(llvm::Function&) + 471
+7  libLLVM-3.4.so.1 0x00002ba87c0f8ffb llvm::FPPassManager::runOnModule(llvm::Module&) + 43
+8  libLLVM-3.4.so.1 0x00002ba87c0fb4b5 llvm::legacy::PassManagerImpl::run(llvm::Module&) + 693
 9  llc              0x000000000040c0d4
 10 llc              0x000000000040b150 main + 368
-11 libc.so.6        0x00002ad45d996ec5 __libc_start_main + 245
+11 libc.so.6        0x00002ba87d501ec5 __libc_start_main + 245
 12 llc              0x000000000040b1a9
 Stack dump:
 0.	Program arguments: llc -march=r600 -mcpu=verde ImageOverlap_Kernels.opt.bc 

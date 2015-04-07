@@ -1,0 +1,3 @@
+SimpleConvolution_Kernels.cl:32:37: warning: const not supported
+SimpleConvolution_Kernels.cl:33:37: warning: const not supported
+SimpleConvolution_Kernels.cl:53:46: error: a'?'b':'c not supported

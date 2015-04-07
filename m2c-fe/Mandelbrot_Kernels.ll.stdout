@@ -1,0 +1,8 @@
+Mandelbrot_Kernels.cl:30:21: warning: const not supported
+Mandelbrot_Kernels.cl:31:21: warning: const not supported
+Mandelbrot_Kernels.cl:32:21: warning: const not supported
+Mandelbrot_Kernels.cl:33:21: warning: const not supported
+Mandelbrot_Kernels.cl:34:21: warning: const not supported
+Mandelbrot_Kernels.cl:35:21: warning: const not supported
+Mandelbrot_Kernels.cl:36:21: warning: const not supported
+Mandelbrot_Kernels.cl:43:56: error: array initializers not supported

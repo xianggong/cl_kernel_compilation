@@ -1,0 +1,2 @@
+KernelLaunch_Kernels.cl:18:0: warning: Extensions are not supported by m2c
+KernelLaunch_Kernels.cl:38:15: error: syntax error

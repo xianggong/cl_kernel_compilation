@@ -1,0 +1,13 @@
+MatrixMulImage_Kernels.cl:86:0: warning: "TILEY" redefined [enabled by default]
+ #define TILEY 8
+ ^
+MatrixMulImage_Kernels.cl:22:0: note: this is the location of the previous definition
+ #define TILEY 4
+ ^
+MatrixMulImage_Kernels.cl:87:0: warning: "TILEY_SHIFT" redefined [enabled by default]
+ #define TILEY_SHIFT 3
+ ^
+MatrixMulImage_Kernels.cl:23:0: note: this is the location of the previous definition
+ #define TILEY_SHIFT 2
+ ^
+MatrixMulImage_Kernels.cl:25:8: error: 'constant' not supported

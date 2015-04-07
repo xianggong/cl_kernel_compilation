@@ -1,0 +1,2 @@
+TransferOverlapCPP_Kernels.cl:18:0: warning: Extensions are not supported by m2c
+TransferOverlapCPP_Kernels.cl:37:16: error: syntax error

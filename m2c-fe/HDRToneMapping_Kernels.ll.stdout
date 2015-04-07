@@ -1,0 +1,2 @@
+HDRToneMapping_Kernels.cl:17:0: warning: Extensions are not supported by m2c
+HDRToneMapping_Kernels.cl:121:69: error: implicit declaration of function

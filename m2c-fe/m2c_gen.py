@@ -1,7 +1,10 @@
 #!/usr/bin/python
 
 import os
+import subprocess
 from subprocess import call
+import fileinput
+import re
 
 # Directories
 root_dir = '../kernel-src/'
@@ -10,6 +13,12 @@ root_dir = '../kernel-src/'
 gen_ir = "m2c --cl2llvm "
 dis_bc = "llvm-dis "
 opt_bc = "opt --mem2reg "
+
+def runCommand(command):
+        p = subprocess.Popen(command, 
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.STDOUT)
+        return iter(p.stdout.readline, b'')
 
 for file in os.listdir(root_dir):
 	if file.endswith(".cl"):
@@ -22,9 +31,9 @@ for file in os.listdir(root_dir):
                 
                 # Generate LLVM bitcode using M2C frontend
                 command_gen_ir = gen_ir + file
-                command_rename = "mv " + file_name + ".llvm " + file_name + ".bc" 
-		
+
                 # Disassemble LLVM bitcode
+                command_rename = "mv " + file_name + ".llvm " + file_name + ".bc" 
                 command_dis_bc = dis_bc + file_name + ".bc" + " -o " + file_name + ".ll"
 
                 # Optimize LLVM bitcode
@@ -35,7 +44,9 @@ for file in os.listdir(root_dir):
 
                 # Remove kernel sources
                 call(command_cp_kernel_src.split())
-                call(command_gen_ir.split())
+                gen_ir_stdout = open(file_name + ".ll.stdout", "w+")
+                for line in runCommand(command_gen_ir.split()):
+                        gen_ir_stdout.write(line)
                 if os.path.isfile(file_name + ".llvm"):
                         call(command_rename.split())
                         call(command_dis_bc.split())

@@ -1,0 +1,11 @@
+BlackScholes_Kernels.cl:49:9: warning: const not supported
+BlackScholes_Kernels.cl:50:9: warning: const not supported
+BlackScholes_Kernels.cl:51:9: warning: const not supported
+BlackScholes_Kernels.cl:52:9: warning: const not supported
+BlackScholes_Kernels.cl:53:9: warning: const not supported
+BlackScholes_Kernels.cl:55:9: warning: const not supported
+BlackScholes_Kernels.cl:56:9: warning: const not supported
+BlackScholes_Kernels.cl:57:9: warning: const not supported
+BlackScholes_Kernels.cl:58:9: warning: const not supported
+BlackScholes_Kernels.cl:60:9: warning: const not supported
+BlackScholes_Kernels.cl:62:18: error: implicit declaration of function

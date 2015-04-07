@@ -1,0 +1,15 @@
+RecursiveGaussian_Kernels.cl:26:27: warning: const not supported
+RecursiveGaussian_Kernels.cl:27:27: warning: const not supported
+RecursiveGaussian_Kernels.cl:28:27: warning: const not supported
+RecursiveGaussian_Kernels.cl:60:53: warning: const not supported
+RecursiveGaussian_Kernels.cl:61:16: warning: const not supported
+RecursiveGaussian_Kernels.cl:61:33: warning: const not supported
+RecursiveGaussian_Kernels.cl:62:16: warning: const not supported
+RecursiveGaussian_Kernels.cl:62:32: warning: const not supported
+RecursiveGaussian_Kernels.cl:63:16: warning: const not supported
+RecursiveGaussian_Kernels.cl:63:32: warning: const not supported
+RecursiveGaussian_Kernels.cl:64:16: warning: const not supported
+RecursiveGaussian_Kernels.cl:64:32: warning: const not supported
+RecursiveGaussian_Kernels.cl:65:16: warning: const not supported
+RecursiveGaussian_Kernels.cl:65:35: warning: const not supported
+RecursiveGaussian_Kernels.cl:100:28: error: Symbol 'y' previously declared.

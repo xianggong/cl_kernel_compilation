@@ -1,0 +1,3 @@
+BitonicSort_Kernels.cl:43:22: warning: const not supported
+BitonicSort_Kernels.cl:44:22: warning: const not supported
+BitonicSort_Kernels.cl:45:22: warning: const not supported

@@ -1,0 +1,12 @@
+BlackScholesDP_Kernels.cl:30:0: warning: Extensions are not supported by m2c
+BlackScholesDP_Kernels.cl:55:9: warning: const not supported
+BlackScholesDP_Kernels.cl:56:9: warning: const not supported
+BlackScholesDP_Kernels.cl:57:9: warning: const not supported
+BlackScholesDP_Kernels.cl:58:9: warning: const not supported
+BlackScholesDP_Kernels.cl:59:9: warning: const not supported
+BlackScholesDP_Kernels.cl:61:9: warning: const not supported
+BlackScholesDP_Kernels.cl:62:9: warning: const not supported
+BlackScholesDP_Kernels.cl:63:9: warning: const not supported
+BlackScholesDP_Kernels.cl:64:9: warning: const not supported
+BlackScholesDP_Kernels.cl:66:9: warning: const not supported
+BlackScholesDP_Kernels.cl:68:18: error: implicit declaration of function

@@ -1,0 +1,3 @@
+PrefixSum_Kernels.cl:32:11: warning: const not supported
+PrefixSum_Kernels.cl:33:11: warning: const not supported
+PrefixSum_Kernels.cl:67:37: error: Symbol 'ai' previously declared.

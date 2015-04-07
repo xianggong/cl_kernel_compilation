@@ -1,0 +1,4 @@
+HistogramAtomics_Kernels.cl:22:0: warning: Extensions are not supported by m2c
+HistogramAtomics_Kernels.cl:45:9: warning: const not supported
+HistogramAtomics_Kernels.cl:46:9: warning: const not supported
+HistogramAtomics_Kernels.cl:51:27: error: syntax error

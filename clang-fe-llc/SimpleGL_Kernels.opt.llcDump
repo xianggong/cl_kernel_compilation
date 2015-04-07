@@ -1,6 +1,6 @@
-0x15ea720: i64 = GlobalAddress<float (float)* @_Z3sinf> 0 [ORD=12]
-0  libLLVM-3.4.so.1 0x00002add43f9f5d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
-1  libLLVM-3.4.so.1 0x00002add43f9f3c4
-2  libc.so.6        0x00002add44d8dd40
-3  libLLVM-3.4.so.1 0x00002add43cef47b
-4  libLLVM-3.4.so.1 0x00007fff913c7620
+0x194b720: i64 = GlobalAddress<float (float)* @_Z3sinf> 0 [ORD=12]
+0  libLLVM-3.4.so.1 0x00002b25a678e5d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
+1  libLLVM-3.4.so.1 0x00002b25a678e3c4
+2  libc.so.6        0x00002b25a757cd40
+3  libLLVM-3.4.so.1 0x00002b25a64de47b
+4  libLLVM-3.4.so.1 0x00007fff78c93e80

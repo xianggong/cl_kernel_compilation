@@ -1,0 +1,4 @@
+FastWalshTransform_Kernels.cl:22:29: warning: const not supported
+FastWalshTransform_Kernels.cl:27:13: warning: const not supported
+FastWalshTransform_Kernels.cl:28:13: warning: const not supported
+FastWalshTransform_Kernels.cl:30:13: warning: const not supported

@@ -1,0 +1,6 @@
+BinarySearch_Kernels.cl:30:9: warning: const not supported
+BinarySearch_Kernels.cl:31:9: warning: const not supported
+BinarySearch_Kernels.cl:32:18: warning: const not supported
+BinarySearch_Kernels.cl:61:25: warning: const not supported
+BinarySearch_Kernels.cl:84:25: warning: const not supported
+BinarySearch_Kernels.cl:85:25: warning: const not supported

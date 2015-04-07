@@ -1,0 +1,2 @@
+ScanLargeArrays_Kernels.cl:55:10: warning: const not supported
+ScanLargeArrays_Kernels.cl:109:10: warning: const not supported

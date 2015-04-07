@@ -1,0 +1,2 @@
+FluidSimulation2D_Kernels.cl:30:0: warning: Extensions are not supported by m2c
+FluidSimulation2D_Kernels.cl:46:26: error: 'constant' not supported

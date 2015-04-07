@@ -1,0 +1,2 @@
+BinomialOptionMultiGPU_Kernels.cl:39:9: warning: const not supported
+BinomialOptionMultiGPU_Kernels.cl:66:50: error: a'?'b':'c not supported

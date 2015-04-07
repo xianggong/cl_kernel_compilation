@@ -1,15 +1,15 @@
-0  libLLVM-3.4.so.1 0x00002b75d6d4b5d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
-1  libLLVM-3.4.so.1 0x00002b75d6d4b3c4
-2  libc.so.6        0x00002b75d7b39d40
-3  libLLVM-3.4.so.1 0x00002b75d6734d20 llvm::Value::getName() const + 0
-4  libLLVM-3.4.so.1 0x00002b75d6ad9b92
-5  libLLVM-3.4.so.1 0x00002b75d6ada609
-6  libLLVM-3.4.so.1 0x00002b75d671bf77 llvm::FPPassManager::runOnFunction(llvm::Function&) + 471
-7  libLLVM-3.4.so.1 0x00002b75d671bffb llvm::FPPassManager::runOnModule(llvm::Module&) + 43
-8  libLLVM-3.4.so.1 0x00002b75d671e4b5 llvm::legacy::PassManagerImpl::run(llvm::Module&) + 693
+0  libLLVM-3.4.so.1 0x00002b0a75d075d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
+1  libLLVM-3.4.so.1 0x00002b0a75d073c4
+2  libc.so.6        0x00002b0a76af5d40
+3  libLLVM-3.4.so.1 0x00002b0a756f0d20 llvm::Value::getName() const + 0
+4  libLLVM-3.4.so.1 0x00002b0a75a95b92
+5  libLLVM-3.4.so.1 0x00002b0a75a96609
+6  libLLVM-3.4.so.1 0x00002b0a756d7f77 llvm::FPPassManager::runOnFunction(llvm::Function&) + 471
+7  libLLVM-3.4.so.1 0x00002b0a756d7ffb llvm::FPPassManager::runOnModule(llvm::Module&) + 43
+8  libLLVM-3.4.so.1 0x00002b0a756da4b5 llvm::legacy::PassManagerImpl::run(llvm::Module&) + 693
 9  llc              0x000000000040c0d4
 10 llc              0x000000000040b150 main + 368
-11 libc.so.6        0x00002b75d7b24ec5 __libc_start_main + 245
+11 libc.so.6        0x00002b0a76ae0ec5 __libc_start_main + 245
 12 llc              0x000000000040b1a9
 Stack dump:
 0.	Program arguments: llc -march=r600 -mcpu=verde GaussianNoiseGL_Kernels.opt.bc 

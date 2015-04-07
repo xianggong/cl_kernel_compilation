@@ -1,0 +1,4 @@
+RadixSort_Kernels.cl:23:0: warning: Extensions are not supported by m2c
+RadixSort_Kernels.cl:25:0: warning: Extensions are not supported by m2c
+RadixSort_Kernels.cl:36:29: warning: const not supported
+RadixSort_Kernels.cl:41:10: error: syntax error

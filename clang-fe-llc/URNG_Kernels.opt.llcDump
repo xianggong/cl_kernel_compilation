@@ -1,6 +1,6 @@
-0xc142f0: i64 = GlobalAddress<<4 x float> (<4 x i8>)* @_Z14convert_float4Dv4_h> 0 [ORD=78]
-0  libLLVM-3.4.so.1 0x00002b329dbc75d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
-1  libLLVM-3.4.so.1 0x00002b329dbc73c4
-2  libc.so.6        0x00002b329e9b5d40
-3  libLLVM-3.4.so.1 0x00002b329d91747b
-4  libLLVM-3.4.so.1 0x00007fffc889c020
+0xdbf1d0: i64 = GlobalAddress<<4 x float> (<4 x i8>)* @_Z14convert_float4Dv4_h> 0 [ORD=78]
+0  libLLVM-3.4.so.1 0x00002b0ef0a545d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
+1  libLLVM-3.4.so.1 0x00002b0ef0a543c4
+2  libc.so.6        0x00002b0ef1842d40
+3  libLLVM-3.4.so.1 0x00002b0ef07a447b
+4  libLLVM-3.4.so.1 0x00007fffd0c08ec0

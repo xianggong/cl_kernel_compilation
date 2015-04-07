@@ -1,0 +1,4 @@
+DCT_Kernels.cl:53:14: warning: const not supported
+DCT_Kernels.cl:54:14: warning: const not supported
+DCT_Kernels.cl:55:14: warning: const not supported
+DCT_Kernels.cl:98:17: error: Symbol 'k' previously declared.

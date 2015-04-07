@@ -1,0 +1,2 @@
+AtomicCounters_Kernels.cl:23:0: warning: Extensions are not supported by m2c
+AtomicCounters_Kernels.cl:29:13: error: syntax error

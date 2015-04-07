@@ -1,0 +1,3 @@
+Histogram_Kernels.cl:29:0: warning: Extensions are not supported by m2c
+Histogram_Kernels.cl:39:39: warning: const not supported
+Histogram_Kernels.cl:43:10: error: syntax error

@@ -1,0 +1,8 @@
+MemoryOptimizations_Kernels.cl:48:0: warning: "DATA_TYPE" redefined [enabled by default]
+ #define DATA_TYPE float4
+ ^
+MemoryOptimizations_Kernels.cl:37:0: note: this is the location of the previous definition
+ #define DATA_TYPE float
+ ^
+MemoryOptimizations_Kernels.cl:26:0: warning: Extensions are not supported by m2c
+MemoryOptimizations_Kernels.cl:32:20: error: syntax error
