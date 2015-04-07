@@ -64,7 +64,10 @@ for file in os.listdir(kernel_dir):
                 # print command_opt_bc
                 # print command_dis_bc
                  
-                call(command_gen_ir.split())
+                gen_ir_stdout = open(file_name + ".ll.stdout", "w+")
+                for line in runCommand(command_gen_ir.split()):
+                        gen_ir_stdout.write(line)
+
                 rename_variable_in_ir_file(file_name)
                 call(command_gen_bc.split())
                 call(command_opt_bc.split())

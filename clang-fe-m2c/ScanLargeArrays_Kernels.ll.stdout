@@ -1,0 +1,169 @@
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:35:
+In file included from ../include/clc/math/acos.h:2:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/acos.inc:1:39: warning: incompatible redeclaration of library function 'acos' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE acos(__CLC_GENTYPE x);
+                                      ^
+../include/clc/math/acos.inc:1:39: note: 'acos' is a builtin with type 'double (double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:36:
+In file included from ../include/clc/math/asin.h:2:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/asin.inc:1:39: warning: incompatible redeclaration of library function 'asin' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE asin(__CLC_GENTYPE x);
+                                      ^
+../include/clc/math/asin.inc:1:39: note: 'asin' is a builtin with type 'double (double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:37:
+In file included from ../include/clc/math/atan.h:24:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/atan.inc:23:39: warning: incompatible redeclaration of library function 'atan' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE atan(__CLC_GENTYPE a);
+                                      ^
+../include/clc/math/atan.inc:23:39: note: 'atan' is a builtin with type 'double (double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:38:
+In file included from ../include/clc/math/atan2.h:24:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/atan2.inc:23:39: warning: incompatible redeclaration of library function 'atan2' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE atan2(__CLC_GENTYPE a, __CLC_GENTYPE b);
+                                      ^
+../include/clc/math/atan2.inc:23:39: note: 'atan2' is a builtin with type 'double (double, double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:39:
+In file included from ../include/clc/math/copysign.h:2:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/copysign.inc:1:39: warning: incompatible redeclaration of library function 'copysign' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE copysign(__CLC_GENTYPE a, __CLC_GENTYPE b);
+                                      ^
+../include/clc/math/copysign.inc:1:39: note: 'copysign' is a builtin with type 'double (double, double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:40:
+In file included from ../include/clc/math/cos.h:2:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/cos.inc:1:39: warning: incompatible redeclaration of library function 'cos' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE cos(__CLC_GENTYPE a);
+                                      ^
+../include/clc/math/cos.inc:1:39: note: 'cos' is a builtin with type 'double (double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:43:
+In file included from ../include/clc/math/erfc.h:6:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/unary_decl.inc:1:39: warning: incompatible redeclaration of library function 'erfc' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE __CLC_FUNCTION(__CLC_GENTYPE x);
+                                      ^
+../include/clc/math/erfc.h:4:24: note: expanded from macro '__CLC_FUNCTION'
+#define __CLC_FUNCTION erfc
+                       ^
+../include/clc/math/unary_decl.inc:1:39: note: 'erfc' is a builtin with type 'double (double)'
+../include/clc/math/erfc.h:4:24: note: expanded from macro '__CLC_FUNCTION'
+#define __CLC_FUNCTION erfc
+                       ^
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:44:
+In file included from ../include/clc/math/exp.h:6:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/unary_decl.inc:1:39: warning: incompatible redeclaration of library function 'exp' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE __CLC_FUNCTION(__CLC_GENTYPE x);
+                                      ^
+../include/clc/math/exp.h:4:24: note: expanded from macro '__CLC_FUNCTION'
+#define __CLC_FUNCTION exp
+                       ^
+../include/clc/math/unary_decl.inc:1:39: note: 'exp' is a builtin with type 'double (double)'
+../include/clc/math/exp.h:4:24: note: expanded from macro '__CLC_FUNCTION'
+#define __CLC_FUNCTION exp
+                       ^
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:52:
+In file included from ../include/clc/math/fmod.h:2:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/fmod.inc:1:39: warning: incompatible redeclaration of library function 'fmod' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE fmod(__CLC_GENTYPE a, __CLC_GENTYPE b);
+                                      ^
+../include/clc/math/fmod.inc:1:39: note: 'fmod' is a builtin with type 'double (double, double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:53:
+In file included from ../include/clc/math/hypot.h:2:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/hypot.inc:1:39: warning: incompatible redeclaration of library function 'hypot' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE hypot(__CLC_GENTYPE x, __CLC_GENTYPE y);
+                                      ^
+../include/clc/math/hypot.inc:1:39: note: 'hypot' is a builtin with type 'double (double, double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:55:
+In file included from ../include/clc/math/log10.h:6:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/unary_decl.inc:1:39: warning: incompatible redeclaration of library function 'log10' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE __CLC_FUNCTION(__CLC_GENTYPE x);
+                                      ^
+../include/clc/math/log10.h:4:24: note: expanded from macro '__CLC_FUNCTION'
+#define __CLC_FUNCTION log10
+                       ^
+../include/clc/math/unary_decl.inc:1:39: note: 'log10' is a builtin with type 'double (double)'
+../include/clc/math/log10.h:4:24: note: expanded from macro '__CLC_FUNCTION'
+#define __CLC_FUNCTION log10
+                       ^
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:56:
+In file included from ../include/clc/math/log1p.h:24:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/log1p.inc:23:39: warning: incompatible redeclaration of library function 'log1p' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE log1p(__CLC_GENTYPE a);
+                                      ^
+../include/clc/math/log1p.inc:23:39: note: 'log1p' is a builtin with type 'double (double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:59:
+In file included from ../include/clc/math/nextafter.h:3:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/binary_decl.inc:1:39: warning: incompatible redeclaration of library function 'nextafter' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE __CLC_FUNCTION(__CLC_GENTYPE a, __CLC_GENTYPE b);
+                                      ^
+../include/clc/math/nextafter.h:2:24: note: expanded from macro '__CLC_FUNCTION'
+#define __CLC_FUNCTION nextafter
+                       ^
+../include/clc/math/binary_decl.inc:1:39: note: 'nextafter' is a builtin with type 'double (double, double)'
+../include/clc/math/nextafter.h:2:24: note: expanded from macro '__CLC_FUNCTION'
+#define __CLC_FUNCTION nextafter
+                       ^
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:64:
+In file included from ../include/clc/math/sin.h:2:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/sin.inc:1:39: warning: incompatible redeclaration of library function 'sin' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE sin(__CLC_GENTYPE a);
+                                      ^
+../include/clc/math/sin.inc:1:39: note: 'sin' is a builtin with type 'double (double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:67:
+In file included from ../include/clc/math/tan.h:2:
+In file included from ../include/clc/math/gentype.inc:6:
+../include/clc/math/tan.inc:1:39: warning: incompatible redeclaration of library function 'tan' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_GENTYPE tan(__CLC_GENTYPE x);
+                                      ^
+../include/clc/math/tan.inc:1:39: note: 'tan' is a builtin with type 'double (double)'
+In file included from <built-in>:134:
+In file included from <command line>:3:
+In file included from ../include/clc/clc.h:85:
+In file included from ../include/clc/integer/abs.h:2:
+In file included from ../include/clc/integer/gentype.inc:10:
+../include/clc/integer/abs.inc:1:41: warning: incompatible redeclaration of library function 'abs' [-Wincompatible-library-redeclaration]
+_CLC_OVERLOAD _CLC_DECL __CLC_U_GENTYPE abs(__CLC_GENTYPE x);
+                                        ^
+../include/clc/integer/abs.inc:1:41: note: 'abs' is a builtin with type 'int (int)'
+16 warnings generated.

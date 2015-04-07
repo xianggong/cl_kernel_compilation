@@ -100,11 +100,16 @@ for file in os.listdir(kernel_dir):
                 command_dis_bc = dis_bc + file_name + ".opt.bc"
                 command_llc_as = llc_as + file_name + ".bc"
                 command_llc_as_opt = llc_as + file_name + ".opt.bc"
+
                 # print command_gen_ir
                 # print command_gen_bc
                 # print command_opt_bc
                 # print command_dis_bc
-                call(command_gen_ir.split())
+
+                gen_ir_stdout = open(file_name + ".ll.stdout", "w+")
+                for line in runCommand(command_gen_ir.split()):
+                        gen_ir_stdout.write(line)
+
                 rename_buildin_in_ir_file(file_name)
                 call(command_gen_bc.split())
                 call(command_opt_bc.split())
@@ -114,4 +119,3 @@ for file in os.listdir(kernel_dir):
                         llc_as_debug = open(file_name + ".opt.llcDump", "w+")
                         for line in runCommand(command_llc_as_opt.split()):
                                 llc_as_debug.write(line)
-                                print line

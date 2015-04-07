@@ -1,6 +1,6 @@
-0x1d630d0: i64 = GlobalAddress<void (i32)* @barrier> 0 [ORD=16]
-0  libLLVM-3.4.so.1 0x00002ba4dc1765d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
-1  libLLVM-3.4.so.1 0x00002ba4dc1763c4
-2  libc.so.6        0x00002ba4dcf64d40
-3  libLLVM-3.4.so.1 0x00002ba4dbec647b
-4  libLLVM-3.4.so.1 0x00007fffad8756b0
+0xb91140: i64 = GlobalAddress<void (i32)* @barrier> 0 [ORD=16]
+0  libLLVM-3.4.so.1 0x00002ad6516285d2 llvm::sys::PrintStackTrace(_IO_FILE*) + 34
+1  libLLVM-3.4.so.1 0x00002ad6516283c4
+2  libc.so.6        0x00002ad652416d40
+3  libLLVM-3.4.so.1 0x00002ad65137847b
+4  libLLVM-3.4.so.1 0x00007fff99e5d040
